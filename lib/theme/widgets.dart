@@ -3,12 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snaplist/snaplist.dart';
 
-import 'Extension.dart';
-import 'T3Constant.dart';
-import 'T3Images.dart';
-import 'colors.dart';
+import 'index.dart';
 
-Text headerText(var text) {
+Text t3HeaderText(var text) {
   return Text(
     text,
     maxLines: 2,
@@ -16,7 +13,7 @@ Text headerText(var text) {
   );
 }
 
-Text subHeadingText(var text) {
+Text t3SubHeadingText(var text) {
   return Text(
     text,
     style: TextStyle(
@@ -26,7 +23,7 @@ Text subHeadingText(var text) {
   );
 }
 
-Text headingText(var text) {
+Text t3HeadingText(var text) {
   return Text(
     text,
     style: TextStyle(
@@ -36,7 +33,7 @@ Text headingText(var text) {
   );
 }
 
-Widget text(var text,
+Widget t3Text(var text,
     {var fontSize = textSizeLargeMedium,
     textColor = t3_textColorSecondary,
     var fontFamily = fontRegular,
@@ -215,18 +212,18 @@ Widget checkbox(String title, bool boolValue) {
   );
 }
 
-class TopBar extends StatefulWidget {
+class T3TopBar extends StatefulWidget {
   var titleName;
 
-  TopBar(var this.titleName);
+  T3TopBar(var this.titleName);
 
   @override
   State<StatefulWidget> createState() {
-    return TopBarState();
+    return T3TopBarState();
   }
 }
 
-class TopBarState extends State<TopBar> {
+class T3TopBarState extends State<T3TopBar> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -248,7 +245,7 @@ class TopBarState extends State<TopBar> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: Center(
-                    child: headerText(widget.titleName),
+                    child: t3HeaderText(widget.titleName),
                   ),
                 )
               ],
@@ -345,7 +342,7 @@ Widget ring(String description) {
         ),
       ),
       SizedBox(height: 16),
-      text(description,
+      t3Text(description,
           textColor: t3_textColorPrimary,
           fontSize: textSizeMedium,
           fontFamily: fontSemibold,
@@ -372,7 +369,7 @@ Widget divider() {
   );
 }
 
-BoxDecoration boxDecoration(
+BoxDecoration t3BoxDecoration(
     {double radius = 2,
     Color color = Colors.transparent,
     Color bgColor = t3_white,
@@ -381,7 +378,7 @@ BoxDecoration boxDecoration(
       //gradient: LinearGradient(colors: [bgColor, whiteColor]),
       color: bgColor,
       boxShadow: showShadow
-          ? [BoxShadow(color: shadow_color, blurRadius: 4, spreadRadius: 1)]
+          ? [BoxShadow(color: t3_shadow_color, blurRadius: 4, spreadRadius: 1)]
           : [BoxShadow(color: Colors.transparent)],
       border: Border.all(color: color),
       borderRadius: BorderRadius.all(Radius.circular(radius)));

@@ -1,10 +1,6 @@
-import 'package:diabetttty/components/Scroll_Behaviour/SBehavior.dart';
-import 'package:diabetttty/screens/draft_screen.dart';
-import 'package:diabetttty/screens/layouts/dashboard.dart';
-import 'package:diabetttty/screens/splash_screens/Splash_Screen.dart';
-import 'package:diabetttty/theme/AppColors.dart';
-import 'package:diabetttty/theme/app_state.dart';
-import 'package:diabetttty/theme/colors.dart';
+import 'package:diabetttty/components/index.dart';
+import 'package:diabetttty/screens/index.dart';
+import 'package:diabetttty/theme/index.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,26 +10,29 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _routes = {
-      '/dashboards/dailyplanner': (context) => DashBoard(initIndex: 2)
+      '/splashscreen': (context) => SplashScreen(),
+      '/dashboards/dailyplanner': (context) => DashBoard(initIndex: 0),
+      '/dashboards/reminder': (context) => DashBoard(initIndex: 1),
+      '/dashboards/plan': (context) => DashBoard(initIndex: 2),
+      '/dashboards/sos': (context) => DashBoard(initIndex: 3),
     };
 
     return ChangeNotifierProvider(
-        create: (_) => AppState('en'),
-        child: Consumer<AppState>(builder: (context, provider, builder) {
+      create: (_) => AppState('en'),
+      child: Consumer<AppState>(
+        builder: (context, provider, builder) {
           return MaterialApp(
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               // fontFamily: 'Andina',
-              primaryColor: colorCustom,
+              primaryColor: t3colorCustom,
               accentColor: appWhite,
-              scaffoldBackgroundColor: appWhite,
+              scaffoldBackgroundColor: t3_app_background,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            initialRoute: '/dashboards/dailyplanner',
+            initialRoute: '/splashscreen',
             routes: _routes,
-            //home: SplashScreen(),
-            //TODO: need to apply a SplashScreen that follows on with the correct route after finishing.
             builder: (context, child) {
               return ScrollConfiguration(
                 behavior: SBehavior(),
@@ -41,6 +40,8 @@ class App extends StatelessWidget {
               );
             },
           );
-        }));
+        },
+      ),
+    );
   }
 }

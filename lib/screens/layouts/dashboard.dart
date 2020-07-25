@@ -1,9 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:diabetttty/screens/draft_screen.dart';
-import 'package:diabetttty/screens/sos.dart';
-import 'package:diabetttty/screens/daily_planner.dart';
-import 'package:diabetttty/screens/reminder.dart';
-import 'package:diabetttty/screens/plan.dart';
+import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/T3Images.dart';
 import 'package:diabetttty/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +22,7 @@ class _DashBoardState extends State<DashBoard> {
 
   var _pages = [
     // Timeline(),
-    DrafttScreen(),
+    // DrafttScreen(),
     DailyPlannerScreen(),
     ReminderScreen(),
     PlanScreen(),

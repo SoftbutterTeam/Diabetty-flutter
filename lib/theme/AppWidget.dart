@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+// import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 //import 'package:diabetty/main/model/AppMoel.dart';
 //import 'package:diabetty/main/screens/ProkitScreenListing.dart';
 
-import 'AppColors.dart';
-import 'AppConstant.dart';
+import 'index.dart';
+
 
 Text headerText(var text) {
   return Text(
@@ -42,15 +42,15 @@ Widget text(var text,
           letterSpacing: latterSpacing));
 }
 
-changeStatusColor(Color color) async {
-  try {
-    await FlutterStatusbarcolor.setStatusBarColor(color, animate: true);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(
-        useWhiteForeground(color));
-  } on Exception catch (e) {
-    print(e);
-  }
-}
+// changeStatusColor(Color color) async {
+//   try {
+//     await FlutterStatusbarcolor.setStatusBarColor(color, animate: true);
+//     FlutterStatusbarcolor.setStatusBarWhiteForeground(
+//         useWhiteForeground(color));
+//   } on Exception catch (e) {
+//     print(e);
+//   }
+// }
 
 showToast(BuildContext aContext, String caption) {
   Scaffold.of(aContext).showSnackBar(
@@ -102,32 +102,32 @@ class TopBarState extends State<TopBar> {
   }
 }
 
-void finish(context) {
-  Navigator.pop(context);
-}
+// void finish(context) {
+//   Navigator.pop(context);
+// }
 
-void hideKeyboard(context) {
-  FocusScope.of(context).requestFocus(FocusNode());
-}
+// void hideKeyboard(context) {
+//   FocusScope.of(context).requestFocus(FocusNode());
+// }
 
-launchScreen(context, String tag, {Object arguments}) {
-  if (arguments == null) {
-    Navigator.pushNamed(context, tag);
-  } else {
-    Navigator.pushNamed(context, tag, arguments: arguments);
-  }
-}
+// launchScreen(context, String tag, {Object arguments}) {
+//   if (arguments == null) {
+//     Navigator.pushNamed(context, tag);
+//   } else {
+//     Navigator.pushNamed(context, tag, arguments: arguments);
+//   }
+// }
 
-void launchScreenWithNewTask(context, String tag) {
-  Navigator.pushNamedAndRemoveUntil(context, tag, (r) => false);
-}
+// void launchScreenWithNewTask(context, String tag) {
+//   Navigator.pushNamedAndRemoveUntil(context, tag, (r) => false);
+// }
 
-Color hexStringToHexInt(String hex) {
-  hex = hex.replaceFirst('#', '');
-  hex = hex.length == 6 ? 'ff' + hex : hex;
-  int val = int.parse(hex, radix: 16);
-  return Color(val);
-}
+// Color hexStringToHexInt(String hex) {
+//   hex = hex.replaceFirst('#', '');
+//   hex = hex.length == 6 ? 'ff' + hex : hex;
+//   int val = int.parse(hex, radix: 16);
+//   return Color(val);
+// }
 
 BoxDecoration boxDecoration(
     {double radius = 2,

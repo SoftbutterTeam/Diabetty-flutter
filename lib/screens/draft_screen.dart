@@ -1,9 +1,5 @@
 import 'package:diabetttty/components/header.dart';
-import 'package:diabetttty/theme/AppConstant.dart';
-import 'package:diabetttty/theme/Extension.dart';
-import 'package:diabetttty/theme/colors.dart';
-import 'package:diabetttty/theme/strings.dart';
-import 'package:diabetttty/theme/widgets.dart';
+import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -50,7 +46,7 @@ class DrafttScreenState extends State<DrafttScreen> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                       child: Center(
-                        child: text(t3_lbl_bottom_navigation,
+                        child: t3Text(t3_lbl_bottom_navigation,
                             fontFamily: fontBold,
                             textColor: t3_textColorPrimary,
                             fontSize: 22.0),

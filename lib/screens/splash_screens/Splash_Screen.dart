@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:diabetttty/screens/layouts/dashboard.dart';
+import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/components/size_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         Duration(seconds: 5),
         () =>
-            Navigator.pushReplacement(context, ScaleRoute(page: DashBoard())));
+            Navigator.pushReplacement(context, ScaleRoute(page: DashBoard(initIndex: 0))));
   }
 
   @override

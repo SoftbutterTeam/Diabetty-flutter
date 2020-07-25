@@ -26,10 +26,10 @@ const t3_black = Color(0XFF000000);
 const t3_icon_color = Color(0XFF747474);
 
 const t3_shadow = Color(0X70E2E2E5);
-var t3White = materialColor(0XFFFFFFFF);
-const shadow_color = Color(0X95E9EBF0);
+var t3White = t3materialColor(0XFFFFFFFF);
+const t3_shadow_color = Color(0X95E9EBF0);
 
-Map<int, Color> color = {
+Map<int, Color> t3color = {
   50: Color.fromRGBO(136, 14, 79, .1),
   100: Color.fromRGBO(136, 14, 79, .2),
   200: Color.fromRGBO(136, 14, 79, .3),
@@ -42,8 +42,8 @@ Map<int, Color> color = {
   900: Color.fromRGBO(136, 14, 79, 1),
 };
 
-MaterialColor materialColor(colorHax) {
-  return MaterialColor(colorHax, color);
+MaterialColor t3materialColor(colorHax) {
+  return MaterialColor(colorHax, t3color);
 }
 
-MaterialColor colorCustom = MaterialColor(0XFF5959fc, color);
+MaterialColor t3colorCustom = MaterialColor(0XFF5959fc, t3color);

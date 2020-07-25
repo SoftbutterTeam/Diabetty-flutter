@@ -55,29 +55,29 @@ Widget textSecondary(text,
           size: size, color: color, aFontFamily: aFontFamily));
 }
 
-Widget text(
-  var text, {
-  var fontSize = textSizeMedium,
-  textColor = "",
-  var fontFamily = fontRegular,
-  var isCentered = false,
-  var maxLine = 1,
-  var latterSpacing = 0.2,
-  var isLongText = false,
-  var isJustify = false,
-}) {
-  return Text(
-    text,
-    textAlign: isCentered
-        ? TextAlign.center
-        : isJustify ? TextAlign.justify : TextAlign.start,
-    maxLines: isLongText ? 20 : maxLine,
-    overflow: TextOverflow.ellipsis,
-    style: TextStyle(
-        fontFamily: fontFamily,
-        fontSize: double.parse(fontSize.toString()).toDouble(),
-        height: 1.5,
-        color: textColor.toString().isNotEmpty ? textColor : null,
-        letterSpacing: latterSpacing),
-  );
-}
+// Widget text(
+//   var text, {
+//   var fontSize = textSizeMedium,
+//   textColor = "",
+//   var fontFamily = fontRegular,
+//   var isCentered = false,
+//   var maxLine = 1,
+//   var latterSpacing = 0.2,
+//   var isLongText = false,
+//   var isJustify = false,
+// }) {
+//   return Text(
+//     text,
+//     textAlign: isCentered
+//         ? TextAlign.center
+//         : isJustify ? TextAlign.justify : TextAlign.start,
+//     maxLines: isLongText ? 20 : maxLine,
+//     overflow: TextOverflow.ellipsis,
+//     style: TextStyle(
+//         fontFamily: fontFamily,
+//         fontSize: double.parse(fontSize.toString()).toDouble(),
+//         height: 1.5,
+//         color: textColor.toString().isNotEmpty ? textColor : null,
+//         letterSpacing: latterSpacing),
+//   );
+// }
