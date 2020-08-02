@@ -40,7 +40,7 @@ class _DashBoardState extends State<DashBoard> {
           Icons.account_circle,
           color: Colors.black12,
         ),
-        title: Text("Theraphy")),
+        title: Text("theraphy")),
   ];
 
   @override

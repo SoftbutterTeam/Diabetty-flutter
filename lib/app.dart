@@ -32,8 +32,6 @@ class App extends StatelessWidget {
             ),
             initialRoute: '/dashboards/dailyplanner',
             routes: _routes,
-            //home: SplashScreen(),
-            //TODO: need to apply a SplashScreen that follows on with the correct route after finishing.
             builder: (context, child) {
               return ScrollConfiguration(
                 behavior: SBehavior(),
