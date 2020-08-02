@@ -24,43 +24,11 @@ class DrafttScreenState extends State<DrafttScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, titleText: 'Draft Screen'),
+      //appBar: header(context, titleText: 'Draft Screen'),
       body: SafeArea(
         child: Container(
           color: t3_app_background,
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: <Widget>[
-              Container(
-                width: 180,
-                alignment: Alignment.center,
-                child: ring(example_text),
-              ),
-              Container(
-                height: 60,
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      color: t3_textColorPrimary,
-                      onPressed: () {
-                        back(context);
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: Center(
-                        child: text(t3_lbl_bottom_navigation,
-                            fontFamily: fontBold,
-                            textColor: t3_textColorPrimary,
-                            fontSize: 22.0),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
+          child: Container(color: t3_app_background),
         ),
       ),
     );

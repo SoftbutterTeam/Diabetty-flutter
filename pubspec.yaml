@@ -49,6 +49,7 @@ dependencies:
   #firebase_analytics:
   #firebase_crashlytics:
   nb_utils: 3.0.3
+  flutter_snake_navigationbar:
 
 dev_dependencies:
   flutter_test:

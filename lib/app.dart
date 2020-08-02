@@ -21,7 +21,7 @@ class App extends StatelessWidget {
         create: (_) => AppState('en'),
         child: Consumer<AppState>(builder: (context, provider, builder) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Diabetty Demo',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               // fontFamily: 'Andina',
