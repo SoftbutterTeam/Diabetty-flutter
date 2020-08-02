@@ -1,7 +1,5 @@
 import 'package:diabetttty/components/Scroll_Behaviour/SBehavior.dart';
-import 'package:diabetttty/screens/draft_screen.dart';
-import 'package:diabetttty/screens/layouts/dashboard.dart';
-import 'package:diabetttty/screens/splash_screens/Splash_Screen.dart';
+import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/AppColors.dart';
 import 'package:diabetttty/theme/app_state.dart';
 import 'package:diabetttty/theme/colors.dart';

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:diabetttty/screens/layouts/dashboard.dart';
+import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/components/size_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
