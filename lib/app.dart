@@ -5,6 +5,7 @@ import 'package:diabetttty/theme/app_state.dart';
 import 'package:diabetttty/theme/colors.dart';
 
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
@@ -22,7 +23,7 @@ class App extends StatelessWidget {
             title: 'Diabetty Demo',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              // fontFamily: 'Andina',
+              fontFamily: 'OpenSans',
               primaryColor: colorCustom,
               accentColor: appWhite,
               scaffoldBackgroundColor: appWhite,

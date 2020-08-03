@@ -70,10 +70,24 @@ flutter:
    
 
   fonts:
-    - family: Andina
+    - family: OpenSans
       fonts:
-        - asset: fonts/andina.ttf
-
+        - asset: fonts/OpenSans-Regular.ttf
+        
+        - asset: fonts/OpenSans-Italic.ttf
+          style: italic
+        
+    - family: OpenSans-bold
+      fonts:
+      - asset: fonts/OpenSans-Bold.ttf
+    - family: OpenSans-semibold
+      fonts:
+      - asset: fonts/OpenSans-SemiBold.ttf
+    - family: OpenSans-light
+      fonts:
+      - asset: fonts/OpenSans-Light.ttf
+    
+    
     - family: Regular
       fonts:
         - asset: fonts/googlesansregular.ttf
@@ -89,3 +103,5 @@ flutter:
     - family: Bold
       fonts:
         - asset: fonts/googlesansebold.ttf
+
+    
