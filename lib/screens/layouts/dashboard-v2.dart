@@ -1,4 +1,7 @@
+import 'package:diabetttty/components/GridListing.dart';
+import 'package:diabetttty/model/Models.dart';
 import 'package:diabetttty/screens/index.dart';
+import 'package:diabetttty/utils/DataGenerator.dart';
 import 'package:flutter/material.dart';
 
 class DashBoard extends StatefulWidget {
@@ -13,6 +16,7 @@ class _DashBoardState extends State<DashBoard> {
 
   PageController pageController;
   int pageIndex = 0;
+  List<Category> mFavouriteList;
 
   var _pages = [
     // Timeline(),
@@ -47,6 +51,7 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     super.initState();
     pageController = PageController();
+    mFavouriteList = getBottomSheetItems();
   }
 
   onPageChanged(int pageIndex) {
@@ -58,6 +63,45 @@ class _DashBoardState extends State<DashBoard> {
   onTap(int pageIndex) {
     pageController.animateToPage(pageIndex,
         duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
+    if (pageIndex == 3) {
+      showSheet(context);
+    }
+  }
+
+  showSheet(BuildContext aContext) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: aContext,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+              initialChildSize: 0.38,
+              maxChildSize: 1,
+              minChildSize: 0.3,
+              builder: (BuildContext context, ScrollController scrollController) {
+                return Container(
+                  padding: EdgeInsets.only(top: 24),
+                  alignment: Alignment.topLeft,
+                  decoration: BoxDecoration(color: Color(0XFFF6F7FA), borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        color: Color(0XFFB4BBC2),
+                        width: 50,
+                        height: 3,
+                      ),
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: GridListing(mFavouriteList, true),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              });
+        });
   }
 
   Scaffold buildAuthScreen() {
