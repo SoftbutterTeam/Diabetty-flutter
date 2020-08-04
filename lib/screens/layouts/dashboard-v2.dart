@@ -61,9 +61,10 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   onTap(int pageIndex) {
-    pageController.animateToPage(pageIndex,
-        duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
-    if (pageIndex == 3) {
+    if (pageIndex != 3) {
+      pageController.animateToPage(pageIndex,
+          duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
+    } else {
       showSheet(context);
     }
   }
@@ -78,11 +79,16 @@ class _DashBoardState extends State<DashBoard> {
               initialChildSize: 0.38,
               maxChildSize: 1,
               minChildSize: 0.3,
-              builder: (BuildContext context, ScrollController scrollController) {
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
                 return Container(
                   padding: EdgeInsets.only(top: 24),
                   alignment: Alignment.topLeft,
-                  decoration: BoxDecoration(color: Color(0XFFF6F7FA), borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+                  decoration: BoxDecoration(
+                      color: Color(0XFFF6F7FA),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24))),
                   child: Column(
                     children: <Widget>[
                       Container(
