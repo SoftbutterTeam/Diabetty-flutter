@@ -67,27 +67,6 @@ class _DashBoardState extends State<DashBoard> {
     ),
   ];
 
-  var _items = [
-    BottomNavigationBarItem(
-      icon: Icon(
-        Icons.home,
-        color: Colors.black12,
-      ),
-      title: Text("activity"),
-    ),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.search, color: Colors.black12), title: Text("today")),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.shopping_cart, color: Colors.black12),
-        title: Text("sos")),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.account_circle,
-          color: Colors.black12,
-        ),
-        title: Text("theraphy")),
-  ];
-
   @override
   void initState() {
     super.initState();
