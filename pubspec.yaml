@@ -65,7 +65,8 @@ flutter:
 
   assets:
     - assets/
-    - images/
+    - images/gradient-icons/
+    - images/gradient-icons/svg/
     - images/icons/
    
 
