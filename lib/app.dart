@@ -1,4 +1,5 @@
 import 'package:diabetttty/components/Scroll_Behaviour/SBehavior.dart';
+import 'package:diabetttty/controllers/routes.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/AppColors.dart';
 import 'package:diabetttty/theme/app_state.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+
+import 'theme/constant.dart';
 
 class App extends StatelessWidget {
   // This widget is the root of your application.
@@ -22,9 +25,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     init();
-    var _routes = {
-      '/dashboards/dailyplanner': (context) => DashBoard(initIndex: 2)
-    };
     return ChangeNotifierProvider(
         create: (_) => AppState('en'),
         child: Consumer<AppState>(builder: (context, provider, builder) {
@@ -40,8 +40,8 @@ class App extends StatelessWidget {
               scaffoldBackgroundColor: t3_app_background,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            initialRoute: '/dashboards/dailyplanner',
-            routes: _routes,
+            onGenerateRoute: Router.generateRoute,
+            initialRoute: diary,
             builder: (context, child) {
               return ScrollConfiguration(
                 behavior: SBehavior(),
