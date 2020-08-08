@@ -1,5 +1,5 @@
 import 'package:diabetttty/screens/index.dart';
-import 'package:diabetttty/theme/constant.dart';
+import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 
 class Router {
@@ -11,6 +11,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => DashBoard(initIndex: 1));
       case therapy:
         return MaterialPageRoute(builder: (_) => DashBoard(initIndex: 2));
+      case login:
+        return MaterialPageRoute(builder: (_) => LoginForm());
+      case loginsplashscreen:
+         return MaterialPageRoute(builder: (_) => SplashScreen(route: login,));
       // case '/settings':
       //   return MaterialPageRoute(builder: (_) => Settings());
       default:

@@ -1,7 +1,7 @@
 import 'package:diabetttty/components/GridListing.dart';
 import 'package:diabetttty/model/Models.dart';
 import 'package:diabetttty/screens/index.dart';
-import 'package:diabetttty/theme/colors.dart';
+import 'package:diabetttty/theme/index.dart';
 import 'package:diabetttty/utils/DataGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -90,6 +90,7 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   showSheet(BuildContext aContext) {
+    changeStatusColor(Colors.transparent);
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: aContext,
@@ -142,7 +143,7 @@ class _DashBoardState extends State<DashBoard> {
         elevation: 10.0,
         type: BottomNavigationBarType.fixed,
         // backgroundColor: t3_app_background,
-        items: __items,
+        items: __items, 
       ),
     );
     //
@@ -150,6 +151,7 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
+    changeStatusColor(t3_app_background);
     return Container(
         color: t3_app_background,
         child: SafeArea(

@@ -22,6 +22,8 @@ class App extends StatelessWidget {
     //     systemNavigationBarColor: t3_app_background));
   }
 
+  bool isLoggedIn = false;
+
   @override
   Widget build(BuildContext context) {
     init();
@@ -41,7 +43,7 @@ class App extends StatelessWidget {
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
             onGenerateRoute: Router.generateRoute,
-            initialRoute: diary,
+            initialRoute: isLoggedIn ? diary : loginsplashscreen,
             builder: (context, child) {
               return ScrollConfiguration(
                 behavior: SBehavior(),

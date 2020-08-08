@@ -107,11 +107,11 @@ class _LoginFormState extends State<LoginForm>
                           SizedBox(
                             height: 30,
                           ),
-                          LoginEditTextStyle("Email", isPassword: false),
+                          LoginEditTextStyle("Email", null ,isPassword: false),
                           SizedBox(
                             height: 16,
                           ),
-                          LoginEditTextStyle("Password", isPassword: true),
+                          LoginEditTextStyle("Password", null ,isPassword: true),
                           SizedBox(
                             height: 16,
                           ),
@@ -157,7 +157,7 @@ class _LoginFormState extends State<LoginForm>
                           Align(
                             alignment: Alignment.center,
                             child: Container(
-                              width: 120,
+                              width: 200,
                               alignment: Alignment.center,
                               child: RoundedButton(
                                 onPressed: () {},
@@ -167,6 +167,17 @@ class _LoginFormState extends State<LoginForm>
                           ),
                           SizedBox(
                             height: 20,
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              width: 200,
+                              alignment: Alignment.center,
+                              child: RoundedButton(
+                                onPressed: () {},
+                                textContent: "Continue as Guest",
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -195,15 +206,15 @@ class _LoginFormState extends State<LoginForm>
                           SizedBox(
                             height: 30,
                           ),
-                          LoginEditTextStyle("Full Name", isPassword: false),
+                          LoginEditTextStyle("Full Name", null ,isPassword: false),
                           SizedBox(
                             height: 16,
                           ),
-                          LoginEditTextStyle("Email", isPassword: false),
+                          LoginEditTextStyle("Email", null ,isPassword: false),
                           SizedBox(
                             height: 16,
                           ),
-                          LoginEditTextStyle("Password", isPassword: true),
+                          LoginEditTextStyle("Password", null ,isPassword: true),
                           SizedBox(
                             height: 50,
                           ),
@@ -211,8 +222,7 @@ class _LoginFormState extends State<LoginForm>
                             width: 120,
                             alignment: Alignment.center,
                             child: RoundedButton(
-                              onPressed: () => Navigator.pushNamed(
-                                  context, '/initalquestionpage'),
+                              onPressed: () {},
                               textContent: "Join",
                             ),
                           ),
