@@ -14,7 +14,11 @@ class Router {
       case login:
         return MaterialPageRoute(builder: (_) => LoginForm());
       case loginsplashscreen:
-         return MaterialPageRoute(builder: (_) => SplashScreen(route: login,));
+        return MaterialPageRoute(builder: (_) => SplashScreen(route: login,));
+      case initialquestion:
+        return MaterialPageRoute(builder: (_) => InitialQuestionPage());
+      case diabeticuserquestion:
+        return MaterialPageRoute(builder: (_) => DiabeticUserQuestions());
       // case '/settings':
       //   return MaterialPageRoute(builder: (_) => Settings());
       default:
