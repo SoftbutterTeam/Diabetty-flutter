@@ -10,7 +10,6 @@ class InitialQuestionPage extends StatefulWidget {
 }
 
 class _InitialQuestionPageState extends State<InitialQuestionPage> {
-
   @override
   Widget build(BuildContext context) {
     changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
@@ -56,7 +55,8 @@ class _InitialQuestionPageState extends State<InitialQuestionPage> {
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
                   textContent: 'Diabetic User',
-                  onPressed: () => Navigator.pushNamed(context, diabeticuserquestion))
+                  onPressed: () =>
+                      Navigator.pushNamed(context, diabeticuserquestion))
               .cornerRadiusWithClipRRect(25)
               .paddingAll(16),
         ),
@@ -66,8 +66,8 @@ class _InitialQuestionPageState extends State<InitialQuestionPage> {
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
                   textContent: 'Buddy User',
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => BuddyUserQuestions())))
+                  onPressed: () =>
+                      Navigator.pushNamed(context, buddyuserquestion))
               .cornerRadiusWithClipRRect(25)
               .paddingAll(16),
         ),

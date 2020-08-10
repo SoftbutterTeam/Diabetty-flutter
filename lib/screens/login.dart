@@ -222,7 +222,7 @@ class _LoginFormState extends State<LoginForm>
                             width: 120,
                             alignment: Alignment.center,
                             child: RoundedButton(
-                              onPressed: () {},
+                              onPressed: () => Navigator.pushNamed(context, initialquestion),
                               textContent: "Join",
                             ),
                           ),

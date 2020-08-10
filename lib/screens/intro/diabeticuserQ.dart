@@ -1,5 +1,4 @@
 import 'package:diabetttty/components/index.dart';
-import 'package:diabetttty/screens/intro_questions/finalPage.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,9 +13,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
   var btn2 = false;
   var btn3 = false;
   var btn4 = false;
-  var btn5 = false;
-
-  var agree = false;
+  
 
   var step = 1;
 
@@ -36,7 +33,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               SizedBox(height: 20),
               Center(
                 child: Text(
-                  'Please enter your age?',
+                  ageQ,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: fontBold,
@@ -50,7 +47,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                     fontSize: textSizeMedium, fontFamily: fontRegular),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.fromLTRB(24, 18, 24, 18),
-                  hintText: "Please Enter Your Age",
+                  hintText: "Age...",
                   filled: true,
                   fillColor: Colors.white,
                   enabledBorder: OutlineInputBorder(
@@ -78,7 +75,6 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               textContent: 'Submit',
               onPressed: () {
                 setState(() {
-                  btn5 = false;
                   btn4 = false;
                   btn3 = false;
                   btn2 = true;
@@ -101,7 +97,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
             children: <Widget>[
               SizedBox(height: 20),
               Text(
-                'Are you Type 1 or Type 2 diabetic?',
+                typeQ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: fontBold,
@@ -116,11 +112,10 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: 'Type 1',
+            textContent: type1,
             onPressed: () => {
               setState(
                 () {
-                  btn5 = false;
                   btn4 = false;
                   btn3 = true;
                   btn2 = true;
@@ -135,11 +130,10 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: 'Type 2',
+            textContent: type2,
             onPressed: () => {
               setState(
                 () {
-                  btn5 = false;
                   btn4 = false;
                   btn3 = true;
                   btn2 = true;
@@ -163,7 +157,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'How often do you have to take blood sugar checks on a daily basis?',
+                bloodsugarQ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: fontBold,
@@ -178,11 +172,10 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: 'Less than 5 times',
+            textContent: lessThan5,
             onPressed: () => {
               setState(
                 () {
-                  btn5 = false;
                   btn4 = true;
                   btn3 = true;
                   btn2 = true;
@@ -197,11 +190,10 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: 'Between 5-10 times',
+            textContent: between,
             onPressed: () => {
               setState(
                 () {
-                  btn5 = false;
                   btn4 = true;
                   btn3 = true;
                   btn2 = true;
@@ -216,11 +208,10 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: 'Between 11-15 times',
+            textContent: more,
             onPressed: () => {
               setState(
                 () {
-                  btn5 = false;
                   btn4 = true;
                   btn3 = true;
                   btn2 = true;
@@ -244,7 +235,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'What method of insulin regulation do you currently use?',
+                insulinregulationQ,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: fontBold,
@@ -259,18 +250,8 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: 'Finger-Prick Blood Testing Kit',
-            onPressed: () => {
-              setState(
-                () {
-                  btn5 = true;
-                  btn4 = true;
-                  btn3 = true;
-                  btn2 = true;
-                  step = 5;
-                },
-              )
-            },
+            textContent: testingkit,
+            onPressed: () => Navigator.pushNamed(context, diary),
           ).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
         SizedBox(height: 20),
@@ -278,113 +259,24 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: 'Diabetic Pump',
-            onPressed: () => {
-              setState(
-                () {
-                  btn5 = true;
-                  btn4 = true;
-                  btn3 = true;
-                  btn2 = true;
-                  step = 5;
-                },
-              )
-            },
+            textContent: pump,
+            onPressed: () => Navigator.pushNamed(context, diary),
           ).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
         SizedBox(height: 20),
-        LoginEditTextStyle("Another Method", null , isPassword: false),
+        LoginEditTextStyle("Another Method...", null, isPassword: false),
         SizedBox(height: 10),
         Container(
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
             textContent: 'Submit',
-            onPressed: () => {
-              setState(
-                () {
-                  btn5 = true;
-                  btn4 = true;
-                  btn3 = true;
-                  btn2 = true;
-                  step = 5;
-                },
-              )
-            },
+            onPressed: () => Navigator.pushNamed(context, diary),
           ).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
       ],
     );
 
-    final generalhealth = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(left: 40, right: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 20),
-              Text(
-                'How would you describe your general health condition?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: fontBold,
-                    color: t3_textColorPrimary,
-                    fontSize: 20.0),
-              ).paddingAll(16),
-            ],
-          ),
-        ),
-        SizedBox(height: 20),
-        Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(left: 40, right: 40),
-          child: RoundedButton(
-                  textContent: 'Healthy',
-                  onPressed: () =>
-                      Navigator.push(context, ScaleRoute(page: FinalPage())))
-              .cornerRadiusWithClipRRect(25)
-              .paddingAll(16),
-        ),
-        SizedBox(height: 20),
-        Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(left: 40, right: 40),
-          child: RoundedButton(
-                  textContent: 'Some underlying Health conditions',
-                  onPressed: () =>
-                      Navigator.push(context, ScaleRoute(page: FinalPage())))
-              .cornerRadiusWithClipRRect(25)
-              .paddingAll(16),
-        ),
-        SizedBox(height: 20),
-        Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(left: 40, right: 40),
-          child: RoundedButton(
-                  textContent: 'Unwell',
-                  onPressed: () =>
-                      Navigator.push(context, ScaleRoute(page: FinalPage())))
-              .cornerRadiusWithClipRRect(25)
-              .paddingAll(16),
-        ),
-        SizedBox(height: 20),
-        LoginEditTextStyle("Another Method", null , isPassword: false),
-        Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(left: 40, right: 40),
-          child: RoundedButton(
-                  textContent: 'Submit',
-                  onPressed: () =>
-                      Navigator.push(context, ScaleRoute(page: FinalPage())))
-              .cornerRadiusWithClipRRect(25)
-              .paddingAll(16),
-        ),
-      ],
-    );
 
     final stepView = Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -399,14 +291,13 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               btn2 = false;
               btn3 = false;
               btn4 = false;
-              btn5 = false;
               step = 1;
             });
           },
         ).cornerRadiusWithClipRRect(20).paddingOnly(top: 32, left: 8),
         Container(
           height: 1,
-          width: 20,
+          width: 48,
           color: Colors.black12,
         ).paddingOnly(top: 32, left: 8),
         MaterialButton(
@@ -421,14 +312,13 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               btn3 = false;
               btn2 = true;
               btn4 = false;
-              btn5 = false;
               step = 2;
             });
           },
         ).cornerRadiusWithClipRRect(20).paddingOnly(top: 32, left: 8),
         Container(
           height: 1,
-          width: 20,
+          width: 48,
           color: Colors.black12,
         ).paddingOnly(top: 32, left: 8),
         MaterialButton(
@@ -443,14 +333,13 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               btn2 = true;
               btn3 = true;
               btn4 = false;
-              btn5 = false;
               step = 3;
             });
           },
         ).cornerRadiusWithClipRRect(20).paddingOnly(top: 32, left: 8),
         Container(
           height: 1,
-          width: 20,
+          width: 48,
           color: Colors.black12,
         ).paddingOnly(top: 32, left: 8),
         MaterialButton(
@@ -465,29 +354,6 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               btn2 = true;
               btn3 = true;
               btn4 = true;
-              btn5 = false;
-              step = 3;
-            });
-          },
-        ).cornerRadiusWithClipRRect(20).paddingOnly(top: 32, left: 8),
-        Container(
-          height: 1,
-          width: 20,
-          color: Colors.black12,
-        ).paddingOnly(top: 32, left: 8),
-        MaterialButton(
-          child: Text("5").withStyle(
-              fontSize: 18,
-              color: btn5 ? whiteColor : Theme.of(context).primaryColor),
-          color: btn5 ? Theme.of(context).primaryColor : whiteColor,
-          minWidth: 50,
-          height: 50,
-          onPressed: () {
-            setState(() {
-              btn2 = true;
-              btn3 = true;
-              btn4 = true;
-              btn5 = true;
               step = 3;
             });
           },
@@ -504,8 +370,6 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
         return bloodsugar;
       } else if (step == 4) {
         return insulinregulation;
-      } else {
-        return generalhealth;
       }
     }
 
