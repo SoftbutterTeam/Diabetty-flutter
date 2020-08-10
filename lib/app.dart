@@ -15,11 +15,10 @@ import 'theme/constant.dart';
 class App extends StatelessWidget {
   // This widget is the root of your application.
   void init() {
-    // WidgetsBinding.instance.renderView.automaticSystemUiAdjustment =
-    //     false; //<--
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //     //statusBarColor: Colors.
-    //     systemNavigationBarColor: t3_app_background));
+    WidgetsBinding.instance.renderView.automaticSystemUiAdjustment = false;
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        //statusBarColor: Colors.
+        systemNavigationBarColor: t3_app_background));
   }
 
   bool isLoggedIn = false;
