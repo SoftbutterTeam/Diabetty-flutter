@@ -153,7 +153,7 @@ class _DashBoardState extends State<DashBoard> {
     return Container(
         color: t3_app_background,
         child: SafeArea(
-          top: true,
+          top: false,
           bottom: false,
           child: buildDashboard(),
         ));

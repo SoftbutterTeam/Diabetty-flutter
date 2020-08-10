@@ -50,6 +50,15 @@ dependencies:
   #firebase_crashlytics:
   nb_utils: 3.0.3
   flutter_snake_navigationbar:
+  foundation.dart:
+  path_provider:
+  io:
+  material.dart:
+  
+
+
+
+
 
 dev_dependencies:
   flutter_test:
@@ -80,13 +89,14 @@ flutter:
     - family: OpenSans-bold
       fonts:
       - asset: fonts/OpenSans-Bold.ttf
+    
     - family: OpenSans-semibold
       fonts:
       - asset: fonts/OpenSans-SemiBold.ttf
+    
     - family: OpenSans-light
       fonts:
       - asset: fonts/OpenSans-Light.ttf
-    
     
     - family: Regular
       fonts:
