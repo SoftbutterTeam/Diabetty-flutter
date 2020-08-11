@@ -13,7 +13,6 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
   var btn2 = false;
   var btn3 = false;
   var btn4 = false;
-  
 
   var step = 1;
 
@@ -264,7 +263,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           ).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
         SizedBox(height: 20),
-        LoginEditTextStyle("Another Method...", null, isPassword: false),
+        LoginEditTextStyle(hintText: "Another Method..."),
         SizedBox(height: 10),
         Container(
           alignment: Alignment.center,
@@ -276,7 +275,6 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
         ),
       ],
     );
-
 
     final stepView = Row(
       mainAxisAlignment: MainAxisAlignment.start,

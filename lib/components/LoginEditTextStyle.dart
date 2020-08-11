@@ -1,13 +1,15 @@
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 
-Container LoginEditTextStyle(var hintText, var controller, {isPassword = false}) {
+Container LoginEditTextStyle(
+    {var hintText, var controller, var validator, bool isPassword = false}) {
   return Container(
     alignment: Alignment.center,
     margin: EdgeInsets.only(left: 40, right: 40),
     decoration:
         boxDecoration(radius: 40, showShadow: true, bgColor: Colors.white),
     child: TextFormField(
+      validator: validator,
       controller: controller,
       style: TextStyle(fontSize: textSizeMedium, fontFamily: fontRegular),
       obscureText: isPassword,

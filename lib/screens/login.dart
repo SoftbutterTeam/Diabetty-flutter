@@ -30,6 +30,8 @@ class _LoginFormState extends State<LoginForm>
     super.dispose();
   }
 
+  final _signupFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     changeStatusColor(Colors.white);
@@ -107,11 +109,11 @@ class _LoginFormState extends State<LoginForm>
                           SizedBox(
                             height: 30,
                           ),
-                          LoginEditTextStyle("Email", null ,isPassword: false),
+                          LoginEditTextStyle(hintText: "Email"),
                           SizedBox(
                             height: 16,
                           ),
-                          LoginEditTextStyle("Password", null ,isPassword: true),
+                          LoginEditTextStyle(hintText: "Password"),
                           SizedBox(
                             height: 16,
                           ),
@@ -188,59 +190,89 @@ class _LoginFormState extends State<LoginForm>
                   child: Center(
                     child: Container(
                       margin: EdgeInsets.only(left: 40, right: 40),
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.white, width: 4)),
-                            child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: width / 8.5),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          LoginEditTextStyle("Full Name", null ,isPassword: false),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          LoginEditTextStyle("Email", null ,isPassword: false),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          LoginEditTextStyle("Password", null ,isPassword: true),
-                          SizedBox(
-                            height: 50,
-                          ),
-                          Container(
-                            width: 120,
-                            alignment: Alignment.center,
-                            child: RoundedButton(
-                              onPressed: () => Navigator.pushNamed(context, initialquestion),
-                              textContent: "Join",
+                      child: Form(
+                        key: _signupFormKey,
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 20,
                             ),
-                          ),
-                          SizedBox(height: 20),
-                          text("By Pressing 'Join' you agree to our"),
-                          SizedBox(height: 4),
-                          GestureDetector(
-                            child: Text(
-                              "Terms & Conditions",
-                              style: TextStyle(
-                                fontSize: textSizeLargeMedium,
-                                decoration: TextDecoration.underline,
-                                color: Theme.of(context).primaryColor,
+                            Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Colors.white, width: 4)),
+                              child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: width / 8.5),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            LoginEditTextStyle(
+                                hintText: "Full name",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'please give full name';
+                                  }
+                                  return null;
+                                }),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            LoginEditTextStyle(
+                                hintText: "Email",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'please give email';
+                                  }
+                                  return null;
+                                }),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            LoginEditTextStyle(
+                                hintText: "Password",
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'please give password';
+                                  }
+                                  return null;
+                                }),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Container(
+                              width: 120,
+                              alignment: Alignment.center,
+                              child: RoundedButton(
+                                onPressed: () {
+                                  if (_signupFormKey.currentState.validate()) {
+                                    //TODO Save User Account information and Profile info
+                                    Navigator.pushNamed(
+                                        context, initialquestion);
+                                  }
+                                },
+                                textContent: "Join",
                               ),
                             ),
-                            onTap: () {},
-                          ),
-                        ],
+                            SizedBox(height: 20),
+                            text("By Pressing 'Join' you agree to our"),
+                            SizedBox(height: 4),
+                            GestureDetector(
+                              child: Text(
+                                "Terms & Conditions",
+                                style: TextStyle(
+                                  fontSize: textSizeLargeMedium,
+                                  decoration: TextDecoration.underline,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
