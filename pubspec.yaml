@@ -50,10 +50,7 @@ dependencies:
   #firebase_crashlytics:
   nb_utils: 3.0.3
   flutter_snake_navigationbar:
-  foundation.dart:
-  path_provider:
-  io:
-  material.dart:
+  
   
 
 

@@ -226,14 +226,14 @@ class _LoginFormState extends State<LoginForm>
                               textContent: "Join",
                             ),
                           ),
-                          SizedBox(height: 20),
-                          text("By Pressing 'Join' you agree to our"),
+                          SizedBox(height: 220),
+                          Text("By Pressing 'Join' you agree to our", style: TextStyle(color: t3_textColorPrimary, fontSize: textSizeMedium),),
                           SizedBox(height: 4),
                           GestureDetector(
                             child: Text(
                               "Terms & Conditions",
                               style: TextStyle(
-                                fontSize: textSizeLargeMedium,
+                                fontSize: textSizeMedium,
                                 decoration: TextDecoration.underline,
                                 color: Theme.of(context).primaryColor,
                               ),
