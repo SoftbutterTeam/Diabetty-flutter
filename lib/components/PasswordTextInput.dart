@@ -2,15 +2,14 @@ import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
-Container LoginEditTextStyle(
-    {var hintText, var controller, TextFieldValidator validator, bool isPassword = false, var onChanged, isEmail = false}) {
+Container PasswordTextInput(
+    {var hintText, var controller, MultiValidator validator, bool isPassword = true, var onChanged}) {
   return Container(
     alignment: Alignment.center,
     margin: EdgeInsets.only(left: 40, right: 40),
     decoration:
         boxDecoration(radius: 40, showShadow: true, bgColor: Colors.white),
     child: TextFormField(
-      keyboardType: isEmail,
       onChanged: onChanged,
       validator: validator,
       controller: controller,
