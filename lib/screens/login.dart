@@ -1,9 +1,11 @@
 import 'package:diabetttty/components/index.dart';
+import 'package:diabetttty/models/UserAccount.dart';
 
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -36,6 +38,10 @@ class _LoginFormState extends State<LoginForm>
   Widget build(BuildContext context) {
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
+    if (Provider.of<UserAccount>(context).isLoggedIn) {
+      Navigator.pushNamed(context, diary);
+    }
+
     return Scaffold(
       body: SafeArea(
         child: DefaultTabController(

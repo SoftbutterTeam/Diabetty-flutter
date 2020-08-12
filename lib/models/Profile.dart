@@ -1,4 +1,6 @@
-class Profile {
+import 'package:flutter/cupertino.dart';
+
+class Profile with ChangeNotifier {
   String _id;
   String userOwner;
   String userType;

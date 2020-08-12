@@ -10,46 +10,68 @@ import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
+import 'models/AppData.dart';
 import 'theme/constant.dart';
 
 class App extends StatelessWidget {
   // This widget is the root of your application.
-  void init() {
+  Future _init() async {
     WidgetsBinding.instance.renderView.automaticSystemUiAdjustment = false;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         //statusBarColor: Colors.
-        systemNavigationBarColor: t3_app_background));
+        systemNavigationBarColor: Colors.white));
+    await appState.restoreData();
+    // Should probs be an init function instead
+    //Try removing this line once we get it working since its in the constructor
   }
 
   bool isLoggedIn = false;
+  AppState appState = new AppState();
 
   @override
   Widget build(BuildContext context) {
-    init();
-    return ChangeNotifierProvider(
-        create: (_) => AppState('en'),
-        child: Consumer<AppState>(builder: (context, provider, builder) {
-          return MaterialApp(
-            title: 'Diabuddy',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              fontFamily: 'OpenSans',
-              primaryColor: colorCustom,
-              accentColor: appWhite,
-              scaffoldBackgroundColor: t3_app_background,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            onGenerateRoute: Router.generateRoute,
-            initialRoute: isLoggedIn ? diary : loginsplashscreen,
-            builder: (context, child) {
-              return ScrollConfiguration(
-                behavior: SBehavior(),
-                child: child,
-              );
-            },
-          );
-        }));
+    return FutureBuilder(
+        future: _init(),
+        builder: (context, _) {
+          return (
+              //  inject providers
+              MultiProvider(
+                  providers: [
+                ChangeNotifierProvider(
+                  create: (_) => AppLangState('en'),
+                ),
+                ChangeNotifierProvider(
+                    create: (context) => appState.userAccount),
+                ChangeNotifierProvider(
+                    create: (context) => appState.userProfile),
+              ],
+                  child:
+                      Consumer<AppLangState>(builder: (context, provider, _) {
+                    print(
+                        "_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n");
+                    print(appState.isLoggedIn);
+                    return MaterialApp(
+                      title: 'Diabuddy',
+                      debugShowCheckedModeBanner: false,
+                      theme: ThemeData(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        fontFamily: 'OpenSans',
+                        primaryColor: colorCustom,
+                        accentColor: appWhite,
+                        scaffoldBackgroundColor: t3_app_background,
+                        visualDensity: VisualDensity.adaptivePlatformDensity,
+                      ),
+                      onGenerateRoute: Router.generateRoute,
+                      initialRoute: isLoggedIn ? diary : loginsplashscreen,
+                      builder: (context, child) {
+                        return ScrollConfiguration(
+                          behavior: SBehavior(),
+                          child: child,
+                        );
+                      },
+                    );
+                  })));
+        });
   }
 }

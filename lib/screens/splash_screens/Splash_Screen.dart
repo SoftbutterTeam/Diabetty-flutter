@@ -16,11 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-        Duration(seconds: 5),
-        () =>
-            Navigator.pushNamed(context, widget.route));
+        Duration(seconds: 5), () => Navigator.pushNamed(context, widget.route));
   }
-
 
   @override
   Widget build(BuildContext context) {

@@ -1,25 +1,39 @@
+import 'dart:ui';
+
 import 'package:diabetttty/models/Profile.dart';
 import 'package:diabetttty/models/UserAccount.dart';
+import 'package:diabetttty/theme/app_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-class Appdata {
-  UserAccount userAccount;
-  Profile userProfile;
+class AppState with ChangeNotifier {
+  UserAccount _userAccount;
+  Profile _userProfile;
 
-  Appdata() {
-    if (UserAccount == null) {
-      this.userAccount = new UserAccount.fromAll(
-          null, null, null, null, null, DateTime.now().toString(), null);
+  bool get isLoggedIn => userAccount.isLoggedIn;
+  UserAccount get userAccount => _userAccount;
+  Profile get userProfile => _userProfile;
+
+  AppState() {
+    print("HERERERER");
+    if (userAccount == null) {
+      print("HERERERER");
+      this._userAccount = new UserAccount();
+    } else {
+      print("Saved");
+      print(userAccount.lastLogin);
     }
   }
 
-  void restoreAccountData() async {
-    print(await this.userAccount.restoreData());
+  Future restoreData() async {
+    print(await this._userAccount.restoreData());
+    notifyListeners();
   }
 }
 
 /**
+ * TODO soon merge with other App_State code which considers change in language
  * underscore before a variable name means its an internal function or var.abstract
  * not to be used outside the function
  */

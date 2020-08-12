@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
-class UserAccount {
+class UserAccount with ChangeNotifier {
   String _id;
-  String status;
+  String type;
+  String status = "yoyo";
   String name;
   String email;
   bool emailVerified;
@@ -14,17 +16,26 @@ class UserAccount {
   String phoneNumber;
 
   UserAccount();
+  bool get isLoggedIn => status.length > 0;
+  String get id => _id;
+  set id(i) => _id = i;
 
   UserAccount.noEmail(this.name, this.phoneNumber) {
     this.status = "active";
     this.lastLogin = DateTime.now().toString();
   }
-  UserAccount.newUser(this.name, this.email, this.phoneNumber) {
+  UserAccount.newUser({this.name, this.email, this.phoneNumber}) {
     this.status = "active";
     this.lastLogin = DateTime.now().toString();
   }
-  UserAccount.fromAll(this._id, this.status, this.name, this.email,
-      this.emailVerified, this.lastLogin, this.phoneNumber);
+  UserAccount.fromAll(
+      {id,
+      this.status,
+      this.name,
+      this.email,
+      this.emailVerified,
+      this.lastLogin,
+      this.phoneNumber});
 
   UserAccount.fromUserAccount(UserAccount another) {
     this._id = another._id;
@@ -66,6 +77,7 @@ class UserAccount {
 
   Future<File> writeUserAccount() async {
     final file = await _localFile;
+
     String encodedUserAccount = jsonEncode(this);
 
     return file.writeAsString(encodedUserAccount);
@@ -80,19 +92,33 @@ class UserAccount {
 
       return contents;
     } catch (e) {
+      print(e);
       return e;
     }
   }
 
   Future<bool> saveData() async {
+    print('attempting to save info');
     await writeUserAccount();
     return true;
   }
 
   Future<bool> restoreData() async {
-    String encodedUser = await readUserAccount();
-    Map<String, dynamic> decodedUser = jsonDecode(encodedUser);
-    return loadFromJson(decodedUser);
+    try {
+      print(1);
+      String encodedUser = await readUserAccount();
+      print(2);
+      Map<String, dynamic> decodedUser = jsonDecode(encodedUser);
+      print(3);
+      print(loadFromJson(decodedUser));
+      print(lastLogin);
+      return loadFromJson(decodedUser);
+    } catch (e) {
+      print(e);
+      print("failed to restore data.");
+      saveData();
+      return null;
+    }
   }
 
   bool loadFromJson(Map<String, dynamic> json) {
@@ -109,4 +135,6 @@ class UserAccount {
       return false;
     }
   }
+
+  void initGuestUser() {}
 }

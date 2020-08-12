@@ -138,12 +138,13 @@ class _DashBoardState extends State<DashBoard> {
           controller: pageController,
           onPageChanged: onPageChanged),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: pageIndex,
         onTap: onTap,
         elevation: 10.0,
         type: BottomNavigationBarType.fixed,
         // backgroundColor: t3_app_background,
-        items: __items, 
+        items: __items,
       ),
     );
     //
