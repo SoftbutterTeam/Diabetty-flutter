@@ -263,7 +263,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           ).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
         SizedBox(height: 20),
-        LoginEditTextStyle(hintText: "Another Method..."),
+        TextInputs(hintText: "Another Method..."),
         SizedBox(height: 10),
         Container(
           alignment: Alignment.center,

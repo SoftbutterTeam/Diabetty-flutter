@@ -3,6 +3,7 @@ import 'package:diabetttty/models/UserAccount.dart';
 
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
+import 'package:validators/validators.dart' as validator;
 
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
@@ -115,11 +116,23 @@ class _LoginFormState extends State<LoginForm>
                           SizedBox(
                             height: 30,
                           ),
-                          LoginEditTextStyle(hintText: "Email"),
+                          TextInputs(
+                            isEmail: true,
+                            hintText: "Email",
+                            validator: (String value) {
+                              if (!validator.isEmail(value)) {
+                                return "Please enter a valid Email";
+                              }
+                              return null;
+                            },
+                          ),
                           SizedBox(
                             height: 16,
                           ),
-                          LoginEditTextStyle(hintText: "Password"),
+                          TextInputs(
+                            hintText: "Password",
+                            isPassword: true,
+                          ),
                           SizedBox(
                             height: 16,
                           ),
@@ -216,36 +229,51 @@ class _LoginFormState extends State<LoginForm>
                             SizedBox(
                               height: 30,
                             ),
-                            LoginEditTextStyle(
-                                hintText: "Full name",
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'please give full name';
-                                  }
-                                  return null;
-                                }),
+                            TextInputs(
+                              hintText: "Full name",
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return "Enter your full name";
+                                }
+                              },
+                            ),
                             SizedBox(
                               height: 16,
                             ),
-                            LoginEditTextStyle(
-                                hintText: "Email",
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'please give email';
-                                  }
-                                  return null;
-                                }),
+                            TextInputs(
+                              isEmail: true,
+                              hintText: "Email",
+                              validator: (String value) {
+                                if (!validator.isEmail(value)) {
+                                  return "Please enter a valid Email";
+                                }
+                                return null;
+                              },
+                            ),
                             SizedBox(
                               height: 16,
                             ),
-                            LoginEditTextStyle(
-                                hintText: "Password",
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'please give password';
-                                  }
-                                  return null;
-                                }),
+                            TextInputs(
+                              hintText: "Password",
+                              validator: (String value) {
+                                if (value.length < 6) {
+                                  return "At least 6 characters needed";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            TextInputs(
+                              hintText: "Re-Enter Password",
+                              validator: (String value) {
+                                if (value.length < 6) {
+                                  return "At least 6 characters needed";
+                                }
+                                return null;
+                              },
+                            ),
                             SizedBox(
                               height: 50,
                             ),

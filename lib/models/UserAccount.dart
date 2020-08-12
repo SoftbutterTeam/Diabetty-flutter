@@ -129,7 +129,7 @@ class UserAccount with ChangeNotifier {
       this.email = json['email'];
       this.emailVerified = json['emailVerified'];
       this.lastLogin = json['lastLogin'];
-      this.phoneNumber = json['phoneBumber'];
+      this.phoneNumber = json['phoneNumber'];
       return true;
     } catch (e) {
       return false;
