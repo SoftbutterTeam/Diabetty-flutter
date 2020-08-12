@@ -50,7 +50,7 @@ dependencies:
   #firebase_crashlytics:
   nb_utils: 3.0.3
   flutter_snake_navigationbar:
-  form_field_validator: ^1.0.1
+  validators: ^2.0.1
   
 
 

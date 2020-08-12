@@ -2,7 +2,7 @@ import 'package:diabetttty/components/index.dart';
 
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
+import 'package:validators/validators.dart' as validator;
 
 import 'package:nb_utils/nb_utils.dart';
 
@@ -32,18 +32,6 @@ class _LoginFormState extends State<LoginForm>
   }
 
   final _signupFormKey = GlobalKey<FormState>();
-
-  final requiredValidator =
-      RequiredValidator(errorText: 'This field is required');
-
-  final passwordValidator = MultiValidator([
-    RequiredValidator(errorText: 'Password is required'),
-    MinLengthValidator(8, errorText: 'Must be at least 8 digits'),
-    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-        errorText: 'Must have at least one special character')
-  ]);
-
-  String password;
 
   @override
   Widget build(BuildContext context) {
@@ -122,17 +110,23 @@ class _LoginFormState extends State<LoginForm>
                           SizedBox(
                             height: 30,
                           ),
-                          LoginEditTextStyle(
+                          TextInputs(
                             isEmail: true,
                             hintText: "Email",
-                            validator: EmailValidator(
-                                errorText: 'Enter a valid email address'),
+                            validator: (String value) {
+                              if (!validator.isEmail(value)) {
+                                return "Please enter a valid Email";
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(
                             height: 16,
                           ),
-                          LoginEditTextStyle(
-                              hintText: "Password", isPassword: true),
+                          TextInputs(
+                            hintText: "Password",
+                            isPassword: true,
+                          ),
                           SizedBox(
                             height: 16,
                           ),
@@ -229,33 +223,50 @@ class _LoginFormState extends State<LoginForm>
                             SizedBox(
                               height: 30,
                             ),
-                            LoginEditTextStyle(
-                                hintText: "Full name",
-                                validator: requiredValidator),
+                            TextInputs(
+                              hintText: "Full name",
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return "Enter your full name";
+                                }
+                              },
+                            ),
                             SizedBox(
                               height: 16,
                             ),
-                            LoginEditTextStyle(
-                                isEmail: true,
-                                hintText: "Email",
-                                validator: EmailValidator(
-                                    errorText: 'Enter a valid email address')),
+                            TextInputs(
+                              isEmail: true,
+                              hintText: "Email",
+                              validator: (String value) {
+                                if (!validator.isEmail(value)) {
+                                  return "Please enter a valid Email";
+                                }
+                                return null;
+                              },
+                            ),
                             SizedBox(
                               height: 16,
                             ),
-                            PasswordTextInput(
+                            TextInputs(
                               hintText: "Password",
-                              onChanged: (val) => password = val,
-                              validator: passwordValidator,
+                              validator: (String value) {
+                                if (value.length < 6) {
+                                  return "At least 6 characters needed";
+                                }
+                                return null;
+                              },
                             ),
                             SizedBox(
                               height: 16,
                             ),
-                            PasswordMatchField(
+                            TextInputs(
                               hintText: "Re-Enter Password",
-                              validator: (val) => MatchValidator(
-                                      errorText: 'Passwords do not match')
-                                  .validateMatch(val, password),
+                              validator: (String value) {
+                                if (value.length < 6) {
+                                  return "At least 6 characters needed";
+                                }
+                                return null;
+                              },
                             ),
                             SizedBox(
                               height: 50,
