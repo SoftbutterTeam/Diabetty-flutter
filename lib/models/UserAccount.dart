@@ -8,8 +8,8 @@ import 'package:path_provider/path_provider.dart';
 class UserAccount with ChangeNotifier {
   String _id;
   String type;
-  String status = "yoyo";
-  bool loggedIn = false;
+  String status = "";
+  bool _loggedIn = false;
   String name;
   String email;
   bool emailVerified;
@@ -17,7 +17,8 @@ class UserAccount with ChangeNotifier {
   String phoneNumber;
 
   UserAccount();
-  bool get isLoggedIn => loggedIn;
+  bool get isLoggedIn => _loggedIn;
+  set loggedIn(i) => _loggedIn = i;
   String get id => _id;
   set id(i) => _id = i;
 
@@ -34,7 +35,7 @@ class UserAccount with ChangeNotifier {
       this.type,
       this.status,
       this.name,
-      this.loggedIn = false,
+      loggedIn = false,
       this.email,
       this.emailVerified,
       this.lastLogin,
@@ -46,7 +47,7 @@ class UserAccount with ChangeNotifier {
     this.status = another.status;
     this.name = another.name;
     this.email = another.email;
-    this.loggedIn = another.loggedIn;
+    loggedIn = another._loggedIn;
     this.lastLogin = another.lastLogin;
     this.emailVerified = another.emailVerified;
   }
@@ -57,7 +58,7 @@ class UserAccount with ChangeNotifier {
         status = json['status'],
         name = json['name'],
         email = json['email'],
-        loggedIn = json['loggedIn'],
+        _loggedIn = json['loggedIn'],
         emailVerified = json['emailVerified'],
         lastLogin = json['lastLogin'],
         phoneNumber = json['phoneBumber'];
@@ -69,7 +70,7 @@ class UserAccount with ChangeNotifier {
         'status': this.status,
         'email': this.email,
         'emailVerified': this.emailVerified,
-        'loggedIn': this.loggedIn,
+        'loggedIn': isLoggedIn,
         'lastLogin': this.lastLogin,
         'phoneNumner': this.phoneNumber
       };
@@ -105,6 +106,7 @@ class UserAccount with ChangeNotifier {
       return e;
     }
   }
+  //TODO add notifyListeners() to neccessary methods
 
   Future<bool> saveData() async {
     print('attempting to save info');
@@ -113,19 +115,19 @@ class UserAccount with ChangeNotifier {
   }
 
   Future<bool> restoreData() async {
+    await saveData();
     try {
       print(1);
       String encodedUser = await readUserAccount();
       print(2);
       Map<String, dynamic> decodedUser = jsonDecode(encodedUser);
-      print(3);
+      print(decodedUser);
       print(loadFromJson(decodedUser));
       print(lastLogin);
       return loadFromJson(decodedUser);
     } catch (e) {
       print(e);
       print("failed to restore data.");
-      saveData();
       return null;
     }
   }
@@ -138,7 +140,7 @@ class UserAccount with ChangeNotifier {
       this.name = json['name'];
       this.email = json['email'];
       this.emailVerified = json['emailVerified'];
-      this.loggedIn = json['loggedIn'];
+      loggedIn = json['loggedIn'];
       this.lastLogin = json['lastLogin'];
       this.phoneNumber = json['phoneBumber'];
       return true;
@@ -147,12 +149,17 @@ class UserAccount with ChangeNotifier {
     }
   }
 
+  /** TODO if the user saved is already a guest user. They should instead call loginAsGuest user 
+   * to avoid refreshing the user.
+  */
+
   void initGuestUser({String name = "Friend"}) {
     emptyAttributes(
       name: name,
       type: "GA",
       loggedIn: true,
     );
+    saveData();
   }
 
   void registerUserA(
@@ -161,7 +168,7 @@ class UserAccount with ChangeNotifier {
       String name,
       String email,
       bool emailVerfied,
-      bool loggedIn,
+      bool loggedIn = true,
       String lastLogin,
       String phoneNumber}) {
     String type = "A";
@@ -176,6 +183,7 @@ class UserAccount with ChangeNotifier {
         loggedIn: loggedIn,
         lastLogin: lastLogin,
         phoneNumber: phoneNumber);
+    saveData();
   }
 
   void editAttributes(
@@ -207,8 +215,7 @@ class UserAccount with ChangeNotifier {
       String status,
       String name,
       String email,
-      bool,
-      loggedIn,
+      bool loggedIn,
       bool emailVerfied,
       String lastLogin,
       String phoneNumber}) {
@@ -217,7 +224,7 @@ class UserAccount with ChangeNotifier {
     this.status = status;
     this.name = name;
     this.email = email;
-    this.loggedIn = loggedIn;
+    this._loggedIn = loggedIn;
     this.emailVerified = emailVerfied;
     this.lastLogin = lastLogin;
     this.phoneNumber = phoneNumber;

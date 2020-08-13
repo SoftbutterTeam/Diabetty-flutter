@@ -16,17 +16,15 @@ class AppState with ChangeNotifier {
   Profile get userProfile => _userProfile;
 
   AppState() {
-    print("HERERERER");
     if (userAccount == null) {
-      print("HERERERER");
       this._userAccount = new UserAccount();
     } else {
-      print("Saved");
-      print(userAccount.lastLogin);
+      print("last login: " + userAccount.lastLogin);
     }
   }
 
   Future restoreData() async {
+    print("RESTOREIIING DATAAAAAAAAAA");
     print(await this._userAccount.restoreData());
     notifyListeners();
   }

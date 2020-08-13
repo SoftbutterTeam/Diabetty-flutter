@@ -1,8 +1,10 @@
 import 'package:diabetttty/components/index.dart';
+import 'package:diabetttty/models/AppData.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 
 class InitialQuestionPage extends StatefulWidget {
   @override
@@ -12,6 +14,10 @@ class InitialQuestionPage extends StatefulWidget {
 class _InitialQuestionPageState extends State<InitialQuestionPage> {
   @override
   Widget build(BuildContext context) {
+    if (!Provider.of<AppState>(context).isLoggedIn) {
+      Navigator.pushNamed(context, login);
+    }
+
     changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
 
     final welcome = Column(
