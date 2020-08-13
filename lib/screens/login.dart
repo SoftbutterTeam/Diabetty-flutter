@@ -1,4 +1,6 @@
 import 'package:diabetttty/components/index.dart';
+import 'package:diabetttty/controllers/Register_Con.dart';
+import 'package:diabetttty/models/AppData.dart';
 import 'package:diabetttty/models/UserAccount.dart';
 
 import 'package:diabetttty/theme/index.dart';
@@ -37,12 +39,14 @@ class _LoginFormState extends State<LoginForm>
 
   @override
   Widget build(BuildContext context) {
-    print("Hello");
+    final appState = Provider.of<AppState>(context, listen: false);
+
+    if (appState.isLoggedIn) {
+      Navigator.pushNamed(context, diary);
+    }
+
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
-    // if (Provider.of<UserAccount>(context).isLoggedIn) {
-    //   Navigator.pushNamed(context, diary);
-    // } // some stuff doesnt work when this is on
 
     return Scaffold(
       body: SafeArea(
@@ -196,7 +200,12 @@ class _LoginFormState extends State<LoginForm>
                               width: 200,
                               alignment: Alignment.center,
                               child: RoundedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  /* RegisterCon.registerAsGuest(
+                                      appState, "Friend");
+                                      */
+                                  Navigator.pushNamed(context, initialquestion);
+                                },
                                 textContent: "Continue as Guest",
                               ),
                             ),
@@ -236,6 +245,7 @@ class _LoginFormState extends State<LoginForm>
                                 if (value.isEmpty) {
                                   return "Enter your full name";
                                 }
+                                return null;
                               },
                             ),
                             SizedBox(
