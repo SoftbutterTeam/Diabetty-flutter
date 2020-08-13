@@ -157,9 +157,9 @@ class UserAccount with ChangeNotifier {
     emptyAttributes(
       name: name,
       type: "GA",
-      loggedIn: true,
+      loggedIn: false,
     );
-    saveData();
+    //saveData();
   }
 
   void registerUserA(

@@ -6,13 +6,17 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case diary:
-        return MaterialPageRoute(builder: (_) => DashBoard(initIndex: 0));
+        return MaterialPageRoute(builder: (context) => DashBoard(initIndex: 0));
       case today:
         return MaterialPageRoute(builder: (_) => DashBoard(initIndex: 1));
       case therapy:
         return MaterialPageRoute(builder: (_) => DashBoard(initIndex: 2));
       case login:
-        return MaterialPageRoute(builder: (_) => LoginForm());
+        var page = LoginForm();
+        // page.createState().initState();
+
+        return MaterialPageRoute(builder: (_) => page);
+
       case loginsplashscreen:
         return MaterialPageRoute(builder: (_) => SplashScreen(route: login));
       case initialquestion:
