@@ -21,11 +21,15 @@ class _LoginFormState extends State<LoginForm>
   // _passwordController = TextEditingController();
   bool _obscureText = true;
   TabController tabController;
+  bool isLoggedIn;
   var agree = true;
-
+  var appState;
+//TODO dispose splashscreen
   @override
   void initState() {
     super.initState();
+    appState = Provider.of<AppState>(context, listen: false);
+    isLoggedIn = appState.isLoggedIn;
     tabController = TabController(length: 2, vsync: this);
   }
 
@@ -35,13 +39,17 @@ class _LoginFormState extends State<LoginForm>
     super.dispose();
   }
 
-  final _signupFormKey = GlobalKey<FormState>();
+  @override
+  void deactivate() {
+    tabController.dispose();
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context, listen: false);
+    print("login page building....");
 
-    if (appState.isLoggedIn) {
+    if (isLoggedIn) {
       Navigator.pushNamed(context, diary);
     }
 
@@ -201,10 +209,10 @@ class _LoginFormState extends State<LoginForm>
                               alignment: Alignment.center,
                               child: RoundedButton(
                                 onPressed: () {
-                                  /* RegisterCon.registerAsGuest(
+                                  RegisterCon.registerAsGuest(
                                       appState, "Friend");
-                                      */
                                   Navigator.pushNamed(context, initialquestion);
+                                  deactivate();
                                 },
                                 textContent: "Continue as Guest",
                               ),
@@ -220,7 +228,6 @@ class _LoginFormState extends State<LoginForm>
                     child: Container(
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: Form(
-                        key: _signupFormKey,
                         child: Column(
                           children: <Widget>[
                             SizedBox(
@@ -293,7 +300,7 @@ class _LoginFormState extends State<LoginForm>
                               alignment: Alignment.center,
                               child: RoundedButton(
                                 onPressed: () {
-                                  if (_signupFormKey.currentState.validate()) {
+                                  if (true) {
                                     //TODO Save User Account information and Profile info
                                     Navigator.pushNamed(
                                         context, initialquestion);
