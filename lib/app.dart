@@ -31,47 +31,48 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _init(),
-        builder: (context, _) {
-          return (
-              //  inject providers
-              MultiProvider(
-                  providers: [
-                ChangeNotifierProvider(
-                  create: (_) => AppLangState('en'),
+      future: _init(),
+      builder: (context, _) {
+        return (
+            //  inject providers
+            MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (_) => AppLangState('en'),
+            ),
+            ChangeNotifierProvider(create: (context) => appState.userAccount),
+            ChangeNotifierProvider(create: (context) => appState.userProfile),
+          ],
+          child: Consumer<AppLangState>(
+            builder: (context, provider, _) {
+              print(
+                  "_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n");
+              print(appState.isLoggedIn);
+              return MaterialApp(
+                title: 'Diabuddy',
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  fontFamily: 'OpenSans',
+                  primaryColor: colorCustom,
+                  accentColor: appWhite,
+                  scaffoldBackgroundColor: t3_app_background,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
                 ),
-                ChangeNotifierProvider(
-                    create: (context) => appState.userAccount),
-                ChangeNotifierProvider(
-                    create: (context) => appState.userProfile),
-              ],
-                  child:
-                      Consumer<AppLangState>(builder: (context, provider, _) {
-                    print(
-                        "_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n");
-                    print(appState.isLoggedIn);
-                    return MaterialApp(
-                      title: 'Diabuddy',
-                      debugShowCheckedModeBanner: false,
-                      theme: ThemeData(
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        fontFamily: 'OpenSans',
-                        primaryColor: colorCustom,
-                        accentColor: appWhite,
-                        scaffoldBackgroundColor: t3_app_background,
-                        visualDensity: VisualDensity.adaptivePlatformDensity,
-                      ),
-                      onGenerateRoute: Router.generateRoute,
-                      initialRoute: isLoggedIn ? diary : loginsplashscreen,
-                      builder: (context, child) {
-                        return ScrollConfiguration(
-                          behavior: SBehavior(),
-                          child: child,
-                        );
-                      },
-                    );
-                  })));
-        });
+                onGenerateRoute: Router.generateRoute,
+                initialRoute: isLoggedIn ? diary : loginsplashscreen,
+                builder: (context, child) {
+                  return ScrollConfiguration(
+                    behavior: SBehavior(),
+                    child: child,
+                  );
+                },
+              );
+            },
+          ),
+        ));
+      },
+    );
   }
 }

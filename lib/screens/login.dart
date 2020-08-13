@@ -37,11 +37,12 @@ class _LoginFormState extends State<LoginForm>
 
   @override
   Widget build(BuildContext context) {
+    print("Hello");
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
-    if (Provider.of<UserAccount>(context).isLoggedIn) {
-      Navigator.pushNamed(context, diary);
-    }
+    // if (Provider.of<UserAccount>(context).isLoggedIn) {
+    //   Navigator.pushNamed(context, diary);
+    // } // some stuff doesnt work when this is on
 
     return Scaffold(
       body: SafeArea(
