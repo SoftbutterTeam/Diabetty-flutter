@@ -1,6 +1,7 @@
 import 'package:diabetttty/components/Scroll_Behaviour/SBehavior.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
 import 'package:diabetttty/controllers/routes.dart';
+import 'package:diabetttty/models/Appdata.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/AppColors.dart';
 import 'package:diabetttty/theme/app_state.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
-import 'models/AppData.dart';
 import 'theme/constant.dart';
 
 class App extends StatelessWidget {

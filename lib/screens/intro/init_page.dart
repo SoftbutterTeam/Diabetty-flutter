@@ -1,5 +1,5 @@
 import 'package:diabetttty/components/index.dart';
-import 'package:diabetttty/models/AppData.dart';
+import 'package:diabetttty/models/Appdata.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +58,7 @@ class _InitialQuestionPageState extends State<InitialQuestionPage> {
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
                   textContent: 'Diabetic User',
-                  onPressed: () =>
-                      Navigator.pushNamed(context, diabeticuserquestion))
+                  onPressed: () => Navigator.pushNamed(context, login))
               .cornerRadiusWithClipRRect(25)
               .paddingAll(16),
         ),

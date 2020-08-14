@@ -1,6 +1,6 @@
 import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
-import 'package:diabetttty/models/AppData.dart';
+import 'package:diabetttty/models/Appdata.dart';
 import 'package:diabetttty/models/UserAccount.dart';
 
 import 'package:diabetttty/theme/index.dart';
@@ -41,7 +41,6 @@ class _LoginFormState extends State<LoginForm>
 
   @override
   void deactivate() {
-    tabController.dispose();
     super.deactivate();
   }
 
@@ -211,8 +210,8 @@ class _LoginFormState extends State<LoginForm>
                                 onPressed: () {
                                   RegisterCon.registerAsGuest(
                                       appState, "Friend");
+                                  //Navigator.pop(context);
                                   Navigator.pushNamed(context, initialquestion);
-                                  deactivate();
                                 },
                                 textContent: "Continue as Guest",
                               ),

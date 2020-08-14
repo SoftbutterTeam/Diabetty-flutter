@@ -1,4 +1,4 @@
-import 'package:diabetttty/models/AppData.dart';
+import 'package:diabetttty/models/Appdata.dart';
 import 'package:diabetttty/models/UserAccount.dart';
 
 class RegisterCon {
