@@ -49,12 +49,6 @@ class App extends StatelessWidget {
               ],
                   child:
                       Consumer<AppLangState>(builder: (context, provider, _) {
-                    print(
-                        "_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n_______________________________________\n");
-                    print("fdgdfg" + appState.isLoggedIn.toString());
-                    print(appState.userAccount.isLoggedIn);
-                    //appState.userAccount.loggedIn = true;
-                    print(appState.isLoggedIn);
                     return MaterialApp(
                       title: 'Diabuddy',
                       debugShowCheckedModeBanner: false,
