@@ -141,7 +141,7 @@ class _DashBoardState extends State<DashBoard> {
         backgroundColor: Colors.white,
         currentIndex: pageIndex,
         onTap: onTap,
-        elevation: 10.0,
+        elevation: 8.0,
         type: BottomNavigationBarType.fixed,
         // backgroundColor: t3_app_background,
         items: __items,

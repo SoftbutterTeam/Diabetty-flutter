@@ -1,7 +1,7 @@
 import 'package:diabetttty/components/Scroll_Behaviour/SBehavior.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
 import 'package:diabetttty/controllers/routes.dart';
-import 'package:diabetttty/models/Appdata.dart';
+import 'package:diabetttty/models/AppState.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/AppColors.dart';
 import 'package:diabetttty/theme/app_state.dart';
@@ -9,24 +9,19 @@ import 'package:diabetttty/theme/colors.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'theme/constant.dart';
 
 class App extends StatelessWidget {
-  // This widget is the root of your application.
   Future _init() async {
     WidgetsBinding.instance.renderView.automaticSystemUiAdjustment = false;
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        //statusBarColor: Colors.
-        systemNavigationBarColor: Colors.white));
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
     await appState.restoreData();
-    // Should probs be an init function instead
-    //Try removing this line once we get it working since its in the constructor
+    print("done with init");
   }
 
-  bool isLoggedIn = false;
   AppState appState = new AppState();
 
   @override
@@ -49,6 +44,7 @@ class App extends StatelessWidget {
               ],
                   child:
                       Consumer<AppLangState>(builder: (context, provider, _) {
+                    print("helllo" + appState.isLoggedIn.toString());
                     return MaterialApp(
                       title: 'Diabuddy',
                       debugShowCheckedModeBanner: false,
@@ -62,7 +58,8 @@ class App extends StatelessWidget {
                         visualDensity: VisualDensity.adaptivePlatformDensity,
                       ),
                       onGenerateRoute: Router.generateRoute,
-                      initialRoute: isLoggedIn ? diary : loginsplashscreen,
+                      initialRoute:
+                          appState.isLoggedIn ? diary : loginsplashscreen,
                       builder: (context, child) {
                         return ScrollConfiguration(
                           behavior: SBehavior(),

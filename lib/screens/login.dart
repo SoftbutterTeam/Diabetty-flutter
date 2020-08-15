@@ -1,7 +1,6 @@
 import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
-import 'package:diabetttty/models/Appdata.dart';
-import 'package:diabetttty/models/UserAccount.dart';
+import 'package:diabetttty/models/AppState.dart';
 
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +16,11 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm>
     with SingleTickerProviderStateMixin {
-  // _usernameController = TextEditingController();
-  // _passwordController = TextEditingController();
   bool _obscureText = true;
   TabController tabController;
   bool isLoggedIn;
   var agree = true;
   var appState;
-//TODO dispose splashscreen
   @override
   void initState() {
     super.initState();
@@ -47,10 +43,6 @@ class _LoginFormState extends State<LoginForm>
   @override
   Widget build(BuildContext context) {
     print("login page building....");
-
-    if (isLoggedIn) {
-      Navigator.pushNamed(context, diary);
-    }
 
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;

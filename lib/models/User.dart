@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
-class UserAccount with ChangeNotifier {
+class User with ChangeNotifier {
   String _id;
   String type;
   String status = "";
@@ -16,21 +16,21 @@ class UserAccount with ChangeNotifier {
   String lastLogin;
   String phoneNumber;
 
-  UserAccount();
+  User();
   bool get isLoggedIn => _loggedIn;
   set loggedIn(i) => _loggedIn = i;
   String get id => _id;
   set id(i) => _id = i;
 
-  UserAccount.noEmail(this.name, this.phoneNumber) {
+  User.noEmail(this.name, this.phoneNumber) {
     this.status = "active";
     this.lastLogin = DateTime.now().toString();
   }
-  UserAccount.newUser({this.name, this.email, this.phoneNumber}) {
+  User.newUser({this.name, this.email, this.phoneNumber}) {
     this.status = "active";
     this.lastLogin = DateTime.now().toString();
   }
-  UserAccount.fromAll(
+  User.fromAll(
       {id,
       this.type,
       this.status,
@@ -41,7 +41,7 @@ class UserAccount with ChangeNotifier {
       this.lastLogin,
       this.phoneNumber});
 
-  UserAccount.fromUserAccount(UserAccount another) {
+  User.fromUserAccount(User another) {
     this._id = another._id;
     this.type = another.type;
     this.status = another.status;
@@ -52,7 +52,7 @@ class UserAccount with ChangeNotifier {
     this.emailVerified = another.emailVerified;
   }
 
-  UserAccount.fromJson(Map<String, dynamic> json)
+  User.fromJson(Map<String, dynamic> json)
       : _id = json['id'],
         type = json['type'],
         status = json['status'],
@@ -115,7 +115,7 @@ class UserAccount with ChangeNotifier {
   }
 
   Future<bool> restoreData() async {
-    await saveData();
+    //await saveData();
     try {
       print(1);
       String encodedUser = await readUserAccount();
@@ -157,9 +157,9 @@ class UserAccount with ChangeNotifier {
     emptyAttributes(
       name: name,
       type: "GA",
-      loggedIn: false,
+      loggedIn: true,
     );
-    //saveData();
+    saveData();
   }
 
   void registerUserA(

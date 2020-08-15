@@ -1,5 +1,5 @@
 import 'package:diabetttty/components/index.dart';
-import 'package:diabetttty/models/Appdata.dart';
+import 'package:diabetttty/models/AppState.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
