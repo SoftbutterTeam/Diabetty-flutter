@@ -16,6 +16,8 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
 
   var step = 1;
 
+  final _diabeticFormKey = GlobalKey<FormState>();
+
   Widget build(BuildContext context) {
     changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
 
@@ -375,15 +377,18 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 40,
-              ),
-              stepView,
-              selectedWidget()
-            ],
-          ).paddingOnly(top: 16),
+          child: Form(
+            key: _diabeticFormKey,
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 40,
+                ),
+                stepView,
+                selectedWidget()
+              ],
+            ).paddingOnly(top: 16),
+          ),
         ),
       ),
     );

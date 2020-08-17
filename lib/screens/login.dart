@@ -39,11 +39,11 @@ class _LoginFormState extends State<LoginForm>
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context, listen: false);
+    // final appState = Provider.of<AppState>(context, listen: false);
 
-    if (appState.isLoggedIn) {
-      Navigator.pushNamed(context, diary);
-    }
+    // if (appState.isLoggedIn) {
+    //   Navigator.pushNamed(context, diary);
+    // }
 
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
@@ -201,9 +201,9 @@ class _LoginFormState extends State<LoginForm>
                               alignment: Alignment.center,
                               child: RoundedButton(
                                 onPressed: () {
-                                  /* RegisterCon.registerAsGuest(
-                                      appState, "Friend");
-                                      */
+                                  // RegisterCon.registerAsGuest(
+                                  //     appState, "Friend");
+                                      
                                   Navigator.pushNamed(context, initialquestion);
                                 },
                                 textContent: "Continue as Guest",

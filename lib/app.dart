@@ -25,7 +25,6 @@ class App extends StatelessWidget {
     //Try removing this line once we get it working since its in the constructor
   }
 
-  bool isLoggedIn = false;
   AppState appState = new AppState();
 
   @override
@@ -63,7 +62,7 @@ class App extends StatelessWidget {
                         visualDensity: VisualDensity.adaptivePlatformDensity,
                       ),
                       onGenerateRoute: Router.generateRoute,
-                      initialRoute: isLoggedIn ? diary : loginsplashscreen,
+                      initialRoute: appState.isLoggedIn ? diary : loginsplashscreen,
                       builder: (context, child) {
                         return ScrollConfiguration(
                           behavior: SBehavior(),

@@ -14,9 +14,9 @@ class InitialQuestionPage extends StatefulWidget {
 class _InitialQuestionPageState extends State<InitialQuestionPage> {
   @override
   Widget build(BuildContext context) {
-    if (!Provider.of<AppState>(context).isLoggedIn) {
-      Navigator.pushNamed(context, login);
-    }
+    // if (!Provider.of<AppState>(context).isLoggedIn) {
+    //   Navigator.pushNamed(context, login);
+    // }
 
     changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
 

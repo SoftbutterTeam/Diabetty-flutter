@@ -6,23 +6,23 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case diary:
-        return MaterialPageRoute(builder: (_) => DashBoard(initIndex: 0));
+        return MaterialPageRoute(builder: (BuildContext context) => DashBoard(initIndex: 0));
       case today:
-        return MaterialPageRoute(builder: (_) => DashBoard(initIndex: 1));
+        return MaterialPageRoute(builder: (BuildContext context) => DashBoard(initIndex: 1));
       case therapy:
-        return MaterialPageRoute(builder: (_) => DashBoard(initIndex: 2));
+        return MaterialPageRoute(builder: (BuildContext context) => DashBoard(initIndex: 2));
       case login:
-        return MaterialPageRoute(builder: (_) => LoginForm());
+        return MaterialPageRoute(builder: (BuildContext context) => LoginForm());
       case loginsplashscreen:
-        return MaterialPageRoute(builder: (_) => SplashScreen(route: login));
+        return MaterialPageRoute(builder: (BuildContext context) => SplashScreen(route: login));
       case initialquestion:
-        return MaterialPageRoute(builder: (_) => InitialQuestionPage());
+        return MaterialPageRoute(builder: (BuildContext context) => InitialQuestionPage());
       case diabeticuserquestion:
-        return MaterialPageRoute(builder: (_) => DiabeticUserQuestions());
+        return MaterialPageRoute(builder: (BuildContext context) => DiabeticUserQuestions());
       case buddyuserquestion:
-        return MaterialPageRoute(builder: (_) => BuddyUserQuestions());
+        return MaterialPageRoute(builder: (BuildContext context) => BuddyUserQuestions());
       case homescreensplashscreen:
-        return MaterialPageRoute(builder: (_) => SplashScreen(route: diary));
+        return MaterialPageRoute(builder: (BuildContext context) => SplashScreen(route: diary));
       // case '/settings':
       //   return MaterialPageRoute(builder: (_) => Settings());
       default:
