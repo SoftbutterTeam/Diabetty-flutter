@@ -1,23 +1,23 @@
 import 'dart:ui';
 
 import 'package:diabetttty/models/Profile.dart';
-import 'package:diabetttty/models/UserAccount.dart';
+import 'package:diabetttty/models/User.dart';
 import 'package:diabetttty/theme/app_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class AppState with ChangeNotifier {
-  UserAccount _userAccount;
+  User _userAccount;
   Profile _userProfile;
 
   bool get isLoggedIn => userAccount.isLoggedIn;
-  UserAccount get userAccount => _userAccount;
+  User get userAccount => _userAccount;
   Profile get userProfile => _userProfile;
 
   AppState() {
     if (userAccount == null) {
-      this._userAccount = new UserAccount();
+      this._userAccount = new User();
     } else {
       print("last login: " + userAccount.lastLogin);
     }
@@ -25,7 +25,8 @@ class AppState with ChangeNotifier {
 
   Future restoreData() async {
     print("RESTOREIIING DATAAAAAAAAAA");
-    print(await this._userAccount.restoreData());
+    await this._userAccount.restoreData();
+    print("app done");
     notifyListeners();
   }
 }

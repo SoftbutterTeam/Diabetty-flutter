@@ -1,5 +1,5 @@
-import 'package:diabetttty/models/AppData.dart';
-import 'package:diabetttty/models/UserAccount.dart';
+import 'package:diabetttty/models/AppState.dart';
+import 'package:diabetttty/models/User.dart';
 
 class RegisterCon {
   static bool registerAsGuest(AppState appState, String name) {

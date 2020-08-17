@@ -1,5 +1,5 @@
 import 'package:diabetttty/components/index.dart';
-import 'package:diabetttty/models/AppData.dart';
+import 'package:diabetttty/models/AppState.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +14,8 @@ class InitialQuestionPage extends StatefulWidget {
 class _InitialQuestionPageState extends State<InitialQuestionPage> {
   @override
   Widget build(BuildContext context) {
-    // if (!Provider.of<AppState>(context).isLoggedIn) {
-    //   Navigator.pushNamed(context, login);
-    // }
-
     changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
+    //Navigator.pushNamed(context, login);
 
     final welcome = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,8 +58,7 @@ class _InitialQuestionPageState extends State<InitialQuestionPage> {
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
                   textContent: 'Diabetic User',
-                  onPressed: () =>
-                      Navigator.pushNamed(context, diabeticuserquestion))
+                  onPressed: () => Navigator.pushNamed(context, login))
               .cornerRadiusWithClipRRect(25)
               .paddingAll(16),
         ),

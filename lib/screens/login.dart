@@ -1,7 +1,7 @@
 import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
-import 'package:diabetttty/models/AppData.dart';
-import 'package:diabetttty/models/UserAccount.dart';
+import 'package:diabetttty/models/AppState.dart';
+import 'package:diabetttty/models/User.dart';
 
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +17,18 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm>
     with SingleTickerProviderStateMixin {
-  // _usernameController = TextEditingController();
-  // _passwordController = TextEditingController();
+  User userinfo = User();
   bool _obscureText = true;
   TabController tabController;
+  bool isLoggedIn;
+  final _signupKey = GlobalKey<FormState>();
   var agree = true;
-
+  var appState;
   @override
   void initState() {
     super.initState();
+    appState = Provider.of<AppState>(context, listen: false);
+    isLoggedIn = appState.isLoggedIn;
     tabController = TabController(length: 2, vsync: this);
   }
 
@@ -35,15 +38,14 @@ class _LoginFormState extends State<LoginForm>
     super.dispose();
   }
 
-  final _signupFormKey = GlobalKey<FormState>();
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // final appState = Provider.of<AppState>(context, listen: false);
-
-    // if (appState.isLoggedIn) {
-    //   Navigator.pushNamed(context, diary);
-    // }
+    print("login page building....");
 
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
@@ -201,9 +203,9 @@ class _LoginFormState extends State<LoginForm>
                               alignment: Alignment.center,
                               child: RoundedButton(
                                 onPressed: () {
-                                  // RegisterCon.registerAsGuest(
-                                  //     appState, "Friend");
-                                      
+                                  RegisterCon.registerAsGuest(
+                                      appState, "Friend");
+                                  //Navigator.pop(context);
                                   Navigator.pushNamed(context, initialquestion);
                                 },
                                 textContent: "Continue as Guest",
@@ -220,7 +222,7 @@ class _LoginFormState extends State<LoginForm>
                     child: Container(
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: Form(
-                        key: _signupFormKey,
+                        key: _signupKey,
                         child: Column(
                           children: <Widget>[
                             SizedBox(
@@ -240,27 +242,31 @@ class _LoginFormState extends State<LoginForm>
                               height: 30,
                             ),
                             TextInputs(
-                              hintText: "Full name",
-                              validator: (String value) {
-                                if (value.isEmpty) {
-                                  return "Enter your full name";
-                                }
-                                return null;
-                              },
-                            ),
+                                hintText: "Full name",
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return "Enter your full name";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (String value) {
+                                  userinfo.name = value;
+                                }),
                             SizedBox(
                               height: 16,
                             ),
                             TextInputs(
-                              isEmail: true,
-                              hintText: "Email",
-                              validator: (String value) {
-                                if (!validator.isEmail(value)) {
-                                  return "Please enter a valid Email";
-                                }
-                                return null;
-                              },
-                            ),
+                                isEmail: true,
+                                hintText: "Email",
+                                validator: (String value) {
+                                  if (!validator.isEmail(value)) {
+                                    return "Please enter a valid Email";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (String value) {
+                                  userinfo.email = value;
+                                }),
                             SizedBox(
                               height: 16,
                             ),
@@ -270,7 +276,11 @@ class _LoginFormState extends State<LoginForm>
                                 if (value.length < 6) {
                                   return "At least 6 characters needed";
                                 }
+                                _signupKey.currentState.save();
                                 return null;
+                              },
+                              onSaved: (String value) {
+                                userinfo.password = value;
                               },
                             ),
                             SizedBox(
@@ -281,6 +291,9 @@ class _LoginFormState extends State<LoginForm>
                               validator: (String value) {
                                 if (value.length < 6) {
                                   return "At least 6 characters needed";
+                                } else if (userinfo.password != null &&
+                                    value != userinfo.password) {
+                                  return "Get your passwords matching bitch";
                                 }
                                 return null;
                               },
@@ -293,11 +306,14 @@ class _LoginFormState extends State<LoginForm>
                               alignment: Alignment.center,
                               child: RoundedButton(
                                 onPressed: () {
-                                  if (_signupFormKey.currentState.validate()) {
+                                  if (_signupKey.currentState.validate()) {
+                                    _signupKey.currentState.save();
                                     //TODO Save User Account information and Profile info
                                     Navigator.pushNamed(
                                         context, initialquestion);
                                   }
+                                  print(userinfo.email);
+                                  print(userinfo.name);
                                 },
                                 textContent: "Join",
                               ),
