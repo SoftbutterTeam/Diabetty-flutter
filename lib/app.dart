@@ -28,11 +28,15 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: _init(),
-        builder: (context, _) {
-          return (
-              //  inject providers
-              MultiProvider(
-                  providers: [
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          print(snapshot);
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return (Center(
+              child: CircularProgressIndicator(),
+            ));
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            return (MultiProvider(
+              providers: [
                 ChangeNotifierProvider(
                   create: (_) => AppLangState('en'),
                 ),
@@ -42,32 +46,40 @@ class App extends StatelessWidget {
                 ChangeNotifierProvider(
                     create: (context) => appState.userProfile),
               ],
-                  child:
-                      Consumer<AppLangState>(builder: (context, provider, _) {
-                    print("helllo" + appState.isLoggedIn.toString());
-                    return MaterialApp(
-                      title: 'Diabuddy',
-                      debugShowCheckedModeBanner: false,
-                      theme: ThemeData(
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        fontFamily: 'OpenSans',
-                        primaryColor: colorCustom,
-                        accentColor: appWhite,
-                        scaffoldBackgroundColor: t3_app_background,
-                        visualDensity: VisualDensity.adaptivePlatformDensity,
-                      ),
-                      onGenerateRoute: Router.generateRoute,
-                      initialRoute:
-                          appState.isLoggedIn ? diary : loginsplashscreen,
-                      builder: (context, child) {
-                        return ScrollConfiguration(
-                          behavior: SBehavior(),
-                          child: child,
-                        );
-                      },
-                    );
-                  })));
+              child: Consumer<AppLangState>(
+                builder: (context, provider, _) {
+                  print("helllo" + appState.isLoggedIn.toString());
+                  return MaterialApp(
+                    title: 'Diabuddy',
+                    debugShowCheckedModeBanner: false,
+                    theme: ThemeData(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      fontFamily: 'OpenSans',
+                      primaryColor: colorCustom,
+                      accentColor: appWhite,
+                      scaffoldBackgroundColor: t3_app_background,
+                      visualDensity: VisualDensity.adaptivePlatformDensity,
+                    ),
+                    onGenerateRoute: Router.generateRoute,
+                    initialRoute: appState.isLoggedIn
+                        ? (!appState.userAccount.status.contains("no-intro")
+                            ? diary
+                            : (!appState.userAccount.type.contains("GA")
+                                ? initialquestion
+                                : diabeticuserquestion))
+                        : loginsplashscreen,
+                    builder: (context, child) {
+                      return ScrollConfiguration(
+                        behavior: SBehavior(),
+                        child: child,
+                      );
+                    },
+                  );
+                },
+              ),
+            ));
+          }
         });
   }
 }

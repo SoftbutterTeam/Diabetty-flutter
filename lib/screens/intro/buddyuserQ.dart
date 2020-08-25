@@ -1,7 +1,11 @@
 import 'package:diabetttty/components/index.dart';
+import 'package:diabetttty/controllers/Register_Con.dart';
+import 'package:diabetttty/models/AppState.dart';
+import 'package:diabetttty/models/UserForm.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 
 class BuddyUserQuestions extends StatefulWidget {
   @override
@@ -9,10 +13,14 @@ class BuddyUserQuestions extends StatefulWidget {
 }
 
 class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
+  UserForm userform = UserForm();
+  TextEditingController _referralCodeController = TextEditingController();
   var btn1 = true;
   var btn2 = false;
 
   var step = 1;
+
+  var appState;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +49,7 @@ class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
               ),
               SizedBox(height: 20),
               TextFormField(
+                controller: _referralCodeController,
                 style: TextStyle(
                     fontSize: textSizeMedium, fontFamily: fontRegular),
                 decoration: InputDecoration(
@@ -69,6 +78,7 @@ class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
               textContent: 'Submit',
               onPressed: () {
                 setState(() {
+                  userform.referralCode = _referralCodeController.text;
                   btn2 = true;
                   step = 2;
                 });
@@ -76,6 +86,12 @@ class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
         ),
       ],
     );
+
+    void submitForm() {
+      appState = Provider.of<AppState>(context, listen: false);
+      RegisterCon.submitIntroData(appState, userform);
+      Navigator.pushNamed(context, diary);
+    }
 
     final notifications = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +138,9 @@ class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
             textContent: emergency,
-            onPressed: () => Navigator.pushNamed(context, diary),
+            onPressed: () {
+              submitForm();
+            }
           ).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
       ],
@@ -174,18 +192,18 @@ class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 40,
-              ),
-              stepView,
-              selectedWidget()
-            ],
-          ).paddingOnly(top: 16),
+        child: SingleChildScrollView(  
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 40,
+                ),
+                stepView,
+                selectedWidget()
+              ],
+            ).paddingOnly(top: 16),
+          ),
         ),
-      ),
     );
   }
 }

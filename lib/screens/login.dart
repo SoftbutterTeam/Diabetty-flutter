@@ -1,6 +1,7 @@
 import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
 import 'package:diabetttty/models/AppState.dart';
+import 'package:diabetttty/models/UserForm.dart';
 import 'package:diabetttty/models/User.dart';
 
 import 'package:diabetttty/theme/index.dart';
@@ -17,7 +18,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm>
     with SingleTickerProviderStateMixin {
-  User userinfo = User();
+  UserForm userform = UserForm();
   bool _obscureText = true;
   TabController tabController;
   bool isLoggedIn;
@@ -206,7 +207,7 @@ class _LoginFormState extends State<LoginForm>
                                   RegisterCon.registerAsGuest(
                                       appState, "Friend");
                                   //Navigator.pop(context);
-                                  Navigator.pushNamed(context, initialquestion);
+                                  Navigator.pushNamed(context, diabeticuserquestion);
                                 },
                                 textContent: "Continue as Guest",
                               ),
@@ -250,7 +251,7 @@ class _LoginFormState extends State<LoginForm>
                                   return null;
                                 },
                                 onSaved: (String value) {
-                                  userinfo.name = value;
+                                  userform.name = value;
                                 }),
                             SizedBox(
                               height: 16,
@@ -265,7 +266,7 @@ class _LoginFormState extends State<LoginForm>
                                   return null;
                                 },
                                 onSaved: (String value) {
-                                  userinfo.email = value;
+                                  userform.email = value;
                                 }),
                             SizedBox(
                               height: 16,
@@ -280,7 +281,7 @@ class _LoginFormState extends State<LoginForm>
                                 return null;
                               },
                               onSaved: (String value) {
-                                userinfo.password = value;
+                                userform.password = value;
                               },
                             ),
                             SizedBox(
@@ -291,8 +292,8 @@ class _LoginFormState extends State<LoginForm>
                               validator: (String value) {
                                 if (value.length < 6) {
                                   return "At least 6 characters needed";
-                                } else if (userinfo.password != null &&
-                                    value != userinfo.password) {
+                                } else if (userform.password != null &&
+                                    value != userform.password) {
                                   return "Get your passwords matching bitch";
                                 }
                                 return null;
@@ -308,12 +309,14 @@ class _LoginFormState extends State<LoginForm>
                                 onPressed: () {
                                   if (_signupKey.currentState.validate()) {
                                     _signupKey.currentState.save();
+                                    RegisterCon.registerUserA(appState, userform);
                                     //TODO Save User Account information and Profile info
                                     Navigator.pushNamed(
-                                        context, initialquestion);
+                                        context, initialquestion).then((_) => _signupKey.currentState.reset());
+                                    print(userform.name);
+                                    print(userform.email);
+                                    print(userform.password);
                                   }
-                                  print(userinfo.email);
-                                  print(userinfo.name);
                                 },
                                 textContent: "Join",
                               ),

@@ -1,4 +1,5 @@
 import 'package:diabetttty/models/AppState.dart';
+import 'package:diabetttty/models/UserForm.dart';
 import 'package:diabetttty/models/User.dart';
 
 class RegisterCon {
@@ -10,13 +11,29 @@ class RegisterCon {
     return false;
   }
 
-  /**  todo static bool registerUserA(AppState appState, RegisterUserForm registerInfo) {
-    if (appState.userAccount.loggedIn != true) {
-      appState.userAccount.registerUserA(registerInfo);
-    }
+  static bool registerUserA(AppState appState, UserForm userform) {
+    appState.userAccount.registerUserA2(userform: userform);
+    print(userform.email);
+    return true;
+  }
 
+    static bool registerUserB(AppState appState, UserForm userform) {
+    appState.userAccount.registerUserB2(userform: userform);
+    print(userform.email);
+    return true;
+  }
+
+
+  static void submitIntroData(AppState appState, UserForm userform) {
+    print("hwifhwiebfgweb");
+    print("Userform" + userform.referralCode.toString());
+    userform.status = "activeeEEeeeEEEee";
+    appState.userAccount.updateUserWithForm(userform: userform);
+  }
+}
+
+/**  todo static bool registerUserA(AppState appState, RegisterUserForm registerInfo) {
     // TODO create a model for Form info, pass it through. Then edit registerUserA to extract what is can.
     // TODO wrtie saveData() after creation
   }
   */
-}

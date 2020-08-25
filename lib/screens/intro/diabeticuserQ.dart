@@ -1,8 +1,13 @@
 import 'package:diabetttty/components/index.dart';
+import 'package:diabetttty/controllers/Register_Con.dart';
+import 'package:diabetttty/models/AppState.dart';
+import 'package:diabetttty/screens/login.dart';
+import 'package:diabetttty/models/UserForm.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:provider/provider.dart';
 
 class DiabeticUserQuestions extends StatefulWidget {
   @override
@@ -10,13 +15,17 @@ class DiabeticUserQuestions extends StatefulWidget {
 }
 
 class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
+  UserForm userform = UserForm();
+  TextEditingController _ageController = TextEditingController();
   var btn2 = false;
   var btn3 = false;
   var btn4 = false;
 
   var step = 1;
 
-  final _diabeticFormKey = GlobalKey<FormState>();
+  var appState;
+
+  final _signupKey = GlobalKey<FormState>();
 
   Widget build(BuildContext context) {
     changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
@@ -44,6 +53,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               ),
               SizedBox(height: 20),
               TextFormField(
+                controller: _ageController,
                 style: TextStyle(
                     fontSize: textSizeMedium, fontFamily: fontRegular),
                 decoration: InputDecoration(
@@ -76,15 +86,18 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               textContent: 'Submit',
               onPressed: () {
                 setState(() {
+                  userform.age = _ageController.text;
                   btn4 = false;
                   btn3 = false;
                   btn2 = true;
                   step = 2;
                 });
+                print(_ageController.text);
               }).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
       ],
     );
+    
 
     final type = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,6 +130,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
             onPressed: () => {
               setState(
                 () {
+                  userform.type = type1;
                   btn4 = false;
                   btn3 = true;
                   btn2 = true;
@@ -135,6 +149,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
             onPressed: () => {
               setState(
                 () {
+                  userform.type = type2;
                   btn4 = false;
                   btn3 = true;
                   btn2 = true;
@@ -218,12 +233,18 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                   btn2 = true;
                   step = 4;
                 },
-              )
+              ),
             },
           ).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
       ],
     );
+
+    void submitForm() {
+      appState = Provider.of<AppState>(context, listen: false);
+      RegisterCon.submitIntroData(appState, userform);
+      Navigator.pushNamed(context, diary);
+    }
 
     final insulinregulation = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,18 +272,20 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: testingkit,
-            onPressed: () => Navigator.pushNamed(context, diary),
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+              textContent: testingkit,
+              onPressed: () {
+                submitForm();
+              }).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
         SizedBox(height: 20),
         Container(
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: pump,
-            onPressed: () => Navigator.pushNamed(context, diary),
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+              textContent: pump,
+              onPressed: () {
+                submitForm();
+              }).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
         SizedBox(height: 20),
         TextInputs(hintText: "Another Method..."),
@@ -271,9 +294,16 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: 'Submit',
-            onPressed: () => Navigator.pushNamed(context, diary),
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+              textContent: 'Submit',
+              onPressed: () {
+                submitForm();
+                print(userform.name); //null
+                print(userform.email); //null
+                print(userform.type);
+                print(userform
+                    .accountType); //null  --> on different screens, is ok?
+                print(userform.age);
+              }).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
       ],
     );
@@ -378,7 +408,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Form(
-            key: _diabeticFormKey,
+            key: _signupKey,
             child: Column(
               children: <Widget>[
                 SizedBox(

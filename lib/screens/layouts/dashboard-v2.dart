@@ -19,6 +19,7 @@ class _DashBoardState extends State<DashBoard> {
 
   PageController pageController;
   int pageIndex = 0;
+  int currentIndex = 0;
   List<Category> mFavouriteList;
 
   var _pages = [
@@ -27,44 +28,6 @@ class _DashBoardState extends State<DashBoard> {
     DrafttScreen(),
     DrafttScreen(),
     DrafttScreen()
-  ];
-
-  var __items = [
-    BottomNavigationBarItem(
-      icon: SvgPicture.asset(
-        d_5,
-        height: 30,
-        width: 30,
-        fit: BoxFit.fitHeight,
-      ),
-      title: Text("diary"),
-    ),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(
-          today_gradient2,
-          height: 30,
-          width: 30,
-          fit: BoxFit.fitHeight,
-        ),
-        title: Text("today")),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset(
-          sos_ic_gradient,
-          height: 32,
-          width: 32,
-          fit: BoxFit.fitHeight,
-        ),
-        title: Text("team")),
-    BottomNavigationBarItem(
-      icon: SvgPicture.asset(
-        t_1,
-        //"images/gradient-icons/013-pills-1.svg",
-        height: 30,
-        width: 30,
-        fit: BoxFit.fitHeight,
-      ),
-      title: Text("therapy"),
-    ),
   ];
 
   @override
@@ -77,16 +40,18 @@ class _DashBoardState extends State<DashBoard> {
   onPageChanged(int pageIndex) {
     setState(() {
       this.pageIndex = pageIndex;
+      this.currentIndex = currentIndex;
     });
   }
 
   onTap(int pageIndex) {
-    if (pageIndex != 3) {
-      pageController.animateToPage(pageIndex,
-          duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
-    } else {
+    pageController.animateToPage(pageIndex,
+        duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
+
+    if (pageIndex == 3 && currentIndex == 3) {
       showSheet(context);
     }
+    currentIndex = pageIndex;
   }
 
   showSheet(BuildContext aContext) {
@@ -132,6 +97,48 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   Scaffold buildDashboard() {
+    var __items = [
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset(
+          d_5,
+          height: 30,
+          width: 30,
+          fit: BoxFit.fitHeight,
+        ),
+        title: Text("diary"),
+      ),
+      BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            today_gradient2,
+            height: 30,
+            width: 30,
+            fit: BoxFit.fitHeight,
+          ),
+          title: Text("today")),
+      BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            sos_ic_gradient,
+            height: 32,
+            width: 32,
+            fit: BoxFit.fitHeight,
+          ),
+          title: Text("team")),
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset(
+          t_2,
+          height: 30,
+          width: 30,
+          fit: BoxFit.fitHeight,
+        ),
+        activeIcon: SvgPicture.asset(
+          more_ic,
+          height: 30,
+          width: 30,
+          fit: BoxFit.fitHeight,
+        ),
+        title: pageIndex == 3 ? Text("more") : Text("therapy"),
+      ),
+    ];
     return Scaffold(
       body: PageView(
           children: _pages,

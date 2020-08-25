@@ -17,28 +17,29 @@ class RoundedButtonState extends State<RoundedButton> {
   Widget build(BuildContext context) {
     return Container(
       child: RaisedButton(
-          onPressed: widget.onPressed,
-          textColor: Colors.white,
-          elevation: 4,
-          color: Theme.of(context).primaryColor,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-          padding: const EdgeInsets.all(0.0),
-          child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(80.0)),
-            ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  widget.textContent,
-                  style: TextStyle(fontSize: 16),
-                  textAlign: TextAlign.center,
-                ),
+        onPressed: widget.onPressed,
+        textColor: Colors.white,
+        elevation: 4,
+        color: Theme.of(context).primaryColor,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+        padding: const EdgeInsets.all(0.0),
+        child: Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(80.0)),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                widget.textContent,
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
               ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
+import 'package:diabetttty/models/UserForm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -15,8 +16,12 @@ class User with ChangeNotifier {
   bool emailVerified;
   String lastLogin;
   String phoneNumber;
+  String password;
+  String age;
+  String referralCode;
+  
 
-  User();
+  User({this.name, this.email, this.password});
   bool get isLoggedIn => _loggedIn;
   set loggedIn(i) => _loggedIn = i;
   String get id => _id;
@@ -39,7 +44,9 @@ class User with ChangeNotifier {
       this.email,
       this.emailVerified,
       this.lastLogin,
-      this.phoneNumber});
+      this.phoneNumber,
+      this.age,
+      this.referralCode});
 
   User.fromUserAccount(User another) {
     this._id = another._id;
@@ -50,6 +57,8 @@ class User with ChangeNotifier {
     loggedIn = another._loggedIn;
     this.lastLogin = another.lastLogin;
     this.emailVerified = another.emailVerified;
+    this.age = another.age;
+    this.referralCode = another.referralCode;
   }
 
   User.fromJson(Map<String, dynamic> json)
@@ -61,7 +70,9 @@ class User with ChangeNotifier {
         _loggedIn = json['loggedIn'],
         emailVerified = json['emailVerified'],
         lastLogin = json['lastLogin'],
-        phoneNumber = json['phoneBumber'];
+        phoneNumber = json['phoneNumber'],
+        age = json['age'],
+        referralCode = json['referralCode'];
 
   Map<String, dynamic> toJson() => {
         'id': this._id,
@@ -72,7 +83,9 @@ class User with ChangeNotifier {
         'emailVerified': this.emailVerified,
         'loggedIn': isLoggedIn,
         'lastLogin': this.lastLogin,
-        'phoneNumner': this.phoneNumber
+        'phoneNumber': this.phoneNumber,
+        'age': this.age,
+        'referralCode': this.referralCode,
       };
 
   Future<String> get _localPath async {
@@ -115,7 +128,7 @@ class User with ChangeNotifier {
   }
 
   Future<bool> restoreData() async {
-    //await saveData();
+   //await saveData();
     try {
       print(1);
       String encodedUser = await readUserAccount();
@@ -142,7 +155,9 @@ class User with ChangeNotifier {
       this.emailVerified = json['emailVerified'];
       loggedIn = json['loggedIn'];
       this.lastLogin = json['lastLogin'];
-      this.phoneNumber = json['phoneBumber'];
+      this.phoneNumber = json['phoneNumber'];
+      this.age = json['age'];
+      this.referralCode = json['referralCode'];
       return true;
     } catch (e) {
       return false;
@@ -153,27 +168,36 @@ class User with ChangeNotifier {
    * to avoid refreshing the user.
   */
 
-  void initGuestUser({String name = "Friend"}) {
-    emptyAttributes(
-      name: name,
-      type: "GA",
-      loggedIn: true,
-    );
-    saveData();
+  Future<bool> initGuestUser({String name = "Friend"}) async {
+    try {
+      emptyAttributes(
+        name: name,
+        type: "GA",
+        loggedIn: true,
+        status: "no-intro",
+      );
+      await saveData();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  void registerUserA(
-      {String id,
-      String status,
-      String name,
-      String email,
-      bool emailVerfied,
-      bool loggedIn = true,
-      String lastLogin,
-      String phoneNumber}) {
+  Future<bool> registerUserA({
+    String id,
+    String status,
+    String name,
+    String email,
+    bool emailVerfied,
+    bool loggedIn = true,
+    String lastLogin,
+    String phoneNumber,
+    String age,
+  }) async {
     String type = "A";
 
-    emptyAttributes(
+    try {
+      emptyAttributes(
         id: id,
         type: type,
         status: status,
@@ -182,30 +206,131 @@ class User with ChangeNotifier {
         emailVerfied: emailVerfied,
         loggedIn: loggedIn,
         lastLogin: lastLogin,
-        phoneNumber: phoneNumber);
-    saveData();
+        phoneNumber: phoneNumber,
+        age: age,
+      );
+      await saveData();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  void editAttributes(
-      {String id,
-      String type,
-      String status,
-      String name,
-      String email,
-      bool emailVerfied,
-      bool loggedIn,
-      String lastLogin,
-      String phoneNumber}) {
-    emptyAttributes(
+  Future<bool> registerUserA2({UserForm userform}) async {
+    String type = "A";
+
+    try {
+      editAttributes(
+          type: type,
+          status: userform.status,
+          name: userform.name,
+          email: userform.email,
+          password: userform.password,
+          age: userform.age,
+          loggedIn: true);
+      await saveData();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> registerUserB({
+    String id,
+    String status,
+    String name,
+    String email,
+    bool emailVerfied,
+    bool loggedIn = true,
+    String lastLogin,
+    String phoneNumber,
+    String age,
+  }) async {
+    String type = "B";
+
+    try {
+      emptyAttributes(
         id: id,
         type: type,
         status: status,
         name: name,
         email: email,
-        loggedIn: loggedIn,
         emailVerfied: emailVerfied,
+        loggedIn: loggedIn,
         lastLogin: lastLogin,
-        phoneNumber: phoneNumber);
+        phoneNumber: phoneNumber,
+        age: age,
+        referralCode: referralCode,
+      );
+      await saveData();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+
+  Future<bool> registerUserB2({UserForm userform}) async {
+    String type = "B";
+
+    try {
+      editAttributes(
+          type: type,
+          status: userform.status,
+          name: userform.name,
+          email: userform.email,
+          password: userform.password,
+          referralCode: userform.referralCode,
+          loggedIn: true);
+      await saveData();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> updateUserWithForm({UserForm userform}) async {
+    try {
+      editAttributes(
+          loggedIn: true, status: userform.status, age: userform.age, referralCode: userform.referralCode,);
+      print(userform.age);
+      print(userform.referralCode);
+      print(userform.status);
+      await saveData();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void editAttributes({
+    String id,
+    String type,
+    String status,
+    String name,
+    String email,
+    bool emailVerfied,
+    bool loggedIn,
+    String lastLogin,
+    String phoneNumber,
+    String password,
+    String age,
+    String referralCode,
+  }) {
+    emptyAttributes(
+        id: (id != null ? id : this._id),
+        type: (type != null ? type : this.type),
+        status: (status != null ? status : this.status),
+        name: (name != null ? name : this.name),
+        email: (email != null ? email : this.email),
+        loggedIn: (loggedIn != null ? loggedIn : this._loggedIn),
+        emailVerfied:
+            (emailVerfied != null ? emailVerfied : this.emailVerified),
+        lastLogin: (lastLogin != null ? lastLogin : this.lastLogin),
+        phoneNumber: (phoneNumber != null ? phoneNumber : this.phoneNumber),
+        age: (age != null ? age : this.age),
+        referralCode: (referralCode != null ? referralCode: this.referralCode),
+        );
   }
 
 // call an update function
@@ -218,7 +343,9 @@ class User with ChangeNotifier {
       bool loggedIn,
       bool emailVerfied,
       String lastLogin,
-      String phoneNumber}) {
+      String phoneNumber,
+      String age,
+      String referralCode}) {
     this._id = id;
     this.type = type;
     this.status = status;
@@ -228,5 +355,7 @@ class User with ChangeNotifier {
     this.emailVerified = emailVerfied;
     this.lastLogin = lastLogin;
     this.phoneNumber = phoneNumber;
+    this.age = age;
+    this.referralCode = referralCode;
   }
 }
