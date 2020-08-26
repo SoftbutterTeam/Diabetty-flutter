@@ -1,11 +1,12 @@
 import 'dart:async';
-import 'package:diabetttty/screens/index.dart';
-import 'package:diabetttty/components/size_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SplashScreen extends StatefulWidget {
+  final String route;
+
+  SplashScreen({this.route});
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -14,14 +15,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(
-        Duration(seconds: 5),
-        () =>
-            Navigator.pushReplacement(context, ScaleRoute(page: DashBoard(initIndex: 0))));
+    Timer(Duration(seconds: 5), () {
+      Navigator.pushNamed(context, widget.route);
+      dispose();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    print("building");
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

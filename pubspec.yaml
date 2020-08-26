@@ -49,6 +49,13 @@ dependencies:
   #firebase_analytics:
   #firebase_crashlytics:
   nb_utils: 3.0.3
+  flutter_snake_navigationbar:
+  validators: ^2.0.1
+  
+
+
+
+
 
 dev_dependencies:
   flutter_test:
@@ -63,15 +70,31 @@ flutter:
   uses-material-design: true
 
   assets:
-    - images/
+    - images/gradient-icons/
+    - images/gradient-icons/svg/
     - images/icons/
    
 
   fonts:
-    - family: Andina
+    - family: OpenSans
       fonts:
-        - asset: fonts/andina.ttf
-
+        - asset: fonts/OpenSans-Regular.ttf
+        
+        - asset: fonts/OpenSans-Italic.ttf
+          style: italic
+        
+    - family: OpenSans-bold
+      fonts:
+      - asset: fonts/OpenSans-Bold.ttf
+    
+    - family: OpenSans-semibold
+      fonts:
+      - asset: fonts/OpenSans-SemiBold.ttf
+    
+    - family: OpenSans-light
+      fonts:
+      - asset: fonts/OpenSans-Light.ttf
+    
     - family: Regular
       fonts:
         - asset: fonts/googlesansregular.ttf
@@ -87,3 +110,5 @@ flutter:
     - family: Bold
       fonts:
         - asset: fonts/googlesansebold.ttf
+
+    

@@ -1,7 +1,7 @@
 import 'package:diabetttty/theme/styles.dart';
 import 'package:flutter/material.dart';
 
-class AppState with ChangeNotifier {
+class AppLangState with ChangeNotifier {
   var selectedLanguageCode = 'en';
   Locale locale = Locale('en');
 
@@ -14,7 +14,7 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  AppState(lang) {
+  AppLangState(lang) {
     selectedLanguageCode = lang;
   }
 

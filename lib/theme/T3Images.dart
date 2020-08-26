@@ -42,3 +42,4 @@ const t3_ic_msg = "images/icons/t3_ic_msg.svg";
 const t3_ic_video = "images/icons/t3_ic_video.svg";
 const t3_ic_recipe = "images/icons/t3_ic_recipe.svg";
 const t3_ic_linkedin = "images/icons/t3_ic_linkedin.png";
+const t2_settings = "images/icons/t2_settings.svg";
