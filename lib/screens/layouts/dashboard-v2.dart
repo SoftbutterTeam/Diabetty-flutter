@@ -27,7 +27,7 @@ class _DashBoardState extends State<DashBoard> {
     DrafttScreen(),
     DrafttScreen(),
     DrafttScreen(),
-    DrafttScreen()
+    TherapyPlanner()
   ];
 
   @override
