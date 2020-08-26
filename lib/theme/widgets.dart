@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snaplist/snaplist.dart';
 
+import 'Extension.dart';
+import 'T3Images.dart';
 import 'index.dart';
 
 Text t3HeaderText(var text) {

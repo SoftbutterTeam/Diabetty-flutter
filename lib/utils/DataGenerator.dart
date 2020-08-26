@@ -40,3 +40,54 @@ List<Category> getBottomSheetItems() {
 
   return list;
 }
+
+
+List<MedicineCardModel> getMedicalCards() {
+  List<MedicineCardModel> list = List<MedicineCardModel>();
+  MedicineCardModel model1 = MedicineCardModel();
+  model1.name = "Else";
+  model1.duration = "5 min ago";
+  
+
+  MedicineCardModel model2 = MedicineCardModel();
+  model2.name = "Something";
+  model2.duration = "15 min ago";
+  
+
+  MedicineCardModel model3 = MedicineCardModel();
+  model3.name = "Chronic";
+  model3.duration = "an hour ago";
+  
+
+  MedicineCardModel model4 = MedicineCardModel();
+  model4.name = "Diabeticcs";
+  model4.duration = "5 hour ago";
+  
+
+  MedicineCardModel model5 = MedicineCardModel();
+  model5.name = "Cancerr";
+  model5.duration = "7 hour ago";
+  
+
+  list.add(model1);
+  list.add(model2);
+  list.add(model3);
+  list.add(model4);
+  list.add(model5);
+  list.add(model1);
+  list.add(model2);
+  list.add(model3);
+  list.add(model4);
+  list.add(model5);
+  list.add(model1);
+  list.add(model2);
+  list.add(model3);
+  list.add(model4);
+  list.add(model5);
+  list.add(model1);
+  list.add(model2);
+  list.add(model3);
+  list.add(model4);
+  list.add(model5);
+  return list;
+}

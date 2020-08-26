@@ -5,3 +5,9 @@ class Category {
   Color color;
   var icon = "";
 }
+
+class MedicineCardModel {
+    var name = "";
+  var duration = "";
+  var image = "";
+}

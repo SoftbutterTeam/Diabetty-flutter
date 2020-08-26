@@ -2,6 +2,7 @@ import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
 import 'package:diabetttty/models/AppState.dart';
 import 'package:diabetttty/models/UserForm.dart';
+import 'package:diabetttty/theme/Extension.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';

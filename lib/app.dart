@@ -4,6 +4,7 @@ import 'package:diabetttty/controllers/routes.dart';
 import 'package:diabetttty/models/AppState.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/AppColors.dart';
+import 'package:diabetttty/theme/T2Colors.dart';
 import 'package:diabetttty/theme/app_state.dart';
 import 'package:diabetttty/theme/colors.dart';
 

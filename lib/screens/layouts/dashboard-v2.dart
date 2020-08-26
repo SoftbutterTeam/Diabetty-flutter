@@ -1,6 +1,8 @@
 import 'package:diabetttty/components/GridListing.dart';
 import 'package:diabetttty/model/Models.dart';
 import 'package:diabetttty/screens/index.dart';
+import 'package:diabetttty/screens/therapy.dart';
+import 'package:diabetttty/theme/Extension.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:diabetttty/utils/DataGenerator.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ class _DashBoardState extends State<DashBoard> {
     DrafttScreen(),
     DrafttScreen(),
     DrafttScreen(),
-    DrafttScreen()
+    TherapyPlanner()
   ];
 
   @override
