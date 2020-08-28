@@ -23,6 +23,8 @@ class Router {
         return MaterialPageRoute(builder: (BuildContext context) => BuddyUserQuestions());
       case homescreensplashscreen:
         return MaterialPageRoute(builder: (BuildContext context) => SplashScreen(route: diary));
+      case addmedication:
+        return MaterialPageRoute(builder: (BuildContext context) => AddMedication());
       // case '/settings':
       //   return MaterialPageRoute(builder: (_) => Settings());
       default:

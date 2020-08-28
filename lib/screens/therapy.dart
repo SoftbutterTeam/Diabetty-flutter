@@ -1,3 +1,4 @@
+import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/model/Models.dart';
 import 'package:diabetttty/theme/Extension.dart';
 import 'package:diabetttty/theme/T2Colors.dart';
@@ -141,8 +142,8 @@ class _TherapyPlannerState extends State<TherapyPlanner>
                           children: <Widget>[
                             SvgPicture.asset(
                               d_1,
-                              width: width / 5,
-                              height: width / 4.2,
+                              width: width / 7,
+                              height: width / 5,
                             ),
                             Expanded(
                               child: Container(
@@ -161,13 +162,183 @@ class _TherapyPlannerState extends State<TherapyPlanner>
                                   ],
                                 ),
                               ),
-                            )
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                SvgPicture.asset(
+                                  d_1,
+                                  width: 22,
+                                  height: 22,
+                                )
+                              ],
+                            ),
                           ],
                         ),
                         SizedBox(
                           height: 16,
                         ),
-                        text("Something", fontSize: textSizeMedium, maxLine: 2),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildBloodCheckCards(context, index) {
+    var width = MediaQuery.of(context).size.width;
+    return Slidable(
+      key: ValueKey(index),
+      actionPane: SlidableDrawerActionPane(),
+      actions: <Widget>[
+        Container(
+          child: Stack(
+            children: <Widget>[
+              IconSlideAction(
+                caption: '',
+                color: Colors.transparent,
+                icon: Icons.edit,
+                closeOnTap: true,
+                foregroundColor: Colors.transparent,
+                onTap: () {},
+              ),
+              RotatedBox(
+                quarterTurns: -1,
+                child: text("Edit",
+                    textColor: Colors.white,
+                    isCentered: true,
+                    latterSpacing: 5.0,
+                    fontFamily: fontSemibold),
+              )
+            ],
+            alignment: Alignment.center,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.green,
+          ),
+          margin: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
+          alignment: Alignment.center,
+        )
+      ],
+      secondaryActions: <Widget>[
+        Container(
+          child: Stack(
+            children: <Widget>[
+              IconSlideAction(
+                caption: '',
+                color: Colors.transparent,
+                icon: Icons.edit,
+                closeOnTap: true,
+                foregroundColor: Colors.transparent,
+                onTap: () {
+                  removeCard(index);
+                  print("Removed hopefully");
+                },
+              ),
+              RotatedBox(
+                quarterTurns: -1,
+                child: GestureDetector(
+                  child: text("Delete",
+                      textColor: Colors.white,
+                      isCentered: true,
+                      latterSpacing: 2.0,
+                      fontFamily: fontSemibold),
+                  onTap: () {
+                    print("Removeeed this bitch");
+                  },
+                ),
+              )
+            ],
+            alignment: Alignment.center,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.red,
+          ),
+          margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+          alignment: Alignment.center,
+        ),
+      ],
+      dismissal: SlidableDismissal(
+        child: SlidableDrawerDismissal(),
+      ),
+      child: Container(
+        margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        child: IntrinsicHeight(
+          child: Card(
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Container(
+                  color: Colors.red,
+                  width: 10,
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            //     SvgPicture.asset(
+                            //       d_1,
+                            //       width: width / 7,
+                            //       height: width / 5,
+                            //     ),
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.only(left: 16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    text(medicationCard[index].name,
+                                        textColor: Colors.red,
+                                        fontFamily: fontBold,
+                                        fontSize: textSizeMedium,
+                                        maxLine: 2),
+                                    text(medicationCard[index].duration,
+                                        fontSize: textSizeMedium),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: boxDecoration(
+                                              showShadow: false,
+                                              radius: 26,
+                                              color: Colors.black),
+                                          width: width * 0.10,
+                                          height: width * 0.10,
+                                          padding: EdgeInsets.all(8),
+                                          child: SvgPicture.asset(
+                                            notification,
+                                            width: 20,
+                                            height: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -247,30 +418,41 @@ class _TherapyPlannerState extends State<TherapyPlanner>
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      margin: EdgeInsets.all(8),
-                      width: width * 0.9,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      child: RaisedButton(
-                        child: Text("Add",
-                            style: TextStyle(
-                              color: Colors.white,
-                            )),
-                        onPressed: () {},
-                        color: Theme.of(context).primaryColor,
+                      margin: EdgeInsets.only(bottom: 10),
+                      width: width * 0.95,
+                      child: RoundedButton(
+                        textContent: "Add",
+                        onPressed: () {
+                          Navigator.pushNamed(context, addmedication);
+                        },
                       ),
                     ),
                   )
                 ],
               ),
-              SingleChildScrollView(
-                child: Center(
-                  child: Container(
-                      margin: EdgeInsets.only(left: 40, right: 40),
-                      child: Text("Blood Checks")),
-                ),
+              Column(
+                children: <Widget>[
+                  // SizedBox(height: 10),
+                  Expanded(
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: medicationCard.length,
+                        itemBuilder: (context, index) {
+                          return _buildBloodCheckCards(context, index);
+                        }),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      width: width * 0.95,
+                      child: RoundedButton(
+                        textContent: "Add",
+                        onPressed: () {},
+                      ),
+                    ),
+                  )
+                ],
               ),
             ]),
           ),

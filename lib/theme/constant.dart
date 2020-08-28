@@ -9,6 +9,7 @@ const String homescreensplashscreen = '/splashscreen/diary';
 const String diabeticuserquestion = '/diabeticuserquestion';
 const String initialquestion = '/initialquestion';
 const String buddyuserquestion = '/buddyuserquestion';
+const String addmedication = '/addmedication';
 
 // Diabetic Questions :
 

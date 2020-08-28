@@ -214,6 +214,16 @@ Widget checkbox(String title, bool boolValue) {
   );
 }
 
+InputDecoration formFieldDecoration(String hint_text) {
+  return InputDecoration(
+    labelText: hint_text,
+    focusColor: t3_colorPrimary,
+    counterText: "",
+    labelStyle: TextStyle(fontFamily: fontRegular, fontSize: textSizeMedium),
+    contentPadding: new EdgeInsets.only(bottom: 2.0),
+  );
+}
+
 class T3TopBar extends StatefulWidget {
   var titleName;
 
