@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-
-import 'package:diabetttty/models/UserForm.dart';
+import 'package:diabetttty/models/forms/UserForm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
+
+//TODO add notifyListeners() to neccessary methods
 
 class User with ChangeNotifier {
   String _id;
@@ -19,7 +20,6 @@ class User with ChangeNotifier {
   String password;
   String age;
   String referralCode;
-  
 
   User({this.name, this.email, this.password});
   bool get isLoggedIn => _loggedIn;
@@ -119,7 +119,6 @@ class User with ChangeNotifier {
       return e;
     }
   }
-  //TODO add notifyListeners() to neccessary methods
 
   Future<bool> saveData() async {
     print('attempting to save info');
@@ -128,7 +127,7 @@ class User with ChangeNotifier {
   }
 
   Future<bool> restoreData() async {
-   //await saveData();
+    //await saveData();
     try {
       print(1);
       String encodedUser = await readUserAccount();
@@ -269,10 +268,8 @@ class User with ChangeNotifier {
     }
   }
 
-
   Future<bool> registerUserB2({UserForm userform}) async {
     String type = "B";
-
     try {
       editAttributes(
           type: type,
@@ -292,7 +289,11 @@ class User with ChangeNotifier {
   Future<bool> updateUserWithForm({UserForm userform}) async {
     try {
       editAttributes(
-          loggedIn: true, status: userform.status, age: userform.age, referralCode: userform.referralCode,);
+        loggedIn: true,
+        status: userform.status,
+        age: userform.age,
+        referralCode: userform.referralCode,
+      );
       print(userform.age);
       print(userform.referralCode);
       print(userform.status);
@@ -318,22 +319,20 @@ class User with ChangeNotifier {
     String referralCode,
   }) {
     emptyAttributes(
-        id: (id != null ? id : this._id),
-        type: (type != null ? type : this.type),
-        status: (status != null ? status : this.status),
-        name: (name != null ? name : this.name),
-        email: (email != null ? email : this.email),
-        loggedIn: (loggedIn != null ? loggedIn : this._loggedIn),
-        emailVerfied:
-            (emailVerfied != null ? emailVerfied : this.emailVerified),
-        lastLogin: (lastLogin != null ? lastLogin : this.lastLogin),
-        phoneNumber: (phoneNumber != null ? phoneNumber : this.phoneNumber),
-        age: (age != null ? age : this.age),
-        referralCode: (referralCode != null ? referralCode: this.referralCode),
-        );
+      id: (id != null ? id : this._id),
+      type: (type != null ? type : this.type),
+      status: (status != null ? status : this.status),
+      name: (name != null ? name : this.name),
+      email: (email != null ? email : this.email),
+      loggedIn: (loggedIn != null ? loggedIn : this._loggedIn),
+      emailVerfied: (emailVerfied != null ? emailVerfied : this.emailVerified),
+      lastLogin: (lastLogin != null ? lastLogin : this.lastLogin),
+      phoneNumber: (phoneNumber != null ? phoneNumber : this.phoneNumber),
+      age: (age != null ? age : this.age),
+      referralCode: (referralCode != null ? referralCode : this.referralCode),
+    );
   }
 
-// call an update function
   void emptyAttributes(
       {String id,
       String type,

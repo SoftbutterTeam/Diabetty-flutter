@@ -1,8 +1,9 @@
-import 'package:diabetttty/model/Models.dart';
+import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/theme/T2Colors.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:diabetttty/utils/DataGenerator.dart';
 import 'package:flutter/material.dart';
+import 'package:diabetttty/themee/icons.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TherapyPlanner extends StatefulWidget {
@@ -137,7 +138,7 @@ class _TherapyPlannerState extends State<TherapyPlanner>
                         Row(
                           children: <Widget>[
                             Image.asset(
-                              medicationCard[index].image,
+                              d_1,
                               width: width / 5,
                               height: width / 4.2,
                             ),

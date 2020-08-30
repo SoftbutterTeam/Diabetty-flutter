@@ -1,5 +1,5 @@
 import 'package:diabetttty/components/GridListing.dart';
-import 'package:diabetttty/model/Models.dart';
+import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:diabetttty/utils/DataGenerator.dart';
