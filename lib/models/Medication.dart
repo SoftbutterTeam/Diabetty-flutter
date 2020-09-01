@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
+/*
 class Medication {
   String _id;
   User userOwner;
@@ -38,3 +38,4 @@ class UnitsMeasurement {
 }
 
 // db class can be defines elsewhere
+*/

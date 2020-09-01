@@ -1,5 +1,5 @@
 import 'package:diabetttty/models/AppState.dart';
-import 'package:diabetttty/models/UserForm.dart';
+import 'package:diabetttty/models/forms/UserForm.dart';
 import 'package:diabetttty/models/User.dart';
 
 class RegisterCon {
@@ -17,12 +17,11 @@ class RegisterCon {
     return true;
   }
 
-    static bool registerUserB(AppState appState, UserForm userform) {
+  static bool registerUserB(AppState appState, UserForm userform) {
     appState.userAccount.registerUserB2(userform: userform);
     print(userform.email);
     return true;
   }
-
 
   static void submitIntroData(AppState appState, UserForm userform) {
     print("hwifhwiebfgweb");

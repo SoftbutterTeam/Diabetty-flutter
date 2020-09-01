@@ -1,7 +1,7 @@
 import 'package:diabetttty/models/Medication.dart';
 import 'package:diabetttty/models/User.dart';
 import 'package:flutter/cupertino.dart';
-
+/*
 class MedicalProfile with ChangeNotifier {
   String _id;
   User userOwner;
@@ -13,4 +13,5 @@ class MedicalProfile with ChangeNotifier {
   List<Medication> medTherapy;
 }
 
-// db class can be defines elsewhere
+db class can be defines elsewhere
+*/

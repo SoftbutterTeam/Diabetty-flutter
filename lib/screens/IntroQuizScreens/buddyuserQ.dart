@@ -1,7 +1,7 @@
 import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
 import 'package:diabetttty/models/AppState.dart';
-import 'package:diabetttty/models/UserForm.dart';
+import 'package:diabetttty/models/forms/UserForm.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -137,11 +137,10 @@ class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
           alignment: Alignment.center,
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
-            textContent: emergency,
-            onPressed: () {
-              submitForm();
-            }
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+              textContent: emergency,
+              onPressed: () {
+                submitForm();
+              }).cornerRadiusWithClipRRect(25).paddingAll(16),
         ),
       ],
     );
@@ -192,18 +191,18 @@ class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(  
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 40,
-                ),
-                stepView,
-                selectedWidget()
-              ],
-            ).paddingOnly(top: 16),
-          ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 40,
+              ),
+              stepView,
+              selectedWidget()
+            ],
+          ).paddingOnly(top: 16),
         ),
+      ),
     );
   }
 }

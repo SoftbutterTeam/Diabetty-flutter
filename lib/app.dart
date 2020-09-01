@@ -43,8 +43,6 @@ class App extends StatelessWidget {
                 ChangeNotifierProvider(create: (context) => appState),
                 ChangeNotifierProvider(
                     create: (context) => appState.userAccount),
-                ChangeNotifierProvider(
-                    create: (context) => appState.userProfile),
               ],
               child: Consumer<AppLangState>(
                 builder: (context, provider, _) {

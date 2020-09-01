@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 class User with ChangeNotifier {
   String _id;
   String type;
-  String status = "";
+  String status = "none";
   bool _loggedIn = false;
   String name;
   String email;
@@ -127,7 +127,7 @@ class User with ChangeNotifier {
   }
 
   Future<bool> restoreData() async {
-    //await saveData();
+    await saveData();
     try {
       print(1);
       String encodedUser = await readUserAccount();

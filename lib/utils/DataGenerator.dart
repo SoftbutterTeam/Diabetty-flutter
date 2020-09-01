@@ -1,5 +1,4 @@
-import 'package:diabetttty/model/Models.dart';
-import 'package:diabetttty/theme/AppImages.dart';
+import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/theme/T3Images.dart';
 import 'package:diabetttty/themee/icons.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +40,6 @@ List<Category> getBottomSheetItems() {
 
   return list;
 }
-
 
 List<MedicineCardModel> getFavourites() {
   List<MedicineCardModel> list = List<MedicineCardModel>();

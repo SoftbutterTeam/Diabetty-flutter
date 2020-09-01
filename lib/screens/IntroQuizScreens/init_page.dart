@@ -1,7 +1,7 @@
 import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
 import 'package:diabetttty/models/AppState.dart';
-import 'package:diabetttty/models/UserForm.dart';
+import 'package:diabetttty/models/forms/UserForm.dart';
 import 'package:diabetttty/models/User.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/index.dart';
@@ -81,7 +81,8 @@ class _InitialQuestionPageState extends State<InitialQuestionPage> {
           margin: EdgeInsets.only(left: 40, right: 40),
           child: RoundedButton(
               textContent: 'Buddy User',
-              onPressed: () { if (_signupKey.currentState.validate()) {
+              onPressed: () {
+                if (_signupKey.currentState.validate()) {
                   _signupKey.currentState.save();
                   RegisterCon.registerUserB(appState, userform);
                   Navigator.pushNamed(context, buddyuserquestion);

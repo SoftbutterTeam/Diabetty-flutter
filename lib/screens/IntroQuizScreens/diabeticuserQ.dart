@@ -2,7 +2,7 @@ import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
 import 'package:diabetttty/models/AppState.dart';
 import 'package:diabetttty/screens/login.dart';
-import 'package:diabetttty/models/UserForm.dart';
+import 'package:diabetttty/models/forms/UserForm.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -97,7 +97,6 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
         ),
       ],
     );
-    
 
     final type = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,7 +1,7 @@
 import 'package:diabetttty/components/index.dart';
 import 'package:diabetttty/controllers/Register_Con.dart';
 import 'package:diabetttty/models/AppState.dart';
-import 'package:diabetttty/models/UserForm.dart';
+import 'package:diabetttty/models/forms/UserForm.dart';
 import 'package:diabetttty/models/User.dart';
 
 import 'package:diabetttty/theme/index.dart';
@@ -207,7 +207,8 @@ class _LoginFormState extends State<LoginForm>
                                   RegisterCon.registerAsGuest(
                                       appState, "Friend");
                                   //Navigator.pop(context);
-                                  Navigator.pushNamed(context, diabeticuserquestion);
+                                  Navigator.pushNamed(
+                                      context, diabeticuserquestion);
                                 },
                                 textContent: "Continue as Guest",
                               ),
@@ -309,10 +310,13 @@ class _LoginFormState extends State<LoginForm>
                                 onPressed: () {
                                   if (_signupKey.currentState.validate()) {
                                     _signupKey.currentState.save();
-                                    RegisterCon.registerUserA(appState, userform);
+                                    RegisterCon.registerUserA(
+                                        appState, userform);
                                     //TODO Save User Account information and Profile info
                                     Navigator.pushNamed(
-                                        context, initialquestion).then((_) => _signupKey.currentState.reset());
+                                            context, initialquestion)
+                                        .then((_) =>
+                                            _signupKey.currentState.reset());
                                     print(userform.name);
                                     print(userform.email);
                                     print(userform.password);
