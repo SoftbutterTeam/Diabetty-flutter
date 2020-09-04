@@ -1,4 +1,5 @@
 import 'package:diabetttty/components/GridListing.dart';
+import 'package:diabetttty/screens/DayPlanScreens/DayPlanScreen.dart';
 import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/index.dart';
@@ -24,8 +25,8 @@ class _DashBoardState extends State<DashBoard> {
 
   var _pages = [
     // Timeline(),
-    DrafttScreen(),
-    DrafttScreen(),
+    DayPlanner(),
+    DayPlanner(),
     DrafttScreen(),
     TherapyPlanner()
   ];
@@ -103,23 +104,28 @@ class _DashBoardState extends State<DashBoard> {
           d_5,
           height: 30,
           width: 30,
+          color: Colors.indigo,
           fit: BoxFit.fitHeight,
         ),
         title: Text("diary"),
       ),
       BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            today_gradient2,
-            height: 30,
-            width: 30,
-            fit: BoxFit.fitHeight,
-          ),
+          icon: Container(
+              padding: EdgeInsets.only(left: 2.5),
+              child: SvgPicture.asset(
+                'images/icons/checkbox/clock.svg',
+                height: 33,
+                width: 33,
+                color: Colors.indigo,
+                fit: BoxFit.fitHeight,
+              )),
           title: Text("today")),
       BottomNavigationBarItem(
           icon: SvgPicture.asset(
             sos_ic_gradient,
             height: 32,
             width: 32,
+            color: Colors.indigo,
             fit: BoxFit.fitHeight,
           ),
           title: Text("team")),
@@ -128,12 +134,14 @@ class _DashBoardState extends State<DashBoard> {
           t_2,
           height: 30,
           width: 30,
+          color: Colors.indigo,
           fit: BoxFit.fitHeight,
         ),
         activeIcon: SvgPicture.asset(
           more_ic,
           height: 30,
           width: 30,
+          color: Colors.indigo,
           fit: BoxFit.fitHeight,
         ),
         title: pageIndex == 3 ? Text("more") : Text("therapy"),

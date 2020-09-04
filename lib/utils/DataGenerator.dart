@@ -44,8 +44,8 @@ List<Category> getBottomSheetItems() {
 List<MedicineCardModel> getFavourites() {
   List<MedicineCardModel> list = List<MedicineCardModel>();
   MedicineCardModel model1 = MedicineCardModel();
-  model1.name = "Meidcines and that";
-  model1.duration = "5 min ago";
+  model1.name = "Insulin Short-life";
+  model1.duration = "Take 2 before a meal\n1 of 2";
   model1.image = d_1;
 
   MedicineCardModel model2 = MedicineCardModel();
@@ -69,24 +69,8 @@ List<MedicineCardModel> getFavourites() {
   model5.image = d_5;
 
   list.add(model1);
-  list.add(model2);
-  list.add(model3);
-  list.add(model4);
-  list.add(model5);
   list.add(model1);
-  list.add(model2);
-  list.add(model3);
-  list.add(model4);
-  list.add(model5);
   list.add(model1);
-  list.add(model2);
-  list.add(model3);
-  list.add(model4);
-  list.add(model5);
   list.add(model1);
-  list.add(model2);
-  list.add(model3);
-  list.add(model4);
-  list.add(model5);
   return list;
 }

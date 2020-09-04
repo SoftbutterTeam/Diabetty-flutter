@@ -4,11 +4,16 @@ const today_pills_gradient = "images/gradient-icons/svg/007-share.svg";
 const sos_ic_gradient = "images/gradient-icons/team.svg";
 const more_ic = "images/gradient-icons/more.svg";
 
-
 const records_gradient = "images/gradient-icons/018-medical-history.svg";
 
 const pill_gradient = "images/gradient-icons/013-pills-1.svg";
 const book = "images/gradient-icons/016-medical-book.svg";
+
+const pill = "images/gradient-icons/015-pill.svg";
+
+const drugs4_1 = "images/style1/004-drugs.svg";
+const drugs4_2 = "images/style2/004-drugs.svg";
+const drugs4_3 = "images/style3/004-drugs.svg";
 
 const t_1 = "images/gradient-icons/t1.svg";
 const t_2 = "images/gradient-icons/t2.svg";

@@ -73,6 +73,10 @@ flutter:
     - images/gradient-icons/
     - images/gradient-icons/svg/
     - images/icons/
+    - images/style1/
+    - images/style2/
+    - images/style3/
+    - images/icons/checkbox/
    
 
   fonts:

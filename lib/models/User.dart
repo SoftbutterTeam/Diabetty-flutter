@@ -127,7 +127,7 @@ class User with ChangeNotifier {
   }
 
   Future<bool> restoreData() async {
-    await saveData();
+    //await saveData();
     try {
       print(1);
       String encodedUser = await readUserAccount();
