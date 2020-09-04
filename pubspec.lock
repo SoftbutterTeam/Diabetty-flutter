@@ -153,6 +153,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.4"
+  flutter_picker:
+    dependency: "direct main"
+    description:
+      name: flutter_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.5"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -574,6 +581,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  weekday_selector:
+    dependency: "direct main"
+    description:
+      name: weekday_selector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   xdg_directories:
     dependency: transitive
     description:

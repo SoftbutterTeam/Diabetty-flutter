@@ -94,7 +94,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                   step = 2;
                 });
                 print(_ageController.text);
-              }).cornerRadiusWithClipRRect(25).paddingAll(16),
+              }).paddingAll(16),
         ),
       ],
     );
@@ -139,7 +139,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                 },
               )
             },
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+          ).paddingAll(16),
         ),
         SizedBox(height: 20),
         Container(
@@ -158,7 +158,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                 },
               )
             },
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+          ).paddingAll(16),
         ),
       ],
     );
@@ -200,7 +200,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                 },
               )
             },
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+          ).paddingAll(16),
         ),
         SizedBox(height: 20),
         Container(
@@ -218,7 +218,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                 },
               )
             },
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+          ).paddingAll(16),
         ),
         SizedBox(height: 20),
         Container(
@@ -236,7 +236,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                 },
               ),
             },
-          ).cornerRadiusWithClipRRect(25).paddingAll(16),
+          ).paddingAll(16),
         ),
       ],
     );
@@ -276,7 +276,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               textContent: testingkit,
               onPressed: () {
                 submitForm();
-              }).cornerRadiusWithClipRRect(25).paddingAll(16),
+              }).paddingAll(16),
         ),
         SizedBox(height: 20),
         Container(
@@ -286,7 +286,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               textContent: pump,
               onPressed: () {
                 submitForm();
-              }).cornerRadiusWithClipRRect(25).paddingAll(16),
+              }).paddingAll(16),
         ),
         SizedBox(height: 20),
         TextInputs(hintText: "Another Method..."),
@@ -304,7 +304,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
                 print(userform
                     .accountType); //null  --> on different screens, is ok?
                 print(userform.age);
-              }).cornerRadiusWithClipRRect(25).paddingAll(16),
+              }).paddingAll(16),
         ),
       ],
     );
@@ -325,7 +325,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               step = 1;
             });
           },
-        ).cornerRadiusWithClipRRect(20).paddingOnly(top: 32, left: 8),
+        ).cornerRadiusWithClipRRect(10).paddingOnly(top: 32, left: 8),
         Container(
           height: 1,
           width: 48,
@@ -346,7 +346,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               step = 2;
             });
           },
-        ).cornerRadiusWithClipRRect(20).paddingOnly(top: 32, left: 8),
+        ).cornerRadiusWithClipRRect(10).paddingOnly(top: 32, left: 8),
         Container(
           height: 1,
           width: 48,
@@ -367,7 +367,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               step = 3;
             });
           },
-        ).cornerRadiusWithClipRRect(20).paddingOnly(top: 32, left: 8),
+        ).cornerRadiusWithClipRRect(10).paddingOnly(top: 32, left: 8),
         Container(
           height: 1,
           width: 48,
@@ -388,7 +388,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
               step = 3;
             });
           },
-        ).cornerRadiusWithClipRRect(20).paddingOnly(top: 32, left: 8),
+        ).cornerRadiusWithClipRRect(10).paddingOnly(top: 32, left: 8),
       ],
     );
 

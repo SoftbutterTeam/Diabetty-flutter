@@ -74,7 +74,7 @@ class _InitialQuestionPageState extends State<InitialQuestionPage> {
                   RegisterCon.registerUserA(appState, userform);
                   Navigator.pushNamed(context, diabeticuserquestion);
                 }
-              }).cornerRadiusWithClipRRect(25).paddingAll(16),
+              }),
         ),
         SizedBox(height: 20),
         Container(
@@ -87,7 +87,7 @@ class _InitialQuestionPageState extends State<InitialQuestionPage> {
                   RegisterCon.registerUserB(appState, userform);
                   Navigator.pushNamed(context, buddyuserquestion);
                 }
-              }).cornerRadiusWithClipRRect(25).paddingAll(16),
+              }),
         ),
       ],
     );
