@@ -45,7 +45,7 @@ List<MedicineCardModel> getFavourites() {
   List<MedicineCardModel> list = List<MedicineCardModel>();
   MedicineCardModel model1 = MedicineCardModel();
   model1.name = "Insulin Short-life";
-  model1.duration = "Take 2 before a meal\n1 of 2";
+  model1.duration = "Take 2 before a meal at 10am";
   model1.image = d_1;
 
   MedicineCardModel model2 = MedicineCardModel();

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/theme/T2Colors.dart';
 import 'package:diabetttty/theme/index.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:diabetttty/themee/icons.dart';
 
 import 'package:flutter_svg/svg.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DayPlanner extends StatefulWidget {
   @override
@@ -119,6 +122,7 @@ class _DayPlannerState extends State<DayPlanner>
                                               alignment: Alignment.center,
                                               child: IconButton(
                                                   onPressed: () {
+                                                    _onAlert(context);
                                                     print("clucked");
                                                   },
                                                   padding: EdgeInsets.all(3),
@@ -201,6 +205,7 @@ class _DayPlannerState extends State<DayPlanner>
                                               child: IconButton(
                                                   onPressed: () {
                                                     print("clucked");
+                                                    _onAlert(context);
                                                   },
                                                   padding: EdgeInsets.all(3),
                                                   icon: SvgPicture.asset(
@@ -224,6 +229,49 @@ class _DayPlannerState extends State<DayPlanner>
                 ))
               ],
             )));
+  }
+
+  _onAlert(context) {
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      barrierColor: Colors.black12,
+      transitionDuration: Duration(milliseconds: 200),
+      pageBuilder: (ctx, anim1, anim2) => Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: Container(
+              alignment: Alignment.center,
+              color: Colors.transparent,
+              width: 350,
+              height: 350,
+              child: SizedBox(
+                width: 350,
+                height: 300,
+                child: Card(
+                    elevation: 1,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: SizedBox(
+                      height: 200,
+                      width: 200,
+                    )),
+              ))),
+      transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+        filter:
+            ImageFilter.blur(sigmaX: 4 * anim1.value, sigmaY: 4 * anim1.value),
+        child: FadeTransition(
+          child: child,
+          opacity: anim1,
+        ),
+      ),
+      context: context,
+    );
   }
 
   @override
@@ -251,9 +299,20 @@ class _DayPlannerState extends State<DayPlanner>
                     child: SafeArea(
                         child: Container(
                             padding: EdgeInsets.only(left: 12),
-                            alignment: Alignment.centerLeft,
-                            child:
-                                text("Friday 22nd", fontFamily: 'Regular'))))),
+                            alignment: Alignment.center,
+                            child: Column(
+                              //  mainAxisAlignment: MainAxisAlignment.center,
+
+                              children: <Widget>[
+                                text("Friday", fontFamily: 'Regular'),
+                                text('22 August',
+                                    fontFamily: 'Regular',
+                                    // isCentered: true,
+                                    fontSize: textSizeSmall)
+                              ],
+                              //mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                            ))))),
             body: TabBarView(children: <Widget>[
               Column(
                 children: <Widget>[
