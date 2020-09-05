@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:diabetttty/themee/icons.dart';
 
 import 'package:flutter_svg/svg.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DayPlanner extends StatefulWidget {
   @override
@@ -86,8 +85,8 @@ class _DayPlannerState extends State<DayPlanner>
                                         children: <Widget>[
                                           SvgPicture.asset(
                                             drugs4_1,
-                                            width: 25,
-                                            height: 25,
+                                            width: 28,
+                                            height: 28,
                                           ),
                                           Expanded(
                                             child: Container(
