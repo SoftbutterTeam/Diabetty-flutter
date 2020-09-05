@@ -278,65 +278,51 @@ class _DayPlannerState extends State<DayPlanner>
     changeStatusColor(Colors.white);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: SafeArea(
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: PreferredSize(
-                preferredSize: Size.fromHeight(50),
-                child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 3,
-                        offset: Offset(0, 1), // changes position of shadow
-                      ),
-                    ]),
-                    child: SafeArea(
-                        child: Container(
-                            padding: EdgeInsets.only(left: 12),
-                            alignment: Alignment.center,
-                            child: Column(
-                              //  mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child: Container(
+                height: 50,
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, 1), // changes position of shadow
+                  ),
+                ]),
+                child: SafeArea(
+                    child: Container(
+                        padding: EdgeInsets.only(left: 12),
+                        alignment: Alignment.center,
+                        child: Column(
+                          //  mainAxisAlignment: MainAxisAlignment.center,
 
-                              children: <Widget>[
-                                text("Friday", fontFamily: 'Regular'),
-                                text('22 August',
-                                    fontFamily: 'Regular',
-                                    // isCentered: true,
-                                    fontSize: textSizeSmall)
-                              ],
-                              //mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                            ))))),
-            body: TabBarView(children: <Widget>[
-              Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: height * 0.35,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: medicationCard.length,
-                        itemBuilder: (context, index) {
-                          return _buildReminderCards(context, index);
-                        }),
-                  ),
-                ],
-              ),
-              SingleChildScrollView(
-                child: Center(
-                  child: Container(
-                      margin: EdgeInsets.only(left: 40, right: 40),
-                      child: Text("Blood Checks")),
-                ),
-              ),
-            ]),
-          ),
+                          children: <Widget>[
+                            text("Friday", fontFamily: 'Regular'),
+                            text('22 August',
+                                fontFamily: 'Regular',
+                                // isCentered: true,
+                                fontSize: textSizeSmall)
+                          ],
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                        ))))),
+        body: Column(
+          children: <Widget>[
+            SizedBox(
+              height: height * 0.35,
+            ),
+            Expanded(
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: medicationCard.length,
+                  itemBuilder: (context, index) {
+                    return _buildReminderCards(context, index);
+                  }),
+            ),
+          ],
         ),
       ),
     );
