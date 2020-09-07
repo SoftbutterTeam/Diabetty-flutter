@@ -5,4 +5,4 @@ export 'login.dart';
 export 'introquizscreens/init_page.dart';
 export 'introquizscreens/diabeticuserQ.dart';
 export 'introquizscreens/buddyuserQ.dart';
-export 'therapy.dart';
+export 'TherapyScreens/TherapyScreen.dart';
