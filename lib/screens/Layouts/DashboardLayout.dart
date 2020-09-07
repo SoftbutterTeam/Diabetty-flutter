@@ -137,9 +137,9 @@ class _DashBoardState extends State<DashBoard> {
           fit: BoxFit.fitHeight,
         ),
         activeIcon: SvgPicture.asset(
-          more_ic,
-          height: 30,
-          width: 30,
+          'images/icons/more/more.svg',
+          height: 29,
+          width: 29,
           color: Colors.indigo,
           fit: BoxFit.fitHeight,
         ),
@@ -166,13 +166,10 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    changeStatusColor(t3_app_background);
+    // changeStatusColor(t3_app_background);
     return Container(
-        color: t3_app_background,
-        child: SafeArea(
-          top: false,
-          bottom: false,
-          child: buildDashboard(),
-        ));
+      color: t3_app_background,
+      child: buildDashboard(),
+    );
   }
 }

@@ -5,6 +5,7 @@ import 'package:diabetttty/utils/DataGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetttty/themee/icons.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/svg.dart';
 
 class TherapyPlanner extends StatefulWidget {
   @override
@@ -179,99 +180,129 @@ class _TherapyPlannerState extends State<TherapyPlanner>
   }
 
   @override
+  Widget build1(BuildContext context) {
+    changeStatusColor(Colors.white);
+    var width = MediaQuery.of(context).size.width;
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(200),
+            child: Container(
+                height: 200,
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, 1), // changes position of shadow
+                  ),
+                ]),
+                child: SafeArea(
+                    child: Container(
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        alignment: Alignment.center,
+                        child: Column(children: [
+                          Stack(
+                            children: <Widget>[
+                              Center(
+                                child: text("", fontFamily: 'Regular'),
+                              ),
+                              Container(
+                                  alignment: Alignment.centerRight,
+                                  padding: EdgeInsets.only(bottom: 15),
+                                  child: SvgPicture.asset(
+                                      'images/icons/essentials/016-add.svg',
+                                      width: 24,
+                                      height: 24,
+                                      color: Colors.indigo)),
+                            ],
+                          ),
+                          Container(
+                            padding: EdgeInsets.zero,
+                            alignment: Alignment.center,
+                            child: FlatButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {},
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: text("Add Medication",
+                                      fontFamily: 'Regular'),
+                                  width: width,
+                                )),
+                          ),
+                          Container(
+                            padding: EdgeInsets.zero,
+                            alignment: Alignment.center,
+                            child: FlatButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () {},
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: text("Other Reminders",
+                                      fontFamily: 'Regular'),
+                                  width: width,
+                                )),
+                          ),
+                        ]))))),
+        body: Column(
+          children: <Widget>[
+            // SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: SafeArea(
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(50),
-              child: Container(
-                color: Colors.white,
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child: Container(
+                height: 50,
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, 1), // changes position of shadow
+                  ),
+                ]),
                 child: SafeArea(
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Container(
-                        width: width,
-                        child: new TabBar(
-                          indicatorColor: Theme.of(context).primaryColor,
-                          tabs: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: new Text(
-                                "Medication",
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: t3_textColorPrimary,
-                                    fontFamily: fontBold),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: new Text(
-                                'Blood Checks',
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: t3_textColorPrimary,
-                                    fontFamily: fontBold),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            body: TabBarView(children: <Widget>[
-              Column(
-                children: <Widget>[
-                  // SizedBox(height: 10),
-                  Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: medicationCard.length,
-                        itemBuilder: (context, index) {
-                          return _buildMedicalCards(context, index);
-                        }),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
                     child: Container(
-                      margin: EdgeInsets.all(8),
-                      width: width * 0.9,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      child: RaisedButton(
-                        child: Text("Add",
-                            style: TextStyle(
-                              color: Colors.white,
-                            )),
-                        onPressed: () {},
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SingleChildScrollView(
-                child: Center(
-                  child: Container(
-                      margin: EdgeInsets.only(left: 40, right: 40),
-                      child: Text("Blood Checks")),
-                ),
-              ),
-            ]),
-          ),
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        alignment: Alignment.center,
+                        child: Stack(
+                          children: <Widget>[
+                            Center(
+                              child: text("Therapy Planner",
+                                  fontFamily: 'Regular'),
+                            ),
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(top: 5),
+                                child: SvgPicture.asset(
+                                  'images/icons/essentials/012-settings.svg',
+                                  width: 24,
+                                  height: 24,
+                                  color: Colors.indigo,
+                                )),
+                            Container(
+                                padding: EdgeInsets.only(top: 5),
+                                alignment: Alignment.centerRight,
+                                child: SvgPicture.asset(
+                                    'images/icons/essentials/016-add.svg',
+                                    width: 24,
+                                    height: 24,
+                                    color: Colors.indigo)),
+                          ],
+                        ))))),
+        body: Column(
+          children: <Widget>[
+            // SizedBox(height: 10),
+          ],
         ),
       ),
     );
