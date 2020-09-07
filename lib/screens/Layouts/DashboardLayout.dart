@@ -46,8 +46,7 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   onTap(int pageIndex) {
-    pageController.animateToPage(pageIndex,
-        duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
+    pageController.jumpToPage(pageIndex);
 
     if (pageIndex == 3 && currentIndex == 3) {
       showSheet(context);

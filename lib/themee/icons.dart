@@ -3,6 +3,7 @@ const today_gradient2 = "images/gradient-icons/012-pills-2.svg";
 const today_pills_gradient = "images/gradient-icons/svg/007-share.svg";
 const sos_ic_gradient = "images/gradient-icons/team.svg";
 const more_ic = "images/gradient-icons/more.svg";
+const info = "images/gradient-icons/svg/021-info.svg";
 
 const records_gradient = "images/gradient-icons/018-medical-history.svg";
 

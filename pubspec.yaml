@@ -82,6 +82,8 @@ flutter:
     - images/style2/
     - images/style3/
     - images/icons/checkbox/
+    - images/icons/X/
+    - images/icons/clock/
    
 
   fonts:
