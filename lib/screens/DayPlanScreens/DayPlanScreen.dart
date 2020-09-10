@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:diabetttty/components/LabeledCheckBox.dart';
 import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/theme/T2Colors.dart';
 import 'package:diabetttty/theme/index.dart';
@@ -7,8 +8,11 @@ import 'package:diabetttty/utils/DataGenerator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetttty/themee/icons.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:focused_menu/focused_menu.dart';
 
 import 'package:flutter_svg/svg.dart';
+import 'package:focused_menu/modals.dart';
 
 class DayPlanner extends StatefulWidget {
   @override
@@ -21,6 +25,7 @@ class _DayPlannerState extends State<DayPlanner>
   TabController tabController;
   Duration initialtimer = new Duration();
   DateTime newDate = DateTime(2020);
+  String postToggle = "List";
 
   @override
   void initState() {
@@ -237,11 +242,11 @@ class _DayPlannerState extends State<DayPlanner>
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(40, 15, 0, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              text("Postpone for...",
+              text("Postpone until...",
                   textColor: Colors.black,
                   fontSize: 15.0,
                   fontFamily: fontSemibold),
@@ -280,15 +285,17 @@ class _DayPlannerState extends State<DayPlanner>
   _onPostpone() {
     changeStatusColor(Colors.transparent);
     showModalBottomSheet(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         context: context,
         builder: (BuildContext context) {
           return Container(
+            padding: EdgeInsets.only(top: 24),
+            alignment: Alignment.topLeft,
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color(0XFFF6F7FA),
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0))),
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24))),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -339,6 +346,68 @@ class _DayPlannerState extends State<DayPlanner>
         });
   }
 
+  ListTile _createTile(
+      BuildContext context, String name, String time, Function action) {
+    return ListTile(
+      title: Text(name),
+      subtitle: Text(time),
+      onTap: () {
+        Navigator.pop(context);
+        action();
+      },
+    );
+  }
+
+  _action1() {
+    print('action1');
+  }
+
+  _action2() {
+    print('action2');
+  }
+
+  _action3() {
+    print('action3');
+  }
+
+  _showTaken() {
+    var height = MediaQuery.of(context).size.height;
+    changeStatusColor(Colors.transparent);
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: height * 0.32,
+            padding: EdgeInsets.only(top: 24),
+            alignment: Alignment.topLeft,
+            decoration: BoxDecoration(
+                color: Color(0XFFF6F7FA),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24))),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      text("When did you take your meds? ",
+                          fontSize: 12.0, fontFamily: fontRegular),
+                    ],
+                  ),
+                ),
+                _createTile(context, "On Time", "10:00am", _action1),
+                _createTile(context, "Now", "${DateTime.now()}", _action2),
+                _createTile(context, "Pick Exact Time", "", _action3),
+              ],
+            ),
+          );
+        });
+  }
+
   _onAlert(context, index) {
     changeStatusColor(Colors.transparent);
     showGeneralDialog(
@@ -374,7 +443,7 @@ class _DayPlannerState extends State<DayPlanner>
                             flex: 1,
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
+                                  color: CupertinoColors.activeBlue,
                                   borderRadius: BorderRadius.only(
                                       bottomLeft: Radius.circular(4))),
                               height: 50,
@@ -409,7 +478,7 @@ class _DayPlannerState extends State<DayPlanner>
                             flex: 1,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color: CupertinoColors.activeBlue,
                                 borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(4),
                                 ),
@@ -491,10 +560,11 @@ class _DayPlannerState extends State<DayPlanner>
                                                       BorderRadius.circular(80),
                                                   color: Colors.red),
                                             ),
-                                            SizedBox(width: 5),
+                                            SizedBox(width: 15),
                                             text(
                                               medicationCard[index].name,
-                                              textColor: t2_colorPrimary,
+                                              textColor:
+                                                  CupertinoColors.activeBlue,
                                               fontFamily: 'Bold',
                                               fontSize: textSizeMedium2,
                                               maxLine: 2,
@@ -552,7 +622,7 @@ class _DayPlannerState extends State<DayPlanner>
                             flex: 1,
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
+                                  color: CupertinoColors.activeBlue,
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(4),
                                     topLeft: Radius.circular(4),
@@ -566,8 +636,7 @@ class _DayPlannerState extends State<DayPlanner>
                                     children: <Widget>[
                                       Container(
                                         decoration: BoxDecoration(
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color: CupertinoColors.activeBlue,
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         margin:
@@ -578,7 +647,7 @@ class _DayPlannerState extends State<DayPlanner>
                                           children: <Widget>[
                                             IconButton(
                                               onPressed: () {
-                                                print("clucked");
+                                                print('Skipped');
                                               },
                                               padding: EdgeInsets.all(3),
                                               icon: SvgPicture.asset(
@@ -606,8 +675,7 @@ class _DayPlannerState extends State<DayPlanner>
                                     children: <Widget>[
                                       Container(
                                         decoration: BoxDecoration(
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color: CupertinoColors.activeBlue,
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         margin:
@@ -618,7 +686,7 @@ class _DayPlannerState extends State<DayPlanner>
                                           children: <Widget>[
                                             IconButton(
                                               onPressed: () {
-                                                print("clucked");
+                                                _showTaken();
                                               },
                                               padding: EdgeInsets.all(3),
                                               icon: SvgPicture.asset(
@@ -646,8 +714,7 @@ class _DayPlannerState extends State<DayPlanner>
                                     children: <Widget>[
                                       Container(
                                         decoration: BoxDecoration(
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color: CupertinoColors.activeBlue,
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         margin:
@@ -662,7 +729,7 @@ class _DayPlannerState extends State<DayPlanner>
                                               },
                                               padding: EdgeInsets.all(3),
                                               icon: SvgPicture.asset(
-                                                'images/icons/clock/refresh.svg',
+                                                'images/icons/clock/time.svg',
                                                 width: 30,
                                                 height: 30,
                                                 color: Colors.white,
@@ -704,42 +771,138 @@ class _DayPlannerState extends State<DayPlanner>
     );
   }
 
+  _handleChange() {
+    if (postToggle == "List") {
+      print("list");
+      print(postToggle);
+      setState(() {
+        postToggle = "Grid";
+      });
+    } else if (postToggle == "Grid") {
+      print("grid");
+      print(postToggle);
+      setState(() {
+        postToggle = "List";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     changeStatusColor(Colors.white);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
+    // _showFilterMenu() {
+    //   print('this works');
+    //   PopupMenuButton<int>(
+    //     itemBuilder: (context) => [
+    //       PopupMenuItem(
+    //         value: 1,
+    //         child: Text("First"),
+    //       ),
+    //       PopupMenuItem(
+    //         value: 2,
+    //         child: Text("Second"),
+    //       ),
+    //     ],
+    //     initialValue: 2,
+    //     onCanceled: () {
+    //       print("You have canceled the menu.");
+    //     },
+    //     onSelected: (value) {
+    //       print("value:$value");
+    //     },
+    //     icon: Icon(Icons.list),
+    //   );
+    // }
+
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            child: Container(
-                height: 50,
-                decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: Offset(0, 1), // changes position of shadow
-                  ),
-                ]),
-                child: SafeArea(
-                    child: Container(
-                        padding: EdgeInsets.only(left: 12),
-                        alignment: Alignment.center,
-                        child: Column(
-                          //  mainAxisAlignment: MainAxisAlignment.center,
+          preferredSize: Size.fromHeight(50),
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: Offset(0, 1), // changes position of shadow
+              ),
+            ]),
+            child: SafeArea(
+              child: Container(
+                padding: EdgeInsets.only(left: 12),
+                alignment: Alignment.center,
+                child: Stack(
+                  children: <Widget>[
+                    Center(
+                      child: Column(
+                        children: <Widget>[
+                          text("Friday", fontFamily: 'Regular'),
+                          text('22 August',
+                              fontFamily: 'Regular',
+                              // isCentered: true,
+                              fontSize: textSizeSmall),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => _handleChange(),
+                      child: Container(
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.only(top: 5, right: 10),
+                          child: SvgPicture.asset(
+                            (postToggle == "Grid")
+                                ? 'images/icons/clock/grid.svg'
+                                : 'images/icons/clock/list.svg',
+                            width: 24,
+                            height: 24,
+                            color: Colors.indigo,
+                          )),
+                    ),
 
-                          children: <Widget>[
-                            text("Friday", fontFamily: 'Regular'),
-                            text('22 August',
-                                fontFamily: 'Regular',
-                                // isCentered: true,
-                                fontSize: textSizeSmall)
-                          ],
-                          //mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                        ))))),
+                    // onTap: () => _showFilterMenu(),
+                    FocusedMenuHolder(
+                      onPressed: () {},
+                      menuWidth: MediaQuery.of(context).size.width * 0.3,
+                      blurSize: 5.0,
+                      menuItemExtent: 45,
+                      menuBoxDecoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(15.0))),
+                      duration: Duration(milliseconds: 100),
+                      animateMenuItems: true,
+                      blurBackgroundColor: Colors.black54,
+                      menuOffset: 20,
+                      menuItems: <FocusedMenuItem>[
+                        FocusedMenuItem(title: Text("All"), onPressed: () {}),
+                        FocusedMenuItem(
+                            title: Text("Missed"), onPressed: () {}),
+                        FocusedMenuItem(
+                            title: Text("Scheduled"), onPressed: () {}),
+                        FocusedMenuItem(
+                            title: Text(
+                              "Deleted",
+                              style: TextStyle(color: Colors.redAccent),
+                            ),
+                            onPressed: () {}),
+                      ],
+                      child: Container(
+                        padding: EdgeInsets.only(top: 5, right: 10),
+                        alignment: Alignment.centerLeft,
+                        child: SvgPicture.asset('images/icons/clock/filter.svg',
+                            width: 24, height: 24, color: Colors.indigo),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         body: Column(
           children: <Widget>[
             SizedBox(
