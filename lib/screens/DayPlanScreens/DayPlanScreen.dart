@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:diabetttty/components/LabeledCheckBox.dart';
+import 'package:diabetttty/screens/DayPlanScreens/MedicationProfileScreen.dart';
 import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/theme/T2Colors.dart';
 import 'package:diabetttty/theme/index.dart';
@@ -89,59 +90,73 @@ class _DayPlannerState extends State<DayPlanner>
                                       SizedBox(
                                         height: 3,
                                       ),
-                                      Row(
-                                        children: <Widget>[
-                                          SvgPicture.asset(
-                                            drugs4_1,
-                                            width: 28,
-                                            height: 28,
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              padding:
-                                                  EdgeInsets.only(left: 16),
-                                              child: Column(
-                                                //mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  text(
-                                                      medicationCard[index]
-                                                          .name,
-                                                      textColor:
-                                                          t2_colorPrimary,
-                                                      fontFamily: 'Regular',
-                                                      fontSize: textSizeMedium2,
-                                                      maxLine: 2),
-                                                  text(
-                                                      medicationCard[index]
-                                                          .duration,
-                                                      fontSize: textSizeSmall),
-                                                  text("1 of 2",
-                                                      fontSize: textSizeSmall2),
-                                                ],
+                                      GestureDetector(
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MedicationProfile())),
+                                        child: Row(
+                                          children: <Widget>[
+                                            ClipOval(
+                                              child: Image(
+                                                height: 30,
+                                                width: 30,
+                                                image: AssetImage(
+                                                    'images/icons/clock/medication.jpeg'),
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                              padding:
-                                                  EdgeInsets.only(right: 15),
-                                              alignment: Alignment.center,
-                                              child: IconButton(
-                                                  onPressed: () {
-                                                    _onAlert(context, index);
-                                                    print("clucked");
-                                                  },
-                                                  padding: EdgeInsets.all(3),
-                                                  // color: Colors.transparent,
-                                                  icon: SvgPicture.asset(
-                                                    'images/icons/checkbox/tick.svg',
-                                                    width: 30,
-                                                    color: Colors
-                                                        .indigoAccent[100],
-                                                    height: 30,
-                                                  ))),
-                                        ],
+                                            Expanded(
+                                              child: Container(
+                                                padding:
+                                                    EdgeInsets.only(left: 16),
+                                                child: Column(
+                                                  //mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    text(
+                                                        medicationCard[index]
+                                                            .name,
+                                                        textColor:
+                                                            t2_colorPrimary,
+                                                        fontFamily: 'Regular',
+                                                        fontSize:
+                                                            textSizeMedium2,
+                                                        maxLine: 2),
+                                                    text(
+                                                        medicationCard[index]
+                                                            .duration,
+                                                        fontSize:
+                                                            textSizeSmall),
+                                                    text("1 of 2",
+                                                        fontSize:
+                                                            textSizeSmall2),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                                padding:
+                                                    EdgeInsets.only(right: 15),
+                                                alignment: Alignment.center,
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      _onAlert(context, index);
+                                                      print("clucked");
+                                                    },
+                                                    padding: EdgeInsets.all(3),
+                                                    // color: Colors.transparent,
+                                                    icon: SvgPicture.asset(
+                                                      'images/icons/checkbox/tick.svg',
+                                                      width: 30,
+                                                      color: Colors
+                                                          .indigoAccent[100],
+                                                      height: 30,
+                                                    ))),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -789,7 +804,6 @@ class _DayPlannerState extends State<DayPlanner>
 
   @override
   Widget build(BuildContext context) {
-    changeStatusColor(Colors.white);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 

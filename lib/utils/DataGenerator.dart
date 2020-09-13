@@ -46,7 +46,7 @@ List<MedicineCardModel> getFavourites() {
   MedicineCardModel model1 = MedicineCardModel();
   model1.name = "Insulin Short-life";
   model1.duration = "Take 2 before a meal at 10am";
-  model1.image = d_1;
+  model1.image = 'images/icons/clock/medication.jpeg';
 
   MedicineCardModel model2 = MedicineCardModel();
   model2.name = "Aids Cure";
@@ -69,8 +69,8 @@ List<MedicineCardModel> getFavourites() {
   model5.image = d_5;
 
   list.add(model1);
-  list.add(model1);
-  list.add(model1);
-  list.add(model1);
+  list.add(model2);
+  list.add(model3);
+  list.add(model4);
   return list;
 }

@@ -55,7 +55,6 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   showSheet(BuildContext aContext) {
-    changeStatusColor(Colors.transparent);
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: aContext,
