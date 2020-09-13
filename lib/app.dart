@@ -1,17 +1,15 @@
-import 'package:diabetttty/components/Scroll_Behaviour/SBehavior.dart';
-import 'package:diabetttty/controllers/Register_Con.dart';
-import 'package:diabetttty/controllers/routes.dart';
-import 'package:diabetttty/models/AppState.dart';
-import 'package:diabetttty/screens/index.dart';
-import 'package:diabetttty/theme/AppColors.dart';
-import 'package:diabetttty/theme/app_state.dart';
-import 'package:diabetttty/theme/colors.dart';
+import 'package:diabetttty/system/AppProvider.dart';
+import 'package:diabetttty/routes.dart';
+import 'package:diabetttty/ui/components/Scroll_Behaviour/SBehavior.dart';
+import 'package:diabetttty/ui/theme/AppColors.dart';
+import 'package:diabetttty/ui/theme/app_state.dart';
+import 'package:diabetttty/ui/theme/colors.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'theme/constant.dart';
+import 'ui/theme/constant.dart';
 
 class App extends StatelessWidget {
   Future _init() async {
@@ -22,7 +20,7 @@ class App extends StatelessWidget {
     print("done with init");
   }
 
-  AppState appState = new AppState();
+  final AppState appState = new AppState();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +54,7 @@ class App extends StatelessWidget {
                       fontFamily: 'OpenSans',
                       primaryColor: colorCustom,
                       accentColor: appWhite,
-                      scaffoldBackgroundColor: t3_app_background,
+                      scaffoldBackgroundColor: Colors.grey[50],
                       visualDensity: VisualDensity.adaptivePlatformDensity,
                     ),
                     onGenerateRoute: Router.generateRoute,

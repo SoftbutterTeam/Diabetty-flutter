@@ -24,9 +24,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  cloud_firestore: ^0.13.7
+  firebase_core: ^0.4.5
+  firebase_auth: ^0.16.1
+  firebase_storage: ^3.1.6
   curved_navigation_bar: ^0.3.3
   cupertino_icons: ^0.1.3
   flutter_spinkit: ^4.1.2+1
@@ -53,6 +54,8 @@ dependencies:
   validators: ^2.0.1
   rflutter_alert: ^1.0.3
   easy_rich_text: '^0.5.0'
+  sqflite:
+  path:
   
 
 
@@ -121,5 +124,14 @@ flutter:
     - family: Bold
       fonts:
         - asset: fonts/googlesansebold.ttf
+
+    - family: SFPro
+      fonts:
+        - asset: fonts/SFprodisplay-regular.ttf
+    
+    - family: SFProBold
+      fonts:
+        - asset: fonts/SFprodisplay-Bold.ttf
+        
 
     

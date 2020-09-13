@@ -1,6 +1,7 @@
+import 'package:diabetttty/ui/theme/icons.dart';
 import 'package:diabetttty/utils/model/Models.dart';
-import 'package:diabetttty/theme/T3Images.dart';
-import 'package:diabetttty/themee/icons.dart';
+import 'package:diabetttty/ui/theme/T3Images.dart';
+
 import 'package:flutter/material.dart';
 
 List<Category> getBottomSheetItems() {
