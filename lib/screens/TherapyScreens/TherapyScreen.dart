@@ -1,9 +1,9 @@
+import 'package:diabetttty/themee/icons.dart';
 import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/theme/T2Colors.dart';
 import 'package:diabetttty/theme/index.dart';
 import 'package:diabetttty/utils/DataGenerator.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetttty/themee/icons.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -180,70 +180,76 @@ class _TherapyPlannerState extends State<TherapyPlanner>
   }
 
   @override
-  Widget build1(BuildContext context) {
+  Widget build(BuildContext context) {
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(200),
-            child: Container(
-                height: 200,
-                decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: Offset(0, 1), // changes position of shadow
-                  ),
-                ]),
-                child: SafeArea(
-                    child: Container(
-                        padding: EdgeInsets.only(left: 15, right: 15),
-                        alignment: Alignment.center,
-                        child: Column(children: [
-                          Stack(
-                            children: <Widget>[
-                              Center(
-                                child: text("", fontFamily: 'Regular'),
-                              ),
-                              Container(
-                                  alignment: Alignment.centerRight,
-                                  padding: EdgeInsets.only(bottom: 15),
-                                  child: SvgPicture.asset(
-                                      'images/icons/essentials/016-add.svg',
-                                      width: 24,
-                                      height: 24,
-                                      color: Colors.indigo)),
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.zero,
+          preferredSize: Size.fromHeight(200),
+          child: Container(
+            height: 200,
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: Offset(0, 1), // changes position of shadow
+              ),
+            ]),
+            child: SafeArea(
+              child: Container(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: <Widget>[
+                        Center(
+                          child: text("", fontFamily: 'Regular'),
+                        ),
+                        Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.only(bottom: 15),
+                            child: SvgPicture.asset(
+                                'images/icons/essentials/016-add.svg',
+                                width: 24,
+                                height: 24,
+                                color: Colors.indigo)),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.center,
+                      child: FlatButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          child: Container(
                             alignment: Alignment.center,
-                            child: FlatButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: () {},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: text("Add Medication",
-                                      fontFamily: 'Regular'),
-                                  width: width,
-                                )),
-                          ),
-                          Container(
-                            padding: EdgeInsets.zero,
+                            child:
+                                text("Add Medication", fontFamily: 'Regular'),
+                            width: width,
+                          )),
+                    ),
+                    Container(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.center,
+                      child: FlatButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          child: Container(
                             alignment: Alignment.center,
-                            child: FlatButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: () {},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: text("Other Reminders",
-                                      fontFamily: 'Regular'),
-                                  width: width,
-                                )),
-                          ),
-                        ]))))),
+                            child:
+                                text("Other Reminders", fontFamily: 'Regular'),
+                            width: width,
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         body: Column(
           children: <Widget>[
             // SizedBox(height: 10),
@@ -253,7 +259,7 @@ class _TherapyPlannerState extends State<TherapyPlanner>
     );
   }
 
-  Widget build(BuildContext context) {
+  Widget build1(BuildContext context) {
     changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
     return SafeArea(

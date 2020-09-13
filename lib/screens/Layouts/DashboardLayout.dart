@@ -1,5 +1,6 @@
 import 'package:diabetttty/components/GridListing.dart';
 import 'package:diabetttty/screens/DayPlanScreens/DayPlanScreen.dart';
+import 'package:diabetttty/screens/TherapyScreens/AddScheduleScreen.dart';
 import 'package:diabetttty/utils/model/Models.dart';
 import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/index.dart';
@@ -27,7 +28,7 @@ class _DashBoardState extends State<DashBoard> {
     // Timeline(),
     DayPlanner(),
     DayPlanner(),
-    DrafttScreen(),
+    AddScheduleScreen(),
     TherapyPlanner()
   ];
 
