@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "732609014766",
+    "firebase_url": "https://diabetty.firebaseio.com",
+    "project_id": "diabetty",
+    "storage_bucket": "diabetty.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732609014766:android:9eb01cbd40840ced60fcff",
+        "android_client_info": {
+          "package_name": "com.softbutter.diabetty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732609014766-iemso85nnglg83amoa1mlbuvqedleibr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGBxMtLEvFwtaBguw9UdJ0gkvs8GvDmow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732609014766-iemso85nnglg83amoa1mlbuvqedleibr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

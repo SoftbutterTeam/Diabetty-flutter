@@ -1,20 +1,10 @@
-name: diabetttty
+name: diabetty
 description: A new Flutter project.
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `pub publish`. This is preferred for private packages.
+
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+
 version: 1.0.0+1
 
 environment:
@@ -23,101 +13,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  curved_navigation_bar: ^0.3.3
+  
   cupertino_icons: ^0.1.3
-  flutter_spinkit: ^4.1.2+1
-  flutter_svg:
-  flutter_colorpicker:
-  http: any
-  google_fonts:  0.2.0
-  provider:
-  flutter_statusbarcolor: 0.2.3
-  flutter_slidable:
-  flutter_staggered_grid_view:
-  auto_size_text:
-  flutter_staggered_animations:
-  dashed_circle: 0.0.1
-  url_launcher: ^5.0.3
-  fluttertoast: ^3.1.3
-  snaplist:
-  dots_indicator: ^0.0.4
-  #firebase_core:
-  #firebase_analytics:
-  #firebase_crashlytics:
-  nb_utils: 3.0.3
-  flutter_snake_navigationbar:
-  validators: ^2.0.1
-  rflutter_alert: ^1.0.3
-  easy_rich_text: '^0.5.0'
+  firebase_auth: ^0.14.0+5
+  cloud_firestore: ^0.12.9+4
   
-
-
-  
-
-
-
-
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
 
-# The following section is specific to Flutter.
 flutter:
 
+  
   uses-material-design: true
 
-  assets:
-    - images/gradient-icons/
-    - images/gradient-icons/svg/
-    - images/icons/
-    - images/style1/
-    - images/style2/
-    - images/style3/
-    - images/icons/checkbox/
-   
-
-  fonts:
-    - family: OpenSans
-      fonts:
-        - asset: fonts/OpenSans-Regular.ttf
-        
-        - asset: fonts/OpenSans-Italic.ttf
-          style: italic
-        
-    - family: OpenSans-bold
-      fonts:
-      - asset: fonts/OpenSans-Bold.ttf
-    
-    - family: OpenSans-semibold
-      fonts:
-      - asset: fonts/OpenSans-SemiBold.ttf
-    
-    - family: OpenSans-light
-      fonts:
-      - asset: fonts/OpenSans-Light.ttf
-    
-    - family: Regular
-      fonts:
-        - asset: fonts/googlesansregular.ttf
-
-    - family: Medium
-      fonts:
-        - asset: fonts/googlesansmedium.ttf
-
-    - family: Semibold
-      fonts:
-        - asset: fonts/googlesansmedium.ttf
-
-    - family: Bold
-      fonts:
-        - asset: fonts/googlesansebold.ttf
-
-    
+  
