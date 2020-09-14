@@ -24,9 +24,10 @@ class _DashBoardState extends State<DashBoard> {
   int currentIndex = 0;
   List<Category> mFavouriteList;
 
+  static DayPlanner dashboard = DayPlanner();
   var _pages = [
     // Timeline(),
-    DayPlanner(),
+    dashboard,
     DayPlanner(),
     AddScheduleScreen(),
     TherapyPlanner()
@@ -147,6 +148,7 @@ class _DashBoardState extends State<DashBoard> {
       ),
     ];
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: PageView(
           children: _pages,
           controller: pageController,
@@ -157,7 +159,6 @@ class _DashBoardState extends State<DashBoard> {
         onTap: onTap,
         elevation: 8.0,
         type: BottomNavigationBarType.fixed,
-        // backgroundColor: t3_app_background,
         items: __items,
       ),
     );
