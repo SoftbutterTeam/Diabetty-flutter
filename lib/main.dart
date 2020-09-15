@@ -1,4 +1,4 @@
-import 'package:diabetty/screens/wrapper.dart';
+import 'package:diabetty/ui/screens/wrapper.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

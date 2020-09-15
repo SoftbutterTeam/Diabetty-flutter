@@ -1,5 +1,4 @@
-import 'package:diabetty/screens/authenticate/authenticate.dart';
-import 'package:diabetty/screens/home/home.dart';
+import 'package:diabetty/ui/screens/authenticate/authenticate.dart';
 import 'package:flutter/material.dart';
 
 class Wrapper extends StatelessWidget {

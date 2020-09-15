@@ -1,4 +1,4 @@
-import 'package:diabetty/screens/authenticate/sign_in.dart';
+import 'package:diabetty/ui/screens/authenticate/sign_in.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
