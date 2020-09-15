@@ -12,14 +12,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
-  //* Fix for: Unhandled Exception: ServicesBinding.defaultBinaryMessenger was accessed before the binding was initialized.
   WidgetsFlutterBinding.ensureInitialized();
   final appleSignInAvailable = await AppleSignInAvailable.check();
   runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
 }
 
 class MyApp extends StatelessWidget {
-  // [initialAuthServiceType] is made configurable for testing
   const MyApp(
       {this.initialAuthServiceType = AuthServiceType.firebase,
       this.appleSignInAvailable});
@@ -28,9 +26,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // MultiProvider for top-level services that can be created right away
     return MultiProvider(
       providers: [
+        // ignore: todo
+        //*TODO place AppleSignIn and emailSecure in AuthService
         Provider<AppleSignInAvailable>.value(value: appleSignInAvailable),
         Provider<AuthService>(
           create: (_) => AuthServiceAdapter(

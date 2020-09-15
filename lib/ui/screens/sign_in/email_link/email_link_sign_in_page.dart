@@ -7,7 +7,7 @@ import 'package:diabetty/services/authentication/firebase_email_api/firebase_ema
 import 'package:diabetty/ui/common_widgets/form_submit_button.dart';
 import 'package:diabetty/ui/common_widgets/platform_alert_dialog.dart';
 import 'package:diabetty/ui/common_widgets/platform_exception_alert_dialog.dart';
-import 'package:diabetty/ui/screens/sign_in/validator.dart';
+import 'package:diabetty/validators/validator.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

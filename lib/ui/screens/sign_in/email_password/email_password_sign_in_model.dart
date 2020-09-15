@@ -1,6 +1,6 @@
 import 'package:diabetty/constants/strings.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/ui/screens/sign_in/validator.dart';
+import 'package:diabetty/validators/validator.dart';
 import 'package:flutter/foundation.dart';
 
 enum EmailPasswordSignInFormType { signIn, register, forgotPassword }

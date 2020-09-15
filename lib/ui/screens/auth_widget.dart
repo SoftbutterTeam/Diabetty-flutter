@@ -9,8 +9,15 @@ import 'package:flutter/material.dart';
 /// An [AuthWidgetBuilder] ancestor is required for this widget to work.
 /// Note: this class used to be called [LandingPage].
 class AuthWidget extends StatelessWidget {
-  const AuthWidget({Key key, @required this.userSnapshot}) : super(key: key);
+  const AuthWidget(
+      {Key key,
+      @required this.userSnapshot,
+      this.navigateTo,
+      this.unauthorisedNavigateTo})
+      : super(key: key);
   final AsyncSnapshot<User> userSnapshot;
+  final String navigateTo;
+  final String unauthorisedNavigateTo;
 
   @override
   Widget build(BuildContext context) {
