@@ -1,4 +1,4 @@
-import 'package:diabetty/services/auth.dart';
+import 'package:diabetty/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
