@@ -40,7 +40,11 @@ dev_dependencies:
 
 
 flutter:
-
+ assets:
+    - assets/
+    - assets/2.0x/
+    - assets/3.0x/
+  
   
   uses-material-design: true
 
