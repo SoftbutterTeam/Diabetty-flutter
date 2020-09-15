@@ -113,8 +113,8 @@ class AuthServiceAdapter implements AuthService {
         androidMinimumVersion: androidMinimumVersion,
       );
 
-  @override
-  Future<User> signInWithFacebook() => authService.signInWithFacebook();
+  // @override
+  // Future<User> signInWithFacebook() => authService.signInWithFacebook();
 
   @override
   Future<User> signInWithGoogle() => authService.signInWithGoogle();

@@ -3,7 +3,7 @@ import 'package:diabetty/services/authentication/auth_service/auth_service.dart'
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+//import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService implements AuthService {
@@ -114,24 +114,24 @@ class FirebaseAuthService implements AuthService {
     }
   }
 
-  @override
-  Future<User> signInWithFacebook() async {
-    final FacebookLogin facebookLogin = FacebookLogin();
-    // https://github.com/roughike/flutter_facebook_login/issues/210
-    facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
-    final FacebookLoginResult result =
-        await facebookLogin.logIn(<String>['public_profile']);
-    if (result.accessToken != null) {
-      final AuthResult authResult = await _firebaseAuth.signInWithCredential(
-        FacebookAuthProvider.getCredential(
-            accessToken: result.accessToken.token),
-      );
-      return _userFromFirebase(authResult.user);
-    } else {
-      throw PlatformException(
-          code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
-    }
-  }
+  // @override
+  // Future<User> signInWithFacebook() async {
+  //   final FacebookLogin facebookLogin = FacebookLogin();
+  //   // https://github.com/roughike/flutter_facebook_login/issues/210
+  //   facebookLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
+  //   final FacebookLoginResult result =
+  //       await facebookLogin.logIn(<String>['public_profile']);
+  //   if (result.accessToken != null) {
+  //     final AuthResult authResult = await _firebaseAuth.signInWithCredential(
+  //       FacebookAuthProvider.getCredential(
+  //           accessToken: result.accessToken.token),
+  //     );
+  //     return _userFromFirebase(authResult.user);
+  //   } else {
+  //     throw PlatformException(
+  //         code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
+  //   }
+  // }
 
   @override
   Future<User> signInWithApple({List<Scope> scopes = const []}) async {
@@ -179,10 +179,19 @@ class FirebaseAuthService implements AuthService {
   @override
   Future<void> signOut() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
+    // googleSignIn.signIn();
+    print(googleSignIn.clientId);
+    print(googleSignIn.hostedDomain);
+    print(googleSignIn.currentUser);
+    print("HERERERERERERERER");
+    print(googleSignIn.isSignedIn());
+
     await googleSignIn.signOut();
-    final FacebookLogin facebookLogin = FacebookLogin();
+    return _firebaseAuth.signOut();
+    /*   final FacebookLogin facebookLogin = FacebookLogin();
     await facebookLogin.logOut();
     return _firebaseAuth.signOut();
+    */
   }
 
   @override

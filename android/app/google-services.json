@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "732609014766-v75h38h7f69vmvrkv8vnds12d1o2h76e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softbutter.diabetty",
+            "certificate_hash": "406cccd068cc50672505b448f818777464b2a204"
+          }
+        },
+        {
           "client_id": "732609014766-iemso85nnglg83amoa1mlbuvqedleibr.apps.googleusercontent.com",
           "client_type": 3
         }

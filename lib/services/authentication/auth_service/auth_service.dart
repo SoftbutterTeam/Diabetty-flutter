@@ -36,7 +36,7 @@ abstract class AuthService {
     @required String androidMinimumVersion,
   });
   Future<User> signInWithGoogle();
-  Future<User> signInWithFacebook();
+  // Future<User> signInWithFacebook();
   Future<User> signInWithApple({List<Scope> scopes});
   Future<void> signOut();
   Stream<User> get onAuthStateChanged;

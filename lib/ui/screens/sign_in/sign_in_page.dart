@@ -1,4 +1,5 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:diabetty/blocs/sign_in_manager.dart';
 import 'package:diabetty/constants/strings.dart';
 import 'package:diabetty/services/authentication/apple_auth_api/apple_sign_in_available.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
@@ -7,7 +8,6 @@ import 'package:diabetty/ui/constants/keys.dart';
 import 'package:diabetty/ui/screens/sign_in/developer_menu.dart';
 import 'package:diabetty/ui/screens/sign_in/email_link/email_link_sign_in_page.dart';
 import 'package:diabetty/ui/screens/sign_in/email_password/email_password_sign_in_page.dart';
-import 'package:diabetty/ui/screens/sign_in/sign_in_manager.dart';
 import 'package:diabetty/ui/screens/sign_in/social_sign_in_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +81,7 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
-      await manager.signInWithFacebook();
+      //await manager.signInWithFacebook();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
