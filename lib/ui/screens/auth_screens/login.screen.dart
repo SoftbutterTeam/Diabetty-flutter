@@ -1,6 +1,7 @@
 import 'package:diabetty/ui/screens/auth_screens/fade_animation.widget.dart';
 import 'package:diabetty/ui/screens/auth_screens/google.screen.dart';
 import 'package:diabetty/ui/screens/auth_screens/welcome.screen.dart';
+import 'package:diabetty/ui/screens/newpages/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginApp extends StatelessWidget {
@@ -9,7 +10,7 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       title: 'Login Challenge',
       theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: LoginPage(),
+      home: WelcomeScreen(),
     );
   }
 }

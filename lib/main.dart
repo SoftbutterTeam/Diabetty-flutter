@@ -22,8 +22,8 @@ GoogleSignIn _googleSignIn = new GoogleSignIn(
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appleSignInAvailable = await AppleSignInAvailable.check();
-  runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
-  // runApp(MyApp());
+  //runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
+  runApp(LoginApp());
 }
 
 class MyApp extends StatelessWidget {
