@@ -3,10 +3,10 @@ import 'package:diabetty/services/authentication/auth_service/auth_service.dart'
 import 'package:diabetty/services/authentication/auth_service_adapter.dart';
 import 'package:diabetty/services/authentication/firebase_email_api/email_secure_store.dart';
 import 'package:diabetty/services/authentication/firebase_email_api/firebase_email_link_handler.dart';
-import 'package:diabetty/ui/screens/auth_screens/login.screen.dart';
-import 'package:diabetty/ui/screens/auth_widget.dart';
-import 'package:diabetty/ui/screens/auth_widget_builder.dart';
-import 'package:diabetty/ui/screens/email_link_error_presenter.dart';
+import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget.dart';
+import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget_builder.dart';
+import 'package:diabetty/ui/common_widgets/auth_widget/email_link_error_presenter.dart';
+import 'package:diabetty/ui/screens/auth_screens/Welcome/welcome.screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -22,8 +22,8 @@ GoogleSignIn _googleSignIn = new GoogleSignIn(
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appleSignInAvailable = await AppleSignInAvailable.check();
-  //runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
-  runApp(LoginApp());
+  runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
+  // runApp(LoginApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -67,7 +67,11 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(primarySwatch: Colors.indigo),
           home: EmailLinkErrorPresenter.create(
             context,
-            child: AuthWidget(userSnapshot: userSnapshot),
+            child: AuthWidget(
+              userSnapshot: userSnapshot,
+              unauthorisedNavigateTo: WelcomeScreen(),
+              navigateTo: null,
+            ),
           ),
         );
       }),

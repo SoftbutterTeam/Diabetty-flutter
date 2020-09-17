@@ -27,6 +27,17 @@ class SignInManager {
     return await _signIn(auth.signInWithGoogle);
   }
 
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      isLoading.value = true;
+      await auth.signOut();
+      return await auth.signInWithEmailAndPassword(email, password);
+    } catch (e) {
+      isLoading.value = false;
+      rethrow;
+    }
+  }
+
   // Future<void> signInWithFacebook() async {
   //   return await _signIn(auth.signInWithFacebook);
   // }

@@ -1,12 +1,16 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:async';
 
 class FirebaseAuthService implements AuthService {
+  String mode = String.fromEnvironment('d_mode', defaultValue: 'test');
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   User _userFromFirebase(FirebaseUser user) {
