@@ -30,7 +30,9 @@ class SignInManager {
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
       isLoading.value = true;
-      return await auth.signInWithEmailAndPassword(email, password);
+      var result = await auth.signInWithEmailAndPassword(email, password);
+      isLoading.value = false;
+      return result;
     } catch (e) {
       isLoading.value = false;
       rethrow;

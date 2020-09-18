@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
       child: AuthWidgetBuilder(
           builder: (BuildContext context, AsyncSnapshot<User> userSnapshot) {
         return MaterialApp(
+          //debugShowCheckedModeBanner: false,
           theme: ThemeData(primarySwatch: Colors.indigo),
           home: EmailLinkErrorPresenter.create(
             context,

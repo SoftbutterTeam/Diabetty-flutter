@@ -4,6 +4,7 @@ import 'package:diabetty/services/authentication/auth_service/auth_service.dart'
 import 'package:diabetty/ui/common_widgets/platform_widgets/platform_exception_alert_dialog.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/keys.dart';
+import 'package:diabetty/ui/screens/auth_screens/common_widgets/loading_button.dart';
 import 'package:diabetty/ui/screens/auth_screens/form_models/email_password_form.model.dart';
 import 'package:diabetty/ui/screens/auth_screens/login/components/background.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/already_have_an_account_acheck.dart';
@@ -79,7 +80,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
-      print("yoyo");
       await widget.manager.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
@@ -122,6 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: _body(context),
     );
   }
@@ -150,16 +151,18 @@ class _LoginScreenState extends State<LoginScreen> {
             formKey: _loginKey,
             onSaved: (value) => emailPasswordForm.password = value,
           ),
-          RoundedButton(
-            text: "Login",
-            press: () {
-              if (_loginKey.currentState.validate()) {
-                _loginKey.currentState.save();
-                _signInWithEmailAndPassword(context, emailPasswordForm.email,
-                    emailPasswordForm.password);
-              }
-            },
-          ),
+          LoadingButton(
+              isLoading: widget.isLoading,
+              child: RoundedButton(
+                text: "Login",
+                press: () {
+                  if (_loginKey.currentState.validate()) {
+                    _loginKey.currentState.save();
+                    _signInWithEmailAndPassword(context,
+                        emailPasswordForm.email, emailPasswordForm.password);
+                  }
+                },
+              )),
           Text(
             "forgotten password?",
             style: TextStyle(color: kPrimaryColor),
@@ -212,17 +215,28 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-      child: SingleChildScrollView(
+      child: Container(
+        //height: size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: size.height * 0.05),
-            _buildEmailPasswordLoginForm(context),
-            SizedBox(height: size.height * 0.03),
-            OrDivider(),
-            _buildSocialLogins(context),
-            SizedBox(height: size.height * 0.20),
-            _buildAlreadyHaveAccount(context)
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: size.height * 0.05),
+                  _buildEmailPasswordLoginForm(context),
+                  SizedBox(height: size.height * 0.03),
+                  OrDivider(),
+                  _buildSocialLogins(context),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: _buildAlreadyHaveAccount(context)),
+            ),
+            SizedBox(height: size.height * 0.04),
           ],
         ),
       ),

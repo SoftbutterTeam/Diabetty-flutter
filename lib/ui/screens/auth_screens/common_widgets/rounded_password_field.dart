@@ -28,7 +28,6 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
 
   bool _obscureText;
 
-  // Toggles the password show status
   void _toggleObscureText() {
     setState(() {
       _obscureText = !_obscureText;
