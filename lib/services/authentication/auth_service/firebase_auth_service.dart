@@ -1,4 +1,5 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -184,12 +185,6 @@ class FirebaseAuthService implements AuthService {
   Future<void> signOut() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     // googleSignIn.signIn();
-    print(googleSignIn.clientId);
-    print(googleSignIn.hostedDomain);
-    print(googleSignIn.currentUser);
-    print("HERERERERERERERER");
-    print(googleSignIn.isSignedIn());
-
     await googleSignIn.signOut();
     return _firebaseAuth.signOut();
     /*   final FacebookLogin facebookLogin = FacebookLogin();

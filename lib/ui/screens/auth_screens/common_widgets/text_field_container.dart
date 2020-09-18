@@ -1,4 +1,3 @@
-import 'package:diabetty/ui/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldContainer extends StatelessWidget {

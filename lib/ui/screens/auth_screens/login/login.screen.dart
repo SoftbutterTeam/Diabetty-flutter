@@ -117,6 +117,69 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildEmailPasswordLogin(BuildContext context) {
+    return (Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RoundedInputField(
+          hintText: "Email",
+          onChanged: (value) {},
+        ),
+        RoundedPasswordField(
+          onChanged: (value) {},
+        ),
+        RoundedButton(
+          text: "Login",
+          press: () {},
+        ),
+        Text(
+          "forgotten password?",
+          style: TextStyle(color: kPrimaryColor),
+        ),
+      ],
+    ));
+  }
+
+  Widget _buildSocialLogins(BuildContext context) {
+    return (Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SocalIcon(
+          key: LoginScreen.facebookButtonKey,
+          iconSrc: "assets/icons/social/facebook.svg",
+          press: isLoading ? null : () => _signInWithFacebook(context),
+        ),
+        SocalIcon(
+          key: LoginScreen.anonymousButtonKey,
+          iconSrc: "assets/icons/social/twitter.svg",
+          press: isLoading ? null : () => _signInAnonymously(context),
+        ),
+        SocalIcon(
+          key: LoginScreen.googleButtonKey,
+          size: 30,
+          iconSrc: "assets/icons/social/google-plus.svg",
+          press: isLoading ? null : () => _signInWithGoogle(context),
+        ),
+      ],
+    ));
+  }
+
+  Widget _buildAlreadyHaveAccount(BuildContext context) {
+    return (AlreadyHaveAnAccountCheck(
+      login: true,
+      press: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return WelcomeScreen();
+            },
+          ),
+        );
+      },
+    ));
+  }
+
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
@@ -125,58 +188,12 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: size.height * 0.05),
-            RoundedInputField(
-              hintText: "Email",
-              onChanged: (value) {},
-            ),
-            RoundedPasswordField(
-              onChanged: (value) {},
-            ),
-            RoundedButton(
-              text: "Login",
-              press: () {},
-            ),
-            Text(
-              "forgotten password?",
-              style: TextStyle(color: kPrimaryColor),
-            ),
+            _buildEmailPasswordLogin(context),
             SizedBox(height: size.height * 0.03),
             OrDivider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SocalIcon(
-                  key: LoginScreen.facebookButtonKey,
-                  iconSrc: "assets/icons/social/facebook.svg",
-                  press: isLoading ? null : () => _signInWithFacebook(context),
-                ),
-                SocalIcon(
-                  key: LoginScreen.anonymousButtonKey,
-                  iconSrc: "assets/icons/social/twitter.svg",
-                  press: isLoading ? null : () => _signInAnonymously(context),
-                ),
-                SocalIcon(
-                  key: LoginScreen.googleButtonKey,
-                  size: 30,
-                  iconSrc: "assets/icons/social/google-plus.svg",
-                  press: isLoading ? null : () => _signInWithGoogle(context),
-                ),
-              ],
-            ),
+            _buildSocialLogins(context),
             SizedBox(height: size.height * 0.20),
-            AlreadyHaveAnAccountCheck(
-              login: true,
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return WelcomeScreen();
-                    },
-                  ),
-                );
-              },
-            ),
+            _buildAlreadyHaveAccount(context)
           ],
         ),
       ),
