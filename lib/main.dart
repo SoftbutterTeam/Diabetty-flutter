@@ -6,7 +6,7 @@ import 'package:diabetty/services/authentication/firebase_email_api/firebase_ema
 import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget_builder.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/email_link_error_presenter.dart';
-import 'package:diabetty/ui/screens/auth_screens/Welcome/welcome.screen.dart';
+import 'package:diabetty/ui/screens/auth_screens/welcome/welcome.screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

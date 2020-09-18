@@ -4,11 +4,13 @@ import 'package:diabetty/services/authentication/auth_service/auth_service.dart'
 import 'package:diabetty/ui/common_widgets/platform_widgets/platform_exception_alert_dialog.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/keys.dart';
+import 'package:diabetty/ui/screens/auth_screens/form_models/email_password_form.model.dart';
 import 'package:diabetty/ui/screens/auth_screens/login/components/background.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/already_have_an_account_acheck.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_button.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_input_field.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_password_field.dart';
+import 'package:validators/validators.dart' as validator;
 
 import 'package:diabetty/ui/screens/auth_screens/login/components/or_divider.dart';
 import 'package:diabetty/ui/screens/auth_screens/login/components/social_icon.dart';
@@ -29,11 +31,8 @@ class LoginScreenBuilder extends StatelessWidget {
             Provider<SignInManager>(
           create: (_) => SignInManager(auth: auth, isLoading: isLoading),
           child: Consumer<SignInManager>(
-            builder: (_, SignInManager manager, __) => LoginScreen._(
-              isLoading: isLoading.value,
-              manager: manager,
-              title: 'Firebase Auth Demo',
-            ),
+            builder: (_, SignInManager manager, __) =>
+                LoginScreen._(isLoading: isLoading.value, manager: manager),
           ),
         ),
       ),
@@ -41,12 +40,11 @@ class LoginScreenBuilder extends StatelessWidget {
   }
 }
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  const LoginScreen._({Key key, this.isLoading, this.manager, this.title})
+  const LoginScreen._({Key key, this.isLoading, this.manager})
       : super(key: key);
   final SignInManager manager;
-  final String title;
   final bool isLoading;
 
   static const Key googleButtonKey = Key('google');
@@ -54,6 +52,14 @@ class LoginScreen extends StatelessWidget {
   static const Key emailPasswordButtonKey = Key('email-password');
   static const Key emailLinkButtonKey = Key('email-link');
   static const Key anonymousButtonKey = Key(Keys.anonymous);
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  EmailPasswordForm emailPasswordForm = EmailPasswordForm();
+  final _loginKey = GlobalKey<FormState>();
 
   Future<void> _showSignInError(
       BuildContext context, PlatformException exception) async {
@@ -65,7 +71,7 @@ class LoginScreen extends StatelessWidget {
 
   Future<void> _signInAnonymously(BuildContext context) async {
     try {
-      await manager.signInAnonymously();
+      await widget.manager.signInAnonymously();
     } on PlatformException catch (e) {
       _showSignInError(context, e);
     }
@@ -74,7 +80,7 @@ class LoginScreen extends StatelessWidget {
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
       print("yoyo");
-      await manager.signInWithGoogle();
+      await widget.manager.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
@@ -84,7 +90,8 @@ class LoginScreen extends StatelessWidget {
 
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
-      await manager.signInWithEmailAndPassword("admin@123.com", "adminn");
+      await widget.manager
+          .signInWithEmailAndPassword("admin@123.com", "adminn");
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
@@ -92,24 +99,26 @@ class LoginScreen extends StatelessWidget {
     }
   }
 
-  // ignore: unused_element
-  Future<void> _signInWithApple(BuildContext context) async {
+  Future<void> _signInWithEmailAndPassword(
+      BuildContext context, String email, String password) async {
     try {
-      await manager.signInWithApple();
+      await widget.manager.signInWithEmailAndPassword(email, password);
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
       }
     }
   }
-  /*
-  Future<void> _signInWithEmailLink(BuildContext context) async {
-    final navigator = Navigator.of(context);
-    await EmailLinkSignInPage.show(
-      context,
-      onSignedIn: navigator.pop,
-    );
-  }*/
+
+  Future<void> _signInWithApple(BuildContext context) async {
+    try {
+      await widget.manager.signInWithApple();
+    } on PlatformException catch (e) {
+      if (e.code != 'ERROR_ABORTED_BY_USER') {
+        _showSignInError(context, e);
+      }
+    }
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,27 +126,47 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmailPasswordLogin(BuildContext context) {
-    return (Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        RoundedInputField(
-          hintText: "Email",
-          onChanged: (value) {},
-        ),
-        RoundedPasswordField(
-          onChanged: (value) {},
-        ),
-        RoundedButton(
-          text: "Login",
-          press: () {},
-        ),
-        Text(
-          "forgotten password?",
-          style: TextStyle(color: kPrimaryColor),
-        ),
-      ],
-    ));
+  String _formSave() {
+    _loginKey.currentState.save();
+    return null;
+  }
+
+  Widget _buildEmailPasswordLoginForm(BuildContext context) {
+    return Form(
+      key: _loginKey,
+      child: (Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RoundedInputField(
+            keyboardType: TextInputType.emailAddress,
+            hintText: "Email",
+            validator: (value) => !validator.isEmail(value)
+                ? "Please enter a valid Email"
+                : _formSave(),
+            onSaved: (String value) => emailPasswordForm.email = value,
+          ),
+          RoundedPasswordField(
+            onChanged: (value) {},
+            formKey: _loginKey,
+            onSaved: (value) => emailPasswordForm.password = value,
+          ),
+          RoundedButton(
+            text: "Login",
+            press: () {
+              if (_loginKey.currentState.validate()) {
+                _loginKey.currentState.save();
+                _signInWithEmailAndPassword(context, emailPasswordForm.email,
+                    emailPasswordForm.password);
+              }
+            },
+          ),
+          Text(
+            "forgotten password?",
+            style: TextStyle(color: kPrimaryColor),
+          ),
+        ],
+      )),
+    );
   }
 
   Widget _buildSocialLogins(BuildContext context) {
@@ -147,18 +176,18 @@ class LoginScreen extends StatelessWidget {
         SocalIcon(
           key: LoginScreen.facebookButtonKey,
           iconSrc: "assets/icons/social/facebook.svg",
-          press: isLoading ? null : () => _signInWithFacebook(context),
+          press: widget.isLoading ? null : () => _signInWithFacebook(context),
         ),
         SocalIcon(
           key: LoginScreen.anonymousButtonKey,
           iconSrc: "assets/icons/social/twitter.svg",
-          press: isLoading ? null : () => _signInAnonymously(context),
+          press: widget.isLoading ? null : () => _signInAnonymously(context),
         ),
         SocalIcon(
           key: LoginScreen.googleButtonKey,
           size: 30,
           iconSrc: "assets/icons/social/google-plus.svg",
-          press: isLoading ? null : () => _signInWithGoogle(context),
+          press: widget.isLoading ? null : () => _signInWithGoogle(context),
         ),
       ],
     ));
@@ -188,7 +217,7 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: size.height * 0.05),
-            _buildEmailPasswordLogin(context),
+            _buildEmailPasswordLoginForm(context),
             SizedBox(height: size.height * 0.03),
             OrDivider(),
             _buildSocialLogins(context),
