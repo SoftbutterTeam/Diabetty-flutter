@@ -60,16 +60,20 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: FlatButton(
                                   onPressed: () {},
-                                  color: Colors.transparent,
                                   disabledTextColor: Colors.grey,
                                   disabledColor: Colors.transparent,
                                   padding: EdgeInsets.zero,
-                                  child: Align(
-                                    child: text('Cancel',
-                                        fontSize: textSizeMedium2,
-                                        //fontFamily: 'Regular',
-                                        textColor: Colors.blue[900]),
-                                    alignment: Alignment.centerLeft,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print('clicked');
+                                    },
+                                    child: Align(
+                                      child: text('Cancel',
+                                          fontSize: textSizeMedium2,
+                                          //fontFamily: 'Regular',
+                                          textColor: Colors.blue[900]),
+                                      alignment: Alignment.centerLeft,
+                                    ),
                                   ),
                                 )),
                             Container(

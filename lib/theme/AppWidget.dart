@@ -1,3 +1,4 @@
+import 'package:diabetttty/screens/TherapyScreens/AddScheduleScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 //import 'package:diabetty/main/model/AppMoel.dart';
@@ -10,8 +11,7 @@ Text headerText(var text) {
   return Text(
     text,
     maxLines: 2,
-    style: TextStyle(
-        fontFamily: fontBold, fontSize: 22, color: appTextColorPrimary),
+    style: TextStyle(fontFamily: fontBold, fontSize: 22, color: Colors.white),
   );
 }
 
@@ -19,7 +19,7 @@ Text subHeadingText(var text) {
   return Text(
     text,
     style: TextStyle(
-        fontFamily: fontBold, fontSize: 17.5, color: appTextColorSecondary),
+        fontFamily: fontBold, fontSize: 17.5, color: Colors.white),
   );
 }
 
@@ -58,9 +58,16 @@ showToast(BuildContext aContext, String caption) {
 }
 
 class TopBar extends StatefulWidget {
-  var titleName; // changed from var -> final
+  var titleName;
+  var subtitleName;
+  double containerHeight;
+  VoidCallback onCustomButtonPressed;
 
-  TopBar(var this.titleName);
+  TopBar(
+      {this.titleName,
+      this.onCustomButtonPressed,
+      this.subtitleName,
+      this.containerHeight});
 
   @override
   State<StatefulWidget> createState() {
@@ -73,23 +80,55 @@ class TopBarState extends State<TopBar> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
+        // color: Colors.blue,
         width: MediaQuery.of(context).size.width,
-        height: 60,
-        color: appWhite,
+        height: widget.containerHeight,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                finish(context);
-              },
+              color: Colors.transparent,
+              icon: Icon(Icons.menu),
+              onPressed: () {},
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
               child: Center(
-                child: headerText(widget.titleName),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        (widget.containerHeight == 70) ? null : Navigator.push(context, MaterialPageRoute(builder: (context) => AddScheduleScreen()));
+                      },
+                      child: headerText(widget.titleName),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        (widget.containerHeight == 70) ? null : print('navigated to other reminder');
+                      },
+                      child: headerText(widget.subtitleName),
+                    ),
+                  ],
+                ),
               ),
-            )
+            ),
+            Container(
+              margin: (widget.containerHeight == 70) ? null : EdgeInsets.only(bottom: 45),
+              height: 70,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  IconButton(
+                    padding: EdgeInsets.only(
+                        bottom: (widget.containerHeight == 70) ? 10 : 40),
+                    icon: (widget.containerHeight == 70) ? Icon(Icons.add_circle) : Icon(Icons.close),
+                    color: Colors.white,
+                    onPressed: widget.onCustomButtonPressed,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

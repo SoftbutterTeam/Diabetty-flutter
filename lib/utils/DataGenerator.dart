@@ -72,5 +72,16 @@ List<MedicineCardModel> getFavourites() {
   list.add(model2);
   list.add(model3);
   list.add(model4);
+  list.add(model5);
+    list.add(model1);
+  list.add(model2);
+  list.add(model5);
+  list.add(model3);
+  list.add(model4);
+  list.add(model5);
+    list.add(model1);
+  list.add(model2);
+  list.add(model3);
+  list.add(model5);
   return list;
 }
