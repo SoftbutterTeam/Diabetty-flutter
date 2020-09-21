@@ -6,6 +6,8 @@ import 'package:diabetttty/utils/model/Models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'AddScheduleScreen.dart';
+
 class TherapyScreen2 extends StatefulWidget {
   @override
   _TherapyScreen2State createState() => _TherapyScreen2State();
@@ -178,7 +180,7 @@ class _TherapyScreen2State extends State<TherapyScreen2> {
       barrierDismissible: true,
       barrierLabel: '',
       barrierColor: Colors.black12,
-      transitionDuration: Duration(milliseconds: 0),
+      transitionDuration: Duration(milliseconds: 500),
       pageBuilder: (ctx, anim1, anim2) => Dialog(
         elevation: 0,
         insetPadding: EdgeInsets.zero,
@@ -204,36 +206,50 @@ class _TherapyScreen2State extends State<TherapyScreen2> {
                       bottomLeft: Radius.circular(20.0)),
                 ),
               ),
-              Column(
-                children: <Widget>[
-                  TopBar(
-                    titleName: titleName,
-                    subtitleName: subtitleName,
-                    containerHeight: containerHeight,
-                    onCustomButtonPressed: () {
-                      setState(() {
-                        titleName = "Therapy Planner";
-                        subtitleName = "";
-                        containerHeight = 70.0;
-                      });
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      child: Container(
-                      ),
-                      onTap: () {
-                        setState(() {
-                          titleName = "Therapy Planner";
-                          subtitleName = "";
-                          containerHeight = 70.0;
-                        });
-                        Navigator.pop(context);
-                      },
+              Positioned(
+                top: 38,
+                right: 0,
+                child: IconButton(
+                  color: Colors.white,
+                  icon: Icon(Icons.add_circle_outline),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              Positioned(
+                child: Center(
+                  child: Container(
+                    height: height * 0.2,
+                    // color: Colors.green,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddScheduleScreen()));
+                          },
+                          child: subHeadingText("Add Reminder"),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            print('hihihi');
+                          },
+                          child: subHeadingText("Add Reminder"),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            print('hihihi');
+                          },
+                          child: subHeadingText("Add Reminder"),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ],
           ),
@@ -268,11 +284,11 @@ class _TherapyScreen2State extends State<TherapyScreen2> {
                   subtitleName: subtitleName,
                   containerHeight: containerHeight,
                   onCustomButtonPressed: () {
-                    setState(() {
-                      titleName = "Add Reminder";
-                      subtitleName = "Other Reminder";
-                      containerHeight = 130.0;
-                    });
+                    // setState(() {
+                    //   titleName = "Add Reminder";
+                    //   subtitleName = "Other Reminder";
+                    //   containerHeight = 130.0;
+                    // });
                     _buildExpandedTherapyScreen(context);
                   },
                 ),
