@@ -18,11 +18,8 @@ const List<String> intakeAdvice = const <String>[
 ];
 
 const List<String> modeOptions = const <String>[
-  "As Planned",
   "Scheduled",
-  "Something Else",
-  "Something Else",
-  "Something Else",
+  "As Planned",
 ];
 
 List<Widget> appearanceIcon = <Widget>[
@@ -61,7 +58,7 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
   var appearanceHeart = false;
   var intake = "none";
   var minRest = "none";
-  var mode = 'none';
+  var mode = 'Scheduled';
   int _selectedIntakeIndex = 0;
   int _selectedModeIndex = 0;
   int _selectedAppearanceIndex = 0;
@@ -77,14 +74,21 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
   var saturday = false;
   var sunday = false;
 
-  
-
   @override
   void initState() {
     super.initState();
   }
 
   _saveData() {
+    (medicationNameController.text.isEmpty ||
+            strength == 'none' ||
+            appearance == Text('none') ||
+            intake == 'none' ||
+            minRest == 'none')
+        ? print('nah fam srry')
+        : setState(() {
+            step = 2;
+          });
     print(medicationNameController.text);
     print(strength);
     print(appearance);
@@ -659,8 +663,6 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
     }
   }
 
- 
-
   Scaffold _firstScreen() {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -729,9 +731,7 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
                           onPressed: () {
                             print('clickekkekeked');
                             _saveData();
-                            setState(() {
-                              step = 2;
-                            });
+
                             print(step);
                           },
                           color: Colors.transparent,
@@ -1025,7 +1025,7 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
   }
 
   Scaffold _secondScreen() {
-    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -1209,6 +1209,75 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
                     maxLength: 30,
                     padding:
                         EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
+                    placeholderStyle: TextStyle(
+                      fontSize: textSizeLargeMedium - 3,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                SizedBox(height: height * 0.35),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: CupertinoTextField(
+                    decoration: BoxDecoration(
+                      color: appWhite,
+                      border: Border.all(
+                          color: Colors.black54,
+                          width: 0.1,
+                          style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    prefix: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.only(left: 18),
+                        child: Icon(
+                          CupertinoIcons.shopping_cart,
+                          color: Color(0XFF5A5C5E),
+                          size: 23,
+                        ),
+                      ),
+                    ),
+                    placeholder: 'Inventory',
+                    readOnly: true,
+                    maxLines: 1,
+                    maxLength: 30,
+                    padding: EdgeInsets.only(
+                        left: 18, top: 9, bottom: 9, right: 10),
+                    placeholderStyle: TextStyle(
+                      fontSize: textSizeLargeMedium - 3,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: CupertinoTextField(
+                    decoration: BoxDecoration(
+                      color: appWhite,
+                      border: Border.all(
+                          color: Colors.black54,
+                          width: 0.1,
+                          style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    prefix: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.only(left: 18),
+                        child: Icon(
+                          CupertinoIcons.time_solid,
+                          color: Color(0XFF5A5C5E),
+                          size: 23,
+                        ),
+                      ),
+                    ),
+                    placeholder: 'Alarm Settings',
+                    readOnly: true,
+                    maxLines: 1,
+                    maxLength: 30,
+                    padding: EdgeInsets.only(
+                        left: 18, top: 9, bottom: 9, right: 10),
                     placeholderStyle: TextStyle(
                       fontSize: textSizeLargeMedium - 3,
                       color: Colors.grey[700],
