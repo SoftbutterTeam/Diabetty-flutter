@@ -1,6 +1,7 @@
 import 'package:diabetty/blocs/register_manager.dart';
 
 import 'package:diabetty/constants/strings.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/ui/common_widgets/platform_widgets/platform_exception_alert_dialog.dart';
 
@@ -216,14 +217,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return (AlreadyHaveAnAccountCheck(
       login: false,
       press: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return LoginScreenBuilder();
-            },
-          ),
-        );
+        Navigator.pushNamed(context, login);
       },
     ));
   }
@@ -232,7 +226,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Size size = MediaQuery.of(context).size;
     return Background(
       child: Container(
-        //height: size.height,
         child: Column(
           children: [
             SingleChildScrollView(

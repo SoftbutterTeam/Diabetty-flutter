@@ -1,28 +1,19 @@
 import 'package:diabetty/blocs/link_account_manager.dart';
-import 'package:diabetty/blocs/sign_in_manager.dart';
 import 'package:diabetty/constants/strings.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/services/authentication/auth_service/user.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/platform_widgets/platform_exception_alert_dialog.dart';
 import 'package:diabetty/ui/constants/colors.dart';
-import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/constants/keys.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/loading_button.dart';
 import 'package:diabetty/ui/screens/auth_screens/form_models/email_password_form.model.dart';
 import 'package:diabetty/ui/screens/auth_screens/login/components/background.dart';
-import 'package:diabetty/ui/screens/auth_screens/common_widgets/already_have_an_account_acheck.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_button.dart';
-import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_input_field.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_password_field.dart';
-import 'package:diabetty/ui/screens/auth_screens/register/register.screen.dart';
-import 'package:diabetty/ui/screens/errors/drafterror.screen.dart';
-import 'package:diabetty/ui/screens/loading/loading.screen.dart';
-import 'package:validators/validators.dart' as validator;
+import 'package:diabetty/ui/screens/error_screens/drafterror.screen.dart';
+import 'package:diabetty/ui/screens/loading_screens/loading.screen.dart';
 
 import 'package:diabetty/ui/screens/auth_screens/login/components/or_divider.dart';
-import 'package:diabetty/ui/screens/auth_screens/login/components/social_icon.dart';
-import 'package:diabetty/ui/screens/auth_screens/welcome/welcome.screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,12 +43,13 @@ class LinkAccountBuilder extends StatelessWidget {
                     }
                     bool linkable = snapshot.data ?? false;
                     if (linkable == false || linkable == null) {
-                      FutureBuilder(
+                      return FutureBuilder(
                           future: auth.startAsNewUser(appContext),
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
                               return ErrorScreen();
                             }
+                            print('loading screen');
                             return LoadingScreen();
                           });
                     }

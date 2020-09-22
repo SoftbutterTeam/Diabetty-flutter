@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/sign_in_manager.dart';
 import 'package:diabetty/constants/strings.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/platform_widgets/platform_exception_alert_dialog.dart';
@@ -86,8 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
         Provider.of<AppContext>(context, listen: false);
 
     print(appContext.user == null ? null : appContext.user.toJson());
-    //appContext.fetchUser();
-    /*try {
+    /* todo DO NOT DELETE, THIS IS THE REAL CODE
+    try {
       await widget.manager.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
@@ -211,19 +212,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildAlreadyHaveAccount(BuildContext context) {
-    return (AlreadyHaveAnAccountCheck(
+    return AlreadyHaveAnAccountCheck(
       login: true,
       press: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return RegisterScreenBuilder();
-            },
-          ),
-        );
+        Navigator.pushNamed(context, register);
       },
-    ));
+    );
   }
 
   Widget _body(BuildContext context) {

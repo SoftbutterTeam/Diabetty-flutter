@@ -1,3 +1,4 @@
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/services/authentication/apple_auth_api/apple_sign_in_available.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/authentication/auth_service_adapter.dart';
@@ -7,6 +8,8 @@ import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget_builder.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/email_link_error_presenter.dart';
+import 'package:diabetty/ui/common_widgets/scroll_behaviours/SBehavior.dart';
+import 'package:diabetty/ui/screens/auth_screens/login/login.screen.dart';
 import 'package:diabetty/ui/screens/auth_screens/register/register.screen.dart';
 import 'package:diabetty/ui/screens/auth_screens/welcome/welcome.screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -76,14 +79,20 @@ class MyApp extends StatelessWidget {
             AsyncSnapshot<User> userSnapshot,
             AsyncSnapshot<UserModel.User> aUserSnapshot) {
           return MaterialApp(
-              theme: ThemeData(primarySwatch: Colors.indigo),
+              theme: ThemeData(
+                primarySwatch: Colors.indigo,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              ),
+              onGenerateRoute: Router.generateRoute,
               home: EmailLinkErrorPresenter.create(context,
                   child: AuthWidget(
                     userSnapshot: userSnapshot,
                     aUserSnapshot: aUserSnapshot,
-                    unauthorisedNavigateTo: WelcomeScreen(),
-                    navigateTo: RegisterScreenBuilder(),
-                  )));
+                  )),
+              builder: (context, child) => ScrollConfiguration(
+                    behavior: SBehavior(),
+                    child: child,
+                  ));
         }));
   }
 }
