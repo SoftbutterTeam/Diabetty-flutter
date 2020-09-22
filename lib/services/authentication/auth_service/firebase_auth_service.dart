@@ -1,8 +1,13 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
+import 'package:diabetty/services/authentication/auth_service/user.service.dart';
+import 'package:diabetty/system/app_context.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:random_string/random_string.dart' as random;
+import 'dart:math' show Random;
+import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -13,6 +18,7 @@ class FirebaseAuthService implements AuthService {
   String mode = String.fromEnvironment('d_mode', defaultValue: 'test');
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final UserService _userService = new UserService();
 
   User _userFromFirebase(FirebaseUser user) {
     if (user == null) {
@@ -49,11 +55,32 @@ class FirebaseAuthService implements AuthService {
 
   @override
   Future<User> createUserWithEmailAndPassword(
-      String email, String password) async {
-    final AuthResult authResult = await _firebaseAuth
-        .createUserWithEmailAndPassword(email: email, password: password);
-    return _userFromFirebase(authResult.user);
+      String email, String password, UserModel.User userInfo) async {
+    String uid;
+    AuthResult authResult;
+    try {
+      authResult = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      uid = authResult.user.uid;
+      userInfo.uid = uid;
+      await _userService.createUser(userInfo);
+
+      return _userFromFirebase(authResult.user);
+    } catch (e) {
+      if (uid != null) {
+        try {
+          await authResult.user.delete();
+        } catch (e) {}
+        throw PlatformException(
+            code: 'ERROR_ABORTED_BY_USER',
+            message: 'Failed to Create Account. Try again later.');
+      }
+      rethrow;
+    }
   }
+
+  @override
+  //* RegisterUser( email, password, displayname, name){
 
   @override
   Future<void> sendPasswordResetEmail(String email) async {
@@ -97,16 +124,36 @@ class FirebaseAuthService implements AuthService {
   Future<User> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+    //*    e.g.googleUser.email
+    //* if email is already in use -> connect it to existing user instead
+    //*
+    //*  final Future<String> userid = currentUser().then((user) => user.uid);
+    //* FirebaseUser
 
     if (googleUser != null) {
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
+
       if (googleAuth.accessToken != null && googleAuth.idToken != null) {
-        final AuthResult authResult = await _firebaseAuth
-            .signInWithCredential(GoogleAuthProvider.getCredential(
+        User createdEmailUser;
+        try {
+          UserModel.User userInfo = new UserModel.User(
+              name: googleUser.displayName,
+              displayName: googleUser.displayName,
+              email: googleUser.email);
+          createdEmailUser = await createUserWithEmailAndPassword(
+              googleUser.email, random.randomAlphaNumeric(15), userInfo);
+        } catch (e) {}
+        final AuthCredential credential = GoogleAuthProvider.getCredential(
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
-        ));
+        );
+        if (createdEmailUser != null) {
+          final AuthResult authResult = await linkAccount(credential);
+          return _userFromFirebase(authResult.user);
+        }
+        final AuthResult authResult =
+            await _firebaseAuth.signInWithCredential(credential);
         return _userFromFirebase(authResult.user);
       } else {
         throw PlatformException(
@@ -117,6 +164,31 @@ class FirebaseAuthService implements AuthService {
       throw PlatformException(
           code: 'ERROR_ABORTED_BY_USER', message: 'Sign in aborted by user');
     }
+  }
+
+  Future<AuthResult> linkAccount(AuthCredential credential) async {
+    return _firebaseAuth
+        .currentUser()
+        .then((authUser) => authUser.linkWithCredential(credential));
+  }
+
+  Future<void> startAsNewUser(AppContext appContext) async {
+    User firebaseUser = await currentUser();
+    UserModel.User user = UserModel.User(
+        uid: firebaseUser.uid,
+        displayName: firebaseUser.displayName,
+        name: firebaseUser.displayName,
+        email: firebaseUser.email);
+
+    await _userService.createUser(user);
+    await appContext.fetchUser(toSinkUserChange: true);
+  }
+
+  Future<bool> isAccountLinkable() async {
+    final user = await currentUser();
+    if (user == null) return null;
+    final email = user.email;
+    return _userService.isEmailUnique(email);
   }
 
   // @override

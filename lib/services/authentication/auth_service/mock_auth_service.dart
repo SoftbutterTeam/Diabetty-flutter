@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
+import 'package:diabetty/system/app_context.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
+import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:random_string/random_string.dart' as random;
 
 /// Mock authentication service to be used for testing the UI
@@ -37,7 +40,10 @@ class MockAuthService implements AuthService {
 
   @override
   Future<User> createUserWithEmailAndPassword(
-      String email, String password) async {
+    String email,
+    String password,
+    UserModel.User userInfo,
+  ) async {
     await Future<void>.delayed(responseTime);
     if (_usersStore.keys.contains(email)) {
       throw PlatformException(
@@ -49,6 +55,18 @@ class MockAuthService implements AuthService {
     _usersStore[email] = _UserData(password: password, user: user);
     _add(user);
     return user;
+  }
+
+  Future<bool> isAccountLinkable() async {
+    return false;
+  }
+
+  Future<void> startAsNewUser(AppContext appContext) async {
+    return true;
+  }
+
+  Future<AuthResult> linkAccount(AuthCredential credential) {
+    return null;
   }
 
   @override

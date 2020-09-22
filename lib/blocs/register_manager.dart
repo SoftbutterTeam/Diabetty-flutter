@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
+import 'package:diabetty/models/user.model.dart' as UserModel;
+
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
-class SignInManager {
-  SignInManager({@required this.auth, @required this.isLoading});
+class RegisterManager {
+  RegisterManager({@required this.auth, @required this.isLoading});
   final AuthService auth;
   final ValueNotifier<bool> isLoading;
 
@@ -20,26 +22,22 @@ class SignInManager {
   }
 
   Future<User> signInAnonymously() async {
-    await auth.signOut(); //auth.signInAnonymously);
-    return null;
+    return await _signIn(auth.signInAnonymously);
   }
 
   Future<void> signInWithGoogle() async {
     return await _signIn(auth.signInWithGoogle);
   }
 
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<void> createAccount(
+      String displayName, String name, String email, String password) async {
     try {
       isLoading.value = true;
-      var result = await auth.signInWithEmailAndPassword(email, password);
-      try {
-        isLoading.value = false;
-      } catch (e) {}
+      var result = await auth.createUserWithEmailAndPassword(email, password,
+          UserModel.User(displayName: displayName, email: email, name: name));
       return result;
     } catch (e) {
-      try {
-        isLoading.value = false;
-      } catch (e) {}
+      isLoading.value = false;
       rethrow;
     }
   }

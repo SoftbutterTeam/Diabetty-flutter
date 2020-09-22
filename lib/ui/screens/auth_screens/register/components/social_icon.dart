@@ -6,7 +6,7 @@ class SocalIcon extends StatelessWidget {
   final String iconSrc;
   final Function press;
   final double size;
-  final double defaultsize = 17; //* was 20 //was 3
+  final double defaultsize = 20;
   final Color color;
   const SocalIcon({
     Key key,
@@ -18,16 +18,16 @@ class SocalIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color iconColor = color;
-    //* was color != null ? color : Colors.lightBlue[700]
+    Color iconColor = color ?? Colors.lightBlue[700];
     return GestureDetector(
       onTap: press,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10),
-        padding: EdgeInsets.all(size != null ? 0 : defaultsize),
+        padding:
+            EdgeInsets.all(size != null ? size - defaultsize + 6 : defaultsize),
         decoration: BoxDecoration(
           border: Border.all(
-            width: size != null ? 1 : 1, //* was 2
+            width: 2,
             color: kPrimaryLightColor,
           ),
           shape: BoxShape.circle,
@@ -35,8 +35,8 @@ class SocalIcon extends StatelessWidget {
         child: SvgPicture.asset(
           iconSrc,
           color: iconColor,
-          height: size ?? 28, //* was 22
-          width: size ?? 28,
+          height: size ?? 22,
+          width: size ?? 22,
         ),
       ),
     );

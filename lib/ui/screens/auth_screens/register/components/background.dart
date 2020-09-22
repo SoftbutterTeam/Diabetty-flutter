@@ -24,7 +24,7 @@ class Background extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: size.height * 0.11,
+            height: size.height * 0.05,
           ),
           Expanded(
               child: Container(

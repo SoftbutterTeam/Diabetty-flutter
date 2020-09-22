@@ -4,6 +4,9 @@ import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:diabetty/services/authentication/auth_service/mock_auth_service.dart';
+import 'package:diabetty/models/user.model.dart' as UserModel;
+import 'package:diabetty/system/app_context.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -74,8 +77,9 @@ class AuthServiceAdapter implements AuthService {
   Future<User> signInAnonymously() => authService.signInAnonymously();
 
   @override
-  Future<User> createUserWithEmailAndPassword(String email, String password) =>
-      authService.createUserWithEmailAndPassword(email, password);
+  Future<User> createUserWithEmailAndPassword(
+          String email, String password, UserModel.User userInfo) =>
+      authService.createUserWithEmailAndPassword(email, password, userInfo);
 
   @override
   Future<User> signInWithEmailAndPassword(String email, String password) =>
@@ -118,6 +122,17 @@ class AuthServiceAdapter implements AuthService {
 
   @override
   Future<User> signInWithGoogle() => authService.signInWithGoogle();
+
+  @override
+  Future<bool> isAccountLinkable() => authService.isAccountLinkable();
+
+  @override
+  Future<AuthResult> linkAccount(AuthCredential credential) =>
+      authService.linkAccount(credential);
+
+  @override
+  Future<void> startAsNewUser(AppContext appContext) =>
+      authService.startAsNewUser(appContext);
 
   @override
   Future<User> signInWithApple({List<Scope> scopes}) =>

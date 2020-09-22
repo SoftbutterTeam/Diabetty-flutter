@@ -1,6 +1,7 @@
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_button.dart';
 import 'package:diabetty/ui/screens/auth_screens/login/login.screen.dart';
+import 'package:diabetty/ui/screens/auth_screens/register/register.screen.dart';
 import 'package:diabetty/ui/screens/auth_screens/welcome/components/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -33,7 +34,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return null;
+                      return RegisterScreenBuilder();
                     },
                   ),
                 );

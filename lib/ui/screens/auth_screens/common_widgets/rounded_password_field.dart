@@ -6,13 +6,19 @@ import 'package:validators/validators.dart' as validator;
 class RoundedPasswordField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final Function onSaved;
+  final String hintText;
   final GlobalKey<FormState> formKey;
+  final bool isLoginForm;
+  final Function validator;
 
   const RoundedPasswordField({
     Key key,
     this.onChanged,
     this.onSaved,
     this.formKey,
+    this.hintText,
+    this.validator,
+    this.isLoginForm = false,
   }) : super(key: key);
 
   @override
@@ -47,10 +53,15 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
       onChanged: widget.onChanged,
       onSaved: widget.onSaved,
       cursorColor: kPrimaryColor,
-      validator: (value) =>
-          validator.isLength(value, 1) ? _formSave() : "please enter password",
+      validator: widget.validator == null
+          ? (value) => validator.isLength(value, 6)
+              ? _formSave()
+              : validator.isLength(value, 1) && !widget.isLoginForm
+                  ? "Password is too short"
+                  : "Please enter a password"
+          : widget.validator,
       decoration: InputDecoration(
-        hintText: "Password",
+        hintText: widget.hintText ?? "Password",
         icon: Icon(
           Icons.lock,
           color: kPrimaryColor,
