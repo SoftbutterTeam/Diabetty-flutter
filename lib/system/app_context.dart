@@ -50,7 +50,7 @@ class AppContext {
     isFetching = true;
     print("isFetching: turned on");
     _firebaseUser = (await _authService.currentUser());
-    await Future.delayed(Duration(seconds: 10), null);
+
     if (_firebaseUser != null) {
       try {
         if (_firebaseUser.uid != null)
@@ -79,7 +79,7 @@ class AppContext {
 
   Future<UserModel.User> lazyFetchUser() async {
     Duration waitforfetchTime = Duration(seconds: 1);
-    return null;
+
     if (_user != null && _user.uid == _firebaseUser.uid) return _user;
 
     if (isFetching) {

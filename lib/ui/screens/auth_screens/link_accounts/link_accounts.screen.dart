@@ -180,6 +180,7 @@ class _LinkAccountScreenState extends State<LinkAccountScreen> {
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
+        child: Container(
       child: Column(
         children: [
           SingleChildScrollView(
@@ -190,7 +191,7 @@ class _LinkAccountScreenState extends State<LinkAccountScreen> {
                 SizedBox(height: size.height * 0.15),
                 if (widget.linkable) _buildLinkAccountForm(context),
                 SizedBox(height: size.height * 0.02),
-                OrDivider(),
+                if (widget.linkable) OrDivider(),
                 SizedBox(height: size.height * 0.1),
                 _buildCreateAccountButton(context),
               ],
@@ -198,6 +199,6 @@ class _LinkAccountScreenState extends State<LinkAccountScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 }
