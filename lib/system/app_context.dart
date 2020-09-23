@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:diabetty/services/authentication/auth_service/user.service.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:flutter/foundation.dart';
 
 class AppContext {
   AuthService _authService;

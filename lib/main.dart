@@ -14,6 +14,7 @@ import 'package:diabetty/ui/screens/auth_screens/register/register.screen.dart';
 import 'package:diabetty/ui/screens/auth_screens/welcome/welcome.screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,8 @@ GoogleSignIn _googleSignIn = new GoogleSignIn(
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appleSignInAvailable = await AppleSignInAvailable.check();
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
   runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
   // runApp(LoginApp());
 }
@@ -79,6 +82,7 @@ class MyApp extends StatelessWidget {
             AsyncSnapshot<User> userSnapshot,
             AsyncSnapshot<UserModel.User> aUserSnapshot) {
           return MaterialApp(
+              debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 primarySwatch: Colors.indigo,
                 visualDensity: VisualDensity.adaptivePlatformDensity,

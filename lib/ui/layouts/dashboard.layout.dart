@@ -1,7 +1,6 @@
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/draft_screen.dart';
-import 'package:diabetty/ui/screens/main_screens/today/today.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -58,7 +57,7 @@ class _DashBoardState extends State<DashBoard> {
           icon: Container(
               padding: EdgeInsets.only(left: 1.5),
               child: SvgPicture.asset(
-                'images/icons/checkbox/clock.svg',
+                'assets/icons/navigation/checkbox/clock.svg',
                 height: 33,
                 width: 33,
                 color: Colors.indigo,
@@ -67,7 +66,7 @@ class _DashBoardState extends State<DashBoard> {
           title: Text("today")),
       BottomNavigationBarItem(
           icon: SvgPicture.asset(
-            sos_ic_gradient,
+            sos_icon,
             height: 32,
             width: 32,
             color: Colors.indigo,
@@ -83,7 +82,7 @@ class _DashBoardState extends State<DashBoard> {
           fit: BoxFit.fitHeight,
         ),
         activeIcon: SvgPicture.asset(
-          'images/icons/more/more.svg',
+          'assets/icons/navigation/more/more.svg',
           height: 29,
           width: 29,
           color: Colors.indigo,

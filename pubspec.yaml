@@ -39,6 +39,11 @@ dependencies:
   random_string: ^2.0.0
   flutter_svg:
   validators: ^2.0.1
+  focused_menu: ^1.0.0
+  
+  flutter_statusbarcolor: 0.2.3
+  flutter_slidable:
+  flutter_staggered_grid_view:
   
 
 dev_dependencies:
@@ -53,6 +58,14 @@ flutter:
     - assets/2.0x/
     - assets/3.0x/
     - assets/icons/social/
+    - assets/icons/navigation/gradient-icons/
+    - assets/icons/navigation/gradient-icons/svg/
+    - assets/icons/navigation/checkbox/
+    - assets/icons/navigation/clock/
+    - assets/icons/navigation/essentials/
+    - assets/icons/navigation/more/
+    - assets/icons/navigation/other/
+    - assets/icons/navigation/x/
   
   
   

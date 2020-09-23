@@ -1,6 +1,6 @@
 import 'package:diabetty/ui/screens/auth_screens/login/login.screen.dart';
 import 'package:diabetty/ui/screens/auth_screens/register/register.screen.dart';
-import 'package:diabetty/ui/screens/layouts/dashboard.layout.dart';
+import 'package:diabetty/ui/layouts/dashboard.layout.dart';
 import 'package:flutter/material.dart';
 
 class Router {
