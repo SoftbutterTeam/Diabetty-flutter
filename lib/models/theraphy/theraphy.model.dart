@@ -39,7 +39,7 @@ class Days {
     this.friday = false,
     this.saturday = false,
     this.sunday = false,
-  }) 
+  });
 }
 
 class ScheduleSettings {
