@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm>
   Widget build(BuildContext context) {
     print("login page building....");
 
-    changeStatusColor(Colors.white);
+    //changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(

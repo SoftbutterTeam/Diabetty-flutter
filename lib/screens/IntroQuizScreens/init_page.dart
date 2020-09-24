@@ -23,7 +23,7 @@ class _InitialQuestionPageState extends State<InitialQuestionPage> {
   @override
   Widget build(BuildContext context) {
     appState = Provider.of<AppState>(context, listen: false);
-    changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
+    //changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
     //Navigator.pushNamed(context, login);
 
     final welcome = Column(

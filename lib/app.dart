@@ -6,6 +6,7 @@ import 'package:diabetttty/screens/index.dart';
 import 'package:diabetttty/theme/AppColors.dart';
 import 'package:diabetttty/theme/app_state.dart';
 import 'package:diabetttty/theme/colors.dart';
+import 'package:diabetttty/theme/index.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
     WidgetsBinding.instance.renderView.automaticSystemUiAdjustment = false;
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
+
     await appState.restoreData();
     print("done with init");
   }

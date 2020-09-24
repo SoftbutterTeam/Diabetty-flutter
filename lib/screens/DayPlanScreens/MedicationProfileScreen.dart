@@ -314,7 +314,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
 
   @override
   Widget build(BuildContext context) {
-    changeStatusColor(Colors.transparent);
+    //changeStatusColor(Colors.transparent);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(

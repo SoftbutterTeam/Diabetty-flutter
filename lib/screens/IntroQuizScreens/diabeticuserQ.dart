@@ -28,7 +28,7 @@ class _DiabeticUserQuestionsState extends State<DiabeticUserQuestions> {
   final _signupKey = GlobalKey<FormState>();
 
   Widget build(BuildContext context) {
-    changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
+    //changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
 
     final age = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

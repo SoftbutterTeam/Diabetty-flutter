@@ -122,7 +122,7 @@ class TopBarState extends State<TopBar> {
                   IconButton(
                     padding: EdgeInsets.only(
                         bottom: (widget.containerHeight == 70) ? 10 : 40),
-                    icon: (widget.containerHeight == 70) ? Icon(Icons.add_circle) : Icon(Icons.close),
+                    icon: (widget.containerHeight == 70) ? Icon(Icons.add) : Icon(Icons.close),
                     color: Colors.white,
                     onPressed: widget.onCustomButtonPressed,
                   ),

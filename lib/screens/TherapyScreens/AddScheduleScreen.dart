@@ -668,88 +668,85 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: SafeArea(
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: Offset(0, 1), // changes position of shadow
-              ),
-            ]),
-            child: SafeArea(
-              child: Container(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                alignment: Alignment.center,
-                child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      child: Center(
-                        child: Container(
-                          // color: Colors.red,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.only(left: 1),
-                          child: text("Add Medication",
-                              //  fontFamily: 'SfPro',
-                              fontSize: textSizeMedium),
-                        ),
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: Offset(0, 1), // changes position of shadow
+            ),
+          ]),
+          child: SafeArea(
+            child: Container(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              alignment: Alignment.center,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    child: Center(
+                      child: Container(
+                        // color: Colors.red,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.only(left: 1),
+                        child: text("Add Medication",
+                            //  fontFamily: 'SfPro',
+                            fontSize: textSizeMedium),
                       ),
                     ),
-                    Positioned(
-                      left: 5,
-                      child: Container(
-                          // color: Colors.green,
-                          padding: EdgeInsets.only(top: 5),
-                          child: FlatButton(
-                            onPressed: () {},
-                            disabledTextColor: Colors.grey,
-                            disabledColor: Colors.transparent,
-                            padding: EdgeInsets.zero,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                                print('clicked');
-                              },
-                              child: Align(
-                                child: text('Cancel',
-                                    fontSize: textSizeMedium2,
-                                    //fontFamily: 'Regular',
-                                    textColor: Colors.blue[900]),
-                                alignment: Alignment.centerLeft,
-                              ),
-                            ),
-                          )),
-                    ),
-                    Positioned(
-                      right: 5,
-                      child: Container(
-                        // color: Colors.blue,
+                  ),
+                  Positioned(
+                    left: 5,
+                    child: Container(
+                        // color: Colors.green,
                         padding: EdgeInsets.only(top: 5),
                         child: FlatButton(
-                          onPressed: () {
-                            print('clickekkekeked');
-                            _saveData();
-
-                            print(step);
-                          },
-                          color: Colors.transparent,
+                          onPressed: () {},
                           disabledTextColor: Colors.grey,
                           disabledColor: Colors.transparent,
                           padding: EdgeInsets.zero,
-                          child: Align(
-                            child: text('Next',
-                                fontSize: textSizeMedium2,
-                                //fontFamily: 'Regular',
-                                textColor: Colors.blue[900]),
-                            alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              print('clicked');
+                            },
+                            child: Align(
+                              child: text('Cancel',
+                                  fontSize: textSizeMedium2,
+                                  //fontFamily: 'Regular',
+                                  textColor: Colors.blue[900]),
+                              alignment: Alignment.centerLeft,
+                            ),
                           ),
+                        )),
+                  ),
+                  Positioned(
+                    right: 5,
+                    child: Container(
+                      // color: Colors.blue,
+                      padding: EdgeInsets.only(top: 5),
+                      child: FlatButton(
+                        onPressed: () {
+                          print('clickekkekeked');
+                          _saveData();
+
+                          print(step);
+                        },
+                        color: Colors.transparent,
+                        disabledTextColor: Colors.grey,
+                        disabledColor: Colors.transparent,
+                        padding: EdgeInsets.zero,
+                        child: Align(
+                          child: text('Next',
+                              fontSize: textSizeMedium2,
+                              //fontFamily: 'Regular',
+                              textColor: Colors.blue[900]),
+                          alignment: Alignment.centerRight,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -1029,85 +1026,82 @@ class AddScheduleScreenState extends State<AddScheduleScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: SafeArea(
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: Offset(0, 1), // changes position of shadow
-              ),
-            ]),
-            child: SafeArea(
-              child: Container(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                alignment: Alignment.center,
-                child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      child: Center(
-                        child: Container(
-                          // color: Colors.red,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.only(left: 1),
-                          child: text("Add Reminder",
-                              //  fontFamily: 'SfPro',
-                              fontSize: textSizeMedium),
-                        ),
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: Offset(0, 1), // changes position of shadow
+            ),
+          ]),
+          child: SafeArea(
+            child: Container(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              alignment: Alignment.center,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    child: Center(
+                      child: Container(
+                        // color: Colors.red,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.only(left: 1),
+                        child: text("Add Reminder",
+                            //  fontFamily: 'SfPro',
+                            fontSize: textSizeMedium),
                       ),
                     ),
-                    Positioned(
-                      left: 5,
-                      child: Container(
-                          // color: Colors.green,
-                          padding: EdgeInsets.only(top: 5),
-                          child: FlatButton(
-                            onPressed: () {},
-                            disabledTextColor: Colors.grey,
-                            disabledColor: Colors.transparent,
-                            padding: EdgeInsets.zero,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  step = 1;
-                                });
-                                print('clicked');
-                              },
-                              child: Align(
-                                child: text('Back',
-                                    fontSize: textSizeMedium2,
-                                    //fontFamily: 'Regular',
-                                    textColor: Colors.blue[900]),
-                                alignment: Alignment.centerLeft,
-                              ),
-                            ),
-                          )),
-                    ),
-                    Positioned(
-                      right: 5,
-                      child: Container(
-                        // color: Colors.blue,
+                  ),
+                  Positioned(
+                    left: 5,
+                    child: Container(
+                        // color: Colors.green,
                         padding: EdgeInsets.only(top: 5),
                         child: FlatButton(
                           onPressed: () {},
-                          color: Colors.transparent,
                           disabledTextColor: Colors.grey,
                           disabledColor: Colors.transparent,
                           padding: EdgeInsets.zero,
-                          child: Align(
-                            child: text('Save',
-                                fontSize: textSizeMedium2,
-                                //fontFamily: 'Regular',
-                                textColor: Colors.blue[900]),
-                            alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                step = 1;
+                              });
+                              print('clicked');
+                            },
+                            child: Align(
+                              child: text('Back',
+                                  fontSize: textSizeMedium2,
+                                  //fontFamily: 'Regular',
+                                  textColor: Colors.blue[900]),
+                              alignment: Alignment.centerLeft,
+                            ),
                           ),
+                        )),
+                  ),
+                  Positioned(
+                    right: 5,
+                    child: Container(
+                      // color: Colors.blue,
+                      padding: EdgeInsets.only(top: 5),
+                      child: FlatButton(
+                        onPressed: () {},
+                        color: Colors.transparent,
+                        disabledTextColor: Colors.grey,
+                        disabledColor: Colors.transparent,
+                        padding: EdgeInsets.zero,
+                        child: Align(
+                          child: text('Save',
+                              fontSize: textSizeMedium2,
+                              //fontFamily: 'Regular',
+                              textColor: Colors.blue[900]),
+                          alignment: Alignment.centerRight,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

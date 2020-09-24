@@ -47,13 +47,13 @@ class _TherapyScreen2State extends State<TherapyScreen2> {
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(
-                        color: index == 0 ||
+                        color:  index == 0 ||
                                 index == 1 ||
                                 index == 2 ||
                                 index == 3 ||
                                 index == 4
-                            ? t2_red
-                            : t2_colorPrimary,
+                            ? t2_colorPrimary
+                            : t2_red,
                         borderRadius: new BorderRadius.only(
                             bottomRight: const Radius.circular(16.0),
                             topRight: const Radius.circular(16.0)),
@@ -211,7 +211,7 @@ class _TherapyScreen2State extends State<TherapyScreen2> {
                 right: 0,
                 child: IconButton(
                   color: Colors.white,
-                  icon: Icon(Icons.add_circle_outline),
+                  icon: Icon(Icons.add),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -261,20 +261,20 @@ class _TherapyScreen2State extends State<TherapyScreen2> {
 
   @override
   Widget build(BuildContext context) {
-    changeStatusColor(Colors.transparent);
+    //changeStatusColor(Colors.transparent);
     return Scaffold(
       body: Container(
         color: t3_app_background,
         child: Stack(
           children: <Widget>[
             Container(
-              height: (MediaQuery.of(context).size.height) / 3.5,
+              height: (MediaQuery.of(context).size.height) * 0.13,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     colors: <Color>[t3_colorPrimary, t3_colorPrimaryDark]),
                 borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(20.0),
-                    bottomLeft: Radius.circular(20.0)),
+                    bottomRight: Radius.circular(30.0),
+                    bottomLeft: Radius.circular(30.0)),
               ),
             ),
             Column(

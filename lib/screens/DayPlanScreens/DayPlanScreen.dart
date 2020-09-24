@@ -295,7 +295,7 @@ class _DayPlannerState extends State<DayPlanner>
   }
 
   _onPostpone() {
-    changeStatusColor(Colors.transparent);
+    //changeStatusColor(Colors.transparent);
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -384,7 +384,7 @@ class _DayPlannerState extends State<DayPlanner>
 
   _showTaken() {
     var height = MediaQuery.of(context).size.height;
-    changeStatusColor(Colors.transparent);
+    //changeStatusColor(Colors.transparent);
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -421,7 +421,7 @@ class _DayPlannerState extends State<DayPlanner>
   }
 
   _onAlert(context, index) {
-    changeStatusColor(Colors.transparent);
+    //changeStatusColor(Colors.transparent);
     showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: '',

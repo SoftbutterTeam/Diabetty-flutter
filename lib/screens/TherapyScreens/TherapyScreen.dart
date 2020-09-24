@@ -181,7 +181,7 @@ class _TherapyPlannerState extends State<TherapyPlanner>
 
   @override
   Widget build(BuildContext context) {
-    changeStatusColor(Colors.white);
+    //changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
@@ -260,7 +260,7 @@ class _TherapyPlannerState extends State<TherapyPlanner>
   }
 
   Widget build1(BuildContext context) {
-    changeStatusColor(Colors.white);
+    //changeStatusColor(Colors.white);
     var width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(

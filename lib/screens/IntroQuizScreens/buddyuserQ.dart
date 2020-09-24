@@ -24,7 +24,7 @@ class _BuddyUserQuestionsState extends State<BuddyUserQuestions> {
 
   @override
   Widget build(BuildContext context) {
-    changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
+    //changeStatusColor(Theme.of(context).scaffoldBackgroundColor);
 
     final code = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
