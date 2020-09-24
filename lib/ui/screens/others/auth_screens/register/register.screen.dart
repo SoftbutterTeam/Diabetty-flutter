@@ -1,31 +1,29 @@
-import 'package:diabetty/blocs/sign_in_manager.dart';
+import 'package:diabetty/blocs/register_manager.dart';
+
 import 'package:diabetty/constants/strings.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/platform_widgets/platform_exception_alert_dialog.dart';
-import 'package:diabetty/ui/constants/colors.dart';
-import 'package:diabetty/ui/constants/icons.dart';
+
 import 'package:diabetty/ui/constants/keys.dart';
-import 'package:diabetty/ui/screens/auth_screens/common_widgets/loading_button.dart';
-import 'package:diabetty/ui/screens/auth_screens/form_models/email_password_form.model.dart';
-import 'package:diabetty/ui/screens/auth_screens/login/components/background.dart';
-import 'package:diabetty/ui/screens/auth_screens/common_widgets/already_have_an_account_acheck.dart';
-import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_button.dart';
-import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_input_field.dart';
-import 'package:diabetty/ui/screens/auth_screens/common_widgets/rounded_password_field.dart';
-import 'package:diabetty/ui/screens/auth_screens/register/register.screen.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/loading_button.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/form_models/create_account_form.model.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/register/components/background.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/already_have_an_account_acheck.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_button.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_input_field.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_password_field.dart';
 import 'package:validators/validators.dart' as validator;
 
-import 'package:diabetty/ui/screens/auth_screens/login/components/or_divider.dart';
-import 'package:diabetty/ui/screens/auth_screens/login/components/social_icon.dart';
-import 'package:diabetty/ui/screens/auth_screens/welcome/welcome.screen.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/register/components/or_divider.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/register/components/social_icon.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreenBuilder extends StatelessWidget {
+class RegisterScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthService auth = Provider.of<AuthService>(context, listen: false);
@@ -33,11 +31,11 @@ class LoginScreenBuilder extends StatelessWidget {
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
         builder: (_, ValueNotifier<bool> isLoading, __) =>
-            Provider<SignInManager>(
-          create: (_) => SignInManager(auth: auth, isLoading: isLoading),
-          child: Consumer<SignInManager>(
-            builder: (_, SignInManager manager, __) =>
-                LoginScreen._(isLoading: isLoading.value, manager: manager),
+            Provider<RegisterManager>(
+          create: (_) => RegisterManager(auth: auth, isLoading: isLoading),
+          child: Consumer<RegisterManager>(
+            builder: (_, RegisterManager manager, __) =>
+                RegisterScreen._(isLoading: isLoading.value, manager: manager),
           ),
         ),
       ),
@@ -45,11 +43,11 @@ class LoginScreenBuilder extends StatelessWidget {
   }
 }
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  const LoginScreen._({Key key, this.isLoading, this.manager})
+  const RegisterScreen._({Key key, this.isLoading, this.manager})
       : super(key: key);
-  final SignInManager manager;
+  final RegisterManager manager;
   final bool isLoading;
 
   static const Key googleButtonKey = Key('google');
@@ -59,12 +57,12 @@ class LoginScreen extends StatefulWidget {
   static const Key anonymousButtonKey = Key(Keys.anonymous);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  EmailPasswordForm emailPasswordForm = EmailPasswordForm();
-  final _loginKey = GlobalKey<FormState>();
+class _RegisterScreenState extends State<RegisterScreen> {
+  CreateAccountForm createAccountForm = CreateAccountForm();
+  final _registerKey = GlobalKey<FormState>();
 
   Future<void> _showSignInError(
       BuildContext context, PlatformException exception) async {
@@ -74,33 +72,20 @@ class _LoginScreenState extends State<LoginScreen> {
     ).show(context);
   }
 
-  Future<void> _signInAnonymously(BuildContext context) async {
-    try {
-      await widget.manager.signInAnonymously();
-    } on PlatformException catch (e) {
-      _showSignInError(context, e);
-    }
-  }
-
   Future<void> _signInWithGoogle(BuildContext context) async {
-    final AppContext appContext =
-        Provider.of<AppContext>(context, listen: false);
-
-    print(appContext.user == null ? null : appContext.user.toJson());
-    /* todo DO NOT DELETE, THIS IS THE REAL CODE
     try {
       await widget.manager.signInWithGoogle();
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
       }
-    }*/
+    }
   }
 
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
       await widget.manager
-          .signInWithEmailAndPassword("admin@123.com", "adminn");
+          .createAccount("test", "test user", "admin@123.com", "adminn");
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
@@ -108,10 +93,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _signInWithEmailAndPassword(
-      BuildContext context, String email, String password) async {
+  Future<void> _registerWithEmailandPassword(BuildContext context,
+      String displayName, String name, String email, String password) async {
     try {
-      await widget.manager.signInWithEmailAndPassword(email, password);
+      await widget.manager.createAccount(displayName, name, email, password);
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
@@ -137,49 +122,68 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   String _formSave() {
-    _loginKey.currentState.save();
+    _registerKey.currentState.save();
     return null;
   }
 
-  Widget _buildEmailPasswordLoginForm(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+  // ignore: unused_element
+  Widget _buildCreateAccountForm(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Form(
-      key: _loginKey,
+      key: _registerKey,
       child: (Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedInputField(
+            keyboardType: TextInputType.name,
+            hintText: 'Name',
+            validator: (value) => !validator.isLength(value, 3)
+                ? 'Please enter a Name'
+                : _formSave(),
+            onSaved: (String value) {
+              createAccountForm.name = value.trim().toLowerCase();
+              createAccountForm.displayName =
+                  createAccountForm.name.split(" ")[0];
+            },
+          ),
+          RoundedInputField(
             keyboardType: TextInputType.emailAddress,
             hintText: "Email",
-            validator: (value) => !validator.isEmail(value)
-                ? "Please enter a valid Email"
+            //icon: Icons.email,
+            validator: (String value) => !validator.isEmail(value.trim())
+                ? 'Please enter a valid Email'
                 : _formSave(),
             onSaved: (String value) =>
-                emailPasswordForm.email = value.trim().toLowerCase(),
+                createAccountForm.email = value.trim().toLowerCase(),
           ),
           RoundedPasswordField(
             onChanged: (value) {},
-            formKey: _loginKey,
-            isLoginForm: true,
-            onSaved: (value) => emailPasswordForm.password = value,
+            formKey: _registerKey,
+            onSaved: (value) => createAccountForm.password = value,
+          ),
+          RoundedPasswordField(
+            hintText: 'Repeat Password',
+            formKey: _registerKey,
+            validator: (String value) => value != createAccountForm.password
+                ? "Password doesn't match"
+                : null,
           ),
           LoadingButton(
               isLoading: widget.isLoading,
               child: RoundedButton(
-                text: "Login",
+                text: "Create Account",
                 press: () {
-                  if (_loginKey.currentState.validate()) {
-                    _loginKey.currentState.save();
-                    _signInWithEmailAndPassword(context,
-                        emailPasswordForm.email, emailPasswordForm.password);
+                  if (_registerKey.currentState.validate()) {
+                    _registerKey.currentState.save();
+                    _registerWithEmailandPassword(
+                        context,
+                        createAccountForm.displayName,
+                        createAccountForm.name,
+                        createAccountForm.email,
+                        createAccountForm.password);
                   }
                 },
               )),
-          SizedBox(height: size.height * 0.01),
-          Text(
-            "forgotten password?",
-            style: TextStyle(color: kPrimaryColor),
-          ),
         ],
       )),
     );
@@ -190,21 +194,19 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         SocalIcon(
-          key: LoginScreen.facebookButtonKey,
-          iconSrc: facebook_social,
-          color: Colors.lightBlue[700],
+          key: RegisterScreen.facebookButtonKey,
+          iconSrc: "assets/icons/social/facebook.svg",
           press: widget.isLoading ? null : () => _signInWithFacebook(context),
         ),
         SocalIcon(
-          key: LoginScreen.anonymousButtonKey,
-          iconSrc: apple_social,
-          color: Colors.lightBlue[700],
-          press: widget.isLoading ? null : () => _signInAnonymously(context),
+          key: RegisterScreen.anonymousButtonKey,
+          iconSrc: "assets/icons/social/twitter.svg",
+          press: widget.isLoading ? null : () => _signInWithApple(context),
         ),
         SocalIcon(
-          key: LoginScreen.googleButtonKey,
-          size: 60,
-          iconSrc: google_social,
+          key: RegisterScreen.googleButtonKey,
+          size: 30,
+          iconSrc: "assets/icons/social/google-plus.svg",
           press: widget.isLoading ? null : () => _signInWithGoogle(context),
         ),
       ],
@@ -212,19 +214,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildAlreadyHaveAccount(BuildContext context) {
-    return AlreadyHaveAnAccountCheck(
-      login: true,
+    return (AlreadyHaveAnAccountCheck(
+      login: false,
       press: () {
-        Navigator.pushNamed(context, register);
+        Navigator.pushNamed(context, login);
       },
-    );
+    ));
   }
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
       child: Container(
-        //height: size.height,
         child: Column(
           children: [
             SingleChildScrollView(
@@ -232,9 +233,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: size.height * 0.15),
-                  _buildEmailPasswordLoginForm(context),
-                  SizedBox(height: size.height * 0.02),
+                  SizedBox(height: size.height * 0.05),
+                  _buildCreateAccountForm(context),
+                  SizedBox(height: size.height * 0.01),
                   OrDivider(),
                   _buildSocialLogins(context),
                 ],

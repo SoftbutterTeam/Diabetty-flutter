@@ -1,4 +1,4 @@
-import 'package:diabetty/ui/screens/auth_screens/common_widgets/text_field_container.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/text_field_container.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 
