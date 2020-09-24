@@ -28,7 +28,7 @@ packages:
       name: basic_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.2"
+    version: "2.6.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -84,7 +84,7 @@ packages:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "2.1.4"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -203,7 +203,7 @@ packages:
       name: flutter_secure_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.4"
+    version: "3.3.3"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -564,4 +564,4 @@ packages:
     version: "4.5.1"
 sdks:
   dart: ">=2.9.0-14.0.dev <3.0.0"
-  flutter: ">=1.20.0 <2.0.0"
+  flutter: ">=1.18.0-6.0.pre <2.0.0"
