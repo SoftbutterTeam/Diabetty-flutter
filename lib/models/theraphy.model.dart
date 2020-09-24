@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Theraphy {
   String uid;
   String name;
-  ...
 }
 
 class MedicationInfo {

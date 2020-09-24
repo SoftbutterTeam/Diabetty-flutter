@@ -39,19 +39,4 @@ class TheraphyManager {
   Future<void> refresh() async {
     return _getData();
   }
-
-/*
-  Future<void> delete(TripUser tripUser) async {
-    var result = await tripRepository.deleteTripUser(tripUser);
-    if (result.isSuccess) {
-      print("Deleted the trip");
-      // Remove the trip in the tripUsers
-      tripUsers.removeWhere((tu) => tu.trip.id == tripUser.trip.id);
-
-      dataSink.add(tripUsers);
-    }
-
-    return;
-  }
-  */
 }

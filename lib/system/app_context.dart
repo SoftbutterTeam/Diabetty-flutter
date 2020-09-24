@@ -5,15 +5,13 @@ import 'package:diabetty/services/authentication/auth_service/auth_service.dart'
 
 class AppContext {
   AuthService _authService;
-
   UserService _userService = new UserService();
-
-  UserModel.User _user;
-
-  UserModel.User get user => _user;
 
   User _firebaseUser;
   User get firebaseUser => _firebaseUser;
+
+  UserModel.User _user;
+  UserModel.User get user => _user;
 
   AppContext(this._authService);
 
@@ -91,4 +89,6 @@ class AppContext {
   void dispose() {
     _onUserChanged.close();
   }
+
+  getTheraphies() {}
 }
