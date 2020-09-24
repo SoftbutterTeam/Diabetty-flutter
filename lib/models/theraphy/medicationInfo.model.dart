@@ -1,11 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
-//import 'package:diabetttty/models/forms/MedicationInfoForm.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:path_provider/path_provider.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MedicationInfo {
   String name;
