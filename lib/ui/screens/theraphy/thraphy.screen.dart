@@ -1,31 +1,12 @@
-import 'package:diabetty/blocs/sign_in_manager.dart';
-import 'package:diabetty/blocs/theraphy_manager.dart';
-import 'package:diabetty/constants/strings.dart';
-import 'package:diabetty/models/theraphy.model.dart';
-import 'package:diabetty/routes.dart';
-import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/system/app_context.dart';
-import 'package:diabetty/ui/common_widgets/platform_widgets/platform_exception_alert_dialog.dart';
-import 'package:diabetty/ui/constants/colors.dart';
-import 'package:diabetty/ui/constants/icons.dart';
-import 'package:diabetty/ui/constants/keys.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/loading_button.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/form_models/email_password_form.model.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/login/components/background.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/already_have_an_account_acheck.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_button.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_input_field.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_password_field.dart';
-import 'package:validators/validators.dart' as validator;
-
-import 'package:diabetty/ui/screens/others/auth_screens/login/components/or_divider.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/login/components/social_icon.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class TheraphyScreenBuilder extends StatelessWidget {
+class TherapyScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppContext appContext =
@@ -34,12 +15,12 @@ class TheraphyScreenBuilder extends StatelessWidget {
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
         builder: (_, ValueNotifier<bool> isLoading, __) =>
-            Provider<TheraphyManager>(
+            Provider<TherapyManager>(
           create: (_) =>
-              TheraphyManager(appContext: appContext, isLoading: isLoading),
-          child: Consumer<TheraphyManager>(
-            builder: (_, TheraphyManager manager, __) =>
-                TheraphyScreen._(isLoading: isLoading.value, manager: manager),
+              TherapyManager(appContext: appContext, isLoading: isLoading),
+          child: Consumer<TherapyManager>(
+            builder: (_, TherapyManager manager, __) =>
+                TherapyScreen._(isLoading: isLoading.value, manager: manager),
           ),
         ),
       ),
@@ -47,20 +28,43 @@ class TheraphyScreenBuilder extends StatelessWidget {
   }
 }
 
-class TheraphyScreen extends StatefulWidget {
+class TherapyScreen extends StatefulWidget {
   @override
-  const TheraphyScreen._({Key key, this.isLoading, this.manager})
+  const TherapyScreen._({Key key, this.isLoading, this.manager})
       : super(key: key);
-  final TheraphyManager manager;
+  final TherapyManager manager;
   final bool isLoading;
 
   @override
-  _TheraphyScreenState createState() => _TheraphyScreenState();
+  _TherapyScreenState createState() => _TherapyScreenState();
 }
 
-class _TheraphyScreenState extends State<TheraphyScreen> {
-  EmailPasswordForm emailPasswordForm = EmailPasswordForm();
-  final _loginKey = GlobalKey<FormState>();
+class _TherapyScreenState extends State<TherapyScreen> {
+  _buildTherapiesList(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    List<Therapy> therapyList;
+    StreamBuilder(
+        stream: widget.manager.dataStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.hasError)
+            therapyList = new List.filled(
+                5, new Therapy()); // to produce empty cards i.e. placeholders
+          else {
+            therapyList = snapshot.data;
+          }
+          return ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: therapyList.length,
+              itemBuilder: (context, index) {
+                return SizedBox(
+                  height: size.height * 0.1,
+                );
+              });
+
+          /// todo place the Card Widgets here using TherapyList(index)
+          /// as a parameter.
+        });
+  }
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;

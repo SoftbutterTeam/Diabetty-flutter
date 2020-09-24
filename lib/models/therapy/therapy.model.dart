@@ -1,6 +1,6 @@
-import 'package:diabetty/models/theraphy/medicationInfo.model.dart';
+import 'package:diabetty/models/therapy/medication_info.model.dart';
 
-class Theraphy {
+class Therapy {
   String uid;
   String name;
   Schedule schedule;

@@ -90,5 +90,5 @@ class AppContext {
     _onUserChanged.close();
   }
 
-  getTheraphies() {}
+  getTherapies() {}
 }

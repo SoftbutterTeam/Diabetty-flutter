@@ -14,12 +14,10 @@ import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/already_h
 import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_button.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_input_field.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_password_field.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
 import 'package:validators/validators.dart' as validator;
 
 import 'package:diabetty/ui/screens/others/auth_screens/login/components/or_divider.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/login/components/social_icon.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/welcome/welcome.screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
