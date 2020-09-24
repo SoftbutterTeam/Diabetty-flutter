@@ -88,7 +88,7 @@ class _DashBoardState extends State<DashBoard> {
           color: Colors.indigo,
           fit: BoxFit.fitHeight,
         ),
-        title: pageIndex == 3 ? Text("more") : Text("therapy"),
+        title: Text("therapy"),
       ),
     ];
 
