@@ -1,6 +1,6 @@
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/system/app_context.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
+import 'package:diabetty/ui/screens/auth_screens/register/register.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
