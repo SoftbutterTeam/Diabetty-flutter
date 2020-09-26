@@ -2,7 +2,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/login/components/background.dart';
+import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
 import 'package:diabetty/ui/screens/today/components/header.dart';
@@ -92,9 +92,6 @@ class _DayPlanScreenState extends State<DayPlanScreen> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50), child: DayPlanHeader()),
-        body: _body(context));
+    return _body(context);
   }
 }

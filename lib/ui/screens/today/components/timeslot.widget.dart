@@ -68,7 +68,7 @@ class ReminderCard extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    return Expanded(
+    return SizedBox(
       child: Padding(
         padding: const EdgeInsets.only(right: 9, top: 7.0, bottom: 4, left: 4),
         child: GestureDetector(
