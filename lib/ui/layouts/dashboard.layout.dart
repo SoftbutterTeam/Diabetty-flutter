@@ -1,6 +1,7 @@
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/draft_screen.dart';
+import 'package:diabetty/ui/screens/theraphy/thraphy.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -20,7 +21,7 @@ class _DashBoardState extends State<DashBoard> {
   int pageIndex = 0;
   int currentIndex = 0;
 
-  var _pages = [DrafttScreen(), DrafttScreen(), DrafttScreen(), DrafttScreen()];
+  var _pages = [DrafttScreen(), DrafttScreen(), DrafttScreen(), TherapyScreenBuilder()];
 
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _DashBoardState extends State<DashBoard> {
       ),
       BottomNavigationBarItem(
           icon: Container(
-              padding: EdgeInsets.only(left: 1.5),
+              padding: EdgeInsets.only(left: 0.5),
               child: SvgPicture.asset(
                 'assets/icons/navigation/checkbox/clock.svg',
                 height: 33,
@@ -81,14 +82,7 @@ class _DashBoardState extends State<DashBoard> {
           color: Colors.indigo,
           fit: BoxFit.fitHeight,
         ),
-        activeIcon: SvgPicture.asset(
-          'assets/icons/navigation/more/more.svg',
-          height: 29,
-          width: 29,
-          color: Colors.indigo,
-          fit: BoxFit.fitHeight,
-        ),
-        title: pageIndex == 3 ? Text("more") : Text("therapy"),
+        title: Text("therapy"),
       ),
     ];
 

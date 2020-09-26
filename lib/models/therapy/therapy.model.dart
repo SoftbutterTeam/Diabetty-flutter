@@ -5,6 +5,16 @@ class Therapy {
   String name;
   Schedule schedule;
   MedicationInfo medicationInfo;
+  int stock;
+  String mode;
+  Therapy({
+    this.uid,
+    this.name,
+    this.schedule,
+    this.medicationInfo,
+    this.stock,
+    this.mode,
+  });
 }
 
 class Schedule {
