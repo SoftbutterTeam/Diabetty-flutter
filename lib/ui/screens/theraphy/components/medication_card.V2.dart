@@ -53,7 +53,7 @@ class _MedicationCardState extends State<MedicationCard> {
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               width: width * 0.45,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -69,21 +69,6 @@ class _MedicationCardState extends State<MedicationCard> {
                       ],
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(top: 4, left: 2),
-                  //   child: Row(
-                  //     children: [
-                  //       Container(
-                  //         width: 50,
-                  //         height: 3,
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.orange,
-                  //           borderRadius: BorderRadius.circular(10),
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -116,7 +101,6 @@ class _MedicationCardState extends State<MedicationCard> {
                             padding: const EdgeInsets.only(right: 4.0),
                             child: Icon(Icons.info, color: Colors.black),
                           ),
-                          Icon(Icons.close, color: Colors.black)
                         ],
                       ),
                     ],
