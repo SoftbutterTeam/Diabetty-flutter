@@ -42,85 +42,97 @@ class TherapyScreen extends StatefulWidget {
 }
 
 class _TherapyScreenState extends State<TherapyScreen> {
-  _showExpandedTherapy(BuildContext context) {
+  void _showExpandedTherapy(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: '',
       barrierColor: Colors.black12,
       transitionDuration: Duration(milliseconds: 0),
-      pageBuilder: (ctx, anim1, anim2) => Dialog(
+      context: context,
+      pageBuilder: (_, __, ___) => Dialog(
         elevation: 0,
         insetPadding: EdgeInsets.zero,
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Container(
-          margin: EdgeInsets.only(bottom: size.height / 1.4),
-          height: size.height,
-          width: size.width,
-          alignment: Alignment.topCenter,
-          color: Colors.transparent,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: size.height,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-                    Colors.orange[900],
-                    Colors.orange[600]
-                  ]),
-                  borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0)),
-                ),
-              ),
-              Positioned(
-                top: 40,
-                right: 25,
-                child: IconButton(
-                  color: Colors.white,
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              Positioned(
-                child: Center(
-                  child: Container(
-                    height: size.height * 0.2,
-                    // color: Colors.green,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {},
-                          child: subHeadingText("Add Reminder", Colors.white),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            print('hihihi');
-                          },
-                          child: subHeadingText("Add Reminder", Colors.white),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            print('hihihi');
-                          },
-                          child: subHeadingText("Add Reminder", Colors.white),
-                        ),
-                      ],
+        child: Column(
+          children: [
+            Container(
+              //padding: EdgeInsets.only(bottom: size.height / 1.4),
+              height: size.height * 0.3,
+              width: size.width,
+              alignment: Alignment.topCenter,
+              color: Colors.blue,
+              child: Column(
+                children: [
+                  Stack(children: <Widget>[
+                    Container(
+                      height: size.height * 0.3,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            colors: [Colors.orange[900], Colors.orange[600]]),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20.0),
+                            bottomLeft: Radius.circular(20.0)),
+                      ),
                     ),
-                  ),
-                ),
+                    Positioned(
+                      top: 40,
+                      right: 25,
+                      child: IconButton(
+                        color: Colors.white,
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      child: Center(
+                        child: Container(
+                          height: size.height * 0.2,
+                          // color: Colors.green,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              FlatButton(
+                                onPressed: () {},
+                                child: subHeadingText(
+                                    "Add Reminder", Colors.white),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  print('hihihi');
+                                },
+                                child: subHeadingText(
+                                    "Add Reminder", Colors.white),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  print('hihihi');
+                                },
+                                child: subHeadingText(
+                                    "Add Reminder", Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ]),
+                ],
               ),
-            ],
-          ),
+            ),
+            Expanded(
+                child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(color: Colors.transparent))),
+          ],
         ),
       ),
-      context: context,
     );
   }
 
@@ -174,6 +186,31 @@ class _TherapyScreenState extends State<TherapyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _body(context),
+    );
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  CustomDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
+  }
+
+  Widget dialogContent(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        //...bottom card part,
+        //...top circlular image part,
+      ],
     );
   }
 }

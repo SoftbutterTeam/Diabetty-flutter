@@ -16,11 +16,12 @@ Widget text(var text,
     var fontFamily = fontRegular,
     var isCentered = false,
     var maxLine = 1,
-    var latterSpacing = 0.5}) {
+    var latterSpacing = 0.5,
+    TextOverflow overflow}) {
   return Text(text,
       textAlign: isCentered ? TextAlign.center : TextAlign.start,
       maxLines: maxLine,
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow,
       style: TextStyle(
           fontFamily: fontFamily,
           fontSize: fontSize,
