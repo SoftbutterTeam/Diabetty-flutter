@@ -1,3 +1,4 @@
+import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
 
 class Therapy {
@@ -8,7 +9,7 @@ class Therapy {
 }
 
 class Schedule {
-  List<Reminders> reminders;
+  List<Reminder> reminders;
   ScheduleSettings settings;
   Schedule({
     this.reminders,
@@ -16,12 +17,12 @@ class Schedule {
   });
 }
 
-class Reminders {
+class ReminderRule {
   Days days;
   double dose;
   String time;
   String window;
-  Reminders({
+  ReminderRule({
     this.days,
     this.dose,
     this.time,

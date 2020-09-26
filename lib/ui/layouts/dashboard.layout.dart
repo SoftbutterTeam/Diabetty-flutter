@@ -1,6 +1,8 @@
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/draft_screen.dart';
+import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
+import 'package:diabetty/ui/screens/today/today.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -20,7 +22,12 @@ class _DashBoardState extends State<DashBoard> {
   int pageIndex = 0;
   int currentIndex = 0;
 
-  var _pages = [DrafttScreen(), DrafttScreen(), DrafttScreen(), DrafttScreen()];
+  var _pages = [
+    DayPlanScreenBuilder(),
+    DrafttScreen(),
+    DrafttScreen(),
+    DrafttScreen()
+  ];
 
   @override
   void initState() {
