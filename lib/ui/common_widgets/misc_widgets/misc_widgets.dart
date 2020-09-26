@@ -2,11 +2,11 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/material.dart';
 
-Text subHeadingText(var text) {
+Text subHeadingText(var text, Color color) {
   return Text(
     text,
     style: TextStyle(
-        fontFamily: fontBold, fontSize: 17.5, color: appTextColorSecondary),
+        fontFamily: fontBold, fontSize: 18.5, color: color),
   );
 }
 

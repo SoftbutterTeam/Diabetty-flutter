@@ -3,6 +3,7 @@ import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/draft_screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
 import 'package:diabetty/ui/screens/today/today.screen.dart';
+import 'package:diabetty/ui/screens/theraphy/thraphy.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -26,7 +27,7 @@ class _DashBoardState extends State<DashBoard> {
     DayPlanScreenBuilder(),
     DrafttScreen(),
     DrafttScreen(),
-    DrafttScreen()
+    TherapyScreenBuilder()
   ];
 
   @override
@@ -62,7 +63,7 @@ class _DashBoardState extends State<DashBoard> {
       ),
       BottomNavigationBarItem(
           icon: Container(
-              padding: EdgeInsets.only(left: 1.5),
+              padding: EdgeInsets.only(left: 0.5),
               child: SvgPicture.asset(
                 'assets/icons/navigation/checkbox/clock.svg',
                 height: 33,
@@ -85,13 +86,6 @@ class _DashBoardState extends State<DashBoard> {
           t_2,
           height: 30,
           width: 30,
-          color: Colors.indigo,
-          fit: BoxFit.fitHeight,
-        ),
-        activeIcon: SvgPicture.asset(
-          'assets/icons/navigation/more/more.svg',
-          height: 29,
-          width: 29,
           color: Colors.indigo,
           fit: BoxFit.fitHeight,
         ),
