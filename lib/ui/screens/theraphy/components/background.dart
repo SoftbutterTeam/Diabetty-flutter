@@ -8,10 +8,12 @@ import 'package:flutter_svg/svg.dart';
 class Background extends StatelessWidget {
   final Widget child;
   final Function onPressed;
+  final Function onPressed2;
   const Background({
     Key key,
     @required this.child,
     @required this.onPressed,
+    @required this.onPressed2,
   }) : super(key: key);
 
   @override
@@ -58,11 +60,11 @@ class Background extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.only(top: 5),
                     child: FlatButton(
-                      onPressed: onPressed,
+                      onPressed: onPressed2,
                       padding: EdgeInsets.zero,
                       child: Align(
                         child: SvgPicture.asset(
-                          'assets/icons/navigation/essentials/012-settings.svg',
+                          'assets/icons/navigation/essentials/settings (10).svg',
                           height: 22,
                           width: 22,
                           color: Colors.white,
