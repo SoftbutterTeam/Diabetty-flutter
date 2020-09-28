@@ -2,6 +2,8 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/screens/theraphy/components/add_modal.dart';
+import 'package:diabetty/ui/screens/theraphy/components/add_modal.v2.dart';
 import 'package:diabetty/ui/screens/theraphy/components/background.dart';
 import 'package:diabetty/ui/screens/theraphy/components/medication_card.dart';
 
@@ -47,9 +49,31 @@ class _TherapyScreenState extends State<TherapyScreen> {
     showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: '',
-      barrierColor: Colors.black12,
-      transitionDuration: Duration(milliseconds: 0),
+      // barrierColor: Colors.black12,
+      transitionDuration: Duration(milliseconds: 300),
       context: context,
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, -0.5);
+        var end = Offset.zero;
+        var curve = Curves.linear;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        var offsetAnimation = animation.drive(tween);
+
+        if (offsetAnimation.status == AnimationStatus.reverse) {
+          offsetAnimation.value.translate(0, -0.5);
+          return SizedBox(
+            height: size.height,
+            width: size.width,
+          );
+        }
+        //return child;  //* to remove animation, I slyly prefer no animation
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
       pageBuilder: (_, __, ___) => Dialog(
         elevation: 0,
         insetPadding: EdgeInsets.zero,
@@ -59,76 +83,12 @@ class _TherapyScreenState extends State<TherapyScreen> {
         ),
         child: Column(
           children: [
-            Container(
-              //padding: EdgeInsets.only(bottom: size.height / 1.4),
-              height: size.height * 0.3,
-              width: size.width,
-              alignment: Alignment.topCenter,
-              color: Colors.blue,
-              child: Column(
-                children: [
-                  Stack(children: <Widget>[
-                    Container(
-                      height: size.height * 0.3,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            colors: [Colors.orange[900], Colors.orange[600]]),
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(20.0),
-                            bottomLeft: Radius.circular(20.0)),
-                      ),
-                    ),
-                    Positioned(
-                      top: 40,
-                      right: 25,
-                      child: IconButton(
-                        color: Colors.white,
-                        icon: Icon(Icons.add),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    Positioned(
-                      child: Center(
-                        child: Container(
-                          height: size.height * 0.2,
-                          // color: Colors.green,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              FlatButton(
-                                onPressed: () {},
-                                child: subHeadingText(
-                                    "Add Reminder", Colors.white),
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  print('hihihi');
-                                },
-                                child: subHeadingText(
-                                    "Add Reminder", Colors.white),
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  print('hihihi');
-                                },
-                                child: subHeadingText(
-                                    "Add Reminder", Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ]),
-                ],
-              ),
-            ),
+            AddModal2(), //* AddModal or AddModal2
             Expanded(
                 child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onPanStart: (value) {
+                      Navigator.pop(context);
+                    },
                     child: Container(color: Colors.transparent))),
           ],
         ),
@@ -161,9 +121,6 @@ class _TherapyScreenState extends State<TherapyScreen> {
                     appearance: Icon(Icons.add_to_queue),
                   );
                 });
-
-            /// todo place the Card Widgets here using TherapyList(index)
-            /// as a parameter.
           }),
     );
   }
@@ -173,7 +130,6 @@ class _TherapyScreenState extends State<TherapyScreen> {
     return Background(
       onPressed: () {
         _showExpandedTherapy(context);
-        print('hihihi');
       },
       child: Container(
         width: size.width,

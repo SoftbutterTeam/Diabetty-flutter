@@ -20,7 +20,7 @@ class Therapy {
 
 class Schedule {
   List<Reminder> reminders;
-  ScheduleSettings settings;
+  AlarmSettings settings;
   Schedule({
     this.reminders,
     this.settings,
@@ -53,7 +53,7 @@ class Days {
   });
 }
 
-class ScheduleSettings {
+class AlarmSettings {
   bool silent = false;
-  ScheduleSettings({this.silent});
+  AlarmSettings({this.silent});
 }

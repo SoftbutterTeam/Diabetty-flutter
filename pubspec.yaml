@@ -44,6 +44,7 @@ dependencies:
   flutter_statusbarcolor: 0.2.3
   flutter_slidable:
   flutter_staggered_grid_view:
+  date_picker_timeline: 1.2.1
   
 
 dev_dependencies:

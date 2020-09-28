@@ -1,16 +1,15 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
-import 'package:diabetty/ui/screens/today/components/header.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
     as SlotWidget;
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 
 class DayPlanScreenBuilder extends StatelessWidget {
   @override
@@ -82,8 +81,18 @@ class _DayPlanScreenState extends State<DayPlanScreen> {
     return Background(
       child: Column(
         children: <Widget>[
+          DatePicker(
+            DateTime.now(),
+            initialSelectedDate: DateTime.now(),
+            selectionColor: Colors.black,
+            selectedTextColor: Colors.white,
+            onDateChange: (date) {
+              // New date selected
+              setState(() {});
+            },
+          ),
           SizedBox(
-            height: size.height * 0.35,
+            height: size.height * 0.30, // was 0.35
           ),
           Expanded(child: _buildRemindersList(context)),
         ],
