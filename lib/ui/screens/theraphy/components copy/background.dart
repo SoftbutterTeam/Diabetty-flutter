@@ -52,26 +52,7 @@ class Background extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 35,
-                  left: 5,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 5),
-                    child: FlatButton(
-                      onPressed: onPressed,
-                      padding: EdgeInsets.zero,
-                      child: Align(
-                        child: SvgPicture.asset(
-                          'assets/icons/navigation/essentials/012-settings.svg',
-                          height: 20,
-                          width: 20,
-                          color: Colors.white,
-                        ),
-                        alignment: Alignment.centerLeft,
-                      ),
-                    ),
-                  ),
-                ),
+
                 Positioned(
                   child: Center(
                     child: Container(

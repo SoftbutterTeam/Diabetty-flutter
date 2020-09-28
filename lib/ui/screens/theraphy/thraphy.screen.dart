@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/theraphy/components/background.dart';
@@ -64,7 +65,6 @@ class _TherapyScreenState extends State<TherapyScreen> {
               height: size.height * 0.3,
               width: size.width,
               alignment: Alignment.topCenter,
-              color: Colors.blue,
               child: Column(
                 children: [
                   Stack(children: <Widget>[
@@ -90,39 +90,32 @@ class _TherapyScreenState extends State<TherapyScreen> {
                         },
                       ),
                     ),
-                    Positioned(
+                    
+                  ]),
+                  Positioned(
                       child: Center(
                         child: Container(
-                          height: size.height * 0.2,
+                          padding: EdgeInsets.only(top: size.height * 0.08),
                           // color: Colors.green,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               FlatButton(
                                 onPressed: () {},
-                                child: subHeadingText(
-                                    "Add Reminder", Colors.white),
+                                child: subHeadingText("Add Medication", Colors.white),
                               ),
                               FlatButton(
                                 onPressed: () {
                                   print('hihihi');
                                 },
-                                child: subHeadingText(
-                                    "Add Reminder", Colors.white),
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  print('hihihi');
-                                },
-                                child: subHeadingText(
-                                    "Add Reminder", Colors.white),
+                                child: subHeadingText("Add Other", Colors.white),
                               ),
                             ],
                           ),
                         ),
                       ),
-                    )
-                  ]),
+                    ),
                 ],
               ),
             ),
@@ -171,6 +164,9 @@ class _TherapyScreenState extends State<TherapyScreen> {
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
+      onPressed2: () {
+        FirebaseAuthService().signOut();
+      },
       onPressed: () {
         _showExpandedTherapy(context);
         print('hihihi');
