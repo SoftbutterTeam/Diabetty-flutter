@@ -69,7 +69,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
             width: size.width,
           );
         }
-        //return child;  //* to remove animation, I slyly prefer no animation
+        return child; //* to remove animation, I slyly prefer no animation
         return SlideTransition(
           position: offsetAnimation,
           child: child,

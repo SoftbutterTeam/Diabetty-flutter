@@ -1,9 +1,11 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
+import 'package:diabetty/ui/screens/today/components/circle_list.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
     as SlotWidget;
 
@@ -76,25 +78,51 @@ class _DayPlanScreenState extends State<DayPlanScreen> {
         });
   }
 
+  Widget _buildCirclePlan(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+        alignment: Alignment.center,
+        width: size.width,
+        child: Center(
+          child: CircleList(
+            origin: Offset(0, 0),
+            innerRadius: 100,
+            outerRadius: 130,
+            initialAngle: 0,
+            centerWidget: Icon(Icons.access_alarm),
+            children: List.generate(24 * 6, (index) {
+              return index % 6 != 0
+                  ? SizedBox.shrink()
+                  : Icon(
+                      Icons.check_circle,
+                      size: 35,
+                      color: index == 0 ? Colors.blue : Colors.orange,
+                    );
+            }),
+          ),
+        ));
+  }
+
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
       child: Column(
         children: <Widget>[
-          DatePicker(
-            DateTime.now(),
-            initialSelectedDate: DateTime.now(),
-            selectionColor: Colors.black,
-            selectedTextColor: Colors.white,
-            onDateChange: (date) {
-              // New date selected
-              setState(() {});
-            },
-          ),
+          if (false)
+            DatePicker(
+              DateTime.now(),
+              initialSelectedDate: DateTime.now(),
+              selectionColor: Colors.black,
+              selectedTextColor: Colors.white,
+              onDateChange: (date) {
+                setState(() {});
+              },
+            ),
           SizedBox(
-            height: size.height * 0.30, // was 0.35
-          ),
-          Expanded(child: _buildRemindersList(context)),
+              height: size.height * 0.35,
+              child: _buildCirclePlan(context) // was 0.35
+              ),
+          if (true) Expanded(child: _buildRemindersList(context)),
         ],
       ),
     );
