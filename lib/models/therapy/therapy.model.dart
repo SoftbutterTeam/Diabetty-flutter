@@ -1,7 +1,10 @@
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
 
+
+
 class Therapy {
+  String id;
   String uid;
   String name;
   Schedule schedule;
@@ -19,12 +22,91 @@ class Therapy {
 }
 
 class Schedule {
-  List<Reminder> reminders;
+  List<ReminderRule> reminders;
   AlarmSettings settings;
+
+  loadFromJson(Map<String, dynamic> json) {
+    this.id = json['id'];
+    this.name = json['name'];
+
+    Schedule schedule = Schedule();
+    schedule.loadFromJson(json['schedule']);
+    this.schedule = schedule;
+
+    MedicationInfo medicationInfo = MedicationInfo();
+    medicationInfo.loadFromJson(json['medicationInfo']);
+    this.medicationInfo = medicationInfo;
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': this.id,
+        'name': this.name,
+        'schedule': this.schedule.toJson(),
+        'medicationInfo': this.medicationInfo.toJson(),
+      };
+
+  dummyData() {
+    MedicationInfo medicationinfo = MedicationInfo();
+    medicationinfo.dummyData();
+    this.medicationInfo = medicationinfo;
+    Schedule schedule = Schedule();
+    schedule.dummyData();
+    this.schedule = schedule;
+    this.id = "YDpBWyABH3ZluJ9sDKTCTGXCqzz1";
+    this.name = "cancer cure pls";
+    this.schedule = schedule;
+    this.medicationInfo = medicationInfo;
+  }
+}
+
+class Schedule {
+  List<ReminderRule> reminders;
   Schedule({
     this.reminders,
-    this.settings,
   });
+
+  loadFromJson(Map<String, dynamic> json) {
+    List<dynamic> remindersJson = json['reminders'];
+    List<ReminderRule> reminders = createReminders(remindersJson);
+    ScheduleSettings setting = ScheduleSettings();
+    this.reminders = reminders;
+  }
+
+  Map<String, dynamic> toJson() => {
+        'reminders': mapJson(this.reminders),
+      };
+
+  mapJson(list) {
+    List jsonList = List();
+    list.map((item) => jsonList.add(item.toJson())).toList();
+    jsonList.toList();
+    return jsonList;
+  }
+
+  createReminders(List<dynamic> json) {
+    List<ReminderRule> returnReminders = List();
+    for (var reminder = 0; reminder < json.length; reminder++) {
+      var reminderJson = json.elementAt(reminder);
+      ReminderRule currReminder = ReminderRule();
+      currReminder.loadFromJson(reminderJson);
+      returnReminders.add(currReminder);
+    }
+    return returnReminders;
+  }
+
+  dummyData() {
+    List<RemindersRule> listoreminders = List();
+    for (var i = 0; i < 3; i++) {
+      ReminderRule reminders = ReminderRule();
+      reminders.dummyData();
+      listoreminders.add(reminders);
+    }
+    ScheduleSettings settings = ScheduleSettings();
+    settings.setSettings(true);
+
+    // this.settings = settings;
+    this.reminders = listoreminders;
+  }
 }
 
 class ReminderRule {
@@ -37,7 +119,39 @@ class ReminderRule {
     this.dose,
     this.time,
     this.window,
+    this.silent,
   });
+
+  loadFromJson(Map<String, dynamic> json) {
+    var daysJson = json['days'];
+    Days days = Days();
+    days.loadFromJson(daysJson);
+    this.days = days;
+    this.dose = json['dose'];
+    this.time = json['time'];
+    this.window = json['window'];
+    this.silent = json['silent'];
+  }
+
+  Map<String, dynamic> toJson() => {
+        'days': this.days.toJson(),
+        'dose': this.dose,
+        'time': this.time,
+        'window': this.window,
+        'silent': this.silent,
+      };
+
+  dummyData() {
+    var rng = new Random();
+    Days days = Days();
+    days.dummyData();
+    this.days = days;
+
+    this.dose = (rng.nextDouble() * 5);
+    this.time = (rng.nextInt(1000000).toString());
+    this.window = (rng.nextInt(1000000).toString());
+    this.silent = true;
+  }
 }
 
 class Days {
@@ -51,6 +165,32 @@ class Days {
     this.saturday = false,
     this.sunday = false,
   });
+
+  loadFromJson(Map<String, dynamic> json) {
+    this.monday = json['monday'];
+    this.tuesday = json['tuesday'];
+    this.wednesday = json['wednesday'];
+    this.thursday = json['thursday'];
+    this.friday = json['friday'];
+    this.saturday = json['saturday'];
+    this.sunday = json['sunday'];
+  }
+
+  Map<String, dynamic> toJson() => {
+        'monday': this.monday,
+        'tuesday': this.tuesday,
+        'wednesday': this.wednesday,
+        'thursday': this.thursday,
+        'friday': this.friday,
+        'saturday': this.saturday,
+        'sunday': this.sunday
+      };
+
+  dummyData() {
+    this.monday = true;
+    this.wednesday = true;
+    this.friday = true;
+  }
 }
 
 class AlarmSettings {

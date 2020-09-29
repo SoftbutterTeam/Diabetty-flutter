@@ -24,10 +24,11 @@ class MedicationInfo {
         intakeAdvice = json['intakeAdvice'];
 
   Map<String, dynamic> toJson() => {
-        'restDuration': this.restDuration,
+        'restDuration': this.restDuration.inSeconds,
         'name': this.name,
         'strength': this.strength,
         'intakeAdvice': this.intakeAdvice,
+        'unit': this.unit,
       };
 
   bool loadFromJson(Map<String, dynamic> json) {
@@ -39,8 +40,8 @@ class MedicationInfo {
       if (json.containsKey('name')) this.name = json['name'];
       if (json.containsKey('unit')) this.unit = json['unit'];
       if (json.containsKey('strength')) this.strength = json['strength'];
-      if (json.containsKey('intake_advice'))
-        this.intakeAdvice = json['intake_advice'];
+      if (json.containsKey('intakeAdvice'))
+        this.intakeAdvice = json['intakeAdvice'];
       if (json.containsKey('appearance')) this.appearance = json['appearance'];
       return true;
     } catch (e) {
@@ -80,5 +81,15 @@ class MedicationInfo {
     this.intakeAdvice = intakeAdvice;
     this.unit = unit;
     this.appearance = appearance;
+  }
+
+  dummyData() {
+    this.appearance = "looks good";
+    this.intakeAdvice = "take it as much as possible";
+    this.name = "literal poison";
+    Duration duration = new Duration(seconds: 1000);
+    this.restDuration = duration;
+    this.strength = "hench";
+    this.unit = "absolute unit";
   }
 }
