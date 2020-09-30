@@ -40,6 +40,7 @@ dependencies:
   flutter_svg: ^0.19.0
   validators: ^2.0.1
   focused_menu: ^1.0.0
+  nb_utils: ^3.1.6+11
   
   flutter_statusbarcolor: 0.2.3
   flutter_slidable:
