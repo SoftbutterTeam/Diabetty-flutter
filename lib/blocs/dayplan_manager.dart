@@ -26,6 +26,7 @@ class DayPlanManager {
   Stream<List<Reminder>> get dataStream => _dataController.stream;
 
   void _getData() async {
+    //*mock data generation
     usersReminders = List();
     List<String> advice = List();
     advice.add('before a meal');

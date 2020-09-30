@@ -16,6 +16,60 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var container = Container(
+      height: size.height * 0.11,
+      child: Stack(
+        children: [
+          Positioned(
+            top: 35,
+            right: 5,
+            child: Container(
+              padding: EdgeInsets.only(top: 5),
+              child: FlatButton(
+                onPressed: () {},
+                color: Colors.transparent,
+                disabledTextColor: Colors.grey,
+                disabledColor: Colors.transparent,
+                padding: EdgeInsets.zero,
+                child: Align(
+                  child: Icon(Icons.add, color: Colors.white),
+                  alignment: Alignment.centerRight,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 35,
+            left: 5,
+            child: Container(
+              padding: EdgeInsets.only(top: 5),
+              child: FlatButton(
+                onPressed: () {},
+                padding: EdgeInsets.zero,
+                child: Align(
+                  child: SvgPicture.asset(
+                    'assets/icons/navigation/essentials/012-settings.svg',
+                    height: 22,
+                    width: 22,
+                    color: Colors.white,
+                  ),
+                  alignment: Alignment.centerLeft,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            child: Center(
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 30),
+                child: subHeadingText("Friday 24", Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -29,60 +83,7 @@ class Background extends StatelessWidget {
       // Here i can use size.width but use double.infinity because both work as a same
       child: Column(
         children: [
-          Container(
-            height: size.height * 0.11,
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 35,
-                  right: 5,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 5),
-                    child: FlatButton(
-                      onPressed: () {},
-                      color: Colors.transparent,
-                      disabledTextColor: Colors.grey,
-                      disabledColor: Colors.transparent,
-                      padding: EdgeInsets.zero,
-                      child: Align(
-                        child: Icon(Icons.add, color: Colors.white),
-                        alignment: Alignment.centerRight,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 35,
-                  left: 5,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 5),
-                    child: FlatButton(
-                      onPressed: () {},
-                      padding: EdgeInsets.zero,
-                      child: Align(
-                        child: SvgPicture.asset(
-                          'assets/icons/navigation/essentials/012-settings.svg',
-                          height: 22,
-                          width: 22,
-                          color: Colors.white,
-                        ),
-                        alignment: Alignment.centerLeft,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  child: Center(
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(top: 30),
-                      child: subHeadingText("Friday 24", Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          container,
           Expanded(
               child: Container(
             decoration: BoxDecoration(
