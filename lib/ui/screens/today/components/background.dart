@@ -26,15 +26,13 @@ class Background extends StatelessWidget {
       child: Column(
         children: [
           DayPlanHeader(),
-          SizedBox(
-            height: size.height * 0.165,
-          ),
           Expanded(
               child: Container(
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(0), topRight: Radius.circular(0))),
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
             child: child,
           )),
         ],

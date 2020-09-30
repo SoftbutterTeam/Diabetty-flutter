@@ -50,7 +50,6 @@ class _TherapyScreenState extends State<TherapyScreen> {
     showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: '',
-      // barrierColor: Colors.black12,
       transitionDuration: Duration(milliseconds: 300),
       context: context,
       transitionBuilder: (context, animation, secondaryAnimation, child) {

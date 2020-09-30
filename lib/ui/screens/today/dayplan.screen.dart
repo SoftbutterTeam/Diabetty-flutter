@@ -107,6 +107,9 @@ class _DayPlanScreenState extends State<DayPlanScreen> {
     return Background(
       child: Column(
         children: <Widget>[
+          SizedBox(
+            height: size.height * 0.165,
+          ),
           if (false)
             DatePicker(
               DateTime.now(),
