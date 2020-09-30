@@ -3,6 +3,7 @@ import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/screens/theraphy/add.medication.screen.dart';
 import 'package:diabetty/ui/screens/theraphy/components/background.dart';
 import 'package:diabetty/ui/screens/theraphy/components/medication_card.dart';
 
@@ -165,7 +166,10 @@ class _TherapyScreenState extends State<TherapyScreen> {
     Size size = MediaQuery.of(context).size;
     return Background(
       onPressed2: () {
-        FirebaseAuthService().signOut();
+        Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => AddMedicationScreen()),
+  );
       },
       onPressed: () {
         _showExpandedTherapy(context);

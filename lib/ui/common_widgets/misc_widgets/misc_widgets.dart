@@ -12,7 +12,7 @@ Text subHeadingText(var text, Color color) {
 
 Widget text(var text,
     {var fontSize = textSizeLargeMedium,
-    textColor = appTextColorSecondary,
+    Color textColor,
     var fontFamily = fontRegular,
     var isCentered = false,
     var maxLine = 1,
