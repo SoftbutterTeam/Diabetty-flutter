@@ -1,7 +1,7 @@
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
-
-
+import 'package:random_string/random_string.dart' as random;
+import 'dart:math' show Random;
 
 class Therapy {
   String id;
@@ -19,11 +19,6 @@ class Therapy {
     this.stock,
     this.mode,
   });
-}
-
-class Schedule {
-  List<ReminderRule> reminders;
-  AlarmSettings settings;
 
   loadFromJson(Map<String, dynamic> json) {
     this.id = json['id'];
@@ -68,7 +63,7 @@ class Schedule {
   loadFromJson(Map<String, dynamic> json) {
     List<dynamic> remindersJson = json['reminders'];
     List<ReminderRule> reminders = createReminders(remindersJson);
-    ScheduleSettings setting = ScheduleSettings();
+    AlarmSettings setting = AlarmSettings();
     this.reminders = reminders;
   }
 
@@ -95,14 +90,14 @@ class Schedule {
   }
 
   dummyData() {
-    List<RemindersRule> listoreminders = List();
+    List<ReminderRule> listoreminders = List();
     for (var i = 0; i < 3; i++) {
       ReminderRule reminders = ReminderRule();
       reminders.dummyData();
       listoreminders.add(reminders);
     }
-    ScheduleSettings settings = ScheduleSettings();
-    settings.setSettings(true);
+    AlarmSettings settings = AlarmSettings();
+    //settings.setSettings(true);
 
     // this.settings = settings;
     this.reminders = listoreminders;
@@ -119,7 +114,6 @@ class ReminderRule {
     this.dose,
     this.time,
     this.window,
-    this.silent,
   });
 
   loadFromJson(Map<String, dynamic> json) {
@@ -130,7 +124,6 @@ class ReminderRule {
     this.dose = json['dose'];
     this.time = json['time'];
     this.window = json['window'];
-    this.silent = json['silent'];
   }
 
   Map<String, dynamic> toJson() => {
@@ -138,7 +131,6 @@ class ReminderRule {
         'dose': this.dose,
         'time': this.time,
         'window': this.window,
-        'silent': this.silent,
       };
 
   dummyData() {
@@ -150,7 +142,6 @@ class ReminderRule {
     this.dose = (rng.nextDouble() * 5);
     this.time = (rng.nextInt(1000000).toString());
     this.window = (rng.nextInt(1000000).toString());
-    this.silent = true;
   }
 }
 

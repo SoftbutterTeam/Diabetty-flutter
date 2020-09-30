@@ -89,9 +89,8 @@ class _DayPlanScreenState extends State<DayPlanScreen> {
             innerRadius: 100,
             outerRadius: 130,
             initialAngle: 0,
-            centerWidget: Icon(Icons.access_alarm),
             children: List.generate(24 * 6, (index) {
-              return index % 6 != 0
+              return index % 12 != 0
                   ? SizedBox.shrink()
                   : Icon(
                       Icons.check_circle,
