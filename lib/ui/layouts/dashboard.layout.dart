@@ -2,7 +2,6 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/draft_screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
-import 'package:diabetty/ui/screens/today/today.screen.dart';
 import 'package:diabetty/ui/screens/theraphy/thraphy.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

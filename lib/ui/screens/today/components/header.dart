@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
+import 'package:diabetty/ui/screens/today/components/drop_modal.dart';
 
 class DayPlanHeader extends StatefulWidget {
   const DayPlanHeader({
@@ -20,91 +21,111 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
     super.initState();
   }
 
+  void _showDropModal(BuildContext context, Widget child) {
+    Size size = MediaQuery.of(context).size;
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      // barrierColor: Colors.black12,
+      transitionDuration: Duration(milliseconds: 300),
+      context: context,
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, -0.5);
+        var end = Offset.zero;
+        var curve = Curves.linear;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        var offsetAnimation = animation.drive(tween);
+
+        if (offsetAnimation.status == AnimationStatus.reverse) {
+          offsetAnimation.value.translate(0, -0.5);
+          return SizedBox(
+            height: size.height,
+            width: size.width,
+          );
+        }
+        return child; //* to remove animation, I slyly prefer no animation
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+      pageBuilder: (_, __, ___) => DropModal(),
+    );
+  }
+
   Widget _buildDateWidget(BuildContext context) {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          text("Friday", fontFamily: 'Regular'),
-          text('22 August',
-              fontFamily: 'Regular',
-              // isCentered: true,
-              fontSize: textSizeSmall),
-        ],
+    return Positioned(
+        child: Center(
+      child: GestureDetector(
+        onTap: () => _showDropModal(context, null),
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(top: 30),
+          child: subHeadingText("Today", Colors.white),
+        ),
+      ),
+    ));
+  }
+
+  Widget _buildLayoutButton(BuildContext context) {
+    return Positioned(
+      top: 35,
+      left: 5,
+      child: Container(
+        padding: EdgeInsets.only(top: 5),
+        child: FlatButton(
+          onPressed: () {},
+          padding: EdgeInsets.zero,
+          child: Align(
+            child: SvgPicture.asset(
+              'assets/icons/navigation/essentials/012-settings.svg',
+              height: 22,
+              width: 22,
+              color: Colors.white,
+            ),
+            alignment: Alignment.centerLeft,
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildLayoutButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => {},
-      child: Container(
-          alignment: Alignment.centerRight,
-          padding: EdgeInsets.only(top: 5),
-          child: SvgPicture.asset(
-            'assets/icons/navigation/clock/list.svg',
-            width: 24,
-            height: 24,
-            color: Colors.indigo,
-          )),
-    );
-  }
-
   Widget _buildFilterButton(BuildContext context) {
-    return FocusedMenuHolder(
-      onPressed: () {},
-      menuWidth: MediaQuery.of(context).size.width * 0.3,
-      blurSize: 5.0,
-      menuItemExtent: 45,
-      menuBoxDecoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      duration: Duration(milliseconds: 100),
-      animateMenuItems: true,
-      blurBackgroundColor: Colors.black54,
-      menuOffset: 20,
-      menuItems: <FocusedMenuItem>[
-        FocusedMenuItem(title: Text("All"), onPressed: () {}),
-        FocusedMenuItem(title: Text("Missed"), onPressed: () {}),
-        FocusedMenuItem(title: Text("Scheduled"), onPressed: () {}),
-        FocusedMenuItem(
-            title: Text(
-              "Deleted",
-              style: TextStyle(color: Colors.redAccent),
-            ),
-            onPressed: () {})
-      ],
+    return Positioned(
+      top: 35,
+      right: 5,
       child: Container(
-        padding: EdgeInsets.only(top: 5, right: 10),
-        alignment: Alignment.centerLeft,
-        child: SvgPicture.asset('assets/icons/navigation/clock/filter.svg',
-            width: 24, height: 24, color: Colors.indigo),
+        padding: EdgeInsets.only(top: 5),
+        child: FlatButton(
+          onPressed: () {},
+          color: Colors.transparent,
+          disabledTextColor: Colors.grey,
+          disabledColor: Colors.transparent,
+          padding: EdgeInsets.zero,
+          child: Align(
+            child: Icon(Icons.add, color: Colors.white),
+            alignment: Alignment.centerRight,
+          ),
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Container(
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 1,
-          blurRadius: 3,
-          offset: Offset(0, 1), // changes position of shadow
-        ),
-      ]),
-      child: SafeArea(
-        child: Container(
-          padding: EdgeInsets.only(left: 15, right: 15),
-          alignment: Alignment.center,
-          child: Stack(
-            children: <Widget>[
-              _buildDateWidget(context),
-              _buildLayoutButton(context),
-              _buildFilterButton(context)
-            ],
-          ),
-        ),
+      height: size.height * 0.11,
+      // padding: EdgeInsets.only(left: 15, right: 15),
+      child: Stack(
+        children: <Widget>[
+          _buildDateWidget(context),
+          _buildLayoutButton(context),
+          _buildFilterButton(context)
+        ],
       ),
     );
   }

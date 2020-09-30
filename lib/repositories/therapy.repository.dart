@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:diabetty/models/theraphy/theraphy.model.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 
 class TherapyRepository {
   TherapyRepository();
