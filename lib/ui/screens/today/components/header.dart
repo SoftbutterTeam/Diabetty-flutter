@@ -7,9 +7,8 @@ import 'package:focused_menu/modals.dart';
 import 'package:diabetty/ui/screens/today/components/drop_modal.dart';
 
 class DayPlanHeader extends StatefulWidget {
-  const DayPlanHeader({
-    Key key,
-  }) : super(key: key);
+  final ValueNotifier<bool> isDropOpen;
+  const DayPlanHeader({Key key, this.isDropOpen}) : super(key: key);
 
   @override
   _DayPlanHeaderState createState() => _DayPlanHeaderState();
@@ -45,13 +44,14 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
             width: size.width,
           );
         }
-        return child; //* to remove animation, I slyly prefer no animation
+
+        return child;
         return SlideTransition(
           position: offsetAnimation,
           child: child,
         );
       },
-      pageBuilder: (_, __, ___) => DropModal(),
+      pageBuilder: (_, __, ___) => DropModal(isDropOpen: widget.isDropOpen),
     );
   }
 
@@ -59,11 +59,14 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
     return Positioned(
         child: Center(
       child: GestureDetector(
-        onTap: () => _showDropModal(context, null),
+        onTap: () {
+          widget.isDropOpen.value = true;
+          _showDropModal(context, null);
+        },
         child: Container(
           alignment: Alignment.center,
           padding: EdgeInsets.only(top: 30),
-          child: subHeadingText("Today", Colors.white),
+          child: subHeadingText("Friday 24", Colors.white),
         ),
       ),
     ));

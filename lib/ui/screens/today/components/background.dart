@@ -4,11 +4,9 @@ import 'package:diabetty/ui/screens/today/components/header.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
-
-  const Background({
-    Key key,
-    @required this.child,
-  }) : super(key: key);
+  final ValueNotifier<bool> isDropOpen;
+  const Background({Key key, @required this.child, this.isDropOpen})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +23,7 @@ class Background extends StatelessWidget {
       height: size.height,
       child: Column(
         children: [
-          DayPlanHeader(),
+          DayPlanHeader(isDropOpen: this.isDropOpen),
           Expanded(
               child: Container(
             decoration: BoxDecoration(
