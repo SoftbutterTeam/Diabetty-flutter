@@ -12,10 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../../routes.dart';
 
 class AddModal2 extends StatelessWidget {
-  final TherapyManager manager;
-
   const AddModal2({
-    this.manager,
     Key key,
   }) : super(key: key);
 
@@ -101,7 +98,9 @@ class AddModal2 extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      manager.resetForm();
+                      // final TherapyManager therapyManager =
+                      //     Provider.of<TherapyManager>(context, listen: false);
+                      // therapyManager.resetForm();
                       Navigator.pushNamed(context, addmedication);
                     },
                     child: Text(

@@ -17,10 +17,9 @@ import 'package:provider/provider.dart';
 class TherapyScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TherapyManager therapyManager =
-        Provider.of<TherapyManager>(context, listen: false);
-    final isLoading = therapyManager.isLoading;
-    return TherapyScreen._(isLoading: isLoading.value, manager: therapyManager);
+    final TherapyManager therapyManager = null;
+    final isLoading = null;
+    return TherapyScreen._(isLoading: true, manager: therapyManager);
   }
 }
 
@@ -74,7 +73,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
         ),
         child: Column(
           children: [
-            AddModal2(manager: widget.manager), //* AddModal or AddModal2
+            AddModal2(), //* AddModal or AddModal2
             Expanded(
                 child: GestureDetector(
                     onPanStart: (value) {
@@ -92,26 +91,14 @@ class _TherapyScreenState extends State<TherapyScreen> {
     List<Therapy> therapyList;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
-      child: StreamBuilder(
-          stream: widget.manager.dataStream,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData || snapshot.hasError) {
-              therapyList = new List.filled(5, new Therapy());
-              print("nothing here");
-            } // to produce empty cards i.e. placeholders
-            else {
-              print("somethinf here");
-              therapyList = snapshot.data;
-            }
-            return ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return MedicationCard(
-                    name: "Medication Name",
-                    appearance: 'assets/icons/navigation/essentials/pills.svg',
-                  );
-                });
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return MedicationCard(
+              name: "Medication Name",
+              appearance: 'assets/icons/navigation/essentials/pills.svg',
+            );
           }),
     );
   }
