@@ -11,15 +11,15 @@ import 'package:diabetty/ui/screens/theraphy/components/background.dart';
 import 'package:diabetty/ui/screens/theraphy/components/medication_card.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class TherapyScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TherapyManager therapyManager =
-        Provider.of<TherapyManager>(context, listen: false);
-    final isLoading = therapyManager.isLoading;
-    return TherapyScreen._(isLoading: isLoading.value, manager: therapyManager);
+    final TherapyManager therapyManager = null;
+    final isLoading = null;
+    return TherapyScreen._(isLoading: true, manager: therapyManager);
   }
 }
 
@@ -91,26 +91,14 @@ class _TherapyScreenState extends State<TherapyScreen> {
     List<Therapy> therapyList;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
-      child: StreamBuilder(
-          stream: widget.manager.dataStream,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData || snapshot.hasError) {
-              therapyList = new List.filled(5, new Therapy());
-              print("nothing here");
-            } // to produce empty cards i.e. placeholders
-            else {
-              print("somethinf here");
-              therapyList = snapshot.data;
-            }
-            return ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return MedicationCard(
-                    name: "Medication Name",
-                    appearance: Icon(Icons.add_to_queue),
-                  );
-                });
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return MedicationCard(
+              name: "Medication Name",
+              appearance: 'assets/icons/navigation/essentials/pills.svg',
+            );
           }),
     );
   }
@@ -118,12 +106,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-      onPressed2: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AddMedicationScreen()),
-        );
-      },
+      onPressed2: () {},
       onPressed: () {
         _showExpandedTherapy(context);
       },

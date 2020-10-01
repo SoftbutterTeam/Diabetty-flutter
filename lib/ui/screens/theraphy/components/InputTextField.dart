@@ -6,13 +6,24 @@ import 'package:flutter/material.dart';
 class InputTextField extends StatelessWidget {
   final controller;
   final String placeholder;
+  final Function onSubmitted;
+  final Function validator;
+  final ValueChanged<String> onChanged;
 
-  InputTextField({this.controller, this.placeholder});
+  InputTextField(
+      {this.controller,
+      this.placeholder,
+      this.onSubmitted,
+      this.validator,
+      this.onChanged});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 40),
       child: CupertinoTextField(
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
           controller: controller,
           decoration: BoxDecoration(
             color: appWhite,

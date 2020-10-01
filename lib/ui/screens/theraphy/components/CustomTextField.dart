@@ -8,15 +8,18 @@ class CustomTextField extends StatelessWidget {
   final Icon icon;
   final Function onTap;
   var placeholder;
+  final Function onSubmitted;
   final String placeholderText;
 
-  CustomTextField({this.icon, this.onTap, this.placeholder, this.placeholderText});
+  CustomTextField(
+      {this.icon, this.onTap, this.placeholder, this.placeholderText, this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: CupertinoTextField(
+        onSubmitted: onSubmitted,
         decoration: BoxDecoration(
           color: appWhite,
           border: Border.all(
@@ -35,7 +38,9 @@ class CustomTextField extends StatelessWidget {
               children: [
                 Padding(
                     padding: EdgeInsets.only(right: 5, bottom: 2),
-                    child: (placeholder is String) ? text((placeholder), fontSize: textSizeMedium2) : placeholder),
+                    child: (placeholder is String)
+                        ? text((placeholder), fontSize: textSizeMedium2)
+                        : placeholder),
                 Icon(
                   CupertinoIcons.right_chevron,
                   size: 20,

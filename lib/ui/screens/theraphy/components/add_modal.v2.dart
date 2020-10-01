@@ -1,9 +1,15 @@
+import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/theraphy/add.medication.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../routes.dart';
 
 class AddModal2 extends StatelessWidget {
   const AddModal2({
@@ -90,12 +96,20 @@ class AddModal2 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    "Medication",
-                    style: TextStyle(
-                        color: Colors.green[850],
-                        fontSize: 20,
-                        fontFamily: "Regular"),
+                  GestureDetector(
+                    onTap: () {
+                      // final TherapyManager therapyManager =
+                      //     Provider.of<TherapyManager>(context, listen: false);
+                      // therapyManager.resetForm();
+                      Navigator.pushNamed(context, addmedication);
+                    },
+                    child: Text(
+                      "Medication",
+                      style: TextStyle(
+                          color: Colors.green[850],
+                          fontSize: 20,
+                          fontFamily: "Regular"),
+                    ),
                   ),
                   subHeadingText("Other Type", Colors.grey[850]),
                 ],

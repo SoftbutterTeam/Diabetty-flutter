@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 class MedicationCard extends StatefulWidget {
   final String name;
   final double width;
-  final Widget appearance;
+  final String appearance;
 
   MedicationCard({
     this.name,
@@ -36,10 +36,16 @@ class _MedicationCardState extends State<MedicationCard> {
           title: text(widget.name,
               textColor: Colors.black, fontFamily: fontMedium, fontSize: 18.0),
           subtitle: text("Reminder",
-              fontFamily: fontMedium, textColor: Colors.black26, fontSize: 12.0),
+              fontFamily: fontMedium,
+              textColor: Colors.black26,
+              fontSize: 12.0),
           leading: CircleAvatar(
             backgroundColor: Colors.orange.withOpacity(0.2),
-            child: widget.appearance,
+            child: SvgPicture.asset(
+              widget.appearance,
+              width: 30,
+              height: 30,
+            ),
           ),
           children: [
             Container(
