@@ -6,14 +6,13 @@ import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
 
 class TherapyManager {
-  TherapyManager({@required this.appContext, @required this.isLoading});
+  TherapyManager({@required this.appContext});
 
-  final ValueNotifier<bool> isLoading;
+  ValueNotifier<bool> isLoading;
   final AppContext appContext;
-  
 
   StreamController<List<Therapy>> _dataController = StreamController();
-  
+
   List<Therapy> usersTherapies;
 
   Therapy therapyForm;
@@ -21,8 +20,6 @@ class TherapyManager {
   void resetForm() {
     therapyForm = new Therapy();
   }
-
-  
 
   void dispose() {
     _dataController.close();
@@ -52,9 +49,6 @@ class TherapyManager {
   }
 
   Future<void> addTherapy(AddTherapyForm addForm) {}
-
-
-
 }
 
 class AddTherapyForm {
@@ -80,6 +74,4 @@ class AddTherapyForm {
       this.reminderRules,
       this.settings,
       this.stock});
-
-   
 }

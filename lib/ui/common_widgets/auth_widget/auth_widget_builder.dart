@@ -1,4 +1,3 @@
-import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
@@ -30,19 +29,12 @@ class AuthWidgetBuilder extends StatelessWidget {
                   return MultiProvider(
                     providers: [
                       Provider<User>.value(value: user),
-                      ChangeNotifierProvider<ValueNotifier<bool>>(
-                          create: (_) => ValueNotifier<bool>(false),
-                          child: Consumer<ValueNotifier<bool>>(
-                            builder: (_, ValueNotifier<bool> isLoading, __) =>
-                                Provider<TherapyManager>(
-                              create: (_) => TherapyManager(
-                                  appContext: appContext, isLoading: isLoading)
-                                ..init(),
-                              dispose: (_, TherapyManager therapyManager) =>
-                                  therapyManager.dispose(),
-                            ),
-                            // NOTE: Any other user-bound providers here can be added here
-                          ))
+                      Provider<AuthService>(
+                        create: (_) => authService,
+                        dispose: (_, AuthService authService) =>
+                            authService.dispose(),
+                      ),
+                      // NOTE: Any other user-bound providers here can be added here
                     ],
                     child: builder(context, snapshot, asnapshot),
                   );

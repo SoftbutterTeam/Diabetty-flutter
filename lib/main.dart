@@ -1,3 +1,5 @@
+import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/services/authentication/apple_auth_api/apple_sign_in_available.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
@@ -9,9 +11,6 @@ import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget_builder.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/email_link_error_presenter.dart';
 import 'package:diabetty/ui/common_widgets/scroll_behaviours/SBehavior.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/welcome/welcome.screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +46,8 @@ class MyApp extends StatelessWidget {
     AuthService authService = AuthServiceAdapter(
       initialAuthServiceType: initialAuthServiceType,
     );
+    AppContext appContext = new AppContext(authService)..init();
+
     return MultiProvider(
         providers: [
           // ignore: todo
@@ -58,9 +59,15 @@ class MyApp extends StatelessWidget {
           ),
 
           Provider<AppContext>(
-            create: (_) => AppContext(authService)..init(),
+            create: (_) => appContext,
             dispose: (_, AppContext appContext) => appContext.dispose(),
           ),
+          Provider<TherapyManager>(
+            create: (_) => TherapyManager(appContext: appContext),
+            dispose: (_, TherapyManager therapyManager) =>
+                therapyManager.dispose(),
+          ),
+
           Provider<EmailSecureStore>(
             create: (_) => EmailSecureStore(
               flutterSecureStorage: FlutterSecureStorage(),

@@ -1,18 +1,9 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
-import 'package:diabetty/services/therapy.service.dart';
-import 'package:diabetty/system/app_context.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/screens/theraphy/add.medication.screen.dart';
-import 'package:diabetty/ui/screens/theraphy/components/add_modal.dart';
 import 'package:diabetty/ui/screens/theraphy/components/add_modal.v2.dart';
 import 'package:diabetty/ui/screens/theraphy/components/background.dart';
 import 'package:diabetty/ui/screens/theraphy/components/medication_card.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 
 class TherapyScreenBuilder extends StatelessWidget {
   @override
