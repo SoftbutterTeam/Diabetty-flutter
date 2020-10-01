@@ -8,11 +8,14 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 class DropModal extends StatelessWidget {
   final double height;
   final Widget child;
-  const DropModal({Key key, this.height = 0.11, this.child}) : super(key: key);
+  final ValueNotifier<bool> isDropOpen;
+  const DropModal({Key key, this.height = 0.11, this.child, this.isDropOpen})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Dialog(
       elevation: 0,
       insetPadding: EdgeInsets.zero,
@@ -22,10 +25,11 @@ class DropModal extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildModal(context, this.child), //* AddModal or AddModal2
+          _buildModal(context, this.child),
           Expanded(
               child: GestureDetector(
                   onPanStart: (value) {
+                    this.isDropOpen.value = false;
                     Navigator.pop(context);
                   },
                   child: Container(color: Colors.transparent))),
@@ -113,8 +117,13 @@ class DropModal extends StatelessWidget {
                   DatePicker(
                     DateTime.now(),
                     initialSelectedDate: DateTime.now(),
-                    selectionColor: Colors.black,
+                    selectionColor: Colors.deepOrange,
                     selectedTextColor: Colors.white,
+                    dateTextStyle: TextStyle(
+                        fontFamily: 'Regular',
+                        color: Colors.black87,
+                        fontSize: 17,
+                        decorationThickness: 2),
                     onDateChange: (date) {},
                   ),
                 ],

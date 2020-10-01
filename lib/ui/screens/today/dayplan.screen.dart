@@ -19,29 +19,38 @@ class DayPlanScreenBuilder extends StatelessWidget {
     final AppContext appContext =
         Provider.of<AppContext>(context, listen: false);
     return ChangeNotifierProvider<ValueNotifier<bool>>(
-      create: (_) => ValueNotifier<bool>(false),
-      child: Consumer<ValueNotifier<bool>>(
-        builder: (_, ValueNotifier<bool> isLoading, __) =>
-            Provider<DayPlanManager>(
-          create: (_) =>
-              DayPlanManager(appContext: appContext, isLoading: isLoading)
-                ..init(),
-          child: Consumer<DayPlanManager>(
-            builder: (_, DayPlanManager manager, __) =>
-                DayPlanScreen._(isLoading: isLoading.value, manager: manager),
+        create: (_) => ValueNotifier<bool>(false),
+        child: Consumer<ValueNotifier<bool>>(
+          builder: (_, ValueNotifier<bool> isLoading, __) =>
+              ChangeNotifierProvider<ValueNotifier<bool>>(
+            create: (_) => ValueNotifier<bool>(false),
+            child: Consumer<ValueNotifier<bool>>(
+              builder: (_, ValueNotifier<bool> isDropOpen, __) =>
+                  Provider<DayPlanManager>(
+                create: (_) =>
+                    DayPlanManager(appContext: appContext, isLoading: isLoading)
+                      ..init(),
+                child: Consumer<DayPlanManager>(
+                  builder: (_, DayPlanManager manager, __) => DayPlanScreen._(
+                      isLoading: isLoading.value,
+                      manager: manager,
+                      isDropOpen: isDropOpen),
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
 class DayPlanScreen extends StatefulWidget {
   @override
-  const DayPlanScreen._({Key key, this.isLoading, this.manager})
+  const DayPlanScreen._(
+      {Key key, this.isLoading, this.manager, this.isDropOpen})
       : super(key: key);
   final DayPlanManager manager;
   final bool isLoading;
+  final ValueNotifier<bool> isDropOpen;
 
   @override
   _DayPlanScreenState createState() => _DayPlanScreenState(manager);
@@ -105,17 +114,12 @@ class _DayPlanScreenState extends State<DayPlanScreen> {
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
+      isDropOpen: widget.isDropOpen,
       child: Column(
         children: <Widget>[
-          if (false)
-            DatePicker(
-              DateTime.now(),
-              initialSelectedDate: DateTime.now(),
-              selectionColor: Colors.black,
-              selectedTextColor: Colors.white,
-              onDateChange: (date) {
-                setState(() {});
-              },
+          if (widget.isDropOpen.value)
+            SizedBox(
+              height: size.height * 0.165,
             ),
           SizedBox(
               height: size.height * 0.35,
