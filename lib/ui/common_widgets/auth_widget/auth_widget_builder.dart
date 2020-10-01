@@ -38,8 +38,8 @@ class AuthWidgetBuilder extends StatelessWidget {
                               create: (_) => TherapyManager(
                                   appContext: appContext, isLoading: isLoading)
                                 ..init(),
-                              dispose: (_, TherapyManager theraphyManager) =>
-                                  theraphyManager.dispose(),
+                              dispose: (_, TherapyManager therapyManager) =>
+                                  therapyManager.dispose(),
                             ),
                             // NOTE: Any other user-bound providers here can be added here
                           ))
