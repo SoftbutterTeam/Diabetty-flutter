@@ -10,6 +10,7 @@ import 'package:diabetty/ui/screens/theraphy/components/background.dart';
 import 'package:diabetty/ui/screens/theraphy/components/medication_card.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class TherapyScreenBuilder extends StatelessWidget {
@@ -85,7 +86,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
         ),
         child: Column(
           children: [
-            AddModal2(), //* AddModal or AddModal2
+            AddModal2(manager: widget.manager), //* AddModal or AddModal2
             Expanded(
                 child: GestureDetector(
                     onPanStart: (value) {
@@ -120,7 +121,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
                 itemBuilder: (context, index) {
                   return MedicationCard(
                     name: "Medication Name",
-                    appearance: Icon(Icons.add_to_queue),
+                    appearance: 'assets/icons/navigation/essentials/pills.svg',
                   );
                 });
           }),
@@ -130,12 +131,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-      onPressed2: () {
-        Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => AddMedicationScreen()),
-  );
-      },
+      onPressed2: () {},
       onPressed: () {
         _showExpandedTherapy(context);
       },

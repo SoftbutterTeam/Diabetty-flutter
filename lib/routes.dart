@@ -1,6 +1,7 @@
 import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
 import 'package:diabetty/ui/layouts/dashboard.layout.dart';
+import 'package:diabetty/ui/screens/theraphy/add.medication.screen.dart';
 import 'package:flutter/material.dart';
 
 class Router {
@@ -12,6 +13,9 @@ class Router {
       case register:
         return MaterialPageRoute(
             builder: (BuildContext context) => RegisterScreenBuilder());
+      case addmedication:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => AddMedicationScreenBuilder());
       case home:
         return PageRouteBuilder(
             pageBuilder: (_, a1, a2) => DashBoard(initIndex: 1),
@@ -35,3 +39,4 @@ const String login = '/login';
 const String register = '/register';
 const String home = '/home';
 const String today = '/dashboard/today';
+const String addmedication = '/therapy/addmedication';

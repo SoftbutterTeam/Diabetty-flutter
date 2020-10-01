@@ -10,10 +10,19 @@ class TherapyManager {
 
   final ValueNotifier<bool> isLoading;
   final AppContext appContext;
+  
 
   StreamController<List<Therapy>> _dataController = StreamController();
-
+  
   List<Therapy> usersTherapies;
+
+  Therapy therapyForm;
+
+  void resetForm() {
+    therapyForm = new Therapy();
+  }
+
+  
 
   void dispose() {
     _dataController.close();
@@ -43,6 +52,9 @@ class TherapyManager {
   }
 
   Future<void> addTherapy(AddTherapyForm addForm) {}
+
+
+
 }
 
 class AddTherapyForm {

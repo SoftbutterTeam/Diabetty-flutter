@@ -5,7 +5,8 @@ class MedicationInfo {
   String strength;
   String appearance;
   String unit;
-  String intakeAdvice;
+  List<String> intakeAdvice;
+  //Turned into a list -- CAMEROWN!!!!@@@@@@@@@
   Duration restDuration;
 
   MedicationInfo({
@@ -55,7 +56,7 @@ class MedicationInfo {
     String strength,
     String appearance,
     String unit,
-    String intakeAdvice,
+    List<String>  intakeAdvice,
     String restDuration,
   }) {
     setAllAttributes(
@@ -71,7 +72,7 @@ class MedicationInfo {
     Duration restDuration,
     String name,
     String strength,
-    String intakeAdvice,
+    List<String>  intakeAdvice,
     String unit,
     String appearance,
   }) {
@@ -85,7 +86,7 @@ class MedicationInfo {
 
   dummyData() {
     this.appearance = "looks good";
-    this.intakeAdvice = "take it as much as possible";
+    this.intakeAdvice = ["take it as much as possible", "take it as much as possible"];
     this.name = "literal poison";
     Duration duration = new Duration(seconds: 1000);
     this.restDuration = duration;
