@@ -117,7 +117,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             outerRadius: 130,
             initialAngle: 0,
             children: List.generate(24 * 6, (index) {
-              return index % 12 != 0
+              return index % 24 != 0
                   ? SizedBox.shrink()
                   : Icon(
                       Icons.check_circle,

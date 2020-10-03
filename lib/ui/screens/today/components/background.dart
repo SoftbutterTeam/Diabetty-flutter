@@ -20,19 +20,19 @@ class Background extends StatelessWidget {
         Colors.orange[600]
       ])),
       height: size.height,
-      child: Column(
-        children: [
-          DayPlanHeader(),
-          Expanded(
-              child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20))),
-            child: child,
-          )),
-        ],
+      child: SafeArea(
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: PreferredSize(
+                child: DayPlanHeader(), preferredSize: Size.fromHeight(50)),
+            body: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+              child: child,
+            )),
       ),
     );
   }

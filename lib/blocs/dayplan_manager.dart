@@ -6,7 +6,7 @@ import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DayPlanManager {
+class DayPlanManager extends ChangeNotifier {
   DayPlanManager({
     @required this.appContext,
   });
@@ -21,7 +21,14 @@ class DayPlanManager {
   AnimationController pushAnimation;
 
   DatePickerController dateController = DatePickerController();
-  DateTime currentDateStamp;
+  DateTime _currentDateStamp = DateTime.now();
+
+  DateTime get currentDateStamp => _currentDateStamp;
+
+  set currentDateStamp(value) {
+    _currentDateStamp = value;
+    notifyListeners();
+  }
 
   void dispose() {
     _dataController.close();
@@ -46,7 +53,7 @@ class DayPlanManager {
   }
 
   void init() async {
-    currentDateStamp = DateTime.now();
+    _currentDateStamp = DateTime.now();
 
     if (usersReminders == null) {
       return _getData();

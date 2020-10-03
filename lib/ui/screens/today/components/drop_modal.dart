@@ -5,6 +5,7 @@ import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class DropModal extends StatefulWidget {
@@ -24,7 +25,8 @@ class _DropModalState extends State<DropModal> {
 
   @override
   void initState() {
-    _selectedValue = DateTime.now();
+    final manager = Provider.of<DayPlanManager>(context, listen: false);
+    _selectedValue = manager.currentDateStamp;
     super.initState();
   }
 
@@ -76,6 +78,7 @@ class _DropModalState extends State<DropModal> {
     Size size = MediaQuery.of(context).size;
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
+
     var container = Container(
       width: size.width,
       height: size.height * 0.29,
@@ -102,8 +105,7 @@ class _DropModalState extends State<DropModal> {
                 ],
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   DatePicker(DateTime.now().subtract(Duration(days: 7)),
                       daysCount: 14,
@@ -111,16 +113,27 @@ class _DropModalState extends State<DropModal> {
                       selectionColor: Colors.deepOrange,
                       selectedTextColor: Colors.white,
                       controller: _controller,
+                      locale: 'en_gb',
                       dateTextStyle: TextStyle(
                         fontFamily: 'Regular',
                         color: Colors.black87,
                         fontSize: 17,
                       ), onDateChange: (date) {
                     // New date selected
-                    setState(() {
-                      _selectedValue = date;
-                    });
+
+                    dayManager.currentDateStamp = date;
+                    print(date);
                   }),
+                  FlatButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        dayManager.currentDateStamp = DateTime.now();
+                        _controller.animateToDate(dayManager.currentDateStamp
+                            .subtract(Duration(days: 2)));
+                        print(_selectedValue);
+                        setState(() {});
+                      },
+                      child: Text('Today'))
                 ],
               ),
             ),
@@ -130,5 +143,9 @@ class _DropModalState extends State<DropModal> {
     );
 
     return container;
+  }
+
+  DateTime parseDate(DateTime date) {
+    return DateTime.parse(DateFormat('mm-dd-yyyy').format(date));
   }
 }

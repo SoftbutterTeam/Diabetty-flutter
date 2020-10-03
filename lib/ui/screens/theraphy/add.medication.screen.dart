@@ -12,6 +12,7 @@ import 'package:diabetty/ui/screens/theraphy/components/index.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -35,21 +36,25 @@ List<String> appearanceIcon = <String>[
   'assets/icons/navigation/essentials/drugs (1).svg',
 ];
 
-class AddMedicationScreenBuilder extends StatelessWidget {
+class AddMedicationScreenBuilder extends StatefulWidget {
+  @override
+  _AddMedicationScreenBuilderState createState() =>
+      _AddMedicationScreenBuilderState();
+}
+
+class _AddMedicationScreenBuilderState
+    extends State<AddMedicationScreenBuilder> {
   @override
   Widget build(BuildContext context) {
-    final TherapyManager manager =
-        Provider.of<TherapyManager>(context, listen: true);
-    return AddMedicationScreen._(manager: manager);
+    return Consumer<TherapyManager>(
+        builder: (_, manager, ___) => AddMedicationScreen._(manager: manager));
   }
 }
 
 class AddMedicationScreen extends StatefulWidget {
   static var tag = "/draftscreen";
 
-  const AddMedicationScreen._(
-      {Key key, this.manager})
-      : super(key: key);
+  const AddMedicationScreen._({Key key, this.manager}) : super(key: key);
   final TherapyManager manager;
 
   @override
@@ -485,7 +490,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   );
 
   Scaffold _secondScreen() {
-    
     print(widget.manager.therapyForm.reminderRules.length);
     var height = MediaQuery.of(context).size.height;
     List<Widget> widgets = (widget.manager.therapyForm.reminderRules == null ||
@@ -519,36 +523,36 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                   placeholderStyle: textstyle,
                   style: textstyle,
                 ) as Widget)
-            .toList();
-    widgets.add(Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: CupertinoTextField(
-        onTap: () {
-          _showReminderModal(context);
-        },
-        decoration: BoxDecoration(
-          color: appWhite,
-          border: Border.all(
-              color: Colors.black54, width: 0.1, style: BorderStyle.solid),
-          borderRadius: BorderRadius.circular(0),
+            .toList()
+            .cast();
+    widgets.add(CupertinoTextField(
+      onTap: () {
+        widget.manager.therapyForm.reminderRules.add(ReminderRule());
+        widget.manager.updateListeners();
+        //_showReminderModal(context);
+      },
+      decoration: BoxDecoration(
+        color: appWhite,
+        border: Border.all(
+            color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+        borderRadius: BorderRadius.circular(0),
+      ),
+      prefix: Container(
+        padding: EdgeInsets.only(left: 18),
+        child: Icon(
+          CupertinoIcons.add_circled_solid,
+          color: Colors.green,
+          size: 23,
         ),
-        prefix: Container(
-          padding: EdgeInsets.only(left: 18),
-          child: Icon(
-            CupertinoIcons.add_circled_solid,
-            color: Colors.green,
-            size: 23,
-          ),
-        ),
-        placeholder: 'Add Reminder',
-        readOnly: true,
-        maxLines: 1,
-        maxLength: 30,
-        padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
-        placeholderStyle: TextStyle(
-          fontSize: textSizeLargeMedium - 3,
-          color: Colors.grey[700],
-        ),
+      ),
+      placeholder: 'Add Reminder',
+      readOnly: true,
+      maxLines: 1,
+      maxLength: 30,
+      padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
+      placeholderStyle: TextStyle(
+        fontSize: textSizeLargeMedium - 3,
+        color: Colors.grey[700],
       ),
     ) as Widget);
     return Scaffold(
@@ -691,16 +695,15 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                     ),
                   ],
                 ),
-                (widgets.length > 0)
-                    ? (widgets.length < 9)
-                        ? ColumnBuilder(
-                            itemCount: widgets.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return widgets[index];
-                            },
-                          )
-                        : _buildListViewRep(context)
-                    : null,
+                if (widgets.length > 0)
+                  (widgets.length < 7)
+                      ? ColumnBuilder(
+                          itemCount: widgets.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return widgets[index];
+                          },
+                        )
+                      : _buildListViewRep(context, widgets),
                 CustomTextField(
                   icon: Icon(
                     CupertinoIcons.shopping_cart,
@@ -727,7 +730,23 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     );
   }
 
-  _buildListViewRep(BuildContext context) {
-    return null;
+  _buildListViewRep(BuildContext context, List<Widget> widgets) {
+    var size = MediaQuery.of(context).size;
+    Widget addRem = widgets.cast().last as Widget;
+
+    List<Widget> mywidgets = List.from(widgets);
+    mywidgets.removeLast();
+    return Container(
+        child: Column(
+      children: [
+        SizedBox(
+            height: size.height * 0.3,
+            child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: mywidgets.cast())),
+        addRem
+      ],
+    ));
   }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:diabetty/ui/screens/today/components/drop_modal.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class DayPlanHeader extends StatefulWidget {
@@ -58,7 +59,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
   Widget _buildDateWidget(BuildContext context) {
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
-    return Positioned(
+    return Center(
         child: FlatButton(
       onPressed: () {
         _showDropModal(context, null);
@@ -66,20 +67,38 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
       child: Center(
         child: Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.only(top: 30),
           child: subHeadingText(
-              dayManager.currentDateStamp.toString(), Colors.white),
+              DateFormat("EEEE d").format(dayManager.currentDateStamp) +
+                  getDayOfMonthSuffix(dayManager.currentDateStamp.day),
+              Colors.white),
         ),
       ),
     ));
   }
 
+  String getDayOfMonthSuffix(final int n) {
+    if (n >= 11 && n <= 13) {
+      return '\u1d57\u02b0';
+    }
+    switch (n % 10) {
+      case 1:
+        return '\u02e2\u1d57';
+      case 2:
+        return '\u207f\u1d48';
+      case 3:
+        return '\u02b3\u1d48';
+      default:
+        return '\u1d57\u02b0';
+    }
+  }
+
   Widget _buildLayoutButton(BuildContext context) {
-    return Positioned(
-      top: 35,
-      left: 5,
+    var size = MediaQuery.of(context).size;
+    return Opacity(
+      opacity: 0,
       child: Container(
-        padding: EdgeInsets.only(top: 5),
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: size.width * 0.05),
         child: FlatButton(
           onPressed: () {},
           padding: EdgeInsets.zero,
@@ -98,11 +117,13 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
   }
 
   Widget _buildFilterButton(BuildContext context) {
-    return Positioned(
-      top: 35,
-      right: 5,
+    var size = MediaQuery.of(context).size;
+
+    return Opacity(
+      opacity: 0,
       child: Container(
-        padding: EdgeInsets.only(top: 5),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: size.width * 0.05),
         child: FlatButton(
           onPressed: () {},
           color: Colors.transparent,
@@ -124,12 +145,13 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
 
     return Container(
       height: size.height * 0.11,
+      color: Colors.transparent,
       // padding: EdgeInsets.only(left: 15, right: 15),
       child: Stack(
         children: <Widget>[
-          _buildDateWidget(context),
           _buildLayoutButton(context),
-          _buildFilterButton(context)
+          _buildFilterButton(context),
+          _buildDateWidget(context),
         ],
       ),
     );

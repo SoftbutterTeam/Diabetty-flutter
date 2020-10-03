@@ -101,7 +101,8 @@ class AddModal2 extends StatelessWidget {
                       final TherapyManager therapyManager =
                           Provider.of<TherapyManager>(context, listen: false);
                       therapyManager.resetForm();
-                      Navigator.pushNamed(context, addmedication);
+
+                      Navigator.pushReplacementNamed(context, addmedication);
                     },
                     child: Text(
                       "Medication",

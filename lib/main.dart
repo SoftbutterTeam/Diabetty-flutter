@@ -63,14 +63,11 @@ class MyApp extends StatelessWidget {
             create: (_) => appContext,
             dispose: (_, AppContext appContext) => appContext.dispose(),
           ),
-          Provider<TherapyManager>(
-            create: (_) => TherapyManager(appContext: appContext),
-            dispose: (_, TherapyManager therapyManager) =>
-                therapyManager.dispose(),
+          ChangeNotifierProvider<TherapyManager>(
+            create: (_) => TherapyManager(appContext: appContext)..init(),
           ),
-          Provider<DayPlanManager>(
+          ChangeNotifierProvider<DayPlanManager>(
             create: (_) => DayPlanManager(appContext: appContext)..init(),
-            dispose: (_, DayPlanManager manager) => manager.dispose(),
           ),
 
           Provider<EmailSecureStore>(

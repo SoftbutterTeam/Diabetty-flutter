@@ -2,9 +2,12 @@ import 'package:date_picker_timeline/date_widget.dart';
 import 'package:date_picker_timeline/extra/color.dart';
 import 'package:date_picker_timeline/extra/style.dart';
 import 'package:date_picker_timeline/gestures/tap.dart';
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class DatePicker extends StatefulWidget {
   /// Start Date in case user wants to show past dates
@@ -106,7 +109,8 @@ class _DatePickerState extends State<DatePicker> {
     // Init the calendar locale
     initializeDateFormatting(widget.locale, null);
     // Set initial Values
-    _currentDate = widget.initialSelectedDate;
+    _currentDate =
+        Provider.of<DayPlanManager>(context, listen: false).currentDateStamp;
     _opacity = 0;
     if (widget.controller != null) {
       widget.controller.setDatePickerState(this);
@@ -154,6 +158,8 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    _currentDate =
+        Provider.of<DayPlanManager>(context, listen: false).currentDateStamp;
     return Opacity(
       opacity: _opacity,
       child: Container(
