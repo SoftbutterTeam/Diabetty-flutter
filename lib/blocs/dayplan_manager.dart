@@ -1,22 +1,27 @@
 import 'dart:async';
 import 'dart:core';
-
 import 'package:diabetty/models/reminder.model.dart';
-import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 
 class DayPlanManager {
-  DayPlanManager({@required this.appContext, @required this.isLoading});
+  DayPlanManager({
+    @required this.appContext,
+  });
 
-  final ValueNotifier<bool> isLoading;
   final AppContext appContext;
 
-  StreamController<List<Reminder>> _dataController = StreamController();
+  StreamController<List<Reminder>> _dataController = BehaviorSubject();
   List<Reminder> usersReminders;
   List<Reminder> get uusersReminders =>
       null; //RemindersRepository.fetchRecentReminders(); 90daysback,50days ahead
+
+  AnimationController pushAnimation;
+
+  DatePickerController dateController = DatePickerController();
+  DateTime currentDateStamp;
 
   void dispose() {
     _dataController.close();
@@ -41,6 +46,8 @@ class DayPlanManager {
   }
 
   void init() async {
+    currentDateStamp = DateTime.now();
+
     if (usersReminders == null) {
       return _getData();
     }

@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/material.dart';
@@ -5,10 +6,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:diabetty/ui/screens/today/components/drop_modal.dart';
+import 'package:provider/provider.dart';
 
 class DayPlanHeader extends StatefulWidget {
-  final ValueNotifier<bool> isDropOpen;
-  const DayPlanHeader({Key key, this.isDropOpen}) : super(key: key);
+  const DayPlanHeader({Key key}) : super(key: key);
 
   @override
   _DayPlanHeaderState createState() => _DayPlanHeaderState();
@@ -20,13 +21,16 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
     super.initState();
   }
 
-  void _showDropModal(BuildContext context, Widget child) {
+  void _showDropModal(BuildContext context, Widget child) async {
+    final DayPlanManager dayManager =
+        Provider.of<DayPlanManager>(context, listen: false);
+
     Size size = MediaQuery.of(context).size;
     showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: '',
       // barrierColor: Colors.black12,
-      transitionDuration: Duration(milliseconds: 300),
+      transitionDuration: Duration(milliseconds: 100),
       context: context,
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         var begin = Offset(0.0, -0.5);
@@ -44,29 +48,27 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
             width: size.width,
           );
         }
-
+        dayManager.pushAnimation.forward();
         return child;
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
       },
-      pageBuilder: (_, __, ___) => DropModal(isDropOpen: widget.isDropOpen),
+      pageBuilder: (_, __, ___) => DropModal(),
     );
   }
 
   Widget _buildDateWidget(BuildContext context) {
+    final DayPlanManager dayManager =
+        Provider.of<DayPlanManager>(context, listen: false);
     return Positioned(
-        child: Center(
-      child: GestureDetector(
-        onTap: () {
-          widget.isDropOpen.value = true;
-          _showDropModal(context, null);
-        },
+        child: FlatButton(
+      onPressed: () {
+        _showDropModal(context, null);
+      },
+      child: Center(
         child: Container(
           alignment: Alignment.center,
           padding: EdgeInsets.only(top: 30),
-          child: subHeadingText("Friday 24", Colors.white),
+          child: subHeadingText(
+              dayManager.currentDateStamp.toString(), Colors.white),
         ),
       ),
     ));

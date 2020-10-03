@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
@@ -66,6 +67,10 @@ class MyApp extends StatelessWidget {
             create: (_) => TherapyManager(appContext: appContext),
             dispose: (_, TherapyManager therapyManager) =>
                 therapyManager.dispose(),
+          ),
+          Provider<DayPlanManager>(
+            create: (_) => DayPlanManager(appContext: appContext)..init(),
+            dispose: (_, DayPlanManager manager) => manager.dispose(),
           ),
 
           Provider<EmailSecureStore>(

@@ -29,11 +29,7 @@ class AuthWidgetBuilder extends StatelessWidget {
                   return MultiProvider(
                     providers: [
                       Provider<User>.value(value: user),
-                      Provider<AuthService>(
-                        create: (_) => authService,
-                        dispose: (_, AuthService authService) =>
-                            authService.dispose(),
-                      ),
+
                       // NOTE: Any other user-bound providers here can be added here
                     ],
                     child: builder(context, snapshot, asnapshot),

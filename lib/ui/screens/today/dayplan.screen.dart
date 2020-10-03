@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
+import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
@@ -19,46 +23,60 @@ class DayPlanScreenBuilder extends StatelessWidget {
     final AppContext appContext =
         Provider.of<AppContext>(context, listen: false);
     return ChangeNotifierProvider<ValueNotifier<bool>>(
-        create: (_) => ValueNotifier<bool>(false),
-        child: Consumer<ValueNotifier<bool>>(
-          builder: (_, ValueNotifier<bool> isLoading, __) =>
-              ChangeNotifierProvider<ValueNotifier<bool>>(
-            create: (_) => ValueNotifier<bool>(false),
-            child: Consumer<ValueNotifier<bool>>(
-              builder: (_, ValueNotifier<bool> isDropOpen, __) =>
-                  Provider<DayPlanManager>(
-                create: (_) =>
-                    DayPlanManager(appContext: appContext, isLoading: isLoading)
-                      ..init(),
-                child: Consumer<DayPlanManager>(
-                  builder: (_, DayPlanManager manager, __) => DayPlanScreen._(
-                      isLoading: isLoading.value,
-                      manager: manager,
-                      isDropOpen: isDropOpen),
-                ),
-              ),
-            ),
+      create: (_) => ValueNotifier<bool>(false),
+      child: Consumer<ValueNotifier<bool>>(
+        builder: (_, ValueNotifier<bool> isLoading, __) =>
+            Consumer<DayPlanManager>(
+          builder: (_, DayPlanManager manager, __) => DayPlanScreen._(
+            isLoading: isLoading.value,
+            manager: manager,
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
 class DayPlanScreen extends StatefulWidget {
   @override
-  const DayPlanScreen._(
-      {Key key, this.isLoading, this.manager, this.isDropOpen})
-      : super(key: key);
+  const DayPlanScreen._({
+    Key key,
+    this.isLoading,
+    this.manager,
+  }) : super(key: key);
   final DayPlanManager manager;
   final bool isLoading;
-  final ValueNotifier<bool> isDropOpen;
 
   @override
   _DayPlanScreenState createState() => _DayPlanScreenState(manager);
 }
 
-class _DayPlanScreenState extends State<DayPlanScreen> {
+class _DayPlanScreenState extends State<DayPlanScreen>
+    with SingleTickerProviderStateMixin {
   DayPlanManager manager;
   _DayPlanScreenState(this.manager);
+
+  AnimationController _controller;
+  Animation _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 200),
+        reverseDuration: Duration(milliseconds: 200));
+    _animation = Tween<double>(begin: 0, end: 0.165).animate(_controller);
+
+    manager.pushAnimation = _controller;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
+  }
 
   Widget _buildRemindersList(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -114,12 +132,11 @@ class _DayPlanScreenState extends State<DayPlanScreen> {
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-      isDropOpen: widget.isDropOpen,
       child: Column(
         children: <Widget>[
-          if (widget.isDropOpen.value)
-            SizedBox(
-              height: size.height * 0.165,
+          if (true)
+            AnimatedBox(
+              animation: _animation,
             ),
           SizedBox(
               height: size.height * 0.35,
