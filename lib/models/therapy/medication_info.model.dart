@@ -3,7 +3,7 @@ import 'dart:core';
 class MedicationInfo {
   String name;
   int strength;
-  String appearance;
+  int appearance;
   String unit;
   List<String> intakeAdvice;
   //Turned into a list -- CAMEROWN!!!!@@@@@@@@@
@@ -54,7 +54,7 @@ class MedicationInfo {
   void editAttributes({
     String name,
     String strength,
-    String appearance,
+    int appearance,
     String unit,
     List<String> intakeAdvice,
     String restDuration,
@@ -74,7 +74,7 @@ class MedicationInfo {
     int strength,
     List<String> intakeAdvice,
     String unit,
-    String appearance,
+    int appearance,
   }) {
     this.restDuration = restDuration;
     this.name = name;
@@ -85,7 +85,7 @@ class MedicationInfo {
   }
 
   dummyData() {
-    this.appearance = "looks good";
+    this.appearance = 0;
     this.intakeAdvice = [
       "take it as much as possible",
       "take it as much as possible"

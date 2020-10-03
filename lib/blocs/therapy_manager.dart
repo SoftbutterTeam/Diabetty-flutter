@@ -71,7 +71,7 @@ class AddTherapyForm {
   int strength;
   String units;
   String intakeAdvice;
-  String apperanceURL;
+  int apperanceIndex;
   Duration minRest;
   String mode;
   List<ReminderRule> reminderRules = List();
@@ -83,7 +83,7 @@ class AddTherapyForm {
       this.strength,
       this.units,
       this.intakeAdvice,
-      this.apperanceURL,
+      this.apperanceIndex,
       this.minRest,
       this.mode,
       this.settings,

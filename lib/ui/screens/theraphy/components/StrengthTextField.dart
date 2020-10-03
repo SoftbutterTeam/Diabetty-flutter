@@ -4,26 +4,28 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class StrengthTextField extends StatelessWidget {
+  final controller;
   final Icon icon;
   final Function onTap;
   var placeholder;
   final Function onSubmitted;
   final String placeholderText;
 
-  CustomTextField(
+  StrengthTextField(
       {this.icon,
       this.onTap,
       this.placeholder,
       this.placeholderText,
-      this.onSubmitted});
+      this.onSubmitted,
+      this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: CupertinoTextField(
-        onTap: onTap,
+        controller: controller,
         enableInteractiveSelection: false,
         onSubmitted: onSubmitted,
         decoration: BoxDecoration(
@@ -36,26 +38,25 @@ class CustomTextField extends StatelessWidget {
           padding: EdgeInsets.only(left: 18),
           child: icon,
         ),
-        suffix: Container(
-          padding: EdgeInsets.only(right: 15),
-          child: Row(
-            children: [
-              Padding(
-                  padding: EdgeInsets.only(right: 5, bottom: 2),
-                  child: (placeholder is String)
-                      ? text((placeholder), fontSize: textSizeMedium2)
-                      : placeholder),
-              Icon(
-                (placeholderText == "Set Strength & Units")
-                    ? Icons.arrow_drop_down
-                    : CupertinoIcons.right_chevron,
-                size: 20,
-              ),
-            ],
+        suffix: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.only(right: 15),
+            child: Row(
+              children: [
+                Padding(
+                    padding: EdgeInsets.only(right: 5, bottom: 2),
+                    child: text((placeholder), fontSize: textSizeMedium2)),
+                Icon(
+                  Icons.arrow_drop_down,
+                  size: 20,
+                ),
+              ],
+            ),
           ),
         ),
         placeholder: placeholderText,
-        readOnly: (placeholderText == "Set Strength & Units") ? false : true,
+        readOnly: false,
         maxLines: 1,
         maxLength: 30,
         padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
