@@ -95,7 +95,7 @@ class AddTherapyForm {
         stock: this.stock,
         name: this.name,
         medicationInfo: MedicationInfo(
-            appearance: this.apperanceURL,
+            appearance: this.apperanceIndex,
             intakeAdvice: List<String>()..add(this.intakeAdvice),
             name: this.name,
             strength: this.strength,

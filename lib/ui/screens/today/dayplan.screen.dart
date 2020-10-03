@@ -5,6 +5,7 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
+import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
@@ -14,6 +15,7 @@ import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
     as SlotWidget;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 
@@ -116,13 +118,27 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             innerRadius: 100,
             outerRadius: 130,
             initialAngle: 0,
-            children: List.generate(24 * 6, (index) {
-              return index % 24 != 0
+            children: List.generate(24 * 1, (index) {
+              //6
+              return index % 3 != 0
                   ? SizedBox.shrink()
-                  : Icon(
-                      Icons.check_circle,
-                      size: 35,
-                      color: index == 0 ? Colors.blue : Colors.orange,
+                  : SizedBox(
+                      width: 35,
+                      height: 35,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.white,
+                          ),
+                          borderRadius: BorderRadius.circular(60),
+                          color: Colors.white,
+                        ),
+                        child: SvgPicture.asset(
+                          appearance_icon_0,
+                          color: index.isOdd ? Colors.indigo[900] : null,
+                        ),
+                      ),
                     );
             }),
           ),

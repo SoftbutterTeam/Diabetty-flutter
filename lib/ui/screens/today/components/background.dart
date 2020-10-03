@@ -1,3 +1,4 @@
+import 'package:diabetty/ui/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/ui/screens/today/components/header.dart';
@@ -27,7 +28,7 @@ class Background extends StatelessWidget {
                 child: DayPlanHeader(), preferredSize: Size.fromHeight(50)),
             body: Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: appWhite,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20))),
