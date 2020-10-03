@@ -95,6 +95,7 @@ class _DashBoardState extends State<DashBoard> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: PageView(
+          physics: NeverScrollableScrollPhysics(),
           children: _pages,
           controller: pageController,
           onPageChanged: onPageChanged),

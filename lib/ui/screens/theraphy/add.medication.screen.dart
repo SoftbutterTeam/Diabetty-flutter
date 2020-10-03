@@ -8,6 +8,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/theraphy/components/index.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import 'components/StrengthTextField.dart';
 
 const List<String> intakeAdvice = const <String>[
   "Before Meal",
@@ -30,11 +33,7 @@ const List<String> modeOptions = const <String>[
   "As Planned",
 ];
 
-List<String> appearanceIcon = <String>[
-  'assets/icons/navigation/essentials/pills.svg',
-  'assets/icons/navigation/essentials/drugs.svg',
-  'assets/icons/navigation/essentials/drugs (1).svg',
-];
+List<String> appearanceIcon = appearance_icons;
 
 class AddMedicationScreenBuilder extends StatefulWidget {
   @override
@@ -68,9 +67,10 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
 
   TextEditingController medicationNameController = TextEditingController();
   TextEditingController strengthController = TextEditingController();
+  TextEditingController strengthController2 = TextEditingController();
   TextEditingController unitController = TextEditingController();
-  var strength = "none";
-  var appearance = 'none';
+  var unit = "none";
+  var appearance = appearanceIcon[0];
   var appearanceHeart = false;
   var intake = "none";
   var minRest = "none";
@@ -81,12 +81,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   Duration initialtimer = Duration();
   var timeFormatter = new DateFormat('hh:mm');
   var step = 1;
-
-  // therapyForm.minRest = minRest as Duration;
-  //       therapyForm.strength = strengthController.text as int;
-  //     therapyForm.units = unitController.text;
-  // therapyForm.mode = mode;
-  // therapyForm.intakeAdvice = intake as List<String>;
 
   @override
   void initState() {
@@ -102,17 +96,19 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     therapyForm.units = unitController.text;
     therapyForm.mode = mode;
     therapyForm.intakeAdvice = intake;
+    therapyForm.apperanceIndex = _selectedAppearanceIndex;
     print(therapyForm.name);
     print(therapyForm.minRest);
     print(therapyForm.strength);
     print(therapyForm.units);
     print(therapyForm.mode);
     print(therapyForm.intakeAdvice);
+    print(therapyForm.apperanceIndex);
   }
 
   bool _firstStepValidation() {
     return (medicationNameController.text.isEmpty ||
-        strength == 'none' ||
+        unit == 'none' ||
         appearance == 'none' ||
         intake == 'none' ||
         minRest == 'none');
@@ -149,7 +145,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     } else {
       Navigator.pop(context);
       setState(() {
-        strength = strengthController.text + ' ' + unitController.text;
+        unit = strengthController.text + ' ' + unitController.text;
       });
     }
   }
@@ -192,7 +188,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
         width: width,
         strenghtController: strengthController,
         unitController: unitController,
-        strength: strength,
+        strength: unit,
         onPressed: () {
           _onPressedStrengthDialog();
         },
@@ -396,17 +392,18 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                     onSubmitted: (String value) =>
                         therapyForm.name = value.trim(),
                   ),
-                  CustomTextField(
+                  StrengthTextField(
+                    controller: strengthController2,
                     icon: Icon(
-                      (strength == 'none')
+                      (unit == 'none')
                           ? CupertinoIcons.heart
                           : CupertinoIcons.heart_solid,
-                      color: (strength == 'none') ? Colors.black : Colors.red,
+                      color: (unit == 'none') ? Colors.black : Colors.red,
                       size: 23,
                     ),
                     onTap: () => _showStrengthDialog(),
-                    placeholder: strength,
-                    placeholderText: 'Set Strength & Units',
+                    placeholder: unit,
+                    placeholderText: (unit == 'none') ? 'Set Strength & Units' : '100',
                   ),
                   CustomTextField(
                     icon: Icon(

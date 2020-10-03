@@ -37,3 +37,13 @@ const d_3 =
     "assets/icons/navigation/gradient-icons/d3.svg"; // rank: 1 proffesional
 const d_4 = "assets/icons/navigation/gradient-icons/d4.svg"; // rank: 2 kawai
 const d_5 = "assets/icons/navigation/gradient-icons/d5.svg";
+
+const appearance_icon_0 = 'assets/icons/navigation/essentials/drugs (1).svg';
+const appearance_icon_1 = 'assets/icons/navigation/essentials/pills.svg';
+const appearance_icon_2 = 'assets/icons/navigation/essentials/drugs.svg';
+
+const appearance_icons = [
+  appearance_icon_0,
+  appearance_icon_1,
+  appearance_icon_2,
+];
