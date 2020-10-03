@@ -19,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: CupertinoTextField(
+        enableInteractiveSelection: false,
         onSubmitted: onSubmitted,
         decoration: BoxDecoration(
           color: appWhite,

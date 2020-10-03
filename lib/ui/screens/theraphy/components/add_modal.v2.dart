@@ -98,9 +98,9 @@ class AddModal2 extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // final TherapyManager therapyManager =
-                      //     Provider.of<TherapyManager>(context, listen: false);
-                      // therapyManager.resetForm();
+                      final TherapyManager therapyManager =
+                          Provider.of<TherapyManager>(context, listen: false);
+                      therapyManager.resetForm();
                       Navigator.pushNamed(context, addmedication);
                     },
                     child: Text(

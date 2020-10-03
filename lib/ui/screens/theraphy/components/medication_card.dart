@@ -20,6 +20,8 @@ class MedicationCard extends StatefulWidget {
 }
 
 class _MedicationCardState extends State<MedicationCard> {
+  bool sound = false;
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -49,7 +51,48 @@ class _MedicationCardState extends State<MedicationCard> {
           ),
           children: [
             Container(
+              width: width,
               height: height * 0.05,
+              child: Row(
+                children: [
+                  Container(
+                    width: width * 0.15,
+                    height: height * 0.05,
+                    color: Colors.white,
+                  ),
+                  Container(
+                    width: width * 0.6,
+                    height: height * 0.05,
+                    color: Colors.green,
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 16, top: 3),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  sound = !sound;
+                                });
+                              },
+                              child: SvgPicture.asset(
+                                (sound)
+                                    ? 'assets/icons/navigation/essentials/turn-notifications-on-button.svg'
+                                    : 'assets/icons/navigation/essentials/notifications-button.svg',
+                                height: 25,
+                                width: 25,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),

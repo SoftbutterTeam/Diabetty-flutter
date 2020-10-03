@@ -1,9 +1,11 @@
+import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-
+import 'package:provider/provider.dart';
 
 class AddReminderModal extends StatefulWidget {
   @override
@@ -12,22 +14,26 @@ class AddReminderModal extends StatefulWidget {
 
 class _AddReminderModalState extends State<AddReminderModal> {
   var dosageController;
-  var monday;
-  var tuesday;
-  var wednesday;
-  var thursday;
-  var friday;
-  var saturday;
-  var sunday;
+  bool monday;
+  bool tuesday;
+  bool wednesday;
+  bool thursday;
+  bool friday;
+  bool saturday;
+  bool sunday;
   Duration initialtimer;
   var time;
   var dateTime;
   var initialDate;
   var window;
 
+  ReminderRule reminder;
+
   @override
   void initState() {
     super.initState();
+    reminder = ReminderRule();
+    reminder.days = Days();
     monday = false;
     tuesday = false;
     wednesday = false;
@@ -84,6 +90,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onPressed: () {
                       Navigator.pop(context);
                       var timeSelected = initialtimer.toString();
+                      reminder.window = timeSelected;
                       var trimmedtimeSelected = timeSelected.lastIndexOf(':');
                       String result = (trimmedtimeSelected != -1)
                           ? timeSelected.substring(0, trimmedtimeSelected)
@@ -161,6 +168,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onPressed: () {
                       Navigator.pop(context);
                       var timeSelected = dateTime.toString();
+                      reminder.time = timeSelected;
                       var trimmedtimeSelected = timeSelected[11] +
                           timeSelected[12] +
                           timeSelected[13] +
@@ -204,17 +212,37 @@ class _AddReminderModalState extends State<AddReminderModal> {
   }
 
   _saveData() {
-    monday ? print('monday selected') : null;
-    tuesday ? print('tuesday selected') : null;
-    wednesday ? print('wednesday selected') : null;
-    thursday ? print('thursday selected') : null;
-    friday ? print('friday selected') : null;
-    saturday ? print('saturday selected') : null;
-    sunday ? print('sunday selected') : null;
-    (time != '00:00') ? print(time) : null;
-    (window != '00:00') ? print(window) : null;
+    if (dosageController.text.isEmpty || time == '00:00' || window == '00:00') {
+      print('pls fill it out dumbnuts');
+    } else {
+    monday ? reminder.days.monday = true : reminder.days.monday = false;
+    tuesday ? reminder.days.tuesday = true : reminder.days.tuesday = false;
+    wednesday ? reminder.days.wednesday = true : reminder.days.wednesday = false;
+    thursday ? reminder.days.thursday = true : reminder.days.thursday = false;
+    friday ? reminder.days.friday = true : reminder.days.friday = false;
+    saturday ? reminder.days.saturday = true : reminder.days.saturday = false;
+    sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
+    var doseStringToDouble = double.parse(dosageController.text);
+    reminder.dose = doseStringToDouble;
+    print(reminder.dose);
+    print(reminder.time);
+    print(reminder.window);
     print(dosageController.text);
+    print(reminder.days.monday);
+    print(reminder.days.tuesday);
+    print(reminder.days.wednesday);
+    print(reminder.days.thursday);
+    print(reminder.days.friday);
+    print(reminder.days.saturday);
+    print(reminder.days.sunday);
+    final TherapyManager manager =
+        Provider.of<TherapyManager>(context, listen: false);
+    manager.therapyForm = AddTherapyForm();
+    manager.therapyForm.reminderRules.add(reminder);
+    manager.updateListeners();
+    print(manager.therapyForm.reminderRules.length);
     Navigator.pop(context);
+    }
   }
 
   @override
@@ -444,14 +472,13 @@ class _AddReminderModalState extends State<AddReminderModal> {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: CupertinoTextField(
-                prefix: Text(
-                  'Dose',
-                  style: TextStyle(
-                    fontSize: textSizeLargeMedium - 3,
-                    color: Colors.grey[700],
-                  ),
-                ),
-                textAlign: TextAlign.right,
+                // prefix: Text(
+                //   'Dose',
+                //   style: TextStyle(
+                //     fontSize: textSizeLargeMedium - 3,
+                //     color: Colors.grey[700],
+                //   ),
+                // ),
                 controller: dosageController,
                 keyboardType: TextInputType.number,
                 decoration: BoxDecoration(
@@ -460,6 +487,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                 readOnly: false,
                 maxLines: 1,
                 maxLength: 3,
+                placeholder: "Dose",
                 padding:
                     EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
                 placeholderStyle: TextStyle(

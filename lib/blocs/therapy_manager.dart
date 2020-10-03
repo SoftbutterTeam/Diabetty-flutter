@@ -5,7 +5,7 @@ import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
 
-class TherapyManager {
+class TherapyManager extends ChangeNotifier{
   TherapyManager({@required this.appContext});
 
   ValueNotifier<bool> isLoading;
@@ -15,10 +15,14 @@ class TherapyManager {
 
   List<Therapy> usersTherapies;
 
-  Therapy therapyForm;
+  AddTherapyForm therapyForm;
 
   void resetForm() {
-    therapyForm = new Therapy();
+    therapyForm = new AddTherapyForm();
+  }
+
+  void updateListeners() {
+    notifyListeners();
   }
 
   void dispose() {
@@ -51,15 +55,16 @@ class TherapyManager {
   Future<void> addTherapy(AddTherapyForm addForm) {}
 }
 
+
 class AddTherapyForm {
   String name;
   int strength;
   String units;
-  List<String> intakeAdvice;
+  String intakeAdvice;
   String apperanceURL;
   Duration minRest;
   String mode;
-  List<ReminderRule> reminderRules;
+  List<ReminderRule> reminderRules = List();
   AlarmSettings settings;
   int stock;
 
@@ -71,7 +76,7 @@ class AddTherapyForm {
       this.apperanceURL,
       this.minRest,
       this.mode,
-      this.reminderRules,
+       
       this.settings,
       this.stock});
 }
