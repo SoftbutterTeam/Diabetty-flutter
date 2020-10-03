@@ -56,6 +56,7 @@ class Therapy {
 
 class Schedule {
   List<ReminderRule> reminders;
+
   Schedule({
     this.reminders,
   });

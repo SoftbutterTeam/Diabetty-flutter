@@ -3,7 +3,7 @@ import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
-import 'package:diabetty/ui/screens/theraphy/add.medication.screen.dart';
+import 'package:diabetty/ui/screens/theraphy/add_medication.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
