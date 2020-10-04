@@ -63,8 +63,9 @@ class ReminderCard extends StatelessWidget {
           color: Colors.white,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              side: BorderSide(width: 0.1, color: Colors.deepOrange)),
+            borderRadius: BorderRadius.circular(10.0),
+            side: BorderSide(width: 0.1, color: Colors.deepOrange),
+          ), //tried width : 0.2
           child: _buildContent(context),
         ));
   }
@@ -104,10 +105,10 @@ class ReminderCard extends StatelessWidget {
         padding: EdgeInsets.only(left: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center, //was space evently
           children: <Widget>[
             text('Insulin 30mg', //reminder.name,
-                textColor: Colors.indigo[900],
+                //Colors.indigo[900],
                 fontFamily: 'Regular',
                 fontSize: 15.0,
                 overflow: TextOverflow.ellipsis),
@@ -122,6 +123,7 @@ class ReminderCard extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: IconButton(
+        color: Colors.transparent,
         onPressed: () {},
         padding: EdgeInsets.all(3),
         icon: SizedBox(
@@ -131,11 +133,11 @@ class ReminderCard extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(width: 0.0, color: Colors.transparent),
               borderRadius: BorderRadius.circular(60),
-              color: Colors.greenAccent[700],
+              color: Colors.transparent, //   Colors.greenAccent[700]
             ),
             child: SvgPicture.asset(
               'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.white,
+              color: Colors.greenAccent[700], //Colors.white
             ),
           ),
         ),
