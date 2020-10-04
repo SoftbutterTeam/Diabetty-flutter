@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
@@ -19,9 +21,9 @@ class TimeSlot extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     double unit = 1;
+
     String time =
         new DateFormat.jm().format(DateTime.parse(timeSlot.time.toString()));
-
     return SizedBox(
       height: (40 + 75 * timeSlot.reminders.length * unit).toDouble(),
       child: Container(
@@ -43,12 +45,36 @@ class TimeSlot extends StatelessWidget {
             color: Colors.white,
           ),
           child: Column(children: <Widget>[
-            Center(
-              child: text(
-                time,
-                textColor: Colors.indigo[900],
-                fontFamily: 'Regular',
-                fontSize: textSizeMedium,
+            Container(
+              decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    //* could do without? or mix up blur
+                    radius: 5,
+                    tileMode: TileMode.mirror,
+                    focalRadius: 2,
+                    colors: [
+                      Colors.white.withOpacity(.1),
+                      Colors.grey[300].withOpacity(.1),
+                      Colors.grey[600].withOpacity(0.1),
+                      Colors.white.withOpacity(.1),
+
+                      /*Colors.white.withOpacity(.1),
+                      Colors.grey[600].withOpacity(0.1),
+                      Colors.grey[300].withOpacity(.1),
+                      */
+                    ],
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  )),
+              child: Center(
+                child: text(
+                  time,
+                  textColor: Colors.black87,
+                  fontFamily: 'Regular',
+                  fontSize: textSizeMedium,
+                ),
               ),
             ),
             Expanded(

@@ -115,10 +115,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
             // backgroundBlendMode: BlendMode.colorDodge,
-            color: Colors.white,
+            color: appWhite,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
+                color: Colors.grey.withOpacity(0.1), //was 0.1
                 spreadRadius: 1,
                 blurRadius: 4, //was 4 , 3
                 offset: Offset(0, 1), // was 1, 2
