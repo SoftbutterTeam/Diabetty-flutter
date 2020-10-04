@@ -2,7 +2,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/material.dart';
 
-class TopBar extends StatefulWidget {
+class TopBar2 extends StatefulWidget {
   final String leftButtonText;
   final String rightButtonText;
   final Function onLeftTap;
@@ -11,7 +11,7 @@ class TopBar extends StatefulWidget {
   final Color color;
   final bool btnEnabled;
 
-  TopBar(
+  TopBar2(
       {this.centerText,
       this.onLeftTap,
       this.leftButtonText,
@@ -21,10 +21,10 @@ class TopBar extends StatefulWidget {
       this.btnEnabled});
 
   @override
-  _TopBarState createState() => _TopBarState();
+  _TopBar2State createState() => _TopBar2State();
 }
 
-class _TopBarState extends State<TopBar> {
+class _TopBar2State extends State<TopBar2> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,20 +93,14 @@ class _TopBarState extends State<TopBar> {
                     disabledTextColor: Colors.transparent,
                     disabledColor: Colors.transparent,
                     textColor: widget.color,
-                    onPressed: (widget.btnEnabled)
-                        ? widget.onRightTap
-                        : () {
-                            print('nah');
-                          },
+                    onPressed: widget.onRightTap,
                     color: Colors.transparent,
                     padding: EdgeInsets.zero,
                     child: Align(
-                      child: (widget.btnEnabled)
-                          ? text(widget.rightButtonText,
-                              fontSize: textSizeMedium2,
-                              //fontFamily: 'Regular',
-                              textColor: Colors.blue[900])
-                          : Text(''),
+                      child: text(widget.rightButtonText,
+                          fontSize: textSizeMedium2,
+                          //fontFamily: 'Regular',
+                          textColor: Colors.blue[900]),
                       alignment: Alignment.centerRight,
                     ),
                   ),
