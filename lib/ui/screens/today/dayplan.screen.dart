@@ -98,18 +98,32 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             );
           }
 
-          return ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: timeSlots.length,
-              itemBuilder: (context, index) {
-                return SlotWidget.TimeSlot(timeSlot: timeSlots[index]);
-              });
+          return Container(
+            child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: timeSlots.length,
+                itemBuilder: (context, index) {
+                  return SlotWidget.TimeSlot(timeSlot: timeSlots[index]);
+                }),
+          );
         });
   }
 
   Widget _buildCirclePlan(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
+        margin: EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+            // backgroundBlendMode: BlendMode.colorDodge,
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 4, //was 4 , 3
+                offset: Offset(0, 1), // was 1, 2
+              ),
+            ]),
         alignment: Alignment.center,
         width: size.width,
         child: Center(

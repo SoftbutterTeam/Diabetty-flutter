@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/therapy.service.dart';

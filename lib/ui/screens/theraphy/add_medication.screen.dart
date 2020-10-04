@@ -102,14 +102,20 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     therapyForm.minRest = initialtimer;
     var tempStrength;
     var strengthInt;
-    (strengthController.text.isEmpty) ? therapyForm.strength = null : tempStrength = strengthController.text;
-    (strengthController.text.isEmpty) ? therapyForm.strength = null : strengthInt = int.parse(tempStrength);
+    (strengthController.text.isEmpty)
+        ? therapyForm.strength = null
+        : tempStrength = strengthController.text;
+    (strengthController.text.isEmpty)
+        ? therapyForm.strength = null
+        : strengthInt = int.parse(tempStrength);
     therapyForm.strength = strengthInt;
     (unit == "none") ? therapyForm.units = null : therapyForm.units = unit;
     // therapyForm.units = unit;
     (mode == "none") ? therapyForm.mode = null : therapyForm.mode = mode;
     // therapyForm.mode = mode;
-    (intake == "none") ? therapyForm.intakeAdvice = null : therapyForm.intakeAdvice = intake;
+    (intake == "none")
+        ? therapyForm.intakeAdvice = null
+        : therapyForm.intakeAdvice = intake;
     // therapyForm.intakeAdvice = intake;
     therapyForm.apperanceIndex = _selectedAppearanceIndex;
     print(therapyForm.name);
@@ -538,7 +544,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             .cast();
     widgets.add(CupertinoTextField(
       onTap: () {
-        widget.manager.therapyForm.reminderRules.add(ReminderRule());
+        widget.manager.therapyForm.reminderRules
+            .add(ReminderRule(forceGenerateUID: true));
         widget.manager.updateListeners();
         //_showReminderModal(context);
       },

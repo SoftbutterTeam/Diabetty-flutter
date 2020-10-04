@@ -21,11 +21,27 @@ class TimeSlot extends StatelessWidget {
     double unit = 1;
     String time =
         new DateFormat.jm().format(DateTime.parse(timeSlot.time.toString()));
-    DateFormat.jm().parse(time);
+
     return SizedBox(
       height: (40 + 75 * timeSlot.reminders.length * unit).toDouble(),
       child: Container(
           margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: Offset(0, 3),
+              ),
+            ],
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)),
+            color: Colors.white,
+          ),
           child: Column(children: <Widget>[
             Center(
               child: text(
@@ -59,8 +75,8 @@ class ReminderCard extends StatelessWidget {
     return SizedBox(
         height: 75 * unit,
         child: Card(
-          semanticContainer: true,
           color: Colors.white,
+          shadowColor: Colors.grey.withOpacity(.1), // 0 works great was .2 .1
           clipBehavior: Clip.antiAliasWithSaveLayer,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
