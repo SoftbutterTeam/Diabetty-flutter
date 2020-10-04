@@ -30,8 +30,10 @@ class DayPlanManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  @override
   void dispose() {
     _dataController.close();
+    super.dispose();
   }
 
   Sink<List<Reminder>> get dataSink => _dataController.sink;

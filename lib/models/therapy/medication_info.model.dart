@@ -2,7 +2,7 @@ import 'dart:core';
 
 class MedicationInfo {
   String name;
-  String strength;
+  int strength;
   int appearance;
   String unit;
   List<String> intakeAdvice;
@@ -56,7 +56,7 @@ class MedicationInfo {
     String strength,
     int appearance,
     String unit,
-    List<String>  intakeAdvice,
+    List<String> intakeAdvice,
     String restDuration,
   }) {
     setAllAttributes(
@@ -71,8 +71,8 @@ class MedicationInfo {
   void setAllAttributes({
     Duration restDuration,
     String name,
-    String strength,
-    List<String>  intakeAdvice,
+    int strength,
+    List<String> intakeAdvice,
     String unit,
     int appearance,
   }) {
@@ -86,11 +86,14 @@ class MedicationInfo {
 
   dummyData() {
     this.appearance = 0;
-    this.intakeAdvice = ["take it as much as possible", "take it as much as possible"];
+    this.intakeAdvice = [
+      "take it as much as possible",
+      "take it as much as possible"
+    ];
     this.name = "literal poison";
     Duration duration = new Duration(seconds: 1000);
     this.restDuration = duration;
-    this.strength = "hench";
+    this.strength = 200;
     this.unit = "absolute unit";
   }
 }

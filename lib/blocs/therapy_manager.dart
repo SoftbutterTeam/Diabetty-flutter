@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/medication_info.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
 
-class TherapyManager extends ChangeNotifier{
+class TherapyManager extends ChangeNotifier {
   TherapyManager({@required this.appContext});
+  TheraphyService theraphyService = TheraphyService();
 
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
@@ -25,8 +28,10 @@ class TherapyManager extends ChangeNotifier{
     notifyListeners();
   }
 
+  @override
   void dispose() {
     _dataController.close();
+    super.dispose();
   }
 
   Sink<List<Therapy>> get dataSink => _dataController.sink;
@@ -52,9 +57,14 @@ class TherapyManager extends ChangeNotifier{
     return _getData();
   }
 
-  Future<void> addTherapy(AddTherapyForm addForm) {}
+  Future<bool> sumbitAddTherapy(AddTherapyForm addForm) async {
+    try {
+      await theraphyService.addTherapy(addForm.toTherapy());
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
-
 
 class AddTherapyForm {
   String name;
@@ -76,7 +86,24 @@ class AddTherapyForm {
       this.apperanceIndex,
       this.minRest,
       this.mode,
-       
       this.settings,
       this.stock});
+
+  Therapy toTherapy() {
+    return Therapy(
+        mode: this.mode,
+        stock: this.stock,
+        name: this.name,
+        medicationInfo: MedicationInfo(
+            appearance: this.apperanceIndex,
+            intakeAdvice: List<String>()..add(this.intakeAdvice),
+            name: this.name,
+            strength: this.strength,
+            unit: this.units,
+            restDuration: this.minRest),
+        schedule: Schedule(reminders: this.reminderRules));
+  }
+
+  //TODO settings
+  //TODO intake advice should be a list
 }

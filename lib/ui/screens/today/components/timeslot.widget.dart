@@ -3,6 +3,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/today/components/medication_profile.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,7 +30,7 @@ class TimeSlot extends StatelessWidget {
             Center(
               child: text(
                 time,
-                textColor: t2_colorPrimary,
+                textColor: Colors.indigo[900],
                 fontFamily: 'Regular',
                 fontSize: textSizeMedium,
               ),
@@ -59,10 +60,11 @@ class ReminderCard extends StatelessWidget {
         height: 75 * unit,
         child: Card(
           semanticContainer: true,
+          color: Colors.white,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+              borderRadius: BorderRadius.circular(10.0),
+              side: BorderSide(width: 0.1, color: Colors.deepOrange)),
           child: _buildContent(context),
         ));
   }
@@ -70,7 +72,8 @@ class ReminderCard extends StatelessWidget {
   Widget _buildContent(BuildContext context) {
     return SizedBox(
       child: Padding(
-        padding: const EdgeInsets.only(right: 9, top: 7.0, bottom: 4, left: 4),
+        padding:
+            const EdgeInsets.only(right: 12, top: 7.0, bottom: 4, left: 12),
         child: GestureDetector(
           onTap: () => Navigator.push(context,
               MaterialPageRoute(builder: (context) => MedicationProfile())),
@@ -87,14 +90,12 @@ class ReminderCard extends StatelessWidget {
   }
 
   Widget _buildReminderIcon(BuildContext context) {
-    return ClipOval(
-      child: Image(
-        height: 30,
-        width: 30,
-        image: AssetImage('assets/icons/navigation/clock/medication.jpeg'),
-        fit: BoxFit.cover,
-      ),
-    );
+    return Container(
+        child: SizedBox(
+      height: 25,
+      width: 25,
+      child: SvgPicture.asset(appearance_icon_0),
+    ));
   }
 
   Widget _buildReminderInfo(BuildContext context) {
@@ -103,11 +104,12 @@ class ReminderCard extends StatelessWidget {
         padding: EdgeInsets.only(left: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            text(reminder.name,
-                textColor: t2_colorPrimary,
+            text('Insulin 30mg', //reminder.name,
+                textColor: Colors.indigo[900],
                 fontFamily: 'Regular',
-                fontSize: textSizeMedium2,
+                fontSize: 15.0,
                 overflow: TextOverflow.ellipsis),
             text('Reminder Description', fontSize: textSizeSmall),
           ],
@@ -118,16 +120,26 @@ class ReminderCard extends StatelessWidget {
 
   Widget _buidReminderTick(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(right: 15),
-        alignment: Alignment.center,
-        child: IconButton(
-            onPressed: () {},
-            padding: EdgeInsets.all(3),
-            icon: SvgPicture.asset(
+      alignment: Alignment.center,
+      child: IconButton(
+        onPressed: () {},
+        padding: EdgeInsets.all(3),
+        icon: SizedBox(
+          width: 30,
+          height: 30,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(width: 0.0, color: Colors.transparent),
+              borderRadius: BorderRadius.circular(60),
+              color: Colors.greenAccent[700],
+            ),
+            child: SvgPicture.asset(
               'assets/icons/navigation/checkbox/tick.svg',
-              width: 30,
-              color: Colors.indigoAccent[100],
-              height: 30,
-            )));
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
