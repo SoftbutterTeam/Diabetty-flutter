@@ -133,7 +133,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             outerRadius: 130,
             initialAngle: 0,
             children: List.generate(24 * 1, (index) {
-              //6
               return index % 3 != 0
                   ? SizedBox.shrink()
                   : SizedBox(
