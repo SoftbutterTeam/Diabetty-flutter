@@ -56,7 +56,7 @@ class StrengthTextField extends StatelessWidget {
           ),
         ),
         placeholder: placeholderText,
-        readOnly: false,
+        readOnly: (placeholder == 'none'),
         maxLines: 1,
         maxLength: 30,
         padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),

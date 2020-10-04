@@ -28,6 +28,15 @@ const List<String> intakeAdvice = const <String>[
   "After Bed",
 ];
 
+const List<String> units = const <String>[
+  "none",
+  "units",
+  "mg",
+  "mL",
+  "ug",
+  "mm",
+];
+
 const List<String> modeOptions = const <String>[
   "Scheduled",
   "As Planned",
@@ -66,9 +75,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   final _addMedicationKey = GlobalKey<FormState>();
 
   TextEditingController medicationNameController = TextEditingController();
-  TextEditingController strengthController = TextEditingController();
-  TextEditingController strengthController2 = TextEditingController();
-  TextEditingController unitController = TextEditingController();
+  TextEditingController strengthController;
   var unit = "none";
   var appearance = appearanceIcon[0];
   var appearanceHeart = false;
@@ -78,6 +85,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   int _selectedIntakeIndex = 0;
   int _selectedModeIndex = 0;
   int _selectedAppearanceIndex = 0;
+  int _selectedUnitIndex = 0;
   Duration initialtimer = Duration();
   var timeFormatter = new DateFormat('hh:mm');
   var step = 1;
@@ -85,17 +93,24 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   @override
   void initState() {
     super.initState();
+
+    strengthController = TextEditingController();
   }
 
   _saveData() {
     therapyForm.name = medicationNameController.text;
     therapyForm.minRest = initialtimer;
-    var tempStrength = strengthController.text;
-    var strengthInt = int.parse(tempStrength);
+    var tempStrength;
+    var strengthInt;
+    (strengthController.text.isEmpty) ? therapyForm.strength = null : tempStrength = strengthController.text;
+    (strengthController.text.isEmpty) ? therapyForm.strength = null : strengthInt = int.parse(tempStrength);
     therapyForm.strength = strengthInt;
-    therapyForm.units = unitController.text;
-    therapyForm.mode = mode;
-    therapyForm.intakeAdvice = intake;
+    (unit == "none") ? therapyForm.units = null : therapyForm.units = unit;
+    // therapyForm.units = unit;
+    (mode == "none") ? therapyForm.mode = null : therapyForm.mode = mode;
+    // therapyForm.mode = mode;
+    (intake == "none") ? therapyForm.intakeAdvice = null : therapyForm.intakeAdvice = intake;
+    // therapyForm.intakeAdvice = intake;
     therapyForm.apperanceIndex = _selectedAppearanceIndex;
     print(therapyForm.name);
     print(therapyForm.minRest);
@@ -107,11 +122,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   }
 
   bool _firstStepValidation() {
-    return (medicationNameController.text.isEmpty ||
-        unit == 'none' ||
-        appearance == 'none' ||
-        intake == 'none' ||
-        minRest == 'none');
+    return (medicationNameController.text.isEmpty);
   }
 
   _nextStep() {
@@ -121,33 +132,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             step = 2;
           });
     print(therapyForm.minRest);
-  }
-
-  _onPressedStrengthDialog() {
-    if (strengthController.text.isEmpty || unitController.text.isEmpty) {
-      showCupertinoDialog(
-          context: context,
-          builder: (context) {
-            return CupertinoAlertDialog(
-              title: Text('Error'),
-              content: Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: Text('Please fill in both fields')),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('OK'))
-              ],
-            );
-          });
-    } else {
-      Navigator.pop(context);
-      setState(() {
-        unit = strengthController.text + ' ' + unitController.text;
-      });
-    }
   }
 
   _onPressedMinRestPopUp() {
@@ -170,6 +154,20 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     });
   }
 
+  _onPressedUnitPopUp() {
+    Navigator.pop(context);
+    print(units[_selectedUnitIndex]);
+    (strengthController.text.isEmpty)
+        ? setState(() {
+            strengthController = TextEditingController(text: '100');
+            unit = units[_selectedUnitIndex];
+          })
+        : setState(() {
+            unit = units[_selectedUnitIndex];
+          });
+    (unit == 'none') ? strengthController.clear() : print('heyhey');
+  }
+
   _onPressedIntakePopUp() {
     Navigator.pop(context);
     print(intakeAdvice[_selectedIntakeIndex]);
@@ -178,21 +176,37 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     });
   }
 
-  _showStrengthDialog() {
+  _showUnitPopUp() {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    showDialog(
+    showCupertinoModalPopup(
       context: context,
-      builder: (_) => StrengthDialog(
-        height: height,
-        width: width,
-        strenghtController: strengthController,
-        unitController: unitController,
-        strength: unit,
-        onPressed: () {
-          _onPressedStrengthDialog();
-        },
-      ),
+      builder: (context) {
+        return IntakePopUp(
+          height: height,
+          width: width,
+          onPressed: () {
+            _onPressedUnitPopUp();
+          },
+          intakePicker: CupertinoPicker(
+            itemExtent: 35,
+            backgroundColor: Colors.white,
+            onSelectedItemChanged: (int x) {
+              setState(() {
+                _selectedUnitIndex = x;
+              });
+            },
+            children: new List<Widget>.generate(
+              units.length,
+              (int index) {
+                return new Center(
+                  child: new Text(units[index]),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -393,7 +407,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                         therapyForm.name = value.trim(),
                   ),
                   StrengthTextField(
-                    controller: strengthController2,
+                    controller: strengthController,
                     icon: Icon(
                       (unit == 'none')
                           ? CupertinoIcons.heart
@@ -401,9 +415,9 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                       color: (unit == 'none') ? Colors.black : Colors.red,
                       size: 23,
                     ),
-                    onTap: () => _showStrengthDialog(),
+                    onTap: () => _showUnitPopUp(),
                     placeholder: unit,
-                    placeholderText: (unit == 'none') ? 'Set Strength & Units' : '100',
+                    placeholderText: 'Set Strength & Units',
                   ),
                   CustomTextField(
                     icon: Icon(
