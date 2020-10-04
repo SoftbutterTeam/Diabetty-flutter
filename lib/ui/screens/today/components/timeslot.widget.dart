@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
@@ -19,20 +21,60 @@ class TimeSlot extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     double unit = 1;
+
     String time =
         new DateFormat.jm().format(DateTime.parse(timeSlot.time.toString()));
-    DateFormat.jm().parse(time);
     return SizedBox(
       height: (40 + 75 * timeSlot.reminders.length * unit).toDouble(),
       child: Container(
           margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: Offset(0, 3),
+              ),
+            ],
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)),
+            color: Colors.white,
+          ),
           child: Column(children: <Widget>[
-            Center(
-              child: text(
-                time,
-                textColor: Colors.indigo[900],
-                fontFamily: 'Regular',
-                fontSize: textSizeMedium,
+            Container(
+              decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    //* could do without? or mix up blur
+                    radius: 5,
+                    tileMode: TileMode.mirror,
+                    focalRadius: 2,
+                    colors: [
+                      Colors.white.withOpacity(.1),
+                      Colors.grey[300].withOpacity(.1),
+                      Colors.grey[600].withOpacity(0.1),
+                      Colors.white.withOpacity(.1),
+
+                      /*Colors.white.withOpacity(.1),
+                      Colors.grey[600].withOpacity(0.1),
+                      Colors.grey[300].withOpacity(.1),
+                      */
+                    ],
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  )),
+              child: Center(
+                child: text(
+                  time,
+                  textColor: Colors.black87,
+                  fontFamily: 'Regular',
+                  fontSize: textSizeMedium,
+                ),
               ),
             ),
             Expanded(
@@ -59,12 +101,13 @@ class ReminderCard extends StatelessWidget {
     return SizedBox(
         height: 75 * unit,
         child: Card(
-          semanticContainer: true,
           color: Colors.white,
+          shadowColor: Colors.grey.withOpacity(.1), // 0 works great was .2 .1
           clipBehavior: Clip.antiAliasWithSaveLayer,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              side: BorderSide(width: 0.1, color: Colors.deepOrange)),
+            borderRadius: BorderRadius.circular(10.0),
+            side: BorderSide(width: 0.1, color: Colors.deepOrange),
+          ), //tried width : 0.2
           child: _buildContent(context),
         ));
   }
@@ -104,10 +147,10 @@ class ReminderCard extends StatelessWidget {
         padding: EdgeInsets.only(left: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center, //was space evently
           children: <Widget>[
             text('Insulin 30mg', //reminder.name,
-                textColor: Colors.indigo[900],
+                //Colors.indigo[900],
                 fontFamily: 'Regular',
                 fontSize: 15.0,
                 overflow: TextOverflow.ellipsis),
@@ -122,6 +165,7 @@ class ReminderCard extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: IconButton(
+        color: Colors.transparent,
         onPressed: () {},
         padding: EdgeInsets.all(3),
         icon: SizedBox(
@@ -131,11 +175,11 @@ class ReminderCard extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(width: 0.0, color: Colors.transparent),
               borderRadius: BorderRadius.circular(60),
-              color: Colors.greenAccent[700],
+              color: Colors.transparent, //   Colors.greenAccent[700]
             ),
             child: SvgPicture.asset(
               'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.white,
+              color: Colors.greenAccent[700], //Colors.white
             ),
           ),
         ),

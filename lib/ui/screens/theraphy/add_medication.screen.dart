@@ -561,7 +561,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             .cast();
     widgets.add(CupertinoTextField(
       onTap: () {
-        widget.manager.therapyForm.reminderRules.add(ReminderRule());
+        widget.manager.therapyForm.reminderRules
+            .add(ReminderRule(forceGenerateUID: true));
         widget.manager.updateListeners();
         //_showReminderModal(context);
       },

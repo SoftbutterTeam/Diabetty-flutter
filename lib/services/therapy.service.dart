@@ -14,7 +14,7 @@ class TheraphyService {
       await therapyRepo.createTherapy(therapy);
       return true;
     } catch (e) {
-      return e;
+      rethrow;
     }
   }
 

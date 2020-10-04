@@ -106,16 +106,26 @@ class Schedule {
 }
 
 class ReminderRule {
+  String uid;
   Days days;
   double dose;
   String time;
   String window;
-  ReminderRule({
-    this.days,
-    this.dose,
-    this.time,
-    this.window,
-  });
+  ReminderRule(
+      {this.uid,
+      this.days,
+      this.dose,
+      this.time,
+      this.window,
+      forceGenerateUID = false}) {
+    this.uid = this.uid ?? generateUID();
+    if (forceGenerateUID) this.uid = generateUID();
+  }
+
+  String generateUID() {
+    return random.randomAlphaNumeric(6) +
+        DateTime.now().microsecondsSinceEpoch.toString();
+  }
 
   loadFromJson(Map<String, dynamic> json) {
     var daysJson = json['days'];

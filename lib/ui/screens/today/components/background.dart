@@ -28,10 +28,11 @@ class Background extends StatelessWidget {
                 child: DayPlanHeader(), preferredSize: Size.fromHeight(50)),
             body: Container(
               decoration: BoxDecoration(
-                  color: appWhite,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
+                color: appWhite, //Colors.grey[50], appWhite,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+              ),
               child: child,
             )),
       ),
