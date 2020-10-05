@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -20,10 +21,12 @@ class TimeSlot extends StatefulWidget {
 
 class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
   bool minimize;
-
+  bool allComplete;
   @override
   void initState() {
     minimize = false;
+    allComplete =
+        !widget.timeSlot.reminders.any((element) => element.takenAt == null);
     super.initState();
   }
 
@@ -37,6 +40,7 @@ class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     String time = new DateFormat.jm()
         .format(DateTime.parse(widget.timeSlot.time.toString()));
+    print('dfgd ' + allComplete.toString());
     return AnimatedSize(
         vsync: this,
         curve: Curves.bounceInOut,
@@ -57,6 +61,8 @@ class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
   }
 
   Widget _buildTimeHeader(String time) {
+    MaterialColor colorToFade = allComplete ? Colors.green : Colors.grey;
+    double opacity = allComplete ? .3 : .1;
     return GestureDetector(
       onTap: () {
         _toggleMinimize();
@@ -65,33 +71,37 @@ class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
         _toggleMinimize();
       },
       child: Container(
-        decoration: BoxDecoration(
-            gradient: RadialGradient(
-              //* could do without? or mix up blur
-              radius: 5,
-              tileMode: TileMode.mirror,
-              focalRadius: 2,
-              colors: [
-                Colors.white.withOpacity(.1),
-                Colors.grey[200].withOpacity(.1),
-                Colors.grey[500].withOpacity(0.1),
-                Colors.white.withOpacity(.1),
-              ],
+          decoration: BoxDecoration(
+              color: allComplete ? Colors.greenAccent : null,
+              gradient: RadialGradient(
+                //* could do without? or mix up blur
+                radius: 5,
+                tileMode: TileMode.mirror,
+                focalRadius: 2,
+                colors: [
+                  Colors.white.withOpacity(.1),
+                  colorToFade.shade200.withOpacity(opacity),
+                  colorToFade.shade500.withOpacity(opacity),
+                  //Colors.white.withOpacity(opacity),
+                ],
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              )),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: 20),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 2),
+              alignment: Alignment.center,
+              child: text(
+                time,
+                textColor: Colors.black87,
+                fontFamily: 'Regular',
+                fontSize: textSizeMedium,
+              ),
             ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            )),
-        child: Container(
-          alignment: Alignment.center,
-          child: text(
-            time,
-            textColor: Colors.black87,
-            fontFamily: 'Regular',
-            fontSize: textSizeMedium,
-          ),
-        ),
-      ),
+          )),
     );
   }
 

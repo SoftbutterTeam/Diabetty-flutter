@@ -86,24 +86,25 @@ class ReminderCard extends StatelessWidget {
   }
 
   Widget _buidReminderTick(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: IconButton(
+    bool completed = reminder.takenAt != null;
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        alignment: Alignment.center,
         color: Colors.transparent,
-        onPressed: () {},
         padding: EdgeInsets.all(3),
-        icon: SizedBox(
+        margin: EdgeInsets.only(right: 3),
+        child: SizedBox(
           width: 30,
           height: 30,
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(width: 0.0, color: Colors.transparent),
-              borderRadius: BorderRadius.circular(60),
-              color: Colors.transparent, //   Colors.greenAccent[700]
+              shape: BoxShape.circle,
+              color: !completed ? Colors.transparent : Colors.greenAccent[700],
             ),
             child: SvgPicture.asset(
               'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.greenAccent[700], //Colors.white
+              color: !completed ? Colors.greenAccent[700] : Colors.white,
             ),
           ),
         ),
