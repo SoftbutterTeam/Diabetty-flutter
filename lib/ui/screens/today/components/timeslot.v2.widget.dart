@@ -37,23 +37,24 @@ class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     String time = new DateFormat.jm()
         .format(DateTime.parse(widget.timeSlot.time.toString()));
-    return AnimatedSize(
-        vsync: this,
-        curve: Curves.bounceInOut,
-        duration: Duration(milliseconds: 300),
-        child: IntrinsicHeight(
-          child: SizedBox(
-            child: TimeSlotDecor(
-              child: Column(children: <Widget>[
-                _buildTimeHeader(time),
-                Expanded(
-                    child: !minimize
-                        ? _buildReminderColumn()
-                        : _buildMiniRemindersWrap())
-              ]),
-            ),
-          ),
-        ));
+    return IntrinsicHeight(
+      child: SizedBox(
+          child: TimeSlotDecor(
+        child: SingleChildScrollView(
+            child: Column(children: <Widget>[
+          _buildTimeHeader(time),
+          AnimatedSize(
+            vsync: this,
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: 600),
+            child: IntrinsicHeight(
+                child: !minimize
+                    ? _buildReminderColumn()
+                    : _buildMiniRemindersWrap()),
+          )
+        ])),
+      )),
+    );
   }
 
   Widget _buildTimeHeader(String time) {
