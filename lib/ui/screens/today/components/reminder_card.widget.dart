@@ -3,11 +3,12 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/today/components/medication_profile.screen.dart';
+import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ReminderCard extends StatelessWidget {
+class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   final Reminder reminder;
 
   const ReminderCard({Key key, this.reminder}) : super(key: key);
@@ -88,7 +89,7 @@ class ReminderCard extends StatelessWidget {
   Widget _buidReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
     return GestureDetector(
-      onTap: () {},
+      onTap: () => showTakeModalPopup(context),
       child: Container(
         alignment: Alignment.center,
         color: Colors.transparent,

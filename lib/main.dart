@@ -12,7 +12,9 @@ import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget_builder.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/email_link_error_presenter.dart';
 import 'package:diabetty/ui/common_widgets/scroll_behaviours/SBehavior.dart';
+import 'package:diabetty/ui/constants/colors.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -30,7 +32,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appleSignInAvailable = await AppleSignInAvailable.check();
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
+      SystemUiOverlayStyle(systemNavigationBarColor: appWhite));
   runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
   // runApp(LoginApp());
 }

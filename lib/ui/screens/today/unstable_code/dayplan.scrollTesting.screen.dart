@@ -16,7 +16,7 @@ import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'components/icon_widget.dart';
+import '../components/icon_widget.dart';
 
 StreamController<double> controller = StreamController.broadcast();
 

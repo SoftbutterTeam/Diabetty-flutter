@@ -1,7 +1,6 @@
 import 'dart:async';
-
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/system/app_Context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
@@ -13,6 +12,7 @@ import 'package:diabetty/ui/screens/today/components/circle_list.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 //*swtich versions. animation differences*/
     as SlotWidget;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,24 +55,24 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   DayPlanManager manager;
   _DayPlanScreenState(this.manager);
 
-  AnimationController _controller;
+  AnimationController _dateController;
   Animation _animation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _dateController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 200),
         reverseDuration: Duration(milliseconds: 200));
-    _animation = Tween<double>(begin: 0, end: 0.165).animate(_controller);
+    _animation = Tween<double>(begin: 0, end: 0.165).animate(_dateController);
 
-    manager.pushAnimation = _controller;
+    manager.pushAnimation = _dateController;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _dateController.dispose();
     super.dispose();
   }
 
