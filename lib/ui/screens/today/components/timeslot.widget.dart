@@ -8,6 +8,7 @@ import 'package:diabetty/ui/screens/today/components/reminder_mini.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart' as Plan;
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 class TimeSlot extends StatefulWidget {
@@ -172,5 +173,31 @@ class TimeSlotDecor extends StatelessWidget {
           color: Colors.white,
         ),
         child: child);
+  }
+
+  Widget _buidReminderTick(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: IconButton(
+        color: Colors.transparent,
+        onPressed: () {},
+        padding: EdgeInsets.all(3),
+        icon: SizedBox(
+          width: 30,
+          height: 30,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(width: 0.0, color: Colors.transparent),
+              borderRadius: BorderRadius.circular(60),
+              color: Colors.transparent, //   Colors.greenAccent[700]
+            ),
+            child: SvgPicture.asset(
+              'assets/icons/navigation/checkbox/tick.svg',
+              color: Colors.greenAccent[700], //Colors.white
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
