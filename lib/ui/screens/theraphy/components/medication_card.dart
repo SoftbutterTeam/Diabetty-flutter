@@ -36,11 +36,15 @@ class _MedicationCardState extends State<MedicationCard> {
         ),
         child: ExpansionTile(
           title: text(widget.name,
-              textColor: Colors.black, fontFamily: fontMedium, fontSize: 18.0),
+              textColor: Colors.black,
+              fontFamily: fontMedium,
+              fontSize: 18.0,
+              overflow: TextOverflow.ellipsis),
           subtitle: text("Reminder",
               fontFamily: fontMedium,
               textColor: Colors.black26,
-              fontSize: 12.0),
+              fontSize: 12.0,
+              overflow: TextOverflow.ellipsis),
           leading: CircleAvatar(
             backgroundColor: Colors.orange.withOpacity(0.2),
             child: SvgPicture.asset(
