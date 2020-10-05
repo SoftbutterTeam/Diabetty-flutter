@@ -167,7 +167,6 @@ class ReminderCard extends StatelessWidget {
       ),
     );
   }
-
   Widget _buidReminderTick(BuildContext context) {
     return Container(
       alignment: Alignment.center,
@@ -193,6 +192,8 @@ class ReminderCard extends StatelessWidget {
       ),
     );
   }
+
+  
 }
 
 class ReminderMiniCard extends StatelessWidget {
@@ -262,6 +263,32 @@ class ReminderMiniCard extends StatelessWidget {
               maxLine: 2,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buidReminderTick(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: IconButton(
+        color: Colors.transparent,
+        onPressed: () {},
+        padding: EdgeInsets.all(3),
+        icon: SizedBox(
+          width: 30,
+          height: 30,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(width: 0.0, color: Colors.transparent),
+              borderRadius: BorderRadius.circular(60),
+              color: Colors.transparent, //   Colors.greenAccent[700]
+            ),
+            child: SvgPicture.asset(
+              'assets/icons/navigation/checkbox/tick.svg',
+              color: Colors.greenAccent[700], //Colors.white
+            ),
+          ),
         ),
       ),
     );
