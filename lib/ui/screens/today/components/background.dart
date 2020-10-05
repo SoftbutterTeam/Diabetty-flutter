@@ -13,7 +13,7 @@ class Background extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      width: double.infinity,
+      width: double.maxFinite,
       decoration: BoxDecoration(
           gradient: LinearGradient(begin: Alignment.topCenter, colors: [
         Colors.orange[900],

@@ -12,12 +12,11 @@ import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart'
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
 import 'package:diabetty/ui/screens/today/components/circle_list.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
+//*swtich versions. animation differences*/
     as SlotWidget;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:date_picker_timeline/date_picker_timeline.dart';
 
 import 'components/icon_widget.dart';
 

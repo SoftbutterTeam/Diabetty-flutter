@@ -55,6 +55,11 @@ class DayPlanManager extends ChangeNotifier {
           time: DateTime.now().add(Duration(hours: i)),
           dose: 2,
           advice: advice));
+      usersReminders.add(new Reminder(
+          name: 'test',
+          time: DateTime.now().add(Duration(hours: i)),
+          dose: 2,
+          advice: advice));
     }
     _dataController.add(usersReminders);
   }

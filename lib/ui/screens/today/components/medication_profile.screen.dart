@@ -317,7 +317,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
                   clipper: ProfileClipper(),
                   child: Image(
                     height: 300,
-                    width: double.infinity,
+                    width: double.maxFinite,
                     fit: BoxFit.cover,
                     image: AssetImage(
                         'assets/icons/navigation/clock/gradientBGblue.png'),
