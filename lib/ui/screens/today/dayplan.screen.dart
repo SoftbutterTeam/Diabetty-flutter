@@ -19,6 +19,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 
+import 'components/icon_widget.dart';
+
 class DayPlanScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -136,24 +138,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               //6
               return index % 3 != 0
                   ? SizedBox.shrink()
-                  : SizedBox(
-                      width: 35,
-                      height: 35,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.white,
-                          ),
-                          borderRadius: BorderRadius.circular(60),
-                          color: Colors.white,
-                        ),
-                        child: SvgPicture.asset(
-                          appearance_icon_0,
-                          color: index.isOdd ? Colors.indigo[900] : null,
-                        ),
-                      ),
-                    );
+                  : IconWidget(index: index, iconURL: appearance_icon_0);
             }),
           ),
         ));

@@ -95,7 +95,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   @override
   void initState() {
     super.initState();
-
     strengthController = TextEditingController();
     _btnEnabled = false;
   }
@@ -113,13 +112,10 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
         : strengthInt = int.parse(tempStrength);
     therapyForm.strength = strengthInt;
     (unit == "none") ? therapyForm.units = null : therapyForm.units = unit;
-    // therapyForm.units = unit;
     (mode == "none") ? therapyForm.mode = null : therapyForm.mode = mode;
-    // therapyForm.mode = mode;
     (intake == "none")
         ? therapyForm.intakeAdvice = null
         : therapyForm.intakeAdvice = intake;
-    // therapyForm.intakeAdvice = intake;
     therapyForm.apperanceIndex = _selectedAppearanceIndex;
     print(therapyForm.name);
     print(therapyForm.minRest);
@@ -140,7 +136,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
         : setState(() {
             step = 2;
           });
-    print(therapyForm.minRest);
   }
 
   _onPressedMinRestPopUp() {
@@ -293,6 +288,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             _onPressedIntakePopUp();
           },
           intakePicker: CupertinoPicker(
+            scrollController: FixedExtentScrollController(initialItem: _selectedIntakeIndex),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {
@@ -331,6 +327,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             });
           },
           appearancePicker: CupertinoPicker(
+            scrollController: FixedExtentScrollController(initialItem: _selectedAppearanceIndex),
             magnification: 1,
             backgroundColor: Colors.white,
             children: List<Widget>.generate(
@@ -361,11 +358,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
       name: medicationNameController.text,
       appearance: appearance,
     );
-  }
-
-  String _formSave() {
-    _addMedicationKey.currentState.save();
-    return null;
   }
 
   isEmpty() {
@@ -456,8 +448,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                         ? 'none'
                         : SvgPicture.asset(
                             appearance,
-                            width: 30,
-                            height: 30,
+                            width: 25,
+                            height: 25,
                           ),
                     placeholderText: 'Appearance',
                   ),
@@ -603,7 +595,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             });
           },
           onRightTap: () {
-            // TODO save data function
             _saveData();
           },
         ),
