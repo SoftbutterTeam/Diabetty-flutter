@@ -49,7 +49,7 @@ class DayPlanManager extends ChangeNotifier {
           name: 'test',
           time: DateTime.now().add(Duration(hours: i)),
           dose: 2,
-          takenAt: DateTime.now(),
+          takenAt: null,
           advice: advice));
       usersReminders.add(new Reminder(
           name: 'test',

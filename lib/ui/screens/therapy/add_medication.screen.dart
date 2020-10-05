@@ -9,7 +9,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
-import 'package:diabetty/ui/screens/theraphy/components/index.dart';
+import 'package:diabetty/ui/screens/therapy/components/index.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'components/StrengthTextField.dart';
+import 'components/topbar2.dart';
 
 const List<String> intakeAdvice = const <String>[
   "Before Meal",
@@ -72,6 +73,8 @@ class AddMedicationScreen extends StatefulWidget {
 class AddMedicationScreenState extends State<AddMedicationScreen> {
   final therapyForm = AddTherapyForm();
 
+  final _addMedicationKey = GlobalKey<FormState>();
+
   TextEditingController medicationNameController = TextEditingController();
   TextEditingController strengthController;
   var unit = "none";
@@ -87,18 +90,18 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   Duration initialtimer = Duration();
   var timeFormatter = new DateFormat('hh:mm');
   var step = 1;
+  bool _btnEnabled;
 
   @override
   void initState() {
     super.initState();
     strengthController = TextEditingController();
+    _btnEnabled = false;
   }
 
   _saveData() {
     therapyForm.name = medicationNameController.text;
-    (initialtimer == Duration())
-        ? therapyForm.minRest = null
-        : therapyForm.minRest = initialtimer;
+    therapyForm.minRest = initialtimer;
     var tempStrength;
     var strengthInt;
     (strengthController.text.isEmpty)
@@ -109,13 +112,10 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
         : strengthInt = int.parse(tempStrength);
     therapyForm.strength = strengthInt;
     (unit == "none") ? therapyForm.units = null : therapyForm.units = unit;
-    // therapyForm.units = unit;
     (mode == "none") ? therapyForm.mode = null : therapyForm.mode = mode;
-    // therapyForm.mode = mode;
     (intake == "none")
         ? therapyForm.intakeAdvice = null
         : therapyForm.intakeAdvice = intake;
-    // therapyForm.intakeAdvice = intake;
     therapyForm.apperanceIndex = _selectedAppearanceIndex;
     print(therapyForm.name);
     print(therapyForm.minRest);
@@ -136,7 +136,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
         : setState(() {
             step = 2;
           });
-    print(therapyForm.minRest);
   }
 
   _onPressedMinRestPopUp() {
@@ -289,6 +288,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             _onPressedIntakePopUp();
           },
           intakePicker: CupertinoPicker(
+            scrollController:
+                FixedExtentScrollController(initialItem: _selectedIntakeIndex),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {
@@ -327,6 +328,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             });
           },
           appearancePicker: CupertinoPicker(
+            scrollController: FixedExtentScrollController(
+                initialItem: _selectedAppearanceIndex),
             magnification: 1,
             backgroundColor: Colors.white,
             children: List<Widget>.generate(
@@ -359,6 +362,16 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     );
   }
 
+  isEmpty() {
+    (medicationNameController.text.isNotEmpty)
+        ? setState(() {
+            _btnEnabled = true;
+          })
+        : setState(() {
+            _btnEnabled = false;
+          });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (step == 1) {
@@ -373,110 +386,116 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: TopBar(
+          btnEnabled: _btnEnabled,
           centerText: 'Add Medication',
           leftButtonText: 'Cancel',
-          rightButtonText: 'Nexsfkeft',
+          rightButtonText: 'Next',
           onLeftTap: () {
-            print('gbenwrigw');
             Navigator.pop(context);
           },
           onRightTap: () {
             (medicationNameController.text.isEmpty)
-                ? print('empty')
+                ? print('nah')
                 : _nextStep();
           },
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 20,
-                  ),
-                  child: text('Med Info'),
-                ),
-                InputTextField(
-                  controller: medicationNameController,
-                  placeholder: 'Medication Name...',
-                ),
-                StrengthTextField(
-                  controller: strengthController,
-                  icon: Icon(
-                    (unit == 'none')
-                        ? CupertinoIcons.heart
-                        : CupertinoIcons.heart_solid,
-                    color: (unit == 'none') ? Colors.black : Colors.red,
-                    size: 23,
-                  ),
-                  onTap: () => _showUnitPopUp(),
-                  placeholder: unit,
-                  placeholderText: 'Set Strength & Units',
-                ),
-                CustomTextField(
-                  icon: Icon(
-                    (appearanceHeart == true)
-                        ? CupertinoIcons.heart_solid
-                        : CupertinoIcons.heart,
-                    color:
-                        (appearanceHeart == true) ? Colors.red : Colors.black,
-                    size: 23,
-                  ),
-                  onTap: () => _showAppearance(),
-                  placeholder: (appearance == 'none')
-                      ? 'none'
-                      : SvgPicture.asset(
-                          appearance,
-                          width: 30,
-                          height: 30,
-                        ),
-                  placeholderText: 'Appearance',
-                ),
-                CustomTextField(
-                  icon: Icon(
-                    (intake == 'none')
-                        ? CupertinoIcons.heart
-                        : CupertinoIcons.heart_solid,
-                    color: (intake == 'none') ? Colors.black : Colors.red,
-                    size: 23,
-                  ),
-                  onTap: () => _showIntakePopUp(),
-                  placeholder: intake,
-                  placeholderText: 'Intake Advice',
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    bottom: 10,
-                  ),
-                  child: text('extra details for more assistance features',
-                      fontSize: textSizeSmall),
-                ),
-                CustomTextField(
-                  icon: Icon(
-                    (minRest == 'none')
-                        ? CupertinoIcons.heart
-                        : CupertinoIcons.heart_solid,
-                    color: (minRest == 'none') ? Colors.black : Colors.red,
-                    size: 23,
-                  ),
-                  onTap: () => _showMinRestPopup(),
-                  placeholder: minRest,
-                  placeholderText: 'Minimum Rest Duration',
-                  onSubmitted: (String value) {
-                    therapyForm.minRest = value as Duration;
-                  },
-                ),
-              ],
+      body: Form(
+        key: _addMedicationKey,
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 20,
             ),
-          )
-        ],
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 20,
+                    ),
+                    child: text('Med Info'),
+                  ),
+                  InputTextField(
+                    controller: medicationNameController,
+                    placeholder: 'Medication Name...',
+                    onChanged: (val) {
+                      isEmpty();
+                    },
+                  ),
+                  StrengthTextField(
+                    controller: strengthController,
+                    icon: Icon(
+                      (unit == 'none')
+                          ? CupertinoIcons.heart
+                          : CupertinoIcons.heart_solid,
+                      color: (unit == 'none') ? Colors.black : Colors.red,
+                      size: 23,
+                    ),
+                    onTap: () => _showUnitPopUp(),
+                    placeholder: unit,
+                    placeholderText: 'Set Strength & Units',
+                  ),
+                  CustomTextField(
+                    icon: Icon(
+                      (appearanceHeart == true)
+                          ? CupertinoIcons.heart_solid
+                          : CupertinoIcons.heart,
+                      color:
+                          (appearanceHeart == true) ? Colors.red : Colors.black,
+                      size: 23,
+                    ),
+                    onTap: () => _showAppearance(),
+                    placeholder: (appearance == 'none')
+                        ? 'none'
+                        : SvgPicture.asset(
+                            appearance,
+                            width: 25,
+                            height: 25,
+                          ),
+                    placeholderText: 'Appearance',
+                  ),
+                  CustomTextField(
+                    icon: Icon(
+                      (intake == 'none')
+                          ? CupertinoIcons.heart
+                          : CupertinoIcons.heart_solid,
+                      color: (intake == 'none') ? Colors.black : Colors.red,
+                      size: 23,
+                    ),
+                    onTap: () => _showIntakePopUp(),
+                    placeholder: intake,
+                    placeholderText: 'Intake Advice',
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      bottom: 10,
+                    ),
+                    child: text('extra details for more assistance features',
+                        fontSize: textSizeSmall),
+                  ),
+                  CustomTextField(
+                    icon: Icon(
+                      (minRest == 'none')
+                          ? CupertinoIcons.heart
+                          : CupertinoIcons.heart_solid,
+                      color: (minRest == 'none') ? Colors.black : Colors.red,
+                      size: 23,
+                    ),
+                    onTap: () => _showMinRestPopup(),
+                    placeholder: minRest,
+                    placeholderText: 'Minimum Rest Duration',
+                    onSubmitted: (String value) {
+                      therapyForm.minRest = value as Duration;
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -536,7 +555,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             .cast();
     widgets.add(CupertinoTextField(
       onTap: () {
-        widget.manager.therapyForm.reminderRules.add(ReminderRule());
+        widget.manager.therapyForm.reminderRules
+            .add(ReminderRule(forceGenerateUID: true));
         widget.manager.updateListeners();
         //_showReminderModal(context);
       },
@@ -567,7 +587,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: TopBar(
+        child: TopBar2(
           centerText: 'Add Reminder',
           leftButtonText: 'Back',
           rightButtonText: 'Save',
@@ -577,7 +597,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             });
           },
           onRightTap: () {
-            // TODO save data function
             _saveData();
           },
         ),

@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -20,14 +19,15 @@ class TimeSlot extends StatefulWidget {
   _TimeSlotState createState() => _TimeSlotState();
 }
 
-class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
+class _TimeSlotState extends State<TimeSlot>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool minimize;
   bool allComplete;
   @override
   void initState() {
-    minimize = false;
     allComplete =
         !widget.timeSlot.reminders.any((element) => element.takenAt == null);
+    minimize = allComplete;
     super.initState();
   }
 
@@ -38,10 +38,13 @@ class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     String time = new DateFormat.jm()
         .format(DateTime.parse(widget.timeSlot.time.toString()));
-    print('dfgd ' + allComplete.toString());
     return AnimatedSize(
         vsync: this,
         curve: Curves.bounceInOut,
@@ -87,7 +90,7 @@ class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
                 ],
               ),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
+                topLeft: Radius.circular(20), // was 20  10
                 topRight: Radius.circular(20),
               )),
           child: ConstrainedBox(
@@ -108,6 +111,9 @@ class _TimeSlotState extends State<TimeSlot> with TickerProviderStateMixin {
 
   GestureDetector _buildMiniRemindersWrap() {
     return GestureDetector(
+      onTap: () {
+        _toggleMinimize();
+      },
       onDoubleTap: () {
         _toggleMinimize();
       },

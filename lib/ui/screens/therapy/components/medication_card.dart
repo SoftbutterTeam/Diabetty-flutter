@@ -19,11 +19,13 @@ class MedicationCard extends StatefulWidget {
   _MedicationCardState createState() => _MedicationCardState();
 }
 
-class _MedicationCardState extends State<MedicationCard> {
+class _MedicationCardState extends State<MedicationCard>
+    with AutomaticKeepAliveClientMixin {
   bool sound = false;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Container(
@@ -103,4 +105,7 @@ class _MedicationCardState extends State<MedicationCard> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
