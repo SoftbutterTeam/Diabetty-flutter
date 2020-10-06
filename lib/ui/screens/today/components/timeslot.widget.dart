@@ -75,10 +75,11 @@ class _TimeSlotState extends State<TimeSlot>
         _toggleMinimize();
       },
       child: Container(
-          decoration: BoxDecoration(
+          /***
+           * decoration: BoxDecoration(
               color: allComplete ? Colors.greenAccent : null,
               gradient: RadialGradient(
-                //* could do without? or mix up blur
+                // could do without? or mix up blur
                 radius: 5,
                 tileMode: TileMode.mirror,
                 focalRadius: 2,
@@ -89,23 +90,25 @@ class _TimeSlotState extends State<TimeSlot>
                   //Colors.white.withOpacity(opacity),
                 ],
               ),
+           
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), // was 20  10
                 topRight: Radius.circular(20),
               )),
+           */
           child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 20),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 2),
-              alignment: Alignment.center,
-              child: text(
-                time,
-                textColor: Colors.black87,
-                fontFamily: 'Regular',
-                fontSize: textSizeMedium,
-              ),
-            ),
-          )),
+        constraints: BoxConstraints(minHeight: 20),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 2),
+          alignment: Alignment.center,
+          child: text(
+            time,
+            textColor: Colors.black87,
+            fontFamily: 'Regular',
+            fontSize: textSizeMedium,
+          ),
+        ),
+      )),
     );
   }
 
@@ -179,31 +182,5 @@ class TimeSlotDecor extends StatelessWidget {
           color: Colors.white,
         ),
         child: child);
-  }
-
-  Widget _buidReminderTick(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: IconButton(
-        color: Colors.transparent,
-        onPressed: () {},
-        padding: EdgeInsets.all(3),
-        icon: SizedBox(
-          width: 30,
-          height: 30,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: 0.0, color: Colors.transparent),
-              borderRadius: BorderRadius.circular(60),
-              color: Colors.transparent, //   Colors.greenAccent[700]
-            ),
-            child: SvgPicture.asset(
-              'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.greenAccent[700], //Colors.white
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
