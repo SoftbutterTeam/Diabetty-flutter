@@ -95,7 +95,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           );
         }
         return Container(
-          color: Colors.transparent,
           child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: timeSlots.length,
@@ -114,17 +113,14 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     var size = MediaQuery.of(context).size;
     return Container(
         margin: EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white, // was Colors.white
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1), //was 0.1
-              spreadRadius: 1,
-              blurRadius: 4, //was 4 , 3
-              offset: Offset(0, 1), // was 1, 2
-            ),
-          ],
-        ),
+        decoration: BoxDecoration(color: appWhite, boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1), //was 0.1
+            spreadRadius: 1,
+            blurRadius: 4, //was 4 , 3
+            offset: Offset(0, 1), // was 1, 2
+          ),
+        ]),
         alignment: Alignment.center,
         width: size.width,
         child: Center(
@@ -147,14 +143,15 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     return Background(
       child: Column(
         children: <Widget>[
-          AnimatedBox(
-            animation: _animation,
-          ),
+          if (true)
+            AnimatedBox(
+              animation: _animation,
+            ),
           SizedBox(
               height: size.height * 0.35, //was 0.35
               child: _buildCirclePlan(context) // was 0.35
               ),
-          Expanded(child: _buildRemindersList(context)),
+          if (true) Expanded(child: _buildRemindersList(context)),
         ],
       ),
     );

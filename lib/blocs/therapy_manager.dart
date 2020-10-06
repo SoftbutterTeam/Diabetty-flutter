@@ -12,11 +12,9 @@ class TherapyManager extends ChangeNotifier {
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
 
-  List<Therapy> usersTherapies;
-
   StreamController<List<Therapy>> _dataController = StreamController();
-  Sink<List<Therapy>> get dataSink => _dataController.sink;
-  Stream<List<Therapy>> get dataStream => _dataController.stream;
+
+  List<Therapy> usersTherapies;
 
   AddTherapyForm therapyForm;
 
@@ -33,6 +31,9 @@ class TherapyManager extends ChangeNotifier {
     _dataController.close();
     super.dispose();
   }
+
+  Sink<List<Therapy>> get dataSink => _dataController.sink;
+  Stream<List<Therapy>> get dataStream => _dataController.stream;
 
   void init() async {
     if (usersTherapies == null) {

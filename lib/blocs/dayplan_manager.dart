@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/system/app_context.dart';
-import 'package:diabetty/ui/screens/today/components/date_picker.widget.dart';
+import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 

@@ -1,13 +1,11 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/repositories/therapy.repository.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
-import 'package:diabetty/ui/screens/today/components/date_picker_modal.dart';
+import 'package:diabetty/ui/screens/today/components/drop_modal.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -23,8 +21,6 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
   void initState() {
     super.initState();
   }
-
-  TherapyRepository repo = TherapyRepository();
 
   void _showDropModal(BuildContext context, Widget child) async {
     final DayPlanManager dayManager =
@@ -56,48 +52,28 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
         dayManager.pushAnimation.forward();
         return child;
       },
-      pageBuilder: (_, __, ___) => DatePickerModal(),
+      pageBuilder: (_, __, ___) => DropModal(),
     );
   }
 
   Widget _buildDateWidget(BuildContext context) {
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
-    var currentDateStamp = dayManager.currentDateStamp;
     return Center(
         child: FlatButton(
-      onPressed: () async {
-        await repo.getAllTherapy(null, null);
+      onPressed: () {
         _showDropModal(context, null);
       },
       child: Center(
         child: Container(
           alignment: Alignment.center,
           child: subHeadingText(
-              (isSameDay(currentDateStamp, DateTime.now())
-                      ? "Today, " + DateFormat("d").format(currentDateStamp)
-                      : DateFormat("EE, d").format(currentDateStamp)) +
-                  DateFormat(" MMM").format(currentDateStamp),
-              Colors.grey[900]),
+              DateFormat("EEEE d").format(dayManager.currentDateStamp) +
+                  getDayOfMonthSuffix(dayManager.currentDateStamp.day),
+              Colors.white),
         ),
       ),
     ));
-  }
-
-  bool isSameDay(DateTime x, DateTime y) {
-    if (x.day != y.day || x.month != y.month || x.year != y.year) {
-      return false;
-    }
-    return true;
-    /***? 
-        subHeadingText(
-              (isSameDay(currentDateStamp, DateTime.now())
-                      ? "Today " + DateFormat("d").format(currentDateStamp)
-                      : DateFormat("EE d").format(currentDateStamp)) +
-                  getDayOfMonthSuffix(currentDateStamp.day) +
-                  DateFormat(" MMM").format(currentDateStamp),
-              Colors.grey[900]),
-        */
   }
 
   String getDayOfMonthSuffix(final int n) {
@@ -169,17 +145,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
 
     return Container(
       height: size.height * 0.11,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: Offset(0, 2),
-          ),
-        ],
-        color: appWhite,
-      ),
+      color: Colors.transparent,
       // padding: EdgeInsets.only(left: 15, right: 15),
       child: Stack(
         children: <Widget>[

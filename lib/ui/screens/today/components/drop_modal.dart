@@ -1,25 +1,24 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
-import 'package:diabetty/ui/screens/today/components/date_picker.widget.dart';
+import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class DatePickerModal extends StatefulWidget {
+class DropModal extends StatefulWidget {
   final double height;
   final Widget child;
 
-  const DatePickerModal({Key key, this.height = 0.11, this.child})
-      : super(key: key);
+  const DropModal({Key key, this.height = 0.11, this.child}) : super(key: key);
 
   @override
-  _DatePickerModalState createState() => _DatePickerModalState();
+  _DropModalState createState() => _DropModalState();
 }
 
-class _DatePickerModalState extends State<DatePickerModal> {
+class _DropModalState extends State<DropModal> {
   DatePickerController _controller;
 
   DateTime _selectedValue;
@@ -99,9 +98,9 @@ class _DatePickerModalState extends State<DatePickerModal> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: Offset(0, 2), // changes position of shadow
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),

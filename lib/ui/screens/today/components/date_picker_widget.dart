@@ -106,7 +106,9 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   void initState() {
+    // Init the calendar locale
     initializeDateFormatting(widget.locale, null);
+    // Set initial Values
     _currentDate =
         Provider.of<DayPlanManager>(context, listen: false).currentDateStamp;
     _opacity = 0;
@@ -130,7 +132,6 @@ class _DatePickerState extends State<DatePicker> {
 
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.onDateChange(_currentDate);
       widget.controller.jumpToSelection();
       if (_opacity != 1)
         setState(() {

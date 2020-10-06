@@ -25,27 +25,6 @@ class TherapyRepository {
     }
   }
 
-  Future<DataResult<List<Map<String, dynamic>>>> getAllTherapy(
-      String uid, String therapyid) async {
-    try {
-      var result = await _db
-          .collection("users")
-          .document('YDpBWyABH3ZluJ9sDKTCTGXCqzz1')
-          .collection('therapies')
-          .getDocuments();
-
-      var data = (result.documents.map((e) {
-        var json = Map<String, dynamic>.from(e.data)..['id'] = e.documentID;
-        return json;
-      }).toList());
-      print(data.map((e) => e.toString()));
-      return DataResult<List<Map<String, dynamic>>>(data: data);
-    } catch (exception, stackTrace) {
-      print('HELLLO');
-      return DataResult(exception: exception, stackTrace: stackTrace);
-    }
-  }
-
   //* TODO review update CRUD and transactions
   Future<void> updateTherapy(Therapy therapy) async {
     Map<String, dynamic> therapyData = Map();
@@ -78,12 +57,6 @@ class TherapyRepository {
   }
 }
 
-/*
-Stream<List<Therapy>>  get onStateChanged{
-   Firestore.instance.collection(path). 
-  return null;
-}
-*/
 class DataResult<T> {
   final T data;
   final Exception exception;

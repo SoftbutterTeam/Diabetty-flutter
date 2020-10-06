@@ -1,7 +1,7 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
-import 'package:diabetty/ui/screens/today/components/date_picker.widget.dart';
+import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
