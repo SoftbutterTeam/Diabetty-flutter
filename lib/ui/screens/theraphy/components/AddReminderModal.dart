@@ -79,7 +79,9 @@ class _AddReminderModalState extends State<AddReminderModal> {
                         color: CupertinoColors.destructiveRed,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
                       vertical: 5.0,

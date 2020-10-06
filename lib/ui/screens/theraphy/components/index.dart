@@ -1,5 +1,4 @@
 export 'AppearancePopUp.dart';
-export 'background.dart';
 export 'CustomTextField.dart';
 export 'InputTextField.dart';
 export 'medication_card.dart';

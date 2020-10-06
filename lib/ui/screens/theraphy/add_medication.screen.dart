@@ -10,6 +10,7 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/theraphy/components/index.dart';
+import 'package:diabetty/ui/screens/theraphy/components/date_range_picker.dart' as DateRangePicker;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,8 +74,6 @@ class AddMedicationScreen extends StatefulWidget {
 class AddMedicationScreenState extends State<AddMedicationScreen> {
   final therapyForm = AddTherapyForm();
 
-  final _addMedicationKey = GlobalKey<FormState>();
-
   TextEditingController medicationNameController = TextEditingController();
   TextEditingController strengthController;
   var unit = "none";
@@ -82,21 +81,26 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   var appearanceHeart = false;
   var intake = "none";
   var minRest = "none";
+  var window = "none";
   var mode = 'Scheduled';
+  var startEndDateString = "none";
   int _selectedIntakeIndex = 0;
   int _selectedModeIndex = 0;
   int _selectedAppearanceIndex = 0;
   int _selectedUnitIndex = 0;
   Duration initialtimer = Duration();
+  Duration windowTimer = Duration();
   var timeFormatter = new DateFormat('hh:mm');
   var step = 1;
   bool _btnEnabled;
+  bool _isVisible;
 
   @override
   void initState() {
     super.initState();
     strengthController = TextEditingController();
     _btnEnabled = false;
+    _isVisible = false;
   }
 
   _saveData() {
@@ -136,6 +140,18 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
         : setState(() {
             step = 2;
           });
+  }
+
+  _onPressedWindowPopUp() {
+     Navigator.pop(context);
+    var windowSelected = windowTimer.toString();
+    var formattedWindowTime = windowSelected.lastIndexOf(':');
+    String result = (formattedWindowTime != -1)
+        ? windowSelected.substring(0, formattedWindowTime)
+        : windowSelected;
+    setState(() {
+      window = result;
+    });
   }
 
   _onPressedMinRestPopUp() {
@@ -193,6 +209,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             _onPressedUnitPopUp();
           },
           intakePicker: CupertinoPicker(
+            scrollController:
+                FixedExtentScrollController(initialItem: _selectedUnitIndex),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {
@@ -208,6 +226,33 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                 );
               },
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  _showWindow() {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return MinRestPopUp(
+          height: height,
+          width: width,
+          onPressed: () {
+            _onPressedWindowPopUp();
+          },
+          timerPicker: CupertinoTimerPicker(
+            mode: CupertinoTimerPickerMode.hm,
+            minuteInterval: 5,
+            initialTimerDuration: windowTimer,
+            onTimerDurationChanged: (Duration changedtimer) {
+              setState(() {
+                windowTimer = changedtimer;
+              });
+            },
           ),
         );
       },
@@ -288,7 +333,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             _onPressedIntakePopUp();
           },
           intakePicker: CupertinoPicker(
-            scrollController: FixedExtentScrollController(initialItem: _selectedIntakeIndex),
+            scrollController:
+                FixedExtentScrollController(initialItem: _selectedIntakeIndex),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {
@@ -327,7 +373,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             });
           },
           appearancePicker: CupertinoPicker(
-            scrollController: FixedExtentScrollController(initialItem: _selectedAppearanceIndex),
+            scrollController: FixedExtentScrollController(
+                initialItem: _selectedAppearanceIndex),
             magnification: 1,
             backgroundColor: Colors.white,
             children: List<Widget>.generate(
@@ -383,137 +430,130 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: TopBar(
-          btnEnabled: _btnEnabled,
-          centerText: 'Add Medication',
-          leftButtonText: 'Cancel',
-          rightButtonText: 'Next',
-          onLeftTap: () {
-            Navigator.pop(context);
-          },
-          onRightTap: () {
-            (medicationNameController.text.isEmpty)
-                ? print('nah')
-                : _nextStep();
-          },
-        ),
+        child: _buildFirstScreenHeader(),
       ),
-      body: Form(
-        key: _addMedicationKey,
+      body: _buildFirstScreenBody(),
+    );
+  }
+
+  TopBar _buildFirstScreenHeader() {
+    return TopBar(
+      btnEnabled: _btnEnabled,
+      centerText: 'Add Medication',
+      leftButtonText: 'Cancel',
+      rightButtonText: 'Next',
+      onLeftTap: () {
+        Navigator.pop(context);
+      },
+      onRightTap: () {
+        (medicationNameController.text.isEmpty) ? print('nah') : _nextStep();
+      },
+    );
+  }
+
+  Column _buildFirstScreenBody() {
+    return Column(children: <Widget>[
+      SizedBox(
+        height: 20,
+      ),
+      Container(
         child: Column(
           children: <Widget>[
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 20,
-                    ),
-                    child: text('Med Info'),
-                  ),
-                  InputTextField(
-                    controller: medicationNameController,
-                    placeholder: 'Medication Name...',
-                    onChanged: (val) {
-                      isEmpty();
-                    },
-                  ),
-                  StrengthTextField(
-                    controller: strengthController,
-                    icon: Icon(
-                      (unit == 'none')
-                          ? CupertinoIcons.heart
-                          : CupertinoIcons.heart_solid,
-                      color: (unit == 'none') ? Colors.black : Colors.red,
-                      size: 23,
-                    ),
-                    onTap: () => _showUnitPopUp(),
-                    placeholder: unit,
-                    placeholderText: 'Set Strength & Units',
-                  ),
-                  CustomTextField(
-                    icon: Icon(
-                      (appearanceHeart == true)
-                          ? CupertinoIcons.heart_solid
-                          : CupertinoIcons.heart,
-                      color:
-                          (appearanceHeart == true) ? Colors.red : Colors.black,
-                      size: 23,
-                    ),
-                    onTap: () => _showAppearance(),
-                    placeholder: (appearance == 'none')
-                        ? 'none'
-                        : SvgPicture.asset(
-                            appearance,
-                            width: 25,
-                            height: 25,
-                          ),
-                    placeholderText: 'Appearance',
-                  ),
-                  CustomTextField(
-                    icon: Icon(
-                      (intake == 'none')
-                          ? CupertinoIcons.heart
-                          : CupertinoIcons.heart_solid,
-                      color: (intake == 'none') ? Colors.black : Colors.red,
-                      size: 23,
-                    ),
-                    onTap: () => _showIntakePopUp(),
-                    placeholder: intake,
-                    placeholderText: 'Intake Advice',
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(
-                      left: 10,
-                      bottom: 10,
-                    ),
-                    child: text('extra details for more assistance features',
-                        fontSize: textSizeSmall),
-                  ),
-                  CustomTextField(
-                    icon: Icon(
-                      (minRest == 'none')
-                          ? CupertinoIcons.heart
-                          : CupertinoIcons.heart_solid,
-                      color: (minRest == 'none') ? Colors.black : Colors.red,
-                      size: 23,
-                    ),
-                    onTap: () => _showMinRestPopup(),
-                    placeholder: minRest,
-                    placeholderText: 'Minimum Rest Duration',
-                    onSubmitted: (String value) {
-                      therapyForm.minRest = value as Duration;
-                    },
-                  ),
-                ],
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: 20,
               ),
-            )
+              child: text('Med Info'),
+            ),
+            _buildMedicationNameField(),
+            Visibility(visible: _isVisible, child: _buildStrengthField()),
+            Visibility(visible: _isVisible, child: _buildAppearanceField()),
+            Visibility(visible: _isVisible, child: _buildIntakeAdviceField()),
+            Visibility(
+              visible: _isVisible,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(
+                  left: 10,
+                  bottom: 10,
+                ),
+                child: text('extra details for more assistance features',
+                    fontSize: textSizeSmall),
+              ),
+            ),
+            Visibility(visible: _isVisible, child: _buildMinimumRestField()),
           ],
         ),
       ),
+    ]);
+  }
+
+  InputTextField _buildMedicationNameField() {
+    return InputTextField(
+      controller: medicationNameController,
+      placeholder: 'Medication Name...',
+      onChanged: (val) {
+        (val == '')
+            ? print('yeye')
+            : setState(() {
+                _isVisible = true;
+              });
+        isEmpty();
+      },
+      icon: (medicationNameController.text.isEmpty)
+          ? Icon(
+              CupertinoIcons.heart,
+              size: 23,
+            )
+          : Icon(CupertinoIcons.heart_solid, color: Colors.red, size: 23),
     );
   }
 
-  _showReminderModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AddReminderModal(),
+  StrengthTextField _buildStrengthField() {
+    return StrengthTextField(
+      controller: strengthController,
+      icon: icon(name: unit),
+      onTap: () => _showUnitPopUp(),
+      placeholder: unit,
+      placeholderText: 'Set Strength & Units',
     );
   }
 
-  var textstyle = TextStyle(
-    letterSpacing: 1.0,
-    fontFeatures: [
-      // FontFeature.tabularFigures(),
-      FontFeature.proportionalFigures(),
-    ],
-    fontSize: textSizeLargeMedium - 3,
-    color: Colors.grey[700],
-  );
+  CustomTextField _buildAppearanceField() {
+    return CustomTextField(
+      icon: appearanceicon(name: appearanceHeart),
+      onTap: () => _showAppearance(),
+      placeholder: (appearance == 'none')
+          ? 'none'
+          : SvgPicture.asset(
+              appearance,
+              width: 25,
+              height: 25,
+            ),
+      placeholderText: 'Appearance',
+    );
+  }
+
+  CustomTextField _buildIntakeAdviceField() {
+    return CustomTextField(
+      icon: icon(name: intake),
+      onTap: () => _showIntakePopUp(),
+      placeholder: intake,
+      placeholderText: 'Intake Advice',
+    );
+  }
+
+  CustomTextField _buildMinimumRestField() {
+    return CustomTextField(
+      icon: icon(name: minRest),
+      onTap: () => _showMinRestPopup(),
+      placeholder: minRest,
+      placeholderText: 'Minimum Rest Duration',
+      onSubmitted: (String value) {
+        therapyForm.minRest = value as Duration;
+      },
+    );
+  }
 
   Scaffold _secondScreen() {
     print(widget.manager.therapyForm.reminderRules.length);
@@ -522,33 +562,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
             widget.manager.therapyForm.reminderRules.length == 0)
         ? List()
         : widget.manager.therapyForm.reminderRules
-            .map((e) => CupertinoTextField(
-                  decoration: BoxDecoration(
-                    color: appWhite,
-                    border: Border.all(
-                        color: Colors.black54,
-                        width: 0.1,
-                        style: BorderStyle.solid),
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  prefix: Container(
-                    padding: EdgeInsets.only(left: 18),
-                    child: Icon(
-                      CupertinoIcons.minus_circled,
-                      color: Colors.red,
-                      size: 23,
-                    ),
-                  ),
-                  suffix: Container(child: Text('01:00 AM', style: textstyle)),
-                  placeholder: 'M  T  W  T  F  S  S',
-                  readOnly: true,
-                  maxLines: 1,
-                  maxLength: 30,
-                  padding:
-                      EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
-                  placeholderStyle: textstyle,
-                  style: textstyle,
-                ) as Widget)
+            .map((e) => _buildReminderField())
             .toList()
             .cast();
     widgets.add(CupertinoTextField(
@@ -581,24 +595,9 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
         fontSize: textSizeLargeMedium - 3,
         color: Colors.grey[700],
       ),
-    ) as Widget);
+    ));
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: TopBar2(
-          centerText: 'Add Reminder',
-          leftButtonText: 'Back',
-          rightButtonText: 'Save',
-          onLeftTap: () {
-            setState(() {
-              step = 1;
-            });
-          },
-          onRightTap: () {
-            _saveData();
-          },
-        ),
-      ),
+      appBar: _buildSecondScreenHeader(),
       body: Column(
         children: <Widget>[
           SizedBox(
@@ -610,115 +609,46 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                 Center(
                   child: Padding(
                     padding: EdgeInsets.only(
-                      bottom: 40,
+                      bottom: 20,
                     ),
                     child: _buildMedicationCard(),
                   ),
                 ),
-                CustomTextField(
-                  icon: Icon(
-                    (mode == 'none')
-                        ? CupertinoIcons.heart
-                        : CupertinoIcons.heart_solid,
-                    color: (mode == 'none') ? Colors.black : Colors.red,
-                    size: 23,
-                  ),
-                  onTap: () => _showMode(),
-                  placeholder: mode,
-                  placeholderText: 'Mode',
-                ),
+                _buildModeField(),
+                _buildWindowField(),
+                _buildStartEndDateField(),
                 Column(
                   children: [
-                    CupertinoTextField(
-                      decoration: BoxDecoration(
-                        color: appWhite,
-                        border: Border.all(
-                            color: Colors.black54,
-                            width: 0.1,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      prefix: Container(
-                        padding: EdgeInsets.only(left: 18),
-                        child: Icon(
-                          CupertinoIcons.minus_circled,
-                          color: Colors.red,
-                          size: 23,
-                        ),
-                      ),
-                      suffix:
-                          Container(child: Text('01:00 AM', style: textstyle)),
-                      placeholder: 'M  T  W  T  F  S  S',
-                      readOnly: true,
-                      maxLines: 1,
-                      maxLength: 30,
-                      padding: EdgeInsets.only(
-                          left: 18, top: 9, bottom: 9, right: 10),
-                      placeholderStyle: textstyle,
-                      style: textstyle,
-                    ),
-                    CupertinoTextField(
-                      onTap: () {
-                        _showReminderModal(context);
-                      },
-                      decoration: BoxDecoration(
-                        color: appWhite,
-                        border: Border.all(
-                            color: Colors.black54,
-                            width: 0.1,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      prefix: Container(
-                        padding: EdgeInsets.only(left: 18),
-                        child: Icon(
-                          CupertinoIcons.minus_circled,
-                          color: Colors.red,
-                          size: 23,
-                        ),
-                      ),
-                      placeholder: 'M      W  T  F  S  S',
-                      readOnly: true,
-                      maxLines: 1,
-                      maxLength: 30,
-                      padding: EdgeInsets.only(
-                          left: 18, top: 9, bottom: 9, right: 10),
-                      placeholderStyle: textstyle,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: CupertinoTextField(
-                        onTap: () {
-                          _showReminderModal(context);
-                        },
-                        decoration: BoxDecoration(
-                          color: appWhite,
-                          border: Border.all(
-                              color: Colors.black54,
-                              width: 0.1,
-                              style: BorderStyle.solid),
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                        prefix: Container(
-                          padding: EdgeInsets.only(left: 18),
-                          child: Icon(
-                            CupertinoIcons.add_circled_solid,
-                            color: Colors.green,
-                            size: 23,
-                          ),
-                        ),
-                        placeholder: 'Add Reminder',
-                        readOnly: true,
-                        maxLines: 1,
-                        maxLength: 30,
-                        padding: EdgeInsets.only(
-                            left: 18, top: 9, bottom: 9, right: 10),
-                        placeholderStyle: TextStyle(
-                          fontSize: textSizeLargeMedium - 3,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                    ),
+                    // _buildReminderField(),
+                    // CupertinoTextField(
+                    //   onTap: () {
+                    //     _showReminderModal(context);
+                    //   },
+                    //   decoration: BoxDecoration(
+                    //     color: appWhite,
+                    //     border: Border.all(
+                    //         color: Colors.black54,
+                    //         width: 0.1,
+                    //         style: BorderStyle.solid),
+                    //     borderRadius: BorderRadius.circular(0),
+                    //   ),
+                    //   prefix: Container(
+                    //     padding: EdgeInsets.only(left: 18),
+                    //     child: Icon(
+                    //       CupertinoIcons.minus_circled,
+                    //       color: Colors.red,
+                    //       size: 23,
+                    //     ),
+                    //   ),
+                    //   placeholder: 'M      W  T  F  S  S',
+                    //   readOnly: true,
+                    //   maxLines: 1,
+                    //   maxLength: 30,
+                    //   padding: EdgeInsets.only(
+                    //       left: 18, top: 9, bottom: 9, right: 10),
+                    //   placeholderStyle: textstyle,
+                    // ),
+                    _buildAddReminderField(),
                   ],
                 ),
                 if (widgets.length > 0)
@@ -730,28 +660,157 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                           },
                         )
                       : _buildListViewRep(context, widgets),
-                CustomTextField(
-                  icon: Icon(
-                    CupertinoIcons.shopping_cart,
-                    color: Color(0XFF5A5C5E),
-                    size: 23,
-                  ),
-                  onTap: () {},
-                  placeholderText: 'Inventory',
-                ),
-                CustomTextField(
-                  icon: Icon(
-                    CupertinoIcons.time_solid,
-                    color: Color(0XFF5A5C5E),
-                    size: 23,
-                  ),
-                  onTap: () {},
-                  placeholderText: 'Alarm Settings',
-                ),
               ],
             ),
           ),
+          Expanded(
+              child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: _buildStockField())),
+          SizedBox(height: height * 0.08),
         ],
+      ),
+    );
+  }
+
+  CupertinoTextField _buildReminderField() {
+    return CupertinoTextField(
+      decoration: BoxDecoration(
+        color: appWhite,
+        border: Border.all(
+            color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+        borderRadius: BorderRadius.circular(0),
+      ),
+      prefix: Container(
+        padding: EdgeInsets.only(left: 18),
+        child: Icon(
+          CupertinoIcons.minus_circled,
+          color: Colors.red,
+          size: 23,
+        ),
+      ),
+      suffix: Container(
+          padding: EdgeInsets.only(right: 15),
+          child: Text('01:00 AM', style: textstyle)),
+      placeholder: 'M  T  W  T  F  S  S',
+      readOnly: true,
+      maxLines: 1,
+      maxLength: 30,
+      padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
+      placeholderStyle: textstyle,
+      style: textstyle,
+    );
+  }
+
+  Padding _buildAddReminderField() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: CupertinoTextField(
+        onTap: () {
+          _showReminderModal(context);
+        },
+        decoration: BoxDecoration(
+          color: appWhite,
+          border: Border.all(
+              color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+          borderRadius: BorderRadius.circular(0),
+        ),
+        prefix: Container(
+          padding: EdgeInsets.only(left: 18),
+          child: Icon(
+            CupertinoIcons.add_circled_solid,
+            color: Colors.green,
+            size: 23,
+          ),
+        ),
+        placeholder: 'Add Reminder',
+        readOnly: true,
+        maxLines: 1,
+        maxLength: 30,
+        padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
+        placeholderStyle: TextStyle(
+          fontSize: textSizeLargeMedium - 3,
+          color: Colors.grey[700],
+        ),
+      ),
+    );
+  }
+
+  CustomTextField _buildWindowField() {
+return CustomTextField(
+      icon: icon(name: window),
+      onTap: () => _showWindow(),
+      placeholder: window,
+      placeholderText: 'Window',
+    );
+  }
+
+
+  CustomTextField _buildModeField() {
+    return CustomTextField(
+      icon: icon(name: mode),
+      onTap: () => _showMode(),
+      placeholder: mode,
+      placeholderText: 'Mode',
+    );
+  }
+
+  _showStartEndDate() async {
+final List<DateTime> picked = await DateRangePicker.showDatePicker(
+
+          context: context,
+          initialFirstDate: new DateTime.now(),
+          initialLastDate: (new DateTime.now()).add(new Duration(days: 7)),
+          firstDate: new DateTime(2020),
+          lastDate: new DateTime(2025)
+      );
+      if (picked != null && picked.length == 2) {
+          print(picked);
+          var p = picked.toString();
+          var selectedStartEndDate = p[9] + p[10] + p[8] + p[6] + p[7] + ' to ' + p[34] + p[35] + p[8] + p[31] + p[32];
+          print(selectedStartEndDate);
+          setState(() {
+            startEndDateString = selectedStartEndDate;
+          });
+      }
+  }
+
+  CustomTextField _buildStartEndDateField() {
+      return CustomTextField(
+      icon: icon(name: startEndDateString),
+      onTap: () => _showStartEndDate(),
+      placeholder: startEndDateString,
+      placeholderText: 'Start - End Date',
+    );
+  }
+
+  CustomTextField _buildStockField() {
+    return CustomTextField(
+      icon: Icon(
+        CupertinoIcons.shopping_cart,
+        color: Color(0XFF5A5C5E),
+        size: 23,
+      ),
+      onTap: () {},
+      placeholderText: 'Stock',
+    );
+  }
+
+  PreferredSize _buildSecondScreenHeader() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(50),
+      child: TopBar2(
+        centerText: 'Add Reminder',
+        leftButtonText: 'Back',
+        rightButtonText: 'Save',
+        onLeftTap: () {
+          setState(() {
+            step = 1;
+          });
+        },
+        onRightTap: () {
+          _saveData();
+        },
       ),
     );
   }
@@ -775,4 +834,37 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
       ],
     ));
   }
+
+  Icon appearanceicon({var name}) {
+    return Icon(
+      (name == true) ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
+      color: (name == true) ? Colors.red : Colors.black,
+      size: 23,
+    );
+  }
+
+  Icon icon({var name}) {
+    return Icon(
+      (name != 'none') ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
+      color: (name != 'none') ? Colors.red : Colors.black,
+      size: 23,
+    );
+  }
+
+  _showReminderModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AddReminderModal(),
+    );
+  }
+
+  var textstyle = TextStyle(
+    letterSpacing: 1.0,
+    fontFeatures: [
+      // FontFeature.tabularFigures(),
+      FontFeature.proportionalFigures(),
+    ],
+    fontSize: textSizeLargeMedium - 3,
+    color: Colors.grey[700],
+  );
 }
