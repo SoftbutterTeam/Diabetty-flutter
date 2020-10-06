@@ -9,7 +9,8 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
-import 'package:diabetty/ui/screens/theraphy/components/date_range_picker.dart' as DateRangePicker;
+import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
+    as DateRangePicker;
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -143,7 +144,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   }
 
   _onPressedWindowPopUp() {
-     Navigator.pop(context);
+    Navigator.pop(context);
     var windowSelected = windowTimer.toString();
     var formattedWindowTime = windowSelected.lastIndexOf(':');
     String result = (formattedWindowTime != -1)
@@ -737,14 +738,13 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   }
 
   CustomTextField _buildWindowField() {
-return CustomTextField(
+    return CustomTextField(
       icon: icon(name: window),
       onTap: () => _showWindow(),
       placeholder: window,
       placeholderText: 'Window',
     );
   }
-
 
   CustomTextField _buildModeField() {
     return CustomTextField(
@@ -756,27 +756,35 @@ return CustomTextField(
   }
 
   _showStartEndDate() async {
-final List<DateTime> picked = await DateRangePicker.showDatePicker(
-
-          context: context,
-          initialFirstDate: new DateTime.now(),
-          initialLastDate: (new DateTime.now()).add(new Duration(days: 7)),
-          firstDate: new DateTime(2020),
-          lastDate: new DateTime(2025)
-      );
-      if (picked != null && picked.length == 2) {
-          print(picked);
-          var p = picked.toString();
-          var selectedStartEndDate = p[9] + p[10] + p[8] + p[6] + p[7] + ' to ' + p[34] + p[35] + p[8] + p[31] + p[32];
-          print(selectedStartEndDate);
-          setState(() {
-            startEndDateString = selectedStartEndDate;
-          });
-      }
+    final List<DateTime> picked = await DateRangePicker.showDatePicker(
+        context: context,
+        initialFirstDate: new DateTime.now(),
+        initialLastDate: (new DateTime.now()).add(new Duration(days: 7)),
+        firstDate: new DateTime(2020),
+        lastDate: new DateTime(2025));
+    if (picked != null && picked.length == 2) {
+      print(picked);
+      var p = picked.toString();
+      var selectedStartEndDate = p[9] +
+          p[10] +
+          p[8] +
+          p[6] +
+          p[7] +
+          ' to ' +
+          p[34] +
+          p[35] +
+          p[8] +
+          p[31] +
+          p[32];
+      print(selectedStartEndDate);
+      setState(() {
+        startEndDateString = selectedStartEndDate;
+      });
+    }
   }
 
   CustomTextField _buildStartEndDateField() {
-      return CustomTextField(
+    return CustomTextField(
       icon: icon(name: startEndDateString),
       onTap: () => _showStartEndDate(),
       placeholder: startEndDateString,
