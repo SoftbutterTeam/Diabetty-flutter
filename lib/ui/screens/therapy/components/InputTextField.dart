@@ -9,19 +9,22 @@ class InputTextField extends StatelessWidget {
   final Function onSubmitted;
   final Function validator;
   final ValueChanged<String> onChanged;
+  final Icon icon;
 
   InputTextField(
       {this.controller,
       this.placeholder,
       this.onSubmitted,
       this.validator,
-      this.onChanged});
+      this.onChanged,
+      this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 40),
       child: CupertinoTextField(
+        autofocus: true,
         onChanged: onChanged,
         onSubmitted: onSubmitted,
           controller: controller,
@@ -33,10 +36,7 @@ class InputTextField extends StatelessWidget {
           ),
           prefix: Container(
             padding: EdgeInsets.only(left: 17),
-            child: Icon(
-              CupertinoIcons.heart,
-              size: 23,
-            ),
+            child: icon,
           ),
           placeholder: placeholder,
           maxLines: 1,

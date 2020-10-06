@@ -48,7 +48,7 @@ class _MedicationCardState extends State<MedicationCard>
               fontSize: 12.0,
               overflow: TextOverflow.ellipsis),
           leading: CircleAvatar(
-            backgroundColor: Colors.orange.withOpacity(0.2),
+            backgroundColor: Colors.white,
             child: SvgPicture.asset(
               widget.appearance,
               width: 30,
@@ -69,10 +69,10 @@ class _MedicationCardState extends State<MedicationCard>
                   Container(
                     width: width * 0.6,
                     height: height * 0.05,
-                    color: Colors.green,
+                    // color: Colors.green,
                   ),
                   Expanded(
-                    child: Container(
+                    child: SizedBox(                      
                       child: Padding(
                         padding: EdgeInsets.only(right: 16, top: 3),
                         child: Column(
@@ -86,8 +86,8 @@ class _MedicationCardState extends State<MedicationCard>
                               },
                               child: SvgPicture.asset(
                                 (sound)
-                                    ? 'assets/icons/navigation/essentials/turn-notifications-on-button.svg'
-                                    : 'assets/icons/navigation/essentials/notifications-button.svg',
+                                    ? 'assets/icons/navigation/essentials/alarm-bell.svg'
+                                    : 'assets/icons/navigation/essentials/disable-alarm.svg',
                                 height: 25,
                                 width: 25,
                               ),
