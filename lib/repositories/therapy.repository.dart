@@ -25,7 +25,7 @@ class TherapyRepository {
     }
   }
 
-  Future<DataResult<List<Map<String, dynamic>>>> getAllTherapy(
+  Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(
       String uid, String therapyid) async {
     try {
       var result = await _db
@@ -78,12 +78,16 @@ class TherapyRepository {
   }
 }
 
-/*
-Stream<List<Therapy>>  get onStateChanged{
-   Firestore.instance.collection(path). 
-  return null;
+// maybe another T = Therapy or maybe Json to have middle man
+Stream<List<T>> get onStateChanged {
+  return Firestore.instance
+      .collection('users')
+      .document(uid)
+      .collection('therapies')
+      .snapshots()
+      .map((e) => null);
 }
-*/
+
 class DataResult<T> {
   final T data;
   final Exception exception;
