@@ -77,7 +77,7 @@ class TherapyRepository {
     return true;
   }
 
-  // maybe another T = Therapy or maybe Json to have middle man
+  /*
   Stream<List<T>> get onStateChanged {
     return _db
         .collection('users')
@@ -86,6 +86,7 @@ class TherapyRepository {
         .snapshots()
         .map((e) => null);
   }
+  */
 }
 
 class DataResult<T> {

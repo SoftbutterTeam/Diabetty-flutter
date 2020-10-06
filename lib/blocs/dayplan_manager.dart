@@ -45,24 +45,30 @@ class DayPlanManager extends ChangeNotifier {
     List<String> advice = List();
     advice.add('before a meal');
     for (var i = 0; i < 8; i++) {
-      usersReminders.add(new Reminder(
-          name: 'test',
-          time: DateTime.now().add(Duration(hours: i)),
-          dose: 2,
-          takenAt: null,
-          advice: advice));
-      usersReminders.add(new Reminder(
-          name: 'test',
-          time: DateTime.now().add(Duration(hours: i)),
-          takenAt: _currentDateStamp,
-          dose: 2,
-          advice: advice));
-      usersReminders.add(new Reminder(
-          name: 'test',
-          time: DateTime.now().add(Duration(hours: i)),
-          takenAt: _currentDateStamp,
-          dose: 2,
-          advice: advice));
+      usersReminders.add(
+        new Reminder(
+            name: 'test',
+            time: DateTime.now().add(Duration(hours: i)),
+            dose: 2,
+            takenAt: null,
+            advice: advice),
+      );
+      usersReminders.add(
+        new Reminder(
+            name: 'test',
+            time: DateTime.now().add(Duration(hours: i)),
+            takenAt: _currentDateStamp,
+            dose: 2,
+            advice: advice),
+      );
+      usersReminders.add(
+        new Reminder(
+            name: 'test',
+            time: DateTime.now().add(Duration(hours: i)),
+            takenAt: _currentDateStamp,
+            dose: 2,
+            advice: advice),
+      );
     }
     _dataController.add(usersReminders);
   }

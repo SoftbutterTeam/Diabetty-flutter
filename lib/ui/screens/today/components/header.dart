@@ -1,5 +1,4 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/repositories/therapy.repository.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -23,8 +22,6 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
   void initState() {
     super.initState();
   }
-
-  TherapyRepository repo = TherapyRepository();
 
   void _showDropModal(BuildContext context, Widget child) async {
     final DayPlanManager dayManager =
@@ -66,8 +63,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
     var currentDateStamp = dayManager.currentDateStamp;
     return Center(
         child: FlatButton(
-      onPressed: () async {
-        await repo.getAllTherapy(null, null);
+      onPressed: () {
         _showDropModal(context, null);
       },
       child: Center(
