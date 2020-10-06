@@ -2,7 +2,7 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/draft_screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
-import 'package:diabetty/ui/screens/theraphy/thraphy.screen.dart';
+import 'package:diabetty/ui/screens/therapy/therapy.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -23,16 +23,16 @@ class _DashBoardState extends State<DashBoard> {
   int currentIndex = 0;
 
   var _pages = [
-    DayPlanScreenBuilder(),
     DrafttScreen(),
+    DayPlanScreenBuilder(),
     DrafttScreen(),
     TherapyScreenBuilder()
   ];
 
   @override
   void initState() {
+    pageController = PageController(initialPage: pageIndex);
     super.initState();
-    pageController = PageController();
   }
 
   onPageChanged(int pageIndex) {

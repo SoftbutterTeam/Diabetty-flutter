@@ -1,6 +1,7 @@
 import 'dart:async';
+
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/system/app_Context.dart';
+import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
@@ -12,11 +13,12 @@ import 'package:diabetty/ui/screens/today/components/circle_list.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 //*swtich versions. animation differences*/
     as SlotWidget;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'components/icon_widget.dart';
+import '../components/icon_widget.dart';
+
+StreamController<double> controller = StreamController.broadcast();
 
 class DayPlanScreenBuilder extends StatelessWidget {
   @override
@@ -55,24 +57,24 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   DayPlanManager manager;
   _DayPlanScreenState(this.manager);
 
-  AnimationController _dateController;
+  AnimationController _controller;
   Animation _animation;
 
   @override
   void initState() {
     super.initState();
-    _dateController = AnimationController(
+    _controller = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 200),
         reverseDuration: Duration(milliseconds: 200));
-    _animation = Tween<double>(begin: 0, end: 0.165).animate(_dateController);
+    _animation = Tween<double>(begin: 0, end: 0.165).animate(_controller);
 
-    manager.pushAnimation = _dateController;
+    manager.pushAnimation = _controller;
   }
 
   @override
   void dispose() {
-    _dateController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -111,16 +113,20 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   Widget _buildCirclePlan(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Container(
         margin: EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(color: appWhite, boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1), //was 0.1
-            spreadRadius: 1,
-            blurRadius: 4, //was 4 , 3
-            offset: Offset(0, 1), // was 1, 2
-          ),
-        ]),
+        decoration: BoxDecoration(
+            // backgroundBlendMode: BlendMode.colorDodge,
+            color: appWhite,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1), //was 0.1
+                spreadRadius: 1,
+                blurRadius: 4, //was 4 , 3
+                offset: Offset(0, 1), // was 1, 2
+              ),
+            ]),
         alignment: Alignment.center,
         width: size.width,
         child: Center(
@@ -138,8 +144,12 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         ));
   }
 
+  double position;
+  double height;
+
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    height = size.height * 0.35;
     return Background(
       child: Column(
         children: <Widget>[
@@ -147,10 +157,31 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             AnimatedBox(
               animation: _animation,
             ),
-          SizedBox(
-              height: size.height * 0.35, //was 0.35
-              child: _buildCirclePlan(context) // was 0.35
-              ),
+          StreamBuilder(
+              stream: controller.stream,
+              builder: (context, snapshot) => GestureDetector(
+                    onVerticalDragUpdate: (DragUpdateDetails details) {
+                      double units = size.height * 0.005;
+
+                      position = details.delta.dy * units;
+
+                      height += position;
+                      if (height < size.height * 0.05) {
+                        height = size.height * 0.05;
+                      }
+                      print(details.localPosition.dy);
+                      print('position dy = ${position}');
+
+                      position.isNegative
+                          ? print('egatie')
+                          : controller.add(position);
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: SizedBox(
+                        height: height, //was 0.35
+                        child: _buildCirclePlan(context) // was 0.35
+                        ),
+                  )),
           if (true) Expanded(child: _buildRemindersList(context)),
         ],
       ),

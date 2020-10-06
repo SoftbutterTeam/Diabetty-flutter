@@ -1,8 +1,8 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/ui/screens/theraphy/components/add_modal.v2.dart';
-import 'package:diabetty/ui/screens/theraphy/components/background.dart';
-import 'package:diabetty/ui/screens/theraphy/components/medication_card.dart';
+import 'package:diabetty/ui/screens/therapy/components/add_modal.v2.dart';
+import 'package:diabetty/ui/screens/therapy/components/background.dart';
+import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
 import 'package:flutter/material.dart';
 
 class TherapyScreenBuilder extends StatelessWidget {

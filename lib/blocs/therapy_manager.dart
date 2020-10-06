@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class TherapyManager extends ChangeNotifier {
   TherapyManager({@required this.appContext});
-  TheraphyService theraphyService = TheraphyService();
+  TherapyService therapyService = TherapyService();
 
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
@@ -37,11 +37,11 @@ class TherapyManager extends ChangeNotifier {
 
   void init() async {
     if (usersTherapies == null) {
-      return _getData();
+      await _getData();
     }
   }
 
-  void _getData() async {
+  Future<void> _getData() async {
     var result = await this.appContext.getTherapies();
     if (result.isSuccess) {
       dataSink.add(result.data);
@@ -57,7 +57,7 @@ class TherapyManager extends ChangeNotifier {
 
   Future<bool> sumbitAddTherapy(AddTherapyForm addForm) async {
     try {
-      await theraphyService.addTherapy(addForm.toTherapy());
+      await therapyService.addTherapy(addForm.toTherapy());
     } catch (e) {
       rethrow;
     }

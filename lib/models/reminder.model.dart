@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 class Reminder {
   String uid;
-  String theraphyId; //*theraphy could have been deleted
+  String therapyId; //*therapy could have been deleted
   String reminderRuleId;
   String name;
   DateTime time; //*scheduled time
@@ -29,7 +29,7 @@ class Reminder {
 
   Reminder(
       {this.uid,
-      this.theraphyId,
+      this.therapyId,
       this.reminderRuleId,
       this.name,
       this.time,

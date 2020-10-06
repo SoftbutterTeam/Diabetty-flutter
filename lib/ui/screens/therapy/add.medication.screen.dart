@@ -9,7 +9,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
-import 'package:diabetty/ui/screens/theraphy/components/index.dart';
+import 'package:diabetty/ui/screens/therapy/components/index.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

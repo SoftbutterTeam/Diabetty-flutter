@@ -3,11 +3,12 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/today/components/medication_profile.screen.dart';
+import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ReminderCard extends StatelessWidget {
+class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   final Reminder reminder;
 
   const ReminderCard({Key key, this.reminder}) : super(key: key);
@@ -86,24 +87,25 @@ class ReminderCard extends StatelessWidget {
   }
 
   Widget _buidReminderTick(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: IconButton(
+    bool completed = reminder.takenAt != null;
+    return GestureDetector(
+      onTap: () => showTakeModalPopup(context),
+      child: Container(
+        alignment: Alignment.center,
         color: Colors.transparent,
-        onPressed: () {},
         padding: EdgeInsets.all(3),
-        icon: SizedBox(
+        margin: EdgeInsets.only(right: 3),
+        child: SizedBox(
           width: 30,
           height: 30,
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(width: 0.0, color: Colors.transparent),
-              borderRadius: BorderRadius.circular(60),
-              color: Colors.transparent, //   Colors.greenAccent[700]
+              shape: BoxShape.circle,
+              color: !completed ? Colors.transparent : Colors.greenAccent[700],
             ),
             child: SvgPicture.asset(
               'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.greenAccent[700], //Colors.white
+              color: !completed ? Colors.greenAccent[700] : Colors.white,
             ),
           ),
         ),

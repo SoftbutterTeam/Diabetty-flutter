@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:random_string/random_string.dart' as random;
 import 'package:diabetty/models/user.model.dart' as UserModel;
 
-class TheraphyService {
+class TherapyService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   TherapyRepository therapyRepo = TherapyRepository();
 
