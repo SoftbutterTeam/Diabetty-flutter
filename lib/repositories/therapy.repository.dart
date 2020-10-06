@@ -76,16 +76,16 @@ class TherapyRepository {
     });
     return true;
   }
-}
 
-// maybe another T = Therapy or maybe Json to have middle man
-Stream<List<T>> get onStateChanged {
-  return Firestore.instance
-      .collection('users')
-      .document(uid)
-      .collection('therapies')
-      .snapshots()
-      .map((e) => null);
+  // maybe another T = Therapy or maybe Json to have middle man
+  Stream<List<T>> get onStateChanged {
+    return _db
+        .collection('users')
+        .document(uid)
+        .collection('therapies')
+        .snapshots()
+        .map((e) => null);
+  }
 }
 
 class DataResult<T> {
