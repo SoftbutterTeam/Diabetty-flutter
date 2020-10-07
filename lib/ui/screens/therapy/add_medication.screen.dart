@@ -9,11 +9,6 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
-import 'package:diabetty/ui/screens/theraphy/components/date_range_picker.dart'
-    as DateRangePicker;
-import 'package:diabetty/ui/screens/therapy/components/index.dart';
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
