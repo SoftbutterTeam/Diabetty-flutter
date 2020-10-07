@@ -5,6 +5,7 @@ import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/screens/today/components/date_picker.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:diabetty/models/timeslot.model.dart';
 
 class DayPlanManager extends ChangeNotifier {
   DayPlanManager({
@@ -125,10 +126,4 @@ class DayPlanManager extends ChangeNotifier {
     timeSlots.sort((TimeSlot a, TimeSlot b) => a.time.compareTo(b.time));
     return timeSlots;
   }
-}
-
-class TimeSlot {
-  DateTime time;
-  List<Reminder> reminders = new List();
-  TimeSlot(this.time);
 }

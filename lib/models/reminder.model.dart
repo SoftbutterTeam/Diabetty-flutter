@@ -27,6 +27,8 @@ class Reminder {
     return (df.parse(dtFormatted));
   }
 
+  bool get isComplete => takenAt != null;
+
   Reminder(
       {this.uid,
       this.therapyId,

@@ -6,7 +6,7 @@ import 'package:diabetty/ui/screens/today/components/reminder_card.widget.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_mini.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:diabetty/blocs/dayplan_manager.dart' as Plan;
+import 'package:diabetty/models/timeslot.model.dart' as Plan;
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
@@ -25,8 +25,7 @@ class _TimeSlotState extends State<TimeSlot>
   bool allComplete;
   @override
   void initState() {
-    allComplete =
-        !widget.timeSlot.reminders.any((element) => element.takenAt == null);
+    allComplete = widget.timeSlot.allComplete;
     minimize = allComplete;
     super.initState();
   }
