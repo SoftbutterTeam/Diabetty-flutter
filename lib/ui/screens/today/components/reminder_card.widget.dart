@@ -39,8 +39,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
         padding:
             const EdgeInsets.only(right: 12, top: 7.0, bottom: 4, left: 12),
         child: GestureDetector(
-          onTap: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => MedicationProfile())),
+          onTap: () => showReminderPopupModal(context),
           child: Row(
             children: <Widget>[
               _buildReminderIcon(context),

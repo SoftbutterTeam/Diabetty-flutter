@@ -28,8 +28,7 @@ class ReminderMiniCard extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: GestureDetector(
-        onTap: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => MedicationProfile())),
+        onTap: () => {},
         child: _buildReminderIcon(context),
       ),
     );
