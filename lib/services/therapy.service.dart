@@ -9,7 +9,7 @@ import 'package:diabetty/models/user.model.dart' as UserModel;
 
 class TherapyService {
   //final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final AuthService authService;
+
   TherapyRepository therapyRepo =
       TherapyRepository("YDpBWyABH3ZluJ9sDKTCTGXCqzz1");
 
