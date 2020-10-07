@@ -6,18 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:animator/animator.dart';
 
 class CustomTextField extends StatelessWidget {
-  final Animator icon;
+  final AnimatedBuilder icon;
   final Function onTap;
   var placeholder;
   final Function onSubmitted;
   final String placeholderText;
+  final bool showHeart;
 
   CustomTextField(
       {this.icon,
       this.onTap,
       this.placeholder,
       this.placeholderText,
-      this.onSubmitted});
+      this.onSubmitted,
+      this.showHeart});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,8 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(0),
         ),
         prefix: Container(
+          height: 25,
+          width: 40,
           padding: EdgeInsets.only(left: 18),
           child: icon,
         ),

@@ -29,7 +29,7 @@ class _TopBarState extends State<TopBar> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -38,9 +38,9 @@ class _TopBarState extends State<TopBar> {
             offset: Offset(0, 1), // changes position of shadow
           ),
         ],
-        // gradient: LinearGradient(
-        //     begin: Alignment.topCenter,
-        //     colors: [Colors.orange[900], Colors.orange[600]]),
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: [Colors.orange[900], Colors.orange[600]]),
       ),
       child: SafeArea(
         child: Container(

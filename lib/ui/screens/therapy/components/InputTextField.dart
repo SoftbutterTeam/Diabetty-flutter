@@ -9,7 +9,7 @@ class InputTextField extends StatelessWidget {
   final Function onSubmitted;
   final Function validator;
   final ValueChanged<String> onChanged;
-  final Icon icon;
+  final AnimatedBuilder icon;
 
   InputTextField(
       {this.controller,
@@ -24,9 +24,9 @@ class InputTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 40),
       child: CupertinoTextField(
-        autofocus: true,
-        onChanged: onChanged,
-        onSubmitted: onSubmitted,
+          autofocus: true,
+          onChanged: onChanged,
+          onSubmitted: onSubmitted,
           controller: controller,
           decoration: BoxDecoration(
             color: appWhite,
@@ -35,6 +35,8 @@ class InputTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
           prefix: Container(
+            height: 25,
+            width: 40,
             padding: EdgeInsets.only(left: 17),
             child: icon,
           ),

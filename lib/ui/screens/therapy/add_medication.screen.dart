@@ -1,4 +1,5 @@
 // import 'package:diabetttty/components/AddReminderModal.dart';
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:diabetty/blocs/therapy_manager.dart';
@@ -9,6 +10,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
+import 'package:diabetty/ui/screens/therapy/components/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -19,6 +21,7 @@ import 'package:provider/provider.dart';
 
 import 'components/StrengthTextField.dart';
 import 'components/topbar2.dart';
+import 'components/date_range_picker.widget.dart' as DateRangePicker;
 
 const List<String> intakeAdvice = const <String>[
   "Before Meal",
@@ -68,7 +71,11 @@ class AddMedicationScreen extends StatefulWidget {
   AddMedicationScreenState createState() => AddMedicationScreenState();
 }
 
-class AddMedicationScreenState extends State<AddMedicationScreen> {
+class AddMedicationScreenState extends State<AddMedicationScreen>
+    with TickerProviderStateMixin {
+  Animation _heartAnimation;
+  AnimationController _heartAnimationController;
+
   final therapyForm = AddTherapyForm();
 
   TextEditingController medicationNameController;
@@ -96,8 +103,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
   var timeFormatter = new DateFormat('hh:mm');
   var step = 1;
   bool _btnEnabled;
-  bool _isVisible  = false;
-  bool _isAsPlanned  = false;
+  bool _isVisible = false;
+  bool _isAsPlanned = false;
 
   @override
   void initState() {
@@ -106,6 +113,22 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     _btnEnabled = false;
     mode = 'Scheduled';
     medicationNameController = TextEditingController();
+    _heartAnimationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1200));
+    _heartAnimation = Tween(begin: 23.0, end: 28.0).animate(CurvedAnimation(
+        curve: Curves.elasticIn, parent: _heartAnimationController));
+
+    _heartAnimationController.addStatusListener((AnimationStatus status) {
+      if (status == AnimationStatus.completed) {
+        _heartAnimationController.repeat();
+      }
+    });
+  }
+
+   @override
+  void dispose() {
+    super.dispose();
+    _heartAnimationController?.dispose();
   }
 
   _saveData() {
@@ -139,12 +162,14 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     return (medicationNameController.text.isEmpty);
   }
 
+  _updateStep() {
+    setState(() {
+      step = 2;
+    });
+  }
+
   _nextStep() {
-    _firstStepValidation()
-        ? print('hey')
-        : setState(() {
-            step = 2;
-          });
+    _firstStepValidation() ? print('hey') : _updateStep();
   }
 
   _onPressedWindowPopUp() {
@@ -183,7 +208,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
           })
         : setState(() {
             _isAsPlanned = true;
-      });
+          });
   }
 
   _onPressedUnitPopUp() {
@@ -219,6 +244,11 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
           width: width,
           onPressed: () {
             _onPressedUnitPopUp();
+            _heartAnimationController.forward();
+
+            setState(() {
+              unitHeart = true;
+            });
           },
           intakePicker: CupertinoPicker(
             scrollController:
@@ -251,9 +281,16 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
       context: context,
       builder: (context) {
         return MinRestPopUp(
+          desciption:
+              'A period of time set between occurences of prescribed medication.',
           height: height,
           width: width,
           onPressed: () {
+            _heartAnimationController.forward();
+
+            setState(() {
+              windowHeart = true;
+            });
             _onPressedWindowPopUp();
           },
           timerPicker: CupertinoTimerPicker(
@@ -278,10 +315,17 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
       context: context,
       builder: (context) {
         return MinRestPopUp(
+          desciption:
+              'A period of time set between occurences of required medication.\nPlease select your window time-frame.',
           height: height,
           width: width,
           onPressed: () {
             _onPressedMinRestPopUp();
+            _heartAnimationController.forward();
+
+            setState(() {
+              minRestHeart = true;
+            });
           },
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
@@ -308,9 +352,16 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
           height: height,
           width: width,
           onPressed: () {
+            _heartAnimationController.forward();
+
+            setState(() {
+              modeHeart = true;
+            });
             _onPressedModePopUp();
           },
           modePicker: CupertinoPicker(
+            scrollController:
+                FixedExtentScrollController(initialItem: _selectedModeIndex),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {
@@ -342,7 +393,11 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
           height: height,
           width: width,
           onPressed: () {
+            _heartAnimationController.forward();
             _onPressedIntakePopUp();
+            setState(() {
+              intakeHeart = true;
+            });
           },
           intakePicker: CupertinoPicker(
             scrollController:
@@ -378,6 +433,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
           height: height,
           width: width,
           onPressed: () {
+            _heartAnimationController.forward();
             Navigator.pop(context);
             setState(() {
               appearance = appearanceIcon[_selectedAppearanceIndex];
@@ -514,31 +570,61 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     ]);
   }
 
+  _doStuff() {
+    setState(() {
+      _isVisible = true;
+    });
+    _heartAnimationController.forward();
+  }
+
   InputTextField _buildMedicationNameField() {
     return InputTextField(
       controller: medicationNameController,
       placeholder: 'Medication Name...',
       onChanged: (val) {
-        (val == '')
-            ? print('yeye')
-            : setState(() {
-                _isVisible = true;
-              });
+        (val == '') ? print('yeye') : _doStuff();
         isEmpty();
       },
       icon: (medicationNameController.text.isEmpty)
-          ? Icon(
-              CupertinoIcons.heart,
-              size: 23,
+          ? AnimatedBuilder(
+              animation: _heartAnimationController,
+              builder: (context, child) {
+                return Center(
+                  child: Container(
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.heart,
+                        color: Colors.black,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                );
+              },
             )
-          : Icon(CupertinoIcons.heart_solid, color: Colors.red, size: 23),
+          : AnimatedBuilder(
+              animation: _heartAnimationController,
+              builder: (context, child) {
+                return Center(
+                  child: Container(
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.heart_solid,
+                        color: Colors.red,
+                        size: _heartAnimation.value,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
     );
   }
 
   StrengthTextField _buildStrengthField() {
     return StrengthTextField(
       controller: strengthController,
-      icon: icon(name: unit),
+      icon: appearanceicon(name: unitHeart),
       onTap: () => _showUnitPopUp(),
       placeholder: unit,
       placeholderText: 'Set Strength & Units',
@@ -562,7 +648,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
 
   CustomTextField _buildIntakeAdviceField() {
     return CustomTextField(
-      icon: icon(name: intake),
+      icon: appearanceicon(name: intakeHeart),
+      // icon: icon(name: intake),
       onTap: () => _showIntakePopUp(),
       placeholder: intake,
       placeholderText: 'Intake Advice',
@@ -571,7 +658,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
 
   CustomTextField _buildMinimumRestField() {
     return CustomTextField(
-      icon: icon(name: minRest),
+      icon: appearanceicon(name: minRestHeart),
+      // icon: icon(name: minRest),
       onTap: () => _showMinRestPopup(),
       placeholder: minRest,
       placeholderText: 'Minimum Rest Duration',
@@ -641,17 +729,11 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                   ),
                 ),
                 _buildModeField(),
-                AnimatedOpacity(
-                    opacity: _isAsPlanned ? 1 : 0,
-                    duration: Duration(milliseconds: 300),
-                    child: _buildWindowField()),
-                AnimatedOpacity(
-                    opacity: _isAsPlanned ? 1 : 0,
-                    duration: Duration(milliseconds: 300),
-                    child: _buildStartEndDateField()),
-                AnimatedOpacity(
-                  opacity: _isAsPlanned ? 1 : 0,
-                  duration: Duration(milliseconds: 300),
+                Visibility(visible: _isAsPlanned, child: _buildWindowField()),
+                Visibility(
+                    visible: _isAsPlanned, child: _buildStartEndDateField()),
+                Visibility(
+                  visible: _isAsPlanned,
                   child: Column(
                     children: [
                       // _buildReminderField(),
@@ -689,9 +771,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
                 ),
                 if (widgets.length > 0)
                   (widgets.length < 7)
-                      ? AnimatedOpacity(
-                          opacity: _isAsPlanned ? 1 : 0,
-                          duration: Duration(milliseconds: 300),
+                      ? Visibility(
+                          visible: _isAsPlanned,
                           child: ColumnBuilder(
                             itemCount: widgets.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -778,7 +859,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
 
   CustomTextField _buildWindowField() {
     return CustomTextField(
-      icon: icon(name: window),
+      icon: appearanceicon(name: windowHeart),
+      // icon: icon(name: window),
       onTap: () => _showWindow(),
       placeholder: window,
       placeholderText: 'Window',
@@ -787,11 +869,44 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
 
   CustomTextField _buildModeField() {
     return CustomTextField(
-      icon: icon(name: mode),
+      icon: appearanceicon(name: modeHeart),
+      // icon: icon(name: mode),
       onTap: () => _showMode(),
       placeholder: mode,
       placeholderText: 'Mode',
     );
+  }
+
+  _showStartEndDateValidation(List<DateTime> picked) {
+    final DateFormat formatter = DateFormat('dd-MM-yy');
+
+    var now = DateTime.now();
+    final String nowFormatted = formatter.format(now);
+
+    final String formatted = formatter.format(picked[0]); // First date selected
+
+    final String formatted2 =
+        formatter.format(picked[1]); // Second date selected
+
+    var selectedStartEndDate = formatted + ' to ' + formatted2;
+    var todayStartEndDate = 'Today to ' + formatted2;
+
+    (nowFormatted == formatted)
+        ? setState(() {
+            startEndDateString = todayStartEndDate;
+            startEndDateStringHeart = true;
+          })
+        : setState(() {
+            startEndDateString = selectedStartEndDate;
+            startEndDateStringHeart = true;
+          });
+
+    (nowFormatted == formatted && nowFormatted == formatted2)
+        ? setState(() {
+            startEndDateString = 'From Today';
+            startEndDateStringHeart = true;
+          })
+        : print('something');
   }
 
   _showStartEndDate() async {
@@ -799,32 +914,18 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
         context: context,
         initialFirstDate: new DateTime.now(),
         initialLastDate: (new DateTime.now()).add(new Duration(days: 7)),
-        firstDate: new DateTime(2020),
+        firstDate: DateTime.now().subtract(Duration(days: 1)),
         lastDate: new DateTime(2025));
     if (picked != null && picked.length == 2) {
-      print(picked);
-      var p = picked.toString();
-      var selectedStartEndDate = p[9] +
-          p[10] +
-          p[8] +
-          p[6] +
-          p[7] +
-          ' to ' +
-          p[34] +
-          p[35] +
-          p[8] +
-          p[31] +
-          p[32];
-      print(selectedStartEndDate);
-      setState(() {
-        startEndDateString = selectedStartEndDate;
-      });
+      _showStartEndDateValidation(picked);
     }
   }
 
   CustomTextField _buildStartEndDateField() {
     return CustomTextField(
-      icon: icon(name: startEndDateString),
+      icon: appearanceicon(name: startEndDateStringHeart),
+      // startEndDateStringHeart
+      // icon: icon(name: startEndDateString),
       onTap: () => _showStartEndDate(),
       placeholder: startEndDateString,
       placeholderText: 'Start - End Date',
@@ -833,11 +934,11 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
 
   CustomTextField _buildStockField() {
     return CustomTextField(
-      icon: Icon(
-        CupertinoIcons.shopping_cart,
-        color: Color(0XFF5A5C5E),
-        size: 23,
-      ),
+      // icon: Icon(
+      //   CupertinoIcons.shopping_cart,
+      //   color: Color(0XFF5A5C5E),
+      //   size: 23,
+      // ),
       onTap: () {},
       placeholderText: 'Stock',
     );
@@ -882,12 +983,40 @@ class AddMedicationScreenState extends State<AddMedicationScreen> {
     ));
   }
 
-  Icon appearanceicon({var name}) {
-    return Icon(
-      (name == true) ? CupertinoIcons.heart_solid : CupertinoIcons.heart,
-      color: (name == true) ? Colors.red : Colors.black,
-      size: 23,
-    );
+  AnimatedBuilder appearanceicon({var name}) {
+    return (name == true)
+        ? AnimatedBuilder(
+            animation: _heartAnimationController,
+            builder: (context, child) {
+              return Center(
+                child: Container(
+                  child: Center(
+                    child: Icon(
+                      CupertinoIcons.heart_solid,
+                      color: Colors.red,
+                      size: _heartAnimation.value,
+                    ),
+                  ),
+                ),
+              );
+            },
+          )
+        : AnimatedBuilder(
+            animation: _heartAnimationController,
+            builder: (context, child) {
+              return Center(
+                child: Container(
+                  child: Center(
+                    child: Icon(
+                      CupertinoIcons.heart,
+                      color: Colors.black,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 
   Icon icon({var name}) {

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class StrengthTextField extends StatelessWidget {
   final controller;
-  final Icon icon;
+  final AnimatedBuilder icon;
   final Function onTap;
   var placeholder;
   final Function onSubmitted;
@@ -36,6 +36,8 @@ class StrengthTextField extends StatelessWidget {
         ),
         prefix: Container(
           padding: EdgeInsets.only(left: 18),
+          height: 25,
+          width: 40,
           child: icon,
         ),
         suffix: GestureDetector(

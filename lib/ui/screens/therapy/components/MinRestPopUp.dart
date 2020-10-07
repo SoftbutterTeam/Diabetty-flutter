@@ -7,8 +7,9 @@ class MinRestPopUp extends StatefulWidget {
   final double width;
   final Function onPressed;
   final CupertinoTimerPicker timerPicker;
+  final String desciption;
 
-  MinRestPopUp({this.onPressed, this.height, this.width, this.timerPicker});
+  MinRestPopUp({this.onPressed, this.height, this.width, this.timerPicker, this.desciption});
 
   @override
   _MinRestPopUpState createState() => _MinRestPopUpState();
@@ -45,11 +46,11 @@ class _MinRestPopUpState extends State<MinRestPopUp> {
                           children: [
                             Icon(
                               Icons.info_outline,
-                              size: size.height * 0.1,
+                              size: size.height * 0.08,
                             ),
                             Text(
-                              'Explantion on what window means here.\nTo help them understand.',
-                              maxLines: 2,
+                              widget.desciption,
+                              maxLines: 3,
                               textAlign: TextAlign.center,
                             ),
                           ],

@@ -127,7 +127,7 @@ class _DatePickerHeader extends StatelessWidget {
         ignoring: mode != DatePickerMode.day,
         ignoringSemantics: false,
         child: new _DateHeaderButton(
-          color: backgroundColor,
+          color: Colors.transparent,
           onTap: Feedback.wrapForTap(
               () => _handleChangeMode(DatePickerMode.year), context),
           child: new Semantics(
@@ -143,7 +143,7 @@ class _DatePickerHeader extends StatelessWidget {
         ignoring: mode == DatePickerMode.day,
         ignoringSemantics: false,
         child: new _DateHeaderButton(
-          color: backgroundColor,
+          color: Colors.transparent,
           onTap: Feedback.wrapForTap(
               () => _handleChangeMode(DatePickerMode.day), context),
           child: new Semantics(
@@ -175,10 +175,16 @@ class _DatePickerHeader extends StatelessWidget {
         : new Container();
 
     return new Container(
+      decoration: BoxDecoration(
+          // color: backgroundColor,
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [Colors.orange[900], Colors.orange[600]]),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       width: width,
       height: height,
-      padding: padding,
-      color: backgroundColor,
+      padding: EdgeInsets.only(left: 8, right: 8, top: 15),
       child: orientation == Orientation.portrait
           ? new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -469,12 +475,16 @@ class DayPicker extends StatelessWidget {
             (isSelectedLastDay == null || isSelectedLastDay)) {
           itemStyle = themeData.accentTextTheme.body2;
           decoration = new BoxDecoration(
-              color: themeData.accentColor, shape: BoxShape.circle);
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  colors: [Colors.orange[900], Colors.orange[600]]), shape: BoxShape.circle);
         } else if (isSelectedFirstDay) {
           // The selected day gets a circle background highlight, and a contrasting text color.
           itemStyle = themeData.accentTextTheme.body2;
           decoration = new BoxDecoration(
-              color: themeData.accentColor,
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  colors: [Colors.orange[900], Colors.orange[600]]),
               borderRadius: BorderRadius.only(
                 topLeft: new Radius.circular(50.0),
                 bottomLeft: new Radius.circular(50.0),
@@ -482,14 +492,18 @@ class DayPicker extends StatelessWidget {
         } else if (isSelectedLastDay != null && isSelectedLastDay) {
           itemStyle = themeData.accentTextTheme.body2;
           decoration = new BoxDecoration(
-              color: themeData.accentColor,
+              // color: themeData.accentColor,
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  colors: [Colors.orange[900], Colors.orange[600]]),
               borderRadius: BorderRadius.only(
                 topRight: new Radius.circular(50.0),
                 bottomRight: new Radius.circular(50.0),
               ));
         } else if (isInRange != null && isInRange) {
           decoration = new BoxDecoration(
-              color: themeData.accentColor.withOpacity(0.1),
+              // color: themeData.accentColor.withOpacity(0.1),
+              color: Colors.orange.withOpacity(0.2),
               shape: BoxShape.rectangle);
         } else if (disabled) {
           itemStyle = themeData.textTheme.body1
@@ -1153,6 +1167,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
     );
     final Widget actions = new ButtonTheme.bar(
       child: new ButtonBar(
+        alignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           new FlatButton(
             child: new Text(localizations.cancelButtonLabel),
@@ -1185,7 +1200,12 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
               children: <Widget>[
                 header,
                 new Container(
-                  color: theme.dialogBackgroundColor,
+                  decoration: BoxDecoration(
+                    color: theme.dialogBackgroundColor,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)),
+                  ),
                   child: new Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
