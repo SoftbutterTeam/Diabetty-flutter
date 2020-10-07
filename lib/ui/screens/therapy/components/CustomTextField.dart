@@ -3,9 +3,10 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:animator/animator.dart';
 
 class CustomTextField extends StatelessWidget {
-  final Icon icon;
+  final Animator icon;
   final Function onTap;
   var placeholder;
   final Function onSubmitted;

@@ -48,6 +48,7 @@ dependencies:
   date_picker_timeline: 1.2.1
   circle_list: ^1.0.2
   date_range_picker: ^1.0.6
+  animator: ^2.0.1
   
 
 dev_dependencies:

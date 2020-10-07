@@ -114,7 +114,7 @@ class _DatePickerHeader extends StatelessWidget {
       case Orientation.portrait:
         width = _kMonthPickerPortraitWidth;
         height = _kDatePickerHeaderPortraitHeight;
-        padding = const EdgeInsets.symmetric(horizontal: 8.0);
+        padding = const EdgeInsets.only(left: 8, right: 8, top: 15);
         break;
       case Orientation.landscape:
         height = _kDatePickerLandscapeHeight;
@@ -175,10 +175,13 @@ class _DatePickerHeader extends StatelessWidget {
         : new Container();
 
     return new Container(
+      decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       width: width,
       height: height,
-      padding: padding,
-      color: backgroundColor,
+      padding: EdgeInsets.only(left: 8, right: 8, top: 15),
       child: orientation == Orientation.portrait
           ? new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -556,6 +559,7 @@ class DayPicker extends StatelessWidget {
       child: new Column(
         children: <Widget>[
           new Container(
+            // color: Colors.red,
             height: _kDayPickerRowHeight,
             child: new Center(
               child: new ExcludeSemantics(
@@ -1185,10 +1189,13 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 header,
-                new Container(                              //@@@@@@@@@@@ Decoration for picker section
-                  decoration: BoxDecoration(            
-                  color: theme.dialogBackgroundColor,
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                new Container(
+                  //@@@@@@@@@@@ Decoration for picker section
+                  decoration: BoxDecoration(
+                    color: theme.dialogBackgroundColor,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)),
                   ),
                   child: new Column(
                     mainAxisSize: MainAxisSize.min,
@@ -1212,7 +1219,6 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
                 header,
                 new Flexible(
                   child: new Container(
-                    
                     width: _kMonthPickerLandscapeWidth,
                     color: theme.dialogBackgroundColor,
                     child: new Column(
