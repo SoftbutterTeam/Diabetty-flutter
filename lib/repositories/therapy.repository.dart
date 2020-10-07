@@ -87,7 +87,7 @@ class TherapyRepository {
 //Stream<List<Map<String, dynamic>>>
 //
 
-  Stream<QuerySnapshot> get onStateChanged {
+  Stream<QuerySnapshot> get onStateChanged(String uid) {
     return _db
         .collection('users')
         .document(uid)
