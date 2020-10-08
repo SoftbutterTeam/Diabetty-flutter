@@ -20,6 +20,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'components/StrengthTextField.dart';
+import 'components/add_reminder_modal.v2.dart';
 import 'components/topbar2.dart';
 import 'components/date_range_picker.widget.dart' as DateRangePicker;
 
@@ -125,7 +126,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     });
   }
 
-   @override
+  @override
   void dispose() {
     super.dispose();
     _heartAnimationController?.dispose();
@@ -934,6 +935,23 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
 
   CustomTextField _buildStockField() {
     return CustomTextField(
+      icon: AnimatedBuilder(
+        animation: _heartAnimationController,
+        builder: (context, child) {
+          return Center(
+            child: Container(
+              child: Center(
+                child: Icon(
+                  CupertinoIcons.shopping_cart,
+                  color: Colors.black,
+                  size: 23,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+
       // icon: Icon(
       //   CupertinoIcons.shopping_cart,
       //   color: Color(0XFF5A5C5E),
@@ -1030,7 +1048,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   _showReminderModal(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AddReminderModal(),
+      builder: (context) => AddReminderModal2(),
     );
   }
 

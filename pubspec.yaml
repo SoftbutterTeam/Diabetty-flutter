@@ -49,6 +49,7 @@ dependencies:
   circle_list: ^1.0.2
   date_range_picker: ^1.0.6
   animator: ^2.0.1
+  weekday_selector: ^0.4.0
   
 
 dev_dependencies:
