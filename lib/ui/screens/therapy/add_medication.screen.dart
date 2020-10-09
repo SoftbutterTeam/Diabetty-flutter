@@ -122,6 +122,9 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     _heartAnimationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         _heartAnimationController.repeat();
+        _heartAnimationController.duration = Duration(seconds: 10);
+        _heartAnimationController.stop();
+
       }
     });
   }
