@@ -23,6 +23,8 @@ class DayPlanManager extends ChangeNotifier {
   DatePickerController dateController = DatePickerController();
   DateTime _currentDateStamp = DateTime.now();
 
+  List<Therapy> therapies = List();
+
   DateTime get currentDateStamp => _currentDateStamp;
 
   set currentDateStamp(value) {
@@ -61,12 +63,6 @@ class DayPlanManager extends ChangeNotifier {
   List<Reminder> getProjectedReminders({DateTime date}) {
     date = date ?? currentDateStamp;
     List<Therapy> therapies = List();
-    therapies.map((therapy) => therapy.schedule.reminders.map((rule) {
-          if (rule.activeOn(date)) {
-            return Reminder.generated(therapy: therapy, rule: rule, date: date);
-          }
-          return null;
-        }));
 
     List<Reminder> projectedReminders = List();
     therapies.map((therapy) {

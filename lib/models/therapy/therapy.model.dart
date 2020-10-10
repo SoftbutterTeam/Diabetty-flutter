@@ -155,10 +155,16 @@ class ReminderRule {
     this.window = (rng.nextInt(1000000).toString());
   }
 
-  bool activeOn(DateTime date) {}
+  bool activeOn(DateTime date) {
+    if(date.weekday){
+      
+    }
+    if (days.monday && date
+  }
 }
 
 class Days {
+  //* this should probably be an array
   bool monday, tuesday, wednesday, thursday, friday, saturday, sunday = false;
   Days({
     this.monday = false,
