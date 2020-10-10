@@ -100,6 +100,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: timeSlots.length,
+              shrinkWrap: true, //recently changed to true
               padding: EdgeInsets.symmetric(vertical: 20),
               itemBuilder: (context, index) {
                 return Container(

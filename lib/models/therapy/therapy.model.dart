@@ -108,9 +108,9 @@ class Schedule {
 class ReminderRule {
   String uid;
   Days days;
-  double dose;
-  String time;
-  String window;
+  int dose;
+  DateTime time;
+  Duration window;
   ReminderRule(
       {this.uid,
       this.days,
@@ -118,11 +118,11 @@ class ReminderRule {
       this.time,
       this.window,
       forceGenerateUID = false}) {
-    this.uid = this.uid ?? generateUID();
-    if (forceGenerateUID) this.uid = generateUID();
+    this.uid = this.uid ?? _generateUID();
+    if (forceGenerateUID) this.uid = _generateUID();
   }
 
-  String generateUID() {
+  String _generateUID() {
     return random.randomAlphaNumeric(6) +
         DateTime.now().microsecondsSinceEpoch.toString();
   }
@@ -150,10 +150,12 @@ class ReminderRule {
     days.dummyData();
     this.days = days;
 
-    this.dose = (rng.nextDouble() * 5);
-    this.time = (rng.nextInt(1000000).toString());
+    this.dose = (rng.nextInt(5) * 5);
+    this.time = (DateTime.now());
     this.window = (rng.nextInt(1000000).toString());
   }
+
+  bool activeOn(DateTime date) {}
 }
 
 class Days {

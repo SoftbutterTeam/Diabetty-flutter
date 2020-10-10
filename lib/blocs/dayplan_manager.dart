@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/screens/today/components/date_picker.widget.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,7 @@ class DayPlanManager extends ChangeNotifier {
   final AppContext appContext;
 
   StreamController<List<Reminder>> _dataController = BehaviorSubject();
-  List<Reminder> usersReminders;
-  List<Reminder> get uusersReminders =>
-      null; //RemindersRepository.fetchRecentReminders(); 90daysback,50days ahead
+  List<Reminder> usersReminders = List();
 
   AnimationController pushAnimation;
 
@@ -41,37 +40,7 @@ class DayPlanManager extends ChangeNotifier {
   Stream<List<Reminder>> get dataStream => _dataController.stream;
 
   void _getData() async {
-    //*mock data generation
-    usersReminders = List();
-    List<String> advice = List();
-    advice.add('before a meal');
-    for (var i = 0; i < 8; i++) {
-      usersReminders.add(
-        new Reminder(
-            name: 'test',
-            time: DateTime.now().add(Duration(hours: i)),
-            dose: 2,
-            takenAt: null,
-            advice: advice),
-      );
-      usersReminders.add(
-        new Reminder(
-            name: 'test',
-            time: DateTime.now().add(Duration(hours: i)),
-            takenAt: _currentDateStamp,
-            dose: 2,
-            advice: advice),
-      );
-      usersReminders.add(
-        new Reminder(
-            name: 'test',
-            time: DateTime.now().add(Duration(hours: i)),
-            takenAt: _currentDateStamp,
-            dose: 2,
-            advice: advice),
-      );
-    }
-    _dataController.add(usersReminders);
+    return;
   }
 
   void init() async {
@@ -82,19 +51,48 @@ class DayPlanManager extends ChangeNotifier {
     }
   }
 
-  Future<void> refresh() async {
-    return _getData();
+  //First Fetch all Data
+
+  List<Reminder> getFinalRemindersList({DateTime date}) {
+    date = date ?? currentDateStamp;
+    //* first we need project reminders
   }
 
-  List<TimeSlot> getRemindersByTimeSlots() {
-    List<Reminder> tempReminders = List.from(usersReminders);
+  List<Reminder> getProjectedReminders({DateTime date}) {
+    date = date ?? currentDateStamp;
+    List<Therapy> therapies = List();
+    therapies.map((therapy) => therapy.schedule.reminders.map((rule) {
+          if (rule.activeOn(date)) {
+            return Reminder.generated(therapy: therapy, rule: rule, date: date);
+          }
+          return null;
+        }));
+
+    List<Reminder> projectedReminders = List();
+    therapies.map((therapy) {
+      therapy.schedule.reminders.map((rule) {
+        if (rule.activeOn(date))
+          projectedReminders
+              .add(Reminder.generated(therapy: therapy, rule: rule));
+      });
+    });
+  }
+
+  List<TimeSlot> getRemindersByTimeSlots({DateTime date}) {
+    date = date ?? currentDateStamp;
+
+    List<Reminder> tempReminders = List.from(usersReminders)
+      ..retainWhere((element) => element.isToday(date: currentDateStamp));
+    //** now we have a list of all the FETCHED Reminders for the current timestamp */
+
     List<TimeSlot> timeSlots = new List();
+
     print(usersReminders.length);
     if (tempReminders == null || tempReminders.length == 0) {
       return List();
     }
     for (Reminder reminder in tempReminders) {
-      DateTime time = reminder.getTime;
+      DateTime time = reminder.getDateTimeAs12hr;
       TimeSlot timeSlot;
       int slotIndex = getTimeSlotIndex(timeSlots, time);
       if (slotIndex == null) {

@@ -1,4 +1,5 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -17,7 +18,7 @@ class DayPlanHeader extends StatefulWidget {
   _DayPlanHeaderState createState() => _DayPlanHeaderState();
 }
 
-class _DayPlanHeaderState extends State<DayPlanHeader> {
+class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
   @override
   void initState() {
     super.initState();
@@ -70,52 +71,16 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
         child: Container(
           alignment: Alignment.center,
           child: subHeadingText(
-              shortenDateReprest(currentDateStamp), Colors.grey[900]),
+              shortenDateRepresent(currentDateStamp), Colors.grey[900]),
         ),
       ),
     ));
   }
 
-  bool isSameDay(DateTime x, DateTime y) {
-    if (x.day != y.day || x.month != y.month || x.year != y.year) {
-      return false;
-    }
-    return true;
-  }
-
-  String shortenDateReprest(DateTime dateTime) {
-    String dayOfWeek;
-    if (isSameDay(dateTime, DateTime.now()))
-      dayOfWeek = "Today, ";
-    else if (isSameDay(dateTime, DateTime.now().add(Duration(days: 1))))
-      dayOfWeek = "Tommorow, ";
-    else if (isSameDay(dateTime, DateTime.now().subtract(Duration(days: 1))))
-      dayOfWeek = "Yesterday, ";
-    else
-      dayOfWeek = DateFormat("EEEE, ").format(dateTime);
-    return dayOfWeek + DateFormat("d MMM").format(dateTime);
-  }
-
-  String getDayOfMonthSuffix(final int n) {
-    if (n >= 11 && n <= 13) {
-      return '\u1d57\u02b0';
-    }
-    switch (n % 10) {
-      case 1:
-        return '\u02e2\u1d57';
-      case 2:
-        return '\u207f\u1d48';
-      case 3:
-        return '\u02b3\u1d48';
-      default:
-        return '\u1d57\u02b0';
-    }
-  }
-
   Widget _buildSilentButton(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Opacity(
-      opacity: 1,
+      opacity: 0,
       child: Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: size.width * 0),
@@ -134,7 +99,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
     var size = MediaQuery.of(context).size;
 
     return Opacity(
-      opacity: 1,
+      opacity: 0,
       child: Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: size.width * 0),
