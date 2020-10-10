@@ -152,14 +152,17 @@ class ReminderRule {
 
     this.dose = (rng.nextInt(5) * 5);
     this.time = (DateTime.now());
-    this.window = (rng.nextInt(1000000).toString());
   }
 
   bool activeOn(DateTime date) {
-    if(date.weekday){
-      
-    }
-    if (days.monday && date
+    if (days.monday && date.weekday == DateTime.monday) return true;
+    if (days.tuesday && date.weekday == DateTime.tuesday) return true;
+    if (days.wednesday && date.weekday == DateTime.wednesday) return true;
+    if (days.thursday && date.weekday == DateTime.thursday) return true;
+    if (days.friday && date.weekday == DateTime.friday) return true;
+    if (days.saturday && date.weekday == DateTime.saturday) return true;
+    if (days.sunday && date.weekday == DateTime.sunday) return true;
+    return false;
   }
 }
 

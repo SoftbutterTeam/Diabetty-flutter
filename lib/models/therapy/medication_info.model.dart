@@ -4,7 +4,10 @@ class MedicationInfo {
   String name;
   int strength;
   int appearance;
+  String
+      strengthUnit; //THIS HAS CHANGED CHECK CODE NOW UNITS MEAN SOMETHING ELSE
   String unit;
+
   List<String> intakeAdvice;
   //Turned into a list -- CAMEROWN!!!!@@@@@@@@@
   Duration restDuration;
@@ -15,6 +18,7 @@ class MedicationInfo {
     this.appearance,
     this.intakeAdvice,
     this.restDuration,
+    this.strengthUnit,
     this.unit,
   });
 

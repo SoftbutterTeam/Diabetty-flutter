@@ -61,11 +61,9 @@ class Reminder with DateMixin {
       this.rescheduled,
       this.takenAt});
 
+  ///*  Used to Project Reminders from the Therapys
+  ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
   Reminder.generated({Therapy therapy, ReminderRule rule, DateTime date}) {
-    /**
-      there no uid assignment. so if no uid it must be 
-       a non-stored/saved reminder object
-    */
     this.therapyId = therapy.uid;
     this.reminderRuleId = rule.uid;
     this.name = therapy.medicationInfo.name;
@@ -73,8 +71,7 @@ class Reminder with DateMixin {
         date.year, date.month, date.day, rule.time.hour, rule.time.minute);
     this.dose = rule.dose;
     this.window = rule.window;
-    //! needs the units
-
+    this.doseUnit = therapy.medicationInfo.unit;
     this.advice = therapy.medicationInfo.intakeAdvice;
   }
 }

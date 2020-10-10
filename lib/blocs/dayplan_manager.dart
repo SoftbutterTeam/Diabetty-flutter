@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/repositories/user.repository.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/screens/today/components/date_picker.widget.dart';
 import 'package:flutter/material.dart';
@@ -15,17 +16,18 @@ class DayPlanManager extends ChangeNotifier {
 
   final AppContext appContext;
 
-  StreamController<List<Reminder>> _dataController = BehaviorSubject();
-  List<Reminder> usersReminders = List();
-
   AnimationController pushAnimation;
-
   DatePickerController dateController = DatePickerController();
   DateTime _currentDateStamp = DateTime.now();
+  StreamController<List<Reminder>> _dataController = BehaviorSubject();
 
+  ///* user reminders is only fetched reminders/data from store
+  List<Reminder> usersReminders = List();
   List<Therapy> therapies = List();
 
   DateTime get currentDateStamp => _currentDateStamp;
+  Sink<List<Reminder>> get dataSink => _dataController.sink;
+  Stream<List<Reminder>> get dataStream => _dataController.stream;
 
   set currentDateStamp(value) {
     _currentDateStamp = value;
@@ -38,26 +40,23 @@ class DayPlanManager extends ChangeNotifier {
     super.dispose();
   }
 
-  Sink<List<Reminder>> get dataSink => _dataController.sink;
-  Stream<List<Reminder>> get dataStream => _dataController.stream;
-
-  void _getData() async {
-    return;
-  }
-
   void init() async {
     _currentDateStamp = DateTime.now();
-
-    if (usersReminders == null) {
-      return _getData();
-    }
   }
-
-  //First Fetch all Data
 
   List<Reminder> getFinalRemindersList({DateTime date}) {
     date = date ?? currentDateStamp;
-    //* first we need project reminders
+    List<Reminder> finalReminders = getProjectedReminders(date: date);
+
+    List<Reminder> fetchedReminders = usersReminders
+        .where((reminder) => reminder.isToday(date: _currentDateStamp));
+
+    finalReminders.retainWhere((element) => fetchedReminders.any((e) =>
+        element.therapyId == e.therapyId &&
+        element.reminderRuleId == e.reminderRuleId));
+    finalReminders.addAll(fetchedReminders);
+
+    return finalReminders;
   }
 
   List<Reminder> getProjectedReminders({DateTime date}) {
@@ -74,9 +73,10 @@ class DayPlanManager extends ChangeNotifier {
     });
   }
 
-  List<TimeSlot> getRemindersByTimeSlots({DateTime date}) {
+  List<TimeSlot> sortRemindersByTimeSlots({DateTime date}) {
     date = date ?? currentDateStamp;
 
+    //this is bs, gonna update is soon
     List<Reminder> tempReminders = List.from(usersReminders)
       ..retainWhere((element) => element.isToday(date: currentDateStamp));
     //** now we have a list of all the FETCHED Reminders for the current timestamp */
