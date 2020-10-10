@@ -138,17 +138,18 @@ class _TimeSlotState extends State<TimeSlot>
 
   Widget _buildReminderColumn() {
     return GestureDetector(
-        onDoubleTap: () {
-          setState(() {
-            minimize = !minimize;
-          });
+      onDoubleTap: () {
+        setState(() {
+          minimize = !minimize;
+        });
+      },
+      child: ColumnBuilder(
+        itemCount: widget.timeSlot.reminders.length,
+        itemBuilder: (context, index) {
+          return ReminderCard(reminder: widget.timeSlot.reminders[index]);
         },
-        child: ColumnBuilder(
-          itemCount: widget.timeSlot.reminders.length,
-          itemBuilder: (context, index) {
-            return ReminderCard(reminder: widget.timeSlot.reminders[index]);
-          },
-        ));
+      ),
+    );
   }
 }
 

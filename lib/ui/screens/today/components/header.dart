@@ -70,11 +70,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
         child: Container(
           alignment: Alignment.center,
           child: subHeadingText(
-              (isSameDay(currentDateStamp, DateTime.now())
-                      ? "Today, " + DateFormat("d").format(currentDateStamp)
-                      : DateFormat("EE, d").format(currentDateStamp)) +
-                  DateFormat(" MMM").format(currentDateStamp),
-              Colors.grey[900]),
+              shortenDateReprest(currentDateStamp), Colors.grey[900]),
         ),
       ),
     ));
@@ -85,15 +81,19 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
       return false;
     }
     return true;
-    /***? 
-        subHeadingText(
-              (isSameDay(currentDateStamp, DateTime.now())
-                      ? "Today " + DateFormat("d").format(currentDateStamp)
-                      : DateFormat("EE d").format(currentDateStamp)) +
-                  getDayOfMonthSuffix(currentDateStamp.day) +
-                  DateFormat(" MMM").format(currentDateStamp),
-              Colors.grey[900]),
-        */
+  }
+
+  String shortenDateReprest(DateTime dateTime) {
+    String dayOfWeek;
+    if (isSameDay(dateTime, DateTime.now()))
+      dayOfWeek = "Today, ";
+    else if (isSameDay(dateTime, DateTime.now().add(Duration(days: 1))))
+      dayOfWeek = "Tommorow, ";
+    else if (isSameDay(dateTime, DateTime.now().subtract(Duration(days: 1))))
+      dayOfWeek = "Yesterday, ";
+    else
+      dayOfWeek = DateFormat("EEEE, ").format(dateTime);
+    return dayOfWeek + DateFormat("d MMM").format(dateTime);
   }
 
   String getDayOfMonthSuffix(final int n) {
@@ -112,48 +112,37 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
     }
   }
 
-  Widget _buildLayoutButton(BuildContext context) {
+  Widget _buildSilentButton(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Opacity(
-      opacity: 0,
+      opacity: 1,
       child: Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: size.width * 0.05),
+        padding: EdgeInsets.only(left: size.width * 0),
         child: FlatButton(
+          shape: CircleBorder(),
           onPressed: () {},
-          padding: EdgeInsets.zero,
-          child: Align(
-            child: SvgPicture.asset(
-              'assets/icons/navigation/essentials/012-settings.svg',
-              height: 22,
-              width: 22,
-              color: Colors.white,
-            ),
-            alignment: Alignment.centerLeft,
-          ),
+          color: Colors.white,
+          child:
+              Icon(Icons.keyboard_arrow_up, size: 30, color: Colors.grey[900]),
         ),
       ),
     );
   }
 
-  Widget _buildFilterButton(BuildContext context) {
+  Widget _buildTakeButton(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     return Opacity(
-      opacity: 0,
+      opacity: 1,
       child: Container(
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: size.width * 0.05),
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: size.width * 0),
         child: FlatButton(
+          shape: CircleBorder(),
           onPressed: () {},
-          color: Colors.transparent,
-          disabledTextColor: Colors.grey,
-          disabledColor: Colors.transparent,
-          padding: EdgeInsets.zero,
-          child: Align(
-            child: Icon(Icons.add, color: Colors.white),
-            alignment: Alignment.centerRight,
-          ),
+          color: Colors.white,
+          child: Icon(Icons.add, size: 30, color: Colors.grey[900]),
         ),
       ),
     );
@@ -179,8 +168,8 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
       // padding: EdgeInsets.only(left: 15, right: 15),
       child: Stack(
         children: <Widget>[
-          _buildLayoutButton(context),
-          _buildFilterButton(context),
+          _buildSilentButton(context),
+          _buildTakeButton(context),
           _buildDateWidget(context),
         ],
       ),

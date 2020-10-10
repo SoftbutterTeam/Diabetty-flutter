@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -54,14 +53,16 @@ mixin ReminderActionsMixin<T extends Widget> {
         bool isReversed = anim1.status == AnimationStatus.reverse;
         double animValue = isReversed ? 0 : anim1.value;
         return BackdropFilter(
-            filter:
-                ImageFilter.blur(sigmaX: 8 * animValue, sigmaY: 8 * animValue),
-            child: Container(
-                alignment: Alignment.center,
-                child: FadeTransition(
-                  child: child,
-                  opacity: anim1,
-                )));
+          filter:
+              ImageFilter.blur(sigmaX: 8 * animValue, sigmaY: 8 * animValue),
+          child: Container(
+            alignment: Alignment.center,
+            child: FadeTransition(
+              child: child,
+              opacity: anim1,
+            ),
+          ),
+        );
       };
 }
 
@@ -189,7 +190,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 40),
             child: Container(
-              //  padding: EdgeInsets.symmetric(horizontal: 2),
               alignment: Alignment.center,
               child: text(
                 'random text',
@@ -227,7 +227,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                      color: CupertinoColors.activeBlue,
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10)),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   height: 75,
@@ -243,7 +243,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                           'assets/icons/navigation/x/close.svg',
                           width: 30,
                           height: 30,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 5),
@@ -264,7 +264,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                      color: CupertinoColors.activeBlue,
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10)),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   height: 75,
@@ -278,7 +278,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                           'assets/icons/navigation/checkbox/tick_outline2.svg',
                           width: 30,
                           height: 30,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 5),
@@ -299,7 +299,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                      color: CupertinoColors.activeBlue,
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10)),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   height: 75,
@@ -310,16 +310,16 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                         onPressed: () {},
                         padding: EdgeInsets.all(3),
                         icon: SvgPicture.asset(
-                          'assets/icons/navigation/clock/time.svg',
+                          'assets/icons/navigation/clock/wall-clock.svg',
                           width: 30,
                           height: 30,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 5),
                       text(
                         "Postpone",
-                        textColor: Colors.white,
+                        textColor: Colors.black,
                         fontFamily: fontSemibold,
                         fontSize: 12.0,
                         maxLine: 2,
