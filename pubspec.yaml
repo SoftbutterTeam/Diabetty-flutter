@@ -50,6 +50,7 @@ dependencies:
   date_range_picker: ^1.0.6
   animator: ^2.0.1
   weekday_selector: ^0.4.0
+  like_button: ^1.0.3
   
 
 dev_dependencies:

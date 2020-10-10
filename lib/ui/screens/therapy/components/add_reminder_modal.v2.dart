@@ -115,14 +115,18 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
       height: size.height * 0.045,
       width: size.width * 0.7,
       child: CupertinoTextField(
+        enableInteractiveSelection: false,
         padding: EdgeInsets.only(left: 15.0),
         onTap: () {
           _showTimePicker();
         },
         placeholder: timeString,
-        placeholderStyle: TextStyle(
+        placeholderStyle: (timeString == 'Time') ? TextStyle(
           fontSize: textSizeLargeMedium - 3,
           color: Colors.grey[700],
+        ) : TextStyle(
+          fontSize: textSizeLargeMedium - 2,
+          color: Colors.black,
         ),
         readOnly: true,
         decoration: BoxDecoration(
@@ -135,9 +139,6 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
 
   _updateTime() {
     final hourAndMin = DateFormat('HH:mm').format(dateTime);
-    // var hhMM = hourAndMin.substring(0, 4);
-    // var amPm = hourAndMin.substring(8, 10);
-    // var timeFormatted = hhMM + ' ' + amPm;
     setState(() {
       timeString = hourAndMin;
     });

@@ -9,7 +9,8 @@ class InputTextField extends StatelessWidget {
   final Function onSubmitted;
   final Function validator;
   final ValueChanged<String> onChanged;
-  final AnimatedBuilder icon;
+  final AnimatedOpacity icon;
+  final AnimatedOpacity icon2;
 
   InputTextField(
       {this.controller,
@@ -17,7 +18,8 @@ class InputTextField extends StatelessWidget {
       this.onSubmitted,
       this.validator,
       this.onChanged,
-      this.icon});
+      this.icon,
+      this.icon2});
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +37,13 @@ class InputTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
           ),
           prefix: Container(
-            height: 25,
-            width: 40,
             padding: EdgeInsets.only(left: 17),
-            child: icon,
+            child: Stack(
+            children: [
+              icon,
+              icon2
+            ],
+          ),
           ),
           placeholder: placeholder,
           maxLines: 1,

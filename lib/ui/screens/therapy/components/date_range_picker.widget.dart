@@ -11,6 +11,7 @@ library date_range_picker;
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -1170,7 +1171,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
         alignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           new FlatButton(
-            child: new Text(localizations.cancelButtonLabel),
+            child: new Text(localizations.cancelButtonLabel, style: TextStyle(color: CupertinoColors.destructiveRed)),
             onPressed: _handleCancel,
           ),
           new FlatButton(

@@ -90,9 +90,7 @@ class Background extends StatelessWidget {
               child: Container(
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25))),
+                ),
             child: child,
           )),
         ],
