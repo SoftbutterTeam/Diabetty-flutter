@@ -22,7 +22,7 @@ class ReminderRuleField extends StatefulWidget {
 
 class _ReminderRuleFieldState extends State<ReminderRuleField> {
   @override
-  dispose(){
+  dispose() {
     super.dispose();
   }
 
@@ -44,7 +44,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
             color: Colors.red,
             size: 23,
           ),
-          onPressed: () {_deleteRule(manager)},
+          onPressed: () => _deleteRule(manager),
         ),
       ),
       suffix: Container(
@@ -98,14 +98,15 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
     // or this one - not sure how cute that first one is gonna be
     // change the : if you want it to be something else, its smart it will get u
     // add spaces where ever too
-    return DateFormat("h:mm a").format(widget.rule.time); 
+    return DateFormat("h:mm a").format(widget.rule.time);
   }
 
   _deleteRule(TherapyManager manager) {
-    manager.therapyForm.reminderRules.removeWhere((element) => element == widget.rule);
-    //*  that should delete it
+    manager.therapyForm.reminderRules
+        .removeWhere((element) => element.uid == widget.rule.uid);
+    //*  that should delete it  e.g.  element == widget.rule
     //* if not use element.uid == widget.rule.uid
-    //* dont worry I already generate the uids 
+    //* dont worry I already generate the uids
     dispose();
   }
 }
