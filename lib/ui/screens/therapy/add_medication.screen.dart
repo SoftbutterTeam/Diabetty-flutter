@@ -697,8 +697,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
             : widget.manager.therapyForm.reminderRules
                 .map((e) => ReminderRuleField(textstyle: textstyle, rule: e))
                 .toList()
-                .cast()
-          ..add(_buildAddReminderField());
+                .cast();
+          // ..add(_buildAddReminderField());
     return Scaffold(
       appBar: _buildSecondScreenHeader(),
       body: SingleChildScrollView(
@@ -796,7 +796,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     );
   }
 
-  Padding _buildAddReminderField() {
+  Widget _buildAddReminderField() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: CupertinoTextField(

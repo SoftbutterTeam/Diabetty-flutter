@@ -26,7 +26,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   TextEditingController dosageController;
   String timeString;
   DateTime initialDate;
-  DateTime dateTime;
+  DateTime timeSelected;
 
   @override
   void initState() {
@@ -40,9 +40,9 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     sunday = false;
     dosageController = TextEditingController();
     timeString = "Time";
-    dateTime = DateTime.now();
+    timeSelected = DateTime.now();
     initialDate =
-        DateTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, 0);
+        DateTime(timeSelected.year, timeSelected.month, timeSelected.day, timeSelected.hour, 0);
     reminder = ReminderRule();
     reminder.days = Days();
   }
@@ -138,7 +138,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   }
 
   _updateTime() {
-    final hourAndMin = DateFormat('HH:mm').format(dateTime);
+    final hourAndMin = DateFormat.jm().format(timeSelected);
     setState(() {
       timeString = hourAndMin;
     });
@@ -154,15 +154,16 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
             _updateTime();
           },
           timepicker: CupertinoDatePicker(
+            use24hFormat: false,
             mode: CupertinoDatePickerMode.time,
             minuteInterval: 5,
             initialDateTime: initialDate,
             onDateTimeChanged: (dateTimeChange) {
               print(dateTimeChange);
               setState(() {
-                dateTime = dateTimeChange;
+                timeSelected = dateTimeChange;
               });
-              print(dateTime);
+              print(timeSelected);
             },
           ),
         );
@@ -274,6 +275,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
       sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
       var doseStringToDouble = double.parse(dosageController.text);
       reminder.dose = doseStringToDouble;
+      reminder.time = timeSelected;
       print(reminder.dose);
       print(reminder.time);
       print(dosageController.text);

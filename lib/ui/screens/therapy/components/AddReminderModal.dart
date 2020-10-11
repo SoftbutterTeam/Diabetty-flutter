@@ -92,7 +92,6 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onPressed: () {
                       Navigator.pop(context);
                       var timeSelected = initialtimer.toString();
-                      reminder.window = timeSelected;
                       var trimmedtimeSelected = timeSelected.lastIndexOf(':');
                       String result = (trimmedtimeSelected != -1)
                           ? timeSelected.substring(0, trimmedtimeSelected)
@@ -170,7 +169,6 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onPressed: () {
                       Navigator.pop(context);
                       var timeSelected = dateTime.toString();
-                      reminder.time = timeSelected;
                       var trimmedtimeSelected = timeSelected[11] +
                           timeSelected[12] +
                           timeSelected[13] +
@@ -228,7 +226,6 @@ class _AddReminderModalState extends State<AddReminderModal> {
     reminder.dose = doseStringToDouble;
     print(reminder.dose);
     print(reminder.time);
-    print(reminder.window);
     print(dosageController.text);
     print(reminder.days.monday);
     print(reminder.days.tuesday);

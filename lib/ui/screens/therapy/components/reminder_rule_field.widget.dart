@@ -63,37 +63,38 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
   String _getReminderRuleDaysText() {
     String text = "";
     if (widget.rule.days.monday)
-      text += 'M';
+      text += ' M ';
     else
       text += "  ";
     if (widget.rule.days.tuesday)
-      text += 'T';
+      text += ' T ';
     else
       text += "  ";
     if (widget.rule.days.wednesday)
-      text += 'W';
+      text += ' W ';
     else
       text += "  ";
     if (widget.rule.days.thursday)
-      text += 'T';
+      text += ' T ';
     else
       text += "  ";
     if (widget.rule.days.friday)
-      text += 'F';
+      text += ' F ';
     else
       text += "  ";
     if (widget.rule.days.saturday)
-      text += 'S';
+      text += ' S ';
     else
       text += "  ";
     if (widget.rule.days.saturday)
-      text += 'S';
+      text += ' S ';
     else
       text += "  ";
     return text;
   }
 
   String _getTime() {
+  
     return DateFormat.jm().format(widget.rule.time);
     // or this one - not sure how cute that first one is gonna be
     // change the : if you want it to be something else, its smart it will get u
@@ -107,6 +108,6 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
     //*  that should delete it  e.g.  element == widget.rule
     //* if not use element.uid == widget.rule.uid
     //* dont worry I already generate the uids
-    dispose();
+      manager.updateListeners();
   }
 }
