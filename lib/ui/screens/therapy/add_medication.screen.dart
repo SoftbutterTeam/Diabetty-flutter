@@ -12,6 +12,7 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
+import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -689,44 +690,15 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     var size = MediaQuery.of(context).size;
 
     var height = MediaQuery.of(context).size.height;
-    List<Widget> widgets = (widget.manager.therapyForm.reminderRules == null ||
-            widget.manager.therapyForm.reminderRules.length == 0)
-        ? List()
-        : widget.manager.therapyForm.reminderRules
-            .map((e) => _buildReminderField())
-            .toList()
-            .cast();
-    widgets.add(CupertinoTextField(
-      onTap: () {
-        widget.manager.therapyForm.reminderRules
-            .add(ReminderRule(forceGenerateUID: true));
-        widget.manager.updateListeners();
-        //_showReminderModal(context);
-      },
-      decoration: BoxDecoration(
-        color: appWhite,
-        border: Border.all(
-            color: Colors.black54, width: 0.1, style: BorderStyle.solid),
-        borderRadius: BorderRadius.circular(0),
-      ),
-      prefix: Container(
-        padding: EdgeInsets.only(left: 18),
-        child: Icon(
-          CupertinoIcons.add_circled_solid,
-          color: Colors.green,
-          size: 23,
-        ),
-      ),
-      placeholder: 'Add Reminder',
-      readOnly: true,
-      maxLines: 1,
-      maxLength: 30,
-      padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
-      placeholderStyle: TextStyle(
-        fontSize: textSizeLargeMedium - 3,
-        color: Colors.grey[700],
-      ),
-    ));
+    List<Widget> reminderRulesList =
+        (widget.manager.therapyForm.reminderRules == null ||
+                widget.manager.therapyForm.reminderRules.length == 0)
+            ? List()
+            : widget.manager.therapyForm.reminderRules
+                .map((e) => ReminderRuleField(textstyle: textstyle, rule: e))
+                .toList()
+                .cast()
+          ..add(_buildAddReminderField());
     return Scaffold(
       appBar: _buildSecondScreenHeader(),
       body: SingleChildScrollView(
@@ -793,19 +765,19 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
                             ],
                           ),
                         ),
-                        if (widgets.length > 0)
-                          (widgets.length < 20)
+                        if (reminderRulesList.length > 0)
+                          (reminderRulesList.length < 20)
                               ? Visibility(
                                   visible: _isAsPlanned,
                                   child: ColumnBuilder(
-                                    itemCount: widgets.length,
+                                    itemCount: reminderRulesList.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return widgets[index];
+                                      return reminderRulesList[index];
                                     },
                                   ),
                                 )
-                              : _buildListViewRep(context, widgets),
+                              : _buildListViewRep(context, reminderRulesList),
                       ],
                     ),
                   ),
@@ -821,35 +793,6 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
           ),
         ),
       ),
-    );
-  }
-
-  CupertinoTextField _buildReminderField() {
-    return CupertinoTextField(
-      decoration: BoxDecoration(
-        color: appWhite,
-        border: Border.all(
-            color: Colors.black54, width: 0.1, style: BorderStyle.solid),
-        borderRadius: BorderRadius.circular(0),
-      ),
-      prefix: Container(
-        padding: EdgeInsets.only(left: 18),
-        child: Icon(
-          CupertinoIcons.minus_circled,
-          color: Colors.red,
-          size: 23,
-        ),
-      ),
-      suffix: Container(
-          padding: EdgeInsets.only(right: 15),
-          child: Text("01:00 AM", style: textstyle)),
-      placeholder: 'M  T  W  T  F  S  S',
-      readOnly: true,
-      maxLines: 1,
-      maxLength: 30,
-      padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
-      placeholderStyle: textstyle,
-      style: textstyle,
     );
   }
 

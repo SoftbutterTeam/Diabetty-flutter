@@ -115,7 +115,7 @@ class ReminderRule {
   String uid;
   Days days;
   double dose;
-  String time;
+  DateTime time;
   ReminderRule(
       {this.uid,
       this.days,
@@ -153,7 +153,6 @@ class ReminderRule {
     this.days = days;
 
     this.dose = (rng.nextDouble() * 5);
-    this.time = (rng.nextInt(1000000).toString());
   }
 }
 
