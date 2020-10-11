@@ -63,33 +63,33 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
   String _getReminderRuleDaysText() {
     String text = "";
     if (widget.rule.days.monday)
-      text += ' M ';
+      text += 'M ';
     else
-      text += "  ";
+      text += "     ";
     if (widget.rule.days.tuesday)
-      text += ' T ';
+      text += 'T ';
     else
-      text += "  ";
+      text += "     ";
     if (widget.rule.days.wednesday)
-      text += ' W ';
+      text += 'W ';
     else
-      text += "  ";
+      text += "     ";
     if (widget.rule.days.thursday)
-      text += ' T ';
+      text += 'T ';
     else
-      text += "  ";
+      text += "     ";
     if (widget.rule.days.friday)
-      text += ' F ';
+      text += 'F ';
     else
-      text += "  ";
+      text += "     ";
     if (widget.rule.days.saturday)
-      text += ' S ';
+      text += 'S ';
     else
-      text += "  ";
+      text += "     ";
     if (widget.rule.days.saturday)
-      text += ' S ';
+      text += 'S ';
     else
-      text += "  ";
+      text += "     ";
     return text;
   }
 
