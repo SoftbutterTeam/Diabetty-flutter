@@ -4,6 +4,7 @@ import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
+import "package:diabetty/ui/screens/therapy/extensions/datetime_extension.dart";
 
 class TherapyManager extends ChangeNotifier {
   TherapyManager({@required this.appContext});
@@ -75,6 +76,9 @@ class AddTherapyForm {
   List<ReminderRule> reminderRules = List();
   AlarmSettings settings;
   int stock;
+  DateTime startDate;
+  DateTime endDate;
+  Duration window;
 
   AddTherapyForm(
       {this.name,
@@ -85,7 +89,13 @@ class AddTherapyForm {
       this.minRest,
       this.mode,
       this.settings,
-      this.stock});
+      this.stock,
+      this.startDate,
+      this.endDate,
+      this.window,
+      this.reminderRules}) {
+    this.reminderRules = this.reminderRules ?? List();
+  }
 
   Therapy toTherapy() {
     return Therapy(
@@ -93,15 +103,25 @@ class AddTherapyForm {
         stock: this.stock,
         name: this.name,
         medicationInfo: MedicationInfo(
-            appearance: this.apperanceIndex,
-            intakeAdvice: List<String>()..add(this.intakeAdvice),
-            name: this.name,
-            strength: this.strength,
-            unit: this.units,
-            restDuration: this.minRest),
-        schedule: Schedule(reminders: this.reminderRules));
-  }
-
+          appearance: this.apperanceIndex,
+          intakeAdvice: List<String>()..add(this.intakeAdvice),
+          name: this.name,
+          strength: this.strength,
+          unit: this.units,
+          restDuration: this.minRest,
+        ),
+        schedule: (mode == 'planned')
+            ? Schedule(
+                reminders: this.reminderRules,
+                startDate: this.startDate ?? DateTime.now(),
+                endDate: (this.endDate == null ||
+                        DateTime(this.endDate.year, this.endDate.month,
+                                this.endDate.day)
+                            .isSameDayAs(this.startDate ?? DateTime.now()))
+                    ? null
+                    : this.endDate)
+            : null);
+  }                                
   //TODO settings
   //TODO intake advice should be a list
 }

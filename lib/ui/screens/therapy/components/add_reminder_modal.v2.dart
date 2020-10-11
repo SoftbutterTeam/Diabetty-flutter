@@ -260,7 +260,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   }
 
   _handleSubmit() {
-    if (dosageController.text.isEmpty || timeString == 'Time') {
+    if (dosageController.text.isEmpty || timeString == 'Time' || (monday && tuesday && wednesday && thursday && friday && saturday && sunday == false)) {
       print('pls fill it out dumbnuts');
     } else {
       monday ? reminder.days.monday = true : reminder.days.monday = false;
@@ -276,7 +276,6 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
       reminder.dose = doseStringToDouble;
       print(reminder.dose);
       print(reminder.time);
-      print(reminder.window);
       print(dosageController.text);
       print(reminder.days.monday);
       print(reminder.days.tuesday);
@@ -287,7 +286,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
       print(reminder.days.sunday);
       final TherapyManager manager =
           Provider.of<TherapyManager>(context, listen: false);
-      manager.therapyForm = AddTherapyForm();
+
       manager.therapyForm.reminderRules.add(reminder);
       manager.updateListeners();
       print(manager.therapyForm.reminderRules.length);

@@ -11,6 +11,7 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
+import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -19,11 +20,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:like_button/like_button.dart';
+import "package:diabetty/ui/screens/therapy/extensions/string_extension.dart";
 
-import 'components/StrengthTextField.dart';
-import 'components/add_reminder_modal.v2.dart';
-import 'components/topbar2.dart';
-import 'components/date_range_picker.widget.dart' as DateRangePicker;
+import 'package:diabetty/ui/screens/therapy/components/StrengthTextField.dart';
+import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
+import 'package:diabetty/ui/screens/therapy/components/topbar2.dart';
+import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
+    as DateRangePicker;
 
 const List<String> intakeAdvice = const <String>[
   "Before Meal",
@@ -35,10 +38,10 @@ const List<String> intakeAdvice = const <String>[
 const List<String> units = const <String>[
   "none",
   "units",
-  "mg",
-  "mL",
-  "ug",
-  "mm",
+  "Pills",
+  "Tabs",
+  "Injection",
+  "Poweder (That Cokey stuff yeh)",
 ];
 
 const List<String> modeOptions = const <String>[
@@ -90,11 +93,11 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   var minRest = "none";
   var minRestHeart = false;
   var window = "0:20";
-  var windowHeart = false;
+  var windowHeart = true;
   var mode;
-  var modeHeart = false;
-  var startEndDateString = "none";
-  var startEndDateStringHeart = false;
+  var modeHeart = true;
+  var startEndDateString = "From Today";
+  var startEndDateStringHeart = true;
   int _selectedIntakeIndex = 0;
   int _selectedModeIndex = 0;
   int _selectedAppearanceIndex = 0;
@@ -105,7 +108,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   var step = 1;
   bool _btnEnabled;
   bool _isVisible = false;
-  bool _isAsPlanned = false;
+  bool _isAsPlanned = true;
 
   @override
   void initState() {
@@ -113,13 +116,13 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     strengthController = TextEditingController();
     reminder = ReminderRule();
     _btnEnabled = false;
-    mode = 'As Planned';
+    mode = 'planned';
     medicationNameController = TextEditingController();
     windowTimer = Duration(minutes: 20);
     initialtimer = Duration();
   }
 
-  _saveData() {
+  _saveAsPlannedData() {
     therapyForm.name = medicationNameController.text;
     therapyForm.minRest = initialtimer;
     var tempStrength;
@@ -132,13 +135,13 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
         : strengthInt = int.parse(tempStrength);
     therapyForm.strength = strengthInt;
     (unit == "none") ? therapyForm.units = null : therapyForm.units = unit;
-    (mode == "none") ? therapyForm.mode = null : therapyForm.mode = mode;
+    therapyForm.mode = (mode == "none") ? null : mode.toString().toLowerCase();
     (intake == "none")
         ? therapyForm.intakeAdvice = null
         : therapyForm.intakeAdvice = intake;
     therapyForm.apperanceIndex = _selectedAppearanceIndex;
-    var windowTimerString = windowTimer.toString();
-    reminder.window = windowTimerString;
+    
+    therapyForm.window = windowTimer;
     print(therapyForm.name);
     print(therapyForm.minRest);
     print(therapyForm.strength);
@@ -146,7 +149,38 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     print(therapyForm.mode);
     print(therapyForm.intakeAdvice);
     print(therapyForm.apperanceIndex);
-    print(reminder.window);
+    print(therapyForm.window);
+  }
+
+  _saveAsNeededData() {
+    therapyForm.name = medicationNameController.text;
+    therapyForm.minRest = initialtimer;
+    var tempStrength;
+    var strengthInt;
+    (strengthController.text.isEmpty)
+        ? therapyForm.strength = null
+        : tempStrength = strengthController.text;
+    (strengthController.text.isEmpty)
+        ? therapyForm.strength = null
+        : strengthInt = int.parse(tempStrength);
+    therapyForm.strength = strengthInt;
+    (unit == "none") ? therapyForm.units = null : therapyForm.units = unit;
+    therapyForm.mode = (mode == "none") ? null : mode.toString().toLowerCase();
+    (intake == "none")
+        ? therapyForm.intakeAdvice = null
+        : therapyForm.intakeAdvice = intake;
+    therapyForm.apperanceIndex = _selectedAppearanceIndex;
+    print(therapyForm.name);
+    print(therapyForm.minRest);
+    print(therapyForm.strength);
+    print(therapyForm.units);
+    print(therapyForm.mode);
+    print(therapyForm.intakeAdvice);
+    print(therapyForm.apperanceIndex);
+  }
+
+  _saveData() {
+    (mode == 'planned') ? _saveAsPlannedData() : _saveAsNeededData();
   }
 
   bool _firstStepValidation() {
@@ -199,10 +233,10 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     });
     (mode == "As Planned")
         ? setState(() {
-            _isAsPlanned = false;
+            _isAsPlanned = true;
           })
         : setState(() {
-            _isAsPlanned = true;
+            _isAsPlanned = false;
           });
   }
 
@@ -481,6 +515,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   }
 
   Scaffold _firstScreen() {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -490,7 +525,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
         child: IntrinsicHeight(
           child: SizedBox(
             child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: 70),
+              constraints: BoxConstraints(minHeight: size.height * 0.7),
               child: _buildFirstScreenBody(),
             ),
           ),
@@ -523,6 +558,10 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
         child: text('Med Info'),
       ),
       _buildMedicationNameField(),
+      AnimatedOpacity(
+          opacity: _isVisible ? 1 : 0,
+          duration: Duration(milliseconds: 900),
+          child: _buildUnitField()),
       AnimatedOpacity(
           opacity: _isVisible ? 1 : 0,
           duration: Duration(milliseconds: 900),
@@ -589,9 +628,21 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
       controller: strengthController,
       icon: strengthAppearanceHeartIcon(heart: unitHeart),
       icon2: strengthAppearanceHeartIcon2(heart: unitHeart),
-      onTap: () => _showUnitPopUp(),
+      onTap: () {
+        _showUnitPopUp();
+      },
       placeholder: unit,
       placeholderText: 'Set Strength',
+    );
+  }
+
+  CustomTextField _buildUnitField() {
+    return CustomTextField(
+      icon: icon(heart: unitHeart),
+      icon2: icon2(heart: unitHeart),
+      onTap: () => _showUnitPopUp(),
+      placeholder: unit,
+      placeholderText: 'Unit',
     );
   }
 
@@ -633,7 +684,10 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   }
 
   Scaffold _secondScreen() {
-    print(widget.manager.therapyForm.reminderRules.length);
+    // print(widget.manager.therapyForm.reminderRules.length);
+
+    var size = MediaQuery.of(context).size;
+
     var height = MediaQuery.of(context).size.height;
     List<Widget> widgets = (widget.manager.therapyForm.reminderRules == null ||
             widget.manager.therapyForm.reminderRules.length == 0)
@@ -675,84 +729,97 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     ));
     return Scaffold(
       appBar: _buildSecondScreenHeader(),
-      body: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 20,
-                    ),
-                    child: _buildMedicationCard(),
+      body: SingleChildScrollView(
+        child: IntrinsicHeight(
+          child: SizedBox(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: size.height * 0.9),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                _buildModeField(),
-                Visibility(visible: _isAsPlanned, child: _buildWindowField()),
-                Visibility(
-                    visible: _isAsPlanned, child: _buildStartEndDateField()),
-                Visibility(
-                  visible: _isAsPlanned,
-                  child: Column(
-                    children: [
-                      // _buildReminderField(),
-                      // CupertinoTextField(
-                      //   onTap: () {
-                      //     _showReminderModal(context);
-                      //   },
-                      //   decoration: BoxDecoration(
-                      //     color: appWhite,
-                      //     border: Border.all(
-                      //         color: Colors.black54,
-                      //         width: 0.1,
-                      //         style: BorderStyle.solid),
-                      //     borderRadius: BorderRadius.circular(0),
-                      //   ),
-                      //   prefix: Container(
-                      //     padding: EdgeInsets.only(left: 18),
-                      //     child: Icon(
-                      //       CupertinoIcons.minus_circled,
-                      //       color: Colors.red,
-                      //       size: 23,
-                      //     ),
-                      //   ),
-                      //   placeholder: 'M      W  T  F  S  S',
-                      //   readOnly: true,
-                      //   maxLines: 1,
-                      //   maxLength: 30,
-                      //   padding: EdgeInsets.only(
-                      //       left: 18, top: 9, bottom: 9, right: 10),
-                      //   placeholderStyle: textstyle,
-                      // ),
-                      _buildAddReminderField(),
-                    ],
-                  ),
-                ),
-                if (widgets.length > 0)
-                  (widgets.length < 7)
-                      ? Visibility(
-                          visible: _isAsPlanned,
-                          child: ColumnBuilder(
-                            itemCount: widgets.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return widgets[index];
-                            },
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 20,
+                            ),
+                            child: _buildMedicationCard(),
                           ),
-                        )
-                      : _buildListViewRep(context, widgets),
-              ],
+                        ),
+                        _buildModeField(),
+                        Visibility(
+                            visible: _isAsPlanned, child: _buildWindowField()),
+                        Visibility(
+                            visible: _isAsPlanned,
+                            child: _buildStartEndDateField()),
+                        Visibility(
+                          visible: _isAsPlanned,
+                          child: Column(
+                            children: [
+                              // _buildReminderField(),
+                              // CupertinoTextField(
+                              //   onTap: () {
+                              //     _showReminderModal(context);
+                              //   },
+                              //   decoration: BoxDecoration(
+                              //     color: appWhite,
+                              //     border: Border.all(
+                              //         color: Colors.black54,
+                              //         width: 0.1,
+                              //         style: BorderStyle.solid),
+                              //     borderRadius: BorderRadius.circular(0),
+                              //   ),
+                              //   prefix: Container(
+                              //     padding: EdgeInsets.only(left: 18),
+                              //     child: Icon(
+                              //       CupertinoIcons.minus_circled,
+                              //       color: Colors.red,
+                              //       size: 23,
+                              //     ),
+                              //   ),
+                              //   placeholder: 'M      W  T  F  S  S',
+                              //   readOnly: true,
+                              //   maxLines: 1,
+                              //   maxLength: 30,
+                              //   padding: EdgeInsets.only(
+                              //       left: 18, top: 9, bottom: 9, right: 10),
+                              //   placeholderStyle: textstyle,
+                              // ),
+                              _buildAddReminderField(),
+                            ],
+                          ),
+                        ),
+                        if (widgets.length > 0)
+                          (widgets.length < 20)
+                              ? Visibility(
+                                  visible: _isAsPlanned,
+                                  child: ColumnBuilder(
+                                    itemCount: widgets.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return widgets[index];
+                                    },
+                                  ),
+                                )
+                              : _buildListViewRep(context, widgets),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                      child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          alignment: FractionalOffset.bottomCenter,
+                          child: _buildStockField())),
+                  SizedBox(height: height * 0.08),
+                ],
+              ),
             ),
           ),
-          Expanded(
-              child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: _buildStockField())),
-          SizedBox(height: height * 0.08),
-        ],
+        ),
       ),
     );
   }
@@ -830,12 +897,30 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     );
   }
 
+  toggleMode() {
+    (mode == "needed")
+        ? setState(() {
+            mode = "planned";
+            modeHeart = true;
+          })
+        : setState(() {
+            mode = "needed";
+          });
+    (mode == "planned")
+        ? setState(() {
+            _isAsPlanned = true;
+          })
+        : setState(() {
+            _isAsPlanned = false;
+          });
+  }
+
   CustomTextField _buildModeField() {
     return CustomTextField(
       icon: icon(heart: modeHeart),
       icon2: icon2(heart: modeHeart),
-      onTap: () => _showMode(),
-      placeholder: mode,
+      onTap: () => toggleMode(),
+      placeholder: 'As ' + mode.toString().capitalize(),
       placeholderText: 'Mode',
     );
   }
@@ -903,8 +988,17 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
       //   color: Colors.black,
       //   size: 23,
       // ),
-      onTap: () {},
+      onTap: () {
+        _showStockDialog();
+      },
       placeholderText: 'Stock',
+    );
+  }
+
+  _showStockDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => StockDialog()
     );
   }
 

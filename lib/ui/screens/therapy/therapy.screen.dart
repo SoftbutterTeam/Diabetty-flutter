@@ -1,9 +1,14 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/background.dart';
 import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../routes.dart';
 
 class TherapyScreenBuilder extends StatelessWidget {
   @override
@@ -99,7 +104,36 @@ class _TherapyScreenState extends State<TherapyScreen> {
     return Background(
       onPressed2: () {},
       onPressed: () {
-        _showExpandedTherapy(context);
+        // _showExpandedTherapy(context);
+        final actionsheet = CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              child:
+                  text("Medication", fontSize: 18.0, textColor: Colors.indigo),
+              onPressed: () {
+                final TherapyManager therapyManager =
+                    Provider.of<TherapyManager>(context, listen: false);
+                therapyManager.resetForm();
+
+                Navigator.pushReplacementNamed(context, addmedication);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child:
+                  text("Other Types", fontSize: 18.0, textColor: Colors.indigo),
+              onPressed: () {},
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: Text("Cancel",
+                style: TextStyle(color: CupertinoColors.destructiveRed)),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        );
+        showCupertinoModalPopup(
+            context: context, builder: (context) => actionsheet);
       },
       child: Container(
         width: size.width,

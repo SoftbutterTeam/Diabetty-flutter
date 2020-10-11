@@ -56,9 +56,15 @@ class Therapy {
 
 class Schedule {
   List<ReminderRule> reminders;
+  Duration window;
+  DateTime startDate;
+  DateTime endDate;
 
   Schedule({
     this.reminders,
+    this.window,
+    this.startDate,
+    this.endDate,
   });
 
   loadFromJson(Map<String, dynamic> json) {
@@ -110,13 +116,11 @@ class ReminderRule {
   Days days;
   double dose;
   String time;
-  String window;
   ReminderRule(
       {this.uid,
       this.days,
       this.dose,
       this.time,
-      this.window,
       forceGenerateUID = false}) {
     this.uid = this.uid ?? generateUID();
     if (forceGenerateUID) this.uid = generateUID();
@@ -134,14 +138,12 @@ class ReminderRule {
     this.days = days;
     this.dose = json['dose'];
     this.time = json['time'];
-    this.window = json['window'];
   }
 
   Map<String, dynamic> toJson() => {
         'days': this.days.toJson(),
         'dose': this.dose,
         'time': this.time,
-        'window': this.window,
       };
 
   dummyData() {
@@ -152,7 +154,6 @@ class ReminderRule {
 
     this.dose = (rng.nextDouble() * 5);
     this.time = (rng.nextInt(1000000).toString());
-    this.window = (rng.nextInt(1000000).toString());
   }
 }
 
