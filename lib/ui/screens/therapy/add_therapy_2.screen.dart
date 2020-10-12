@@ -63,13 +63,27 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   Column _buildBody(BuildContext context) {
     var formWidgets = <Widget>[
-      Padding(
-        padding: EdgeInsets.only(
-          bottom: 20,
-        ),
-        child: text('Med Info'),
-      ),
-      _buildMedicationNameField(),
+      _buildModeField(),
+      _buildWindowField(),
+      _buildStartEndDateField(),
+      // Column(
+      //   children: [
+      //     _buildAddReminderField(),
+      //   ],
+      // ),
+      // if (reminderRulesList.length > 0)
+      //                     (reminderRulesList.length < 20)
+      //                         ? Visibility(
+      //                             visible: _isAsPlanned,
+      //                             child: ColumnBuilder(
+      //                               itemCount: reminderRulesList.length,
+      //                               itemBuilder:
+      //                                   (BuildContext context, int index) {
+      //                                 return reminderRulesList[index];
+      //                               },
+      //                             ),
+      //                           )
+      //                         : _buildListViewRep(context, reminderRulesList),
     ];
 
     return Column(children: <Widget>[
@@ -84,9 +98,29 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     ]);
   }
 
-  _buildMedicationNameField() {
-    return(
-      Text('hi')
-    );
-  }
+  _buildModeField() {}
+
+  _buildWindowField() {}
+
+  _buildStartEndDateField() {}
 }
+
+//  ,
+//                   Expanded(
+//                       child: Container(
+//                           padding: EdgeInsets.symmetric(vertical: 10),
+//                           alignment: FractionalOffset.bottomCenter,
+//                           child: Column(
+//                             mainAxisAlignment: MainAxisAlignment.end,
+//                             children: [
+//                               _buildAlarmSettingsField(),
+//                               _buildStockField(),
+//                             ],
+//                           ))),
+//                   SizedBox(height: height * 0.08),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
