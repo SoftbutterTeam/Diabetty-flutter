@@ -172,7 +172,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildMinimumRestField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _stackedHeartIcons(therapyForm.minRest != null),
       onTap: () => showMinRestPopup(context),
       placeholder: therapyForm.minRest == null
           ? 'none'
