@@ -1,13 +1,14 @@
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/screens/therapy/components/MinRestPopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
+import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 @optionalTypeArgs
 mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
-  get therapyForm => therapyForm;
+  AddTherapyForm get therapyForm => therapyForm;
 
   void showUnitPopUp(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -124,7 +125,9 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             mode: CupertinoTimerPickerMode.hm,
             minuteInterval: 5,
             initialTimerDuration: therapyForm.window,
-            onTimerDurationChanged: (Duration changedtimer) {},
+            onTimerDurationChanged: (Duration changedtimer) {
+              therapyForm.minRest = changedtimer;
+            },
           ),
         );
       },

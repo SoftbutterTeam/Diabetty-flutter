@@ -87,7 +87,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
         _buildDividerHeader(),
         _buildIntakeAdviceField(),
         _buildMinimumRestField(),
-      ].map((e) => animatedOpacity(e) as Widget));
+      ].map((e) => animatedOpacity(e, therapyForm.isNameValid()) as Widget));
 
     return Column(children: <Widget>[
       SizedBox(
@@ -101,9 +101,9 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     ]);
   }
 
-  AnimatedOpacity animatedOpacity(Widget e) {
+  AnimatedOpacity animatedOpacity(Widget e, bool cond) {
     return AnimatedOpacity(
-        opacity: true ? 1 : 0, duration: Duration(milliseconds: 900), child: e);
+        opacity: cond ? 1 : 0, duration: Duration(milliseconds: 900), child: e);
   }
 
   Container _buildDividerHeader() {
@@ -120,7 +120,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   InputTextField _buildMedicationNameField() {
     return InputTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _stackedHeartIcons(therapyForm.isNameValid()),
       controller: medicationNameController,
       placeholder: 'Medication Name...',
       onChanged: (val) {},
@@ -174,7 +174,9 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showMinRestPopup(context),
-      placeholder: prettyDuration(therapyForm.window),
+      placeholder: therapyForm.minRest == null
+          ? 'none'
+          : prettyDuration(therapyForm.minRest),
       placeholderText: 'Minimum Rest Duration',
     );
   }

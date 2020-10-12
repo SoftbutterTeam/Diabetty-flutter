@@ -44,6 +44,7 @@ class AddTherapyForm {
     this.reminderRules ??= List();
     this.window ??= Duration(minutes: 20);
     this.name ??= '';
+
     this.intakeAdviceIndex ??= 0;
     this.startDate ??= DateTime.now();
     this.unitsIndex ??= 0;
