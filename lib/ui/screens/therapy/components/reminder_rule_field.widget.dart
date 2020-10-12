@@ -1,9 +1,6 @@
-import 'dart:ui';
-
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/constants/colors.dart';
-import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +10,10 @@ class ReminderRuleField extends StatefulWidget {
   const ReminderRuleField({
     Key key,
     this.rule,
+    @required this.textstyle,
   }) : super(key: key);
 
+  final TextStyle textstyle;
   final ReminderRule rule;
 
   @override
@@ -27,15 +26,6 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
     super.dispose();
   }
 
-  var textstyle = TextStyle(
-    letterSpacing: 1.0,
-    fontFeatures: [
-      FontFeature.proportionalFigures(),
-    ],
-    fontSize: textSizeLargeMedium - 3,
-    color: Colors.grey[700],
-  );
-
   @override
   Widget build(BuildContext context) {
     TherapyManager manager = Provider.of<TherapyManager>(context);
@@ -46,63 +36,65 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
             color: Colors.black54, width: 0.1, style: BorderStyle.solid),
         borderRadius: BorderRadius.circular(0),
       ),
-      prefix: GestureDetector(
-          onTap: () => _deleteRule(manager),
-          child: Container(
-            padding: EdgeInsets.only(left: 18),
-            child: Icon(
-              CupertinoIcons.minus_circled,
-              color: Colors.red,
-              size: 23,
-            ),
-          )),
+      prefix: Container(
+        padding: EdgeInsets.only(left: 18),
+        child: FlatButton(
+          child: Icon(
+            CupertinoIcons.minus_circled,
+            color: Colors.red,
+            size: 23,
+          ),
+          onPressed: () => _deleteRule(manager),
+        ),
+      ),
       suffix: Container(
           padding: EdgeInsets.only(right: 15),
-          child: Text(_getTime(), style: textstyle)),
+          child: Text(_getTime(), style: widget.textstyle)),
       placeholder: _getReminderRuleDaysText(),
       readOnly: true,
       maxLines: 1,
       maxLength: 30,
       padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
-      placeholderStyle: textstyle,
+      placeholderStyle: widget.textstyle,
+      style: widget.textstyle,
     );
   }
 
   String _getReminderRuleDaysText() {
-    String text = '';
-    String emptyspace = '-  '; // or the 5spaces '     ';
+    String text = "";
     if (widget.rule.days.monday)
-      text += 'M  ';
+      text += 'M ';
     else
-      text += emptyspace;
+      text += "     ";
     if (widget.rule.days.tuesday)
-      text += 'T  ';
+      text += 'T ';
     else
-      text += emptyspace;
+      text += "     ";
     if (widget.rule.days.wednesday)
-      text += 'W  ';
+      text += 'W ';
     else
-      text += emptyspace;
+      text += "     ";
     if (widget.rule.days.thursday)
-      text += 'T  ';
+      text += 'T ';
     else
-      text += emptyspace;
+      text += "     ";
     if (widget.rule.days.friday)
-      text += 'F  ';
+      text += 'F ';
     else
-      text += emptyspace;
+      text += "     ";
     if (widget.rule.days.saturday)
-      text += 'S  ';
+      text += 'S ';
     else
-      text += emptyspace;
+      text += "     ";
     if (widget.rule.days.saturday)
-      text += 'S  ';
+      text += 'S ';
     else
-      text += emptyspace;
+      text += "     ";
     return text;
   }
 
   String _getTime() {
+  
     return DateFormat.jm().format(widget.rule.time);
     // or this one - not sure how cute that first one is gonna be
     // change the : if you want it to be something else, its smart it will get u
@@ -116,6 +108,6 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
     //*  that should delete it  e.g.  element == widget.rule
     //* if not use element.uid == widget.rule.uid
     //* dont worry I already generate the uids
-    manager.updateListeners();
+      manager.updateListeners();
   }
 }

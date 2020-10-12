@@ -22,24 +22,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Container(
-      height: size.height * 0.11,
-      color: Colors.transparent,
-      child: Stack(
-        children: <Widget>[
-          _buildLayoutButton(context),
-          _buildFilterButton(context),
-          _buildDateWidget(context),
-        ],
-      ),
-    );
-  }
-
-  void _showDateSelectDropModal(BuildContext context, Widget child) async {
+  void _showDropModal(BuildContext context, Widget child) async {
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
 
@@ -79,7 +62,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
     return Center(
         child: FlatButton(
       onPressed: () {
-        _showDateSelectDropModal(context, null);
+        _showDropModal(context, null);
       },
       child: Center(
         child: Container(
@@ -152,6 +135,24 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
             alignment: Alignment.centerRight,
           ),
         ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+      height: size.height * 0.11,
+      color: Colors.transparent,
+      // padding: EdgeInsets.only(left: 15, right: 15),
+      child: Stack(
+        children: <Widget>[
+          _buildLayoutButton(context),
+          _buildFilterButton(context),
+          _buildDateWidget(context),
+        ],
       ),
     );
   }

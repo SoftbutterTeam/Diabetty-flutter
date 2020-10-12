@@ -114,7 +114,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
                 final TherapyManager therapyManager =
                     Provider.of<TherapyManager>(context, listen: false);
                 therapyManager.resetForm();
-                print('this far');
+
                 Navigator.pushReplacementNamed(context, addmedication);
               },
             ),

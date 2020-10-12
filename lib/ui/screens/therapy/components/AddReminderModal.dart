@@ -215,33 +215,32 @@ class _AddReminderModalState extends State<AddReminderModal> {
     if (dosageController.text.isEmpty || time == '00:00' || window == '00:00') {
       print('pls fill it out dumbnuts');
     } else {
-      monday ? reminder.days.monday = true : reminder.days.monday = false;
-      tuesday ? reminder.days.tuesday = true : reminder.days.tuesday = false;
-      wednesday
-          ? reminder.days.wednesday = true
-          : reminder.days.wednesday = false;
-      thursday ? reminder.days.thursday = true : reminder.days.thursday = false;
-      friday ? reminder.days.friday = true : reminder.days.friday = false;
-      saturday ? reminder.days.saturday = true : reminder.days.saturday = false;
-      sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
-      var doseStringToDouble = double.parse(dosageController.text);
-      reminder.dose = doseStringToDouble;
-      print(reminder.dose);
-      print(reminder.time);
-      print(dosageController.text);
-      print(reminder.days.monday);
-      print(reminder.days.tuesday);
-      print(reminder.days.wednesday);
-      print(reminder.days.thursday);
-      print(reminder.days.friday);
-      print(reminder.days.saturday);
-      print(reminder.days.sunday);
-      final TherapyManager manager =
-          Provider.of<TherapyManager>(context, listen: false);
-      manager.therapyForm.reminderRules.add(reminder);
-      manager.updateListeners();
-      print(manager.therapyForm.reminderRules.length);
-      Navigator.pop(context);
+    monday ? reminder.days.monday = true : reminder.days.monday = false;
+    tuesday ? reminder.days.tuesday = true : reminder.days.tuesday = false;
+    wednesday ? reminder.days.wednesday = true : reminder.days.wednesday = false;
+    thursday ? reminder.days.thursday = true : reminder.days.thursday = false;
+    friday ? reminder.days.friday = true : reminder.days.friday = false;
+    saturday ? reminder.days.saturday = true : reminder.days.saturday = false;
+    sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
+    var doseStringToDouble = double.parse(dosageController.text);
+    reminder.dose = doseStringToDouble;
+    print(reminder.dose);
+    print(reminder.time);
+    print(dosageController.text);
+    print(reminder.days.monday);
+    print(reminder.days.tuesday);
+    print(reminder.days.wednesday);
+    print(reminder.days.thursday);
+    print(reminder.days.friday);
+    print(reminder.days.saturday);
+    print(reminder.days.sunday);
+    final TherapyManager manager =
+        Provider.of<TherapyManager>(context, listen: false);
+    manager.therapyForm = AddTherapyForm();
+    manager.therapyForm.reminderRules.add(reminder);
+    manager.updateListeners();
+    print(manager.therapyForm.reminderRules.length);
+    Navigator.pop(context);
     }
   }
 

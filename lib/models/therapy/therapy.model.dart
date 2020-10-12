@@ -117,7 +117,11 @@ class ReminderRule {
   double dose;
   DateTime time;
   ReminderRule(
-      {this.uid, this.days, this.dose, this.time, forceGenerateUID = false}) {
+      {this.uid,
+      this.days,
+      this.dose,
+      this.time,
+      forceGenerateUID = false}) {
     this.uid = this.uid ?? generateUID();
     if (forceGenerateUID) this.uid = generateUID();
   }

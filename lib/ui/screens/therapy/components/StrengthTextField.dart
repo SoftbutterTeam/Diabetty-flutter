@@ -4,17 +4,19 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class StrengthTextField extends StatelessWidget {
   final controller;
-  final Stack stackIcons;
-
+  final AnimatedOpacity icon;
+  final AnimatedOpacity icon2;
   final Function onTap;
   var placeholder;
   final Function onSubmitted;
   final String placeholderText;
 
   StrengthTextField(
-      {this.stackIcons,
+      {this.icon,
+      this.icon2,
       this.onTap,
       this.placeholder,
       this.placeholderText,
@@ -35,8 +37,15 @@ class StrengthTextField extends StatelessWidget {
               color: Colors.black54, width: 0.1, style: BorderStyle.solid),
           borderRadius: BorderRadius.circular(0),
         ),
-        prefix:
-            Container(padding: EdgeInsets.only(left: 18), child: stackIcons),
+        prefix: Container(
+          padding: EdgeInsets.only(left: 18),
+          child: Stack(
+            children: [
+              icon,
+              icon2
+            ],
+          ),
+        ),
         suffix: GestureDetector(
           onTap: onTap,
           child: Container(
