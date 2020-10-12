@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:animator/animator.dart';
 
 class CustomTextField extends StatelessWidget {
-  final AnimatedOpacity icon;
-  final AnimatedOpacity icon2;
+  final Stack stackIcons;
+  final Widget singleIcon;
   final Function onTap;
   var placeholder;
   final Function onSubmitted;
@@ -15,8 +15,8 @@ class CustomTextField extends StatelessWidget {
   final bool showHeart;
 
   CustomTextField(
-      {this.icon,
-      this.icon2,
+      {this.stackIcons,
+      this.singleIcon,
       this.onTap,
       this.placeholder,
       this.placeholderText,
@@ -38,14 +38,8 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(0),
         ),
         prefix: Container(
-          padding: EdgeInsets.only(left: 18),
-          child: Stack(
-            children: [
-              icon,
-              icon2
-            ],
-          ),
-        ),
+            padding: EdgeInsets.only(left: 18),
+            child: stackIcons ?? singleIcon),
         suffix: Container(
           padding: EdgeInsets.only(right: 15),
           child: Row(

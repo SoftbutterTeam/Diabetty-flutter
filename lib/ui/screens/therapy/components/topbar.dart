@@ -44,7 +44,6 @@ class _TopBarState extends State<TopBar> {
       ),
       child: SafeArea(
         child: Container(
-
           padding: EdgeInsets.only(left: 15, right: 15),
           alignment: Alignment.center,
           child: Stack(

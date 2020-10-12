@@ -8,6 +8,7 @@ class InputTextField extends StatelessWidget {
   final String placeholder;
   final Function onSubmitted;
   final Function validator;
+  final Stack stackIcons;
   final ValueChanged<String> onChanged;
   final AnimatedOpacity icon;
   final AnimatedOpacity icon2;
@@ -15,6 +16,7 @@ class InputTextField extends StatelessWidget {
   InputTextField(
       {this.controller,
       this.placeholder,
+      this.stackIcons,
       this.onSubmitted,
       this.validator,
       this.onChanged,
@@ -38,12 +40,7 @@ class InputTextField extends StatelessWidget {
           ),
           prefix: Container(
             padding: EdgeInsets.only(left: 17),
-            child: Stack(
-            children: [
-              icon,
-              icon2
-            ],
-          ),
+            child: this.stackIcons,
           ),
           placeholder: placeholder,
           maxLines: 1,
