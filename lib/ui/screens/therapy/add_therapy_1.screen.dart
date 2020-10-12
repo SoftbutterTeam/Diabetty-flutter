@@ -17,11 +17,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AddTherapyScreenOne extends StatefulWidget {
-  const AddTherapyScreenOne({
-    Key key,
-    this.manager,
-  }) : super(key: key);
+  const AddTherapyScreenOne({Key key, this.manager, this.pageController, this.pageIndex})
+      : super(key: key);
   final TherapyManager manager;
+  final PageController pageController;
+  final int pageIndex;
 
   @override
   _AddTherapyScreenOneState createState() => _AddTherapyScreenOneState();
@@ -44,30 +44,35 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     print('yooooooooooooooo' + therapyForm.window.toString());
     var size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: _buildHeader(context),
-        ),
-        body: SingleChildScrollView(
-            child: IntrinsicHeight(
-                child: SizedBox(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: size.height * 0.7),
-            child: _buildBody(context),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: _buildHeader(context),
+      ),
+      body: SingleChildScrollView(
+        child: IntrinsicHeight(
+          child: SizedBox(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: size.height * 0.7),
+              child: _buildBody(context),
+            ),
           ),
-        ))));
+        ),
+      ),
+    );
   }
 
   TopBar _buildHeader(BuildContext context) {
     return TopBar(
-      btnEnabled: false,
+      btnEnabled: (therapyForm.name.isEmpty) ? false : true,
       centerText: 'Add Medication',
       leftButtonText: 'Cancel',
       rightButtonText: 'Next',
       onLeftTap: () {
         Navigator.pop(context);
       },
-      onRightTap: () {},
+      onRightTap: () {
+        widget.pageController.animateToPage(2, duration: Duration(milliseconds: 500), curve: Curves.bounceOut);
+      },
     );
   }
 
@@ -135,7 +140,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showUnitPopUp(context),
-      placeholder: '',
+      placeholder: unitTypes[therapyForm.unitsIndex],
       placeholderText: 'Unit',
     );
   }
@@ -145,9 +150,9 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       controller: strengthController,
       stackIcons: _stackedHeartIcons(true),
       onTap: () {
-        if (!therapyForm.isNameValid()) showUnitPopUp(context);
+        showStrengthUnitPopUp(context, strengthController);
       },
-      placeholder: strengthUnits[therapyForm.unitsIndex],
+      placeholder: strengthUnits[therapyForm.strengthUnitsIndex],
       placeholderText: 'Set Strength',
     );
   }
@@ -167,7 +172,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildIntakeAdviceField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _stackedHeartIcons(therapyForm.isIntakeAdviceValid()),
       onTap: () => showIntakePopUp(),
       placeholder: intakeAdvice[therapyForm.intakeAdviceIndex],
       placeholderText: 'Intake Advice',

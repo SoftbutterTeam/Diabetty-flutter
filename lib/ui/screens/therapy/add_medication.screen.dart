@@ -12,6 +12,7 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/therapy/add_therapy_1.screen.dart';
+import 'package:diabetty/ui/screens/therapy/add_therapy_2.screen.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
@@ -94,10 +95,14 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     return PageView(
       children: [
         AddTherapyScreenOne(
+          pageController: pageController,
+          pageIndex: pageIndex,
           manager: widget.manager,
         ),
-        AddTherapyScreenOne(
+        AddTherapyScreenTwo(
           manager: widget.manager,
+          pageIndex: pageIndex,
+          pageController: pageController,
         )
       ],
       physics: NeverScrollableScrollPhysics(),

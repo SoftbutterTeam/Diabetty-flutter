@@ -86,6 +86,9 @@ class AddTherapyForm {
   bool isStrengthUnitsValid() =>
       this.strengthUnitsIndex != null && this.strengthUnitsIndex >= 0;
 
+  bool isIntakeAdviceValid() =>
+      this.intakeAdviceIndex != intakeAdviceIndex;
+
   bool isAllFormValid() =>
       isNameValid() && isStrengthValid() && isStrengthUnitsValid();
 }
