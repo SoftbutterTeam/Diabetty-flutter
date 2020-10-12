@@ -123,7 +123,11 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       stackIcons: _stackedHeartIcons(therapyForm.isNameValid()),
       controller: medicationNameController,
       placeholder: 'Medication Name...',
-      onChanged: (val) {},
+      onChanged: (val) {
+        therapyForm.name = val;
+        setState(() {});
+        // or widget.manager.updateListeners();
+      },
     );
   }
 
