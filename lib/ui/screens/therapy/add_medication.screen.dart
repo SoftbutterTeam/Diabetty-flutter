@@ -10,6 +10,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
+import 'package:diabetty/ui/screens/therapy/components/alarm_settings_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
@@ -43,6 +44,15 @@ const List<String> units = const <String>[
   "Tabs",
   "Injection",
   "Poweder (That Cokey stuff yeh)",
+];
+
+const List<String> strengthUnitList = const <String>[
+  "none",
+  "mm",
+  "ug",
+  "ml",
+  "cm-3",
+  "g",
 ];
 
 const List<String> modeOptions = const <String>[
@@ -87,6 +97,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   var medicationNameHeart = false;
   var unit = "none";
   var unitHeart = false;
+  var strengthUnit = "none";
+  var strengthUnitHeart = false;
   var appearance = appearanceIcon[0];
   var appearanceHeart = false;
   var intake = "none";
@@ -103,6 +115,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   int _selectedModeIndex = 0;
   int _selectedAppearanceIndex = 0;
   int _selectedUnitIndex = 0;
+  int _selectedStrengthUnitIndex = 0;
   Duration initialtimer;
   Duration windowTimer = Duration();
   var timeFormatter = new DateFormat('hh:mm');
@@ -110,6 +123,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   bool _btnEnabled;
   bool _isVisible = false;
   bool _isAsPlanned = true;
+  DateTime startDate;
+  DateTime endDate;
 
   @override
   void initState() {
@@ -121,6 +136,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     medicationNameController = TextEditingController();
     windowTimer = Duration(minutes: 20);
     initialtimer = Duration();
+    startDate = DateTime.now();
+    endDate = DateTime.now();
   }
 
   _saveAsPlannedData() {
@@ -141,8 +158,10 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
         ? therapyForm.intakeAdvice = null
         : therapyForm.intakeAdvice = intake;
     therapyForm.apperanceIndex = _selectedAppearanceIndex;
-    
+
     therapyForm.window = windowTimer;
+    therapyForm.startDate = startDate;
+    therapyForm.endDate = endDate;
     print(therapyForm.name);
     print(therapyForm.minRest);
     print(therapyForm.strength);
@@ -151,6 +170,8 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     print(therapyForm.intakeAdvice);
     print(therapyForm.apperanceIndex);
     print(therapyForm.window);
+    print(therapyForm.startDate);
+    print(therapyForm.endDate);
   }
 
   _saveAsNeededData() {
@@ -244,15 +265,9 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   _onPressedUnitPopUp() {
     Navigator.pop(context);
     print(units[_selectedUnitIndex]);
-    (strengthController.text.isEmpty)
-        ? setState(() {
-            strengthController = TextEditingController(text: '100');
-            unit = units[_selectedUnitIndex];
-          })
-        : setState(() {
-            unit = units[_selectedUnitIndex];
-          });
-    (unit == 'none') ? strengthController.clear() : print('heyhey');
+    setState(() {
+      unit = units[_selectedUnitIndex];
+    });
   }
 
   _onPressedIntakePopUp() {
@@ -261,6 +276,60 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
     setState(() {
       intake = intakeAdvice[_selectedIntakeIndex];
     });
+  }
+
+  _onPressedStrengthUnitPopUp() {
+    Navigator.pop(context);
+    print(strengthUnitList[_selectedStrengthUnitIndex]);
+    (strengthController.text.isEmpty)
+        ? setState(() {
+            strengthController = TextEditingController(text: '100');
+            strengthUnit = strengthUnitList[_selectedStrengthUnitIndex];
+          })
+        : setState(() {
+            strengthUnit = strengthUnitList[_selectedStrengthUnitIndex];
+          });
+    (strengthUnit == 'none') ? strengthController.clear() : print('heyhey');
+  }
+
+  _showStrengthUnitPopUp() {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return IntakePopUp(
+          height: height,
+          width: width,
+          onPressed: () {
+            _onPressedStrengthUnitPopUp();
+
+            setState(() {
+              strengthUnitHeart = true;
+            });
+          },
+          intakePicker: CupertinoPicker(
+            scrollController: FixedExtentScrollController(
+                initialItem: _selectedStrengthUnitIndex),
+            itemExtent: 35,
+            backgroundColor: Colors.white,
+            onSelectedItemChanged: (int x) {
+              setState(() {
+                _selectedStrengthUnitIndex = x;
+              });
+            },
+            children: new List<Widget>.generate(
+              strengthUnitList.length,
+              (int index) {
+                return new Center(
+                  child: new Text(strengthUnitList[index]),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 
   _showUnitPopUp() {
@@ -627,12 +696,12 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   StrengthTextField _buildStrengthField() {
     return StrengthTextField(
       controller: strengthController,
-      icon: strengthAppearanceHeartIcon(heart: unitHeart),
-      icon2: strengthAppearanceHeartIcon2(heart: unitHeart),
+      icon: strengthAppearanceHeartIcon(heart: strengthUnitHeart),
+      icon2: strengthAppearanceHeartIcon2(heart: strengthUnitHeart),
       onTap: () {
-        _showUnitPopUp();
+        _showStrengthUnitPopUp();
       },
-      placeholder: unit,
+      placeholder: strengthUnit,
       placeholderText: 'Set Strength',
     );
   }
@@ -698,7 +767,7 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
                 .map((e) => ReminderRuleField(textstyle: textstyle, rule: e))
                 .toList()
                 .cast();
-          // ..add(_buildAddReminderField());
+    // ..add(_buildAddReminderField());
     return Scaffold(
       appBar: _buildSecondScreenHeader(),
       body: SingleChildScrollView(
@@ -785,7 +854,13 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
                       child: Container(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           alignment: FractionalOffset.bottomCenter,
-                          child: _buildStockField())),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              _buildAlarmSettingsField(),
+                              _buildStockField(),
+                            ],
+                          ))),
                   SizedBox(height: height * 0.08),
                 ],
               ),
@@ -898,6 +973,9 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
             startEndDateStringHeart = true;
           })
         : print('something');
+
+    startDate = picked[0];
+    endDate = picked[1];
   }
 
   _showStartEndDate() async {
@@ -939,9 +1017,26 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
   }
 
   _showStockDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => StockDialog()
+    showDialog(context: context, builder: (context) => StockDialog());
+  }
+
+  _showAlarmSettingsDialog() {
+    showDialog(context: context, builder: (context) => AlarmSettingsDialog());
+  }
+
+  CustomTextField _buildAlarmSettingsField() {
+    return CustomTextField(
+      icon: icon(heart: startEndDateStringHeart),
+      icon2: icon2(heart: startEndDateStringHeart),
+      // icon: Icon(
+      //   CupertinoIcons.shopping_cart,
+      //   color: Colors.black,
+      //   size: 23,
+      // ),
+      onTap: () {
+        _showAlarmSettingsDialog();
+      },
+      placeholderText: 'Alarm Settings',
     );
   }
 
