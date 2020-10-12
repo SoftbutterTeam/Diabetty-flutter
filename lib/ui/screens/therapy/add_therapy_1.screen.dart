@@ -141,7 +141,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       controller: strengthController,
       stackIcons: _stackedHeartIcons(true),
       onTap: () {
-        showUnitPopUp(context);
+        if (!therapyForm.isNameValid()) showUnitPopUp(context);
       },
       placeholder: strengthUnits[therapyForm.unitsIndex],
       placeholderText: 'Set Strength',
