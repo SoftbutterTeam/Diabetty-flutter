@@ -19,17 +19,65 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         return IntakePopUp(
           height: height,
           width: width,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+            setState(() {});
+          },
           intakePicker: CupertinoPicker(
-            scrollController: FixedExtentScrollController(initialItem: 0),
+            scrollController: FixedExtentScrollController(
+                initialItem: therapyForm.unitsIndex),
             itemExtent: 35,
             backgroundColor: Colors.white,
-            onSelectedItemChanged: (int x) {},
+            onSelectedItemChanged: (int x) {
+              therapyForm.unitsIndex = x;
+            },
             children: new List<Widget>.generate(
               unitTypes.length,
               (int index) {
                 return new Center(
                   child: new Text(unitTypes[index]),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showStrengthUnitPopUp(
+      BuildContext context, TextEditingController strengthController) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return IntakePopUp(
+          height: height,
+          width: width,
+          onPressed: () {
+            Navigator.pop(context);
+            if (therapyForm.strengthUnitsIndex != 0 &&
+                (therapyForm.strength == null || therapyForm.strength == 0)) {
+              therapyForm.strength = 100;
+            } else if (therapyForm.strengthUnitsIndex == 0) {
+              therapyForm.strength = null;
+            }
+            setState(() {});
+          },
+          intakePicker: CupertinoPicker(
+            scrollController: FixedExtentScrollController(
+                initialItem: therapyForm.strengthUnitsIndex),
+            itemExtent: 35,
+            backgroundColor: Colors.white,
+            onSelectedItemChanged: (int x) {
+              therapyForm.strengthUnitsIndex = x;
+            },
+            children: new List<Widget>.generate(
+              strengthUnits.length,
+              (int index) {
+                return new Center(
+                  child: new Text(strengthUnits[index]),
                 );
               },
             ),
@@ -87,13 +135,17 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         return IntakePopUp(
           height: height,
           width: width,
-          onPressed: () {},
+          onPressed: () {
+            setState(() {});
+            Navigator.pop(context);
+          },
           intakePicker: CupertinoPicker(
-            scrollController: FixedExtentScrollController(initialItem: 0),
+            scrollController: FixedExtentScrollController(
+                initialItem: therapyForm.intakeAdviceIndex),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {
-              setState(() {});
+              therapyForm.intakeAdviceIndex = x;
             },
             children: new List<Widget>.generate(
               intakeAdvice.length,
@@ -120,12 +172,16 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
               'A period of time set between occurences of required medication.\nPlease select your window time-frame.',
           height: height,
           width: width,
-          onPressed: () {},
+          onPressed: () {
+            setState(() {});
+            Navigator.pop(context);
+          },
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
             minuteInterval: 5,
             initialTimerDuration: therapyForm.window,
             onTimerDurationChanged: (Duration changedtimer) {
+              
               therapyForm.minRest = changedtimer;
             },
           ),

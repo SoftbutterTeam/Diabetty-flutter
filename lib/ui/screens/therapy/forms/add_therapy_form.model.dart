@@ -18,7 +18,7 @@ class AddTherapyForm {
   DateTime startDate;
   DateTime endDate;
   Duration window;
-  set setWindow(x) {
+  set setWindow(Duration x) {
     if (Duration(hours: 0, minutes: 5).compareTo(x) < 0)
       window = Duration(minutes: 5);
     else
@@ -85,6 +85,9 @@ class AddTherapyForm {
 
   bool isStrengthUnitsValid() =>
       this.strengthUnitsIndex != null && this.strengthUnitsIndex >= 0;
+
+  bool isIntakeAdviceValid() =>
+      this.intakeAdviceIndex != intakeAdviceIndex;
 
   bool isAllFormValid() =>
       isNameValid() && isStrengthValid() && isStrengthUnitsValid();

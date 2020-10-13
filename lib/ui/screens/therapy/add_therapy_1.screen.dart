@@ -17,11 +17,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AddTherapyScreenOne extends StatefulWidget {
-  const AddTherapyScreenOne({
-    Key key,
-    this.manager,
-  }) : super(key: key);
+  const AddTherapyScreenOne(
+      {Key key, this.manager, this.pageController})
+      : super(key: key);
   final TherapyManager manager;
+  final PageController pageController;
 
   @override
   _AddTherapyScreenOneState createState() => _AddTherapyScreenOneState();
@@ -43,30 +43,35 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: _buildHeader(context),
-        ),
-        body: SingleChildScrollView(
-            child: IntrinsicHeight(
-                child: SizedBox(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: size.height * 0.7),
-            child: _buildBody(context),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: _buildHeader(context),
+      ),
+      body: SingleChildScrollView(
+        child: IntrinsicHeight(
+          child: SizedBox(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: size.height * 0.7),
+              child: _buildBody(context),
+            ),
           ),
-        ))));
+        ),
+      ),
+    );
   }
 
   TopBar _buildHeader(BuildContext context) {
     return TopBar(
-      btnEnabled: false,
+      btnEnabled: (therapyForm.name.isEmpty) ? false : true,
       centerText: 'Add Medication',
       leftButtonText: 'Cancel',
       rightButtonText: 'Next',
       onLeftTap: () {
         Navigator.pop(context);
       },
-      onRightTap: () {},
+      onRightTap: () {
+        widget.pageController.jumpToPage(1);
+      },
     );
   }
 
@@ -134,19 +139,27 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showUnitPopUp(context),
-      placeholder: '',
+      placeholder: unitTypes[therapyForm.unitsIndex],
       placeholderText: 'Unit',
     );
   }
 
   Widget _buildStrengthField() {
     return StrengthTextField(
+       initialText: 'n',
+          // (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
       controller: strengthController,
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _stackedHeartIcons(therapyForm.strengthUnitsIndex != 0 &&
+          therapyForm.strength != null &&
+          therapyForm.strength != 0),
       onTap: () {
-        if (!therapyForm.isNameValid()) showUnitPopUp(context);
+        showStrengthUnitPopUp(context, strengthController);
       },
-      placeholder: strengthUnits[therapyForm.unitsIndex],
+      onChange: (String val) {
+        therapyForm.strength = val != '' ? int.parse(val) : null;
+        setState(() {});
+      },
+      placeholder: strengthUnits[therapyForm.strengthUnitsIndex],
       placeholderText: 'Set Strength',
     );
   }
@@ -166,7 +179,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildIntakeAdviceField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _stackedHeartIcons(therapyForm.intakeAdviceIndex != 0),
       onTap: () => showIntakePopUp(),
       placeholder: intakeAdvice[therapyForm.intakeAdviceIndex],
       placeholderText: 'Intake Advice',
