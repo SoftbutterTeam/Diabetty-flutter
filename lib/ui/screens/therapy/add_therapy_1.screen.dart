@@ -18,11 +18,10 @@ import 'package:flutter_svg/svg.dart';
 
 class AddTherapyScreenOne extends StatefulWidget {
   const AddTherapyScreenOne(
-      {Key key, this.manager, this.pageController, this.pageIndex})
+      {Key key, this.manager, this.pageController})
       : super(key: key);
   final TherapyManager manager;
   final PageController pageController;
-  final int pageIndex;
 
   @override
   _AddTherapyScreenOneState createState() => _AddTherapyScreenOneState();
@@ -72,8 +71,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
         Navigator.pop(context);
       },
       onRightTap: () {
-        widget.pageController.animateToPage(2,
-            duration: Duration(milliseconds: 500), curve: Curves.bounceOut);
+        widget.pageController.jumpToPage(1);
       },
     );
   }
@@ -149,8 +147,8 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildStrengthField() {
     return StrengthTextField(
-      initialText:
-          (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
+       initialText: 'n',
+          // (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
       controller: strengthController,
       stackIcons: _stackedHeartIcons(therapyForm.strengthUnitsIndex != 0 &&
           therapyForm.strength != null &&

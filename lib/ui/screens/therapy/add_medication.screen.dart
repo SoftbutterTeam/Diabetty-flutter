@@ -96,12 +96,10 @@ class AddMedicationScreenState extends State<AddMedicationScreen>
       children: [
         AddTherapyScreenOne(
           pageController: pageController,
-          pageIndex: pageIndex,
           manager: widget.manager,
         ),
         AddTherapyScreenTwo(
           manager: widget.manager,
-          pageIndex: pageIndex,
           pageController: pageController,
         )
       ],

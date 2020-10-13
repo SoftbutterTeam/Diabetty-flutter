@@ -12,11 +12,11 @@ import 'components/CustomTextField.dart';
 
 class AddTherapyScreenTwo extends StatefulWidget {
   const AddTherapyScreenTwo(
-      {Key key, this.manager, this.pageController, this.pageIndex})
+      {Key key, this.manager, this.pageController})
       : super(key: key);
   final TherapyManager manager;
   final PageController pageController;
-  final int pageIndex;
+  
 
   @override
   _AddTherapyScreenTwoState createState() => _AddTherapyScreenTwoState();
@@ -60,7 +60,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       leftButtonText: 'Back',
       rightButtonText: 'Save',
       onLeftTap: () {
-        widget.pageController.jumpToPage(widget.pageIndex);
+        widget.pageController.jumpToPage(0);
       },
       onRightTap: () {},
     );

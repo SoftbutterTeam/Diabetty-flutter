@@ -21,9 +21,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             Navigator.pop(context);
-            setState(() {
-              
-            });
+            setState(() {});
           },
           intakePicker: CupertinoPicker(
             scrollController: FixedExtentScrollController(
@@ -59,14 +57,13 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             Navigator.pop(context);
-            if (therapyForm.strengthUnitsIndex != 0 && therapyForm.strength != null || therapyForm.strength != 0) {
+            if (therapyForm.strengthUnitsIndex != 0 &&
+                (therapyForm.strength == null || therapyForm.strength == 0)) {
               therapyForm.strength = 100;
-            } else if (therapyForm.strengthUnitsIndex  == 0) {
+            } else if (therapyForm.strengthUnitsIndex == 0) {
               therapyForm.strength = null;
             }
-            setState(() {
-         
-            });
+            setState(() {});
           },
           intakePicker: CupertinoPicker(
             scrollController: FixedExtentScrollController(
@@ -139,9 +136,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            setState(() {
-              
-            });
+            setState(() {});
             Navigator.pop(context);
           },
           intakePicker: CupertinoPicker(
@@ -178,9 +173,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            setState(() {
-              
-            });
+            setState(() {});
             Navigator.pop(context);
           },
           timerPicker: CupertinoTimerPicker(
