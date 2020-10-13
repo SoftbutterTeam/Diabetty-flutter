@@ -79,6 +79,8 @@ class AddTherapyForm {
             : null);
   }
 
+  bool isVisible() => (this.mode == 'planned');
+
   bool isNameValid() => this.name != null && this.name.length > 0;
 
   bool isStrengthValid() => this.strength != null && this.strength > 0;

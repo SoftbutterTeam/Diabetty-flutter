@@ -5,6 +5,8 @@ import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
+    as DateRangePicker;
 
 @optionalTypeArgs
 mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
@@ -179,14 +181,52 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
             minuteInterval: 5,
-            initialTimerDuration: therapyForm.window,
+            initialTimerDuration: therapyForm.minRest,
             onTimerDurationChanged: (Duration changedtimer) {
-              
               therapyForm.minRest = changedtimer;
             },
           ),
         );
       },
     );
+  }
+
+  void showWindow(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return MinRestPopUp(
+          desciption: 'How long you have to take medication or respond :)',
+          height: height,
+          width: width,
+          onPressed: () {
+            setState(() {});
+            Navigator.pop(context);
+          },
+          timerPicker: CupertinoTimerPicker(
+            mode: CupertinoTimerPickerMode.hm,
+            minuteInterval: 5,
+            initialTimerDuration: therapyForm.window,
+            onTimerDurationChanged: (Duration changedtimer) {
+              therapyForm.window = changedtimer;
+            },
+          ),
+        );
+      },
+    );
+  }
+
+   showStartEndDate(BuildContext context) async {
+    final List<DateTime> picked = await DateRangePicker.showDatePicker(
+        context: context,
+        initialFirstDate: new DateTime.now(),
+        initialLastDate: new DateTime.now(),
+        firstDate: DateTime.now().subtract(Duration(days: 1)),
+        lastDate: new DateTime(2026, 12, 31));
+    if (picked != null && picked.length == 2) {
+      print(picked);
+    }
   }
 }

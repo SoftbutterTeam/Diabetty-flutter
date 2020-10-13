@@ -1,19 +1,22 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
+import 'package:diabetty/ui/screens/therapy/components/alarm_settings_dialog.dart';
+import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
 import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/components/topbar.dart';
 import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
+import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
-    as DateRangePicker;
+import 'package:intl/intl.dart';
 
 import 'components/CustomTextField.dart';
 
@@ -57,7 +60,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         child: IntrinsicHeight(
           child: SizedBox(
             child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: size.height * 0.7),
+              constraints: BoxConstraints(minHeight: size.height * 0.85),
               child: _buildBody(context, reminderRulesList, size),
             ),
           ),
@@ -82,13 +85,30 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   Column _buildBody(
       BuildContext context, List<Widget> reminderRulesList, size) {
     var formWidgets = <Widget>[
+      Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: 20,
+          ),
+          child: _buildMedicationCard(),
+        ),
+      ),
       _buildModeField(),
-      _buildWindowField(),
-      _buildStartEndDateField(),
-      Column(
-        children: [
-          _buildAddReminderField(context),
-        ],
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: _buildWindowField(),
+      ),
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: _buildStartEndDateField(),
+      ),
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: Column(
+          children: [
+            _buildAddReminderField(context),
+          ],
+        ),
       ),
       if (reminderRulesList.length > 0)
         (reminderRulesList.length < 20)
@@ -104,7 +124,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return Column(
       children: <Widget>[
         SizedBox(
-          height: 50,
+          height: 20,
         ),
         Container(
           child: Column(
@@ -112,26 +132,42 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
           ),
         ),
         Expanded(
-            child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                alignment: FractionalOffset.bottomCenter,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    _buildAlarmSettingsField(),
-                    _buildStockField(),
-                  ],
-                ))),
-        SizedBox(height: size.height * 0.08),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            alignment: FractionalOffset.bottomCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Visibility(
+                  visible: therapyForm.isVisible() ? true : false,
+                  child: _buildAlarmSettingsField(),
+                ),
+                Visibility(
+                  visible: therapyForm.isVisible() ? true : false,
+                  child: _buildStockField(),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
+    );
+  }
+
+  Widget _buildMedicationCard() {
+    return MedicationCard(
+      name: therapyForm.name,
+      appearance: appearance_iconss[therapyForm.apperanceIndex],
     );
   }
 
   Widget _buildWindowField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
-      onTap: () {},
-      placeholder: 'hixs',
+      stackIcons: _stackedHeartIcons(therapyForm.window != null),
+      onTap: () => showWindow(context),
+      placeholder: therapyForm.window == null
+          ? 'none'
+          : prettyDuration(therapyForm.window, abbreviated: false),
       placeholderText: 'Window',
     );
   }
@@ -139,29 +175,25 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   Widget _buildModeField() {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      onTap: () {},
+      onTap: () {
+        therapyForm.isVisible()
+            ? setState(() {
+                therapyForm.mode = 'needed';
+              })
+            : setState(() {
+                therapyForm.mode = 'planned';
+              });
+      },
       placeholder: 'As ' + therapyForm.mode.capitalize(),
       placeholderText: 'Mode',
     );
   }
 
-  _showStartEndDate() async {
-    final List<DateTime> picked = await DateRangePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime.now(),
-        initialLastDate: new DateTime.now(),
-        firstDate: DateTime.now().subtract(Duration(days: 1)),
-        lastDate: new DateTime(2026, 12, 31));
-    if (picked != null && picked.length == 2) {
-      print(picked);
-    }
-  }
-
   Widget _buildStartEndDateField() {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      onTap: () => _showStartEndDate(),
-      placeholder: 'hi',
+      onTap: () => showStartEndDate(context),
+      placeholder: DateFormat('dd-MM-yyyy').format(therapyForm.startDate),
       placeholderText: 'Start - End Date',
     );
   }
@@ -239,27 +271,25 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     List<Widget> mywidgets = List.from(widgets);
     mywidgets.removeLast();
     return Container(
-        child: Column(
-      children: [
-        SizedBox(
+      child: Column(
+        children: [
+          SizedBox(
             height: size.height * 0.3,
             child: ListView(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                children: mywidgets.cast())),
-        addRem
-      ],
-    ));
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: mywidgets.cast(),
+            ),
+          ),
+          addRem
+        ],
+      ),
+    );
   }
 
   Widget _buildAlarmSettingsField() {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      // icon: Icon(
-      //   CupertinoIcons.shopping_cart,
-      //   color: Colors.black,
-      //   size: 23,
-      // ),
       onTap: () {
         _showAlarmSettingsDialog();
       },
@@ -268,19 +298,12 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   }
 
   _showAlarmSettingsDialog() {
-    showDialog(context: context, builder: (context) => StockDialog());
+    showDialog(context: context, builder: (context) => AlarmSettingsDialog());
   }
-
-  //AlarmSettingsDialog()
 
   Widget _buildStockField() {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      // icon: Icon(
-      //   CupertinoIcons.shopping_cart,
-      //   color: Colors.black,
-      //   size: 23,
-      // ),
       onTap: () {
         _showStockDialog();
       },
@@ -292,23 +315,3 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     showDialog(context: context, builder: (context) => StockDialog());
   }
 }
-
-//  ,
-//                   Expanded(
-//                       child: Container(
-//                           padding: EdgeInsets.symmetric(vertical: 10),
-//                           alignment: FractionalOffset.bottomCenter,
-//                           child: Column(
-//                             mainAxisAlignment: MainAxisAlignment.end,
-//                             children: [
-//                               _buildAlarmSettingsField(),
-//                               _buildStockField(),
-//                             ],
-//                           ))),
-//                   SizedBox(height: height * 0.08),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
