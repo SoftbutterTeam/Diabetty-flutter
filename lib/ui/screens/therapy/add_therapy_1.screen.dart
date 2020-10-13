@@ -17,7 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AddTherapyScreenOne extends StatefulWidget {
-  const AddTherapyScreenOne({Key key, this.manager, this.pageController, this.pageIndex})
+  const AddTherapyScreenOne(
+      {Key key, this.manager, this.pageController, this.pageIndex})
       : super(key: key);
   final TherapyManager manager;
   final PageController pageController;
@@ -71,7 +72,8 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
         Navigator.pop(context);
       },
       onRightTap: () {
-        widget.pageController.animateToPage(2, duration: Duration(milliseconds: 500), curve: Curves.bounceOut);
+        widget.pageController.animateToPage(2,
+            duration: Duration(milliseconds: 500), curve: Curves.bounceOut);
       },
     );
   }
@@ -147,10 +149,18 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildStrengthField() {
     return StrengthTextField(
+      initialText:
+          (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
       controller: strengthController,
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _stackedHeartIcons(therapyForm.strengthUnitsIndex != 0 &&
+          therapyForm.strength != null &&
+          therapyForm.strength != 0),
       onTap: () {
         showStrengthUnitPopUp(context, strengthController);
+      },
+      onChange: (String val) {
+        therapyForm.strength = val != '' ? int.parse(val) : null;
+        setState(() {});
       },
       placeholder: strengthUnits[therapyForm.strengthUnitsIndex],
       placeholderText: 'Set Strength',
@@ -172,7 +182,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildIntakeAdviceField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(therapyForm.isIntakeAdviceValid()),
+      stackIcons: _stackedHeartIcons(therapyForm.intakeAdviceIndex != 0),
       onTap: () => showIntakePopUp(),
       placeholder: intakeAdvice[therapyForm.intakeAdviceIndex],
       placeholderText: 'Intake Advice',

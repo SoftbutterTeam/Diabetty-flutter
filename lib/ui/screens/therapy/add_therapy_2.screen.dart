@@ -3,7 +3,12 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/components/topbar.dart';
+import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart' as DateRangePicker;
+
+import 'components/CustomTextField.dart';
 
 class AddTherapyScreenTwo extends StatefulWidget {
   const AddTherapyScreenTwo(
@@ -66,29 +71,11 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       _buildModeField(),
       _buildWindowField(),
       _buildStartEndDateField(),
-      // Column(
-      //   children: [
-      //     _buildAddReminderField(),
-      //   ],
-      // ),
-      // if (reminderRulesList.length > 0)
-      //                     (reminderRulesList.length < 20)
-      //                         ? Visibility(
-      //                             visible: _isAsPlanned,
-      //                             child: ColumnBuilder(
-      //                               itemCount: reminderRulesList.length,
-      //                               itemBuilder:
-      //                                   (BuildContext context, int index) {
-      //                                 return reminderRulesList[index];
-      //                               },
-      //                             ),
-      //                           )
-      //                         : _buildListViewRep(context, reminderRulesList),
     ];
 
     return Column(children: <Widget>[
       SizedBox(
-        height: 20,
+        height: 50,
       ),
       Container(
         child: Column(
@@ -98,11 +85,73 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     ]);
   }
 
-  _buildModeField() {}
+  Widget _buildWindowField() {
+    return CustomTextField(
+     stackIcons: _stackedHeartIcons(true),
+      onTap: () {},
+      placeholder: 'hixs',
+      placeholderText: 'Window',
+    );
+  }
 
-  _buildWindowField() {}
+  Widget _buildModeField() {
+    return CustomTextField(
+     stackIcons: _stackedHeartIcons(true),
+      onTap: () {},
+      placeholder: 'As ' + therapyForm.mode.capitalize(),
+      placeholderText: 'Mode',
+    );
+  }
 
-  _buildStartEndDateField() {}
+  
+
+  _showStartEndDate() async {
+    final List<DateTime> picked = await DateRangePicker.showDatePicker(
+        context: context,
+        initialFirstDate: new DateTime.now(),
+        initialLastDate: new DateTime.now(),
+        firstDate: DateTime.now().subtract(Duration(days: 1)),
+        lastDate: new DateTime(2026, 12, 31));
+    if (picked != null && picked.length == 2) {
+      print(picked);
+    }
+  }
+ 
+
+  Widget _buildStartEndDateField() {
+    return CustomTextField(
+      stackIcons: _stackedHeartIcons(true),
+      onTap: () => _showStartEndDate(),
+      placeholder: 'hi',
+      placeholderText: 'Start - End Date',
+    );
+  }
+
+   Stack _stackedHeartIcons(bool cond) {
+    return Stack(
+      children: [
+        AnimatedOpacity(
+          opacity: cond ? 0 : 1,
+          duration: Duration(milliseconds: 1000),
+          child: Icon(
+            CupertinoIcons.heart,
+            color: Colors.black,
+            size: 23,
+          ),
+        ),
+        AnimatedOpacity(
+          opacity: cond ? 1 : 0,
+          duration: Duration(milliseconds: 1000),
+          child: Icon(
+            CupertinoIcons.heart_solid,
+            color: Colors.red,
+            size: 23,
+          ),
+        )
+      ],
+    );
+  }
+
 }
 
 //  ,

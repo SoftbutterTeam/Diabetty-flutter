@@ -4,14 +4,15 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StrengthTextField extends StatelessWidget {
+class StrengthTextField extends StatefulWidget {
   final controller;
   final Stack stackIcons;
-
+  final Function onChange;
   final Function onTap;
   var placeholder;
   final Function onSubmitted;
   final String placeholderText;
+  final String initialText; 
 
   StrengthTextField(
       {this.stackIcons,
@@ -19,16 +20,36 @@ class StrengthTextField extends StatelessWidget {
       this.placeholder,
       this.placeholderText,
       this.onSubmitted,
-      this.controller});
+      this.controller,
+      this.onChange,
+      this.initialText = ''});
+
+  @override
+  _StrengthTextFieldState createState() => _StrengthTextFieldState();
+}
+
+class _StrengthTextFieldState extends State<StrengthTextField> {
+
+@override
+void initState() { 
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+     widget.controller.text = widget.initialText;
+    });
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: CupertinoTextField(
-        controller: controller,
+        
+        onChanged: widget.onChange,
+        controller: widget.controller,
         enableInteractiveSelection: false,
-        onSubmitted: onSubmitted,
+        onSubmitted: widget.onSubmitted,
+        keyboardType: TextInputType.number,
         decoration: BoxDecoration(
           color: appWhite,
           border: Border.all(
@@ -36,16 +57,16 @@ class StrengthTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(0),
         ),
         prefix:
-            Container(padding: EdgeInsets.only(left: 18), child: stackIcons),
+            Container(padding: EdgeInsets.only(left: 18), child: widget.stackIcons),
         suffix: GestureDetector(
-          onTap: onTap,
+          onTap: widget.onTap,
           child: Container(
             padding: EdgeInsets.only(right: 15),
             child: Row(
               children: [
                 Padding(
                     padding: EdgeInsets.only(right: 5, bottom: 2),
-                    child: text((placeholder), fontSize: textSizeMedium2)),
+                    child: text((widget.placeholder), fontSize: textSizeMedium2)),
                 Icon(
                   Icons.arrow_drop_down,
                   size: 20,
@@ -54,8 +75,8 @@ class StrengthTextField extends StatelessWidget {
             ),
           ),
         ),
-        placeholder: placeholderText,
-        readOnly: (placeholder == 'none'),
+        placeholder: widget.placeholderText,
+        readOnly: (widget.placeholder == 'none'),
         maxLines: 1,
         maxLength: 30,
         padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),

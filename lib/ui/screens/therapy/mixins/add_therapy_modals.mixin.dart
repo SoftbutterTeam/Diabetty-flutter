@@ -22,7 +22,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           onPressed: () {
             Navigator.pop(context);
             setState(() {
-              therapyForm.unitsIndex = therapyForm.unitsIndex;
+              
             });
           },
           intakePicker: CupertinoPicker(
@@ -59,8 +59,13 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             Navigator.pop(context);
+            if (therapyForm.strengthUnitsIndex != 0 && therapyForm.strength != null || therapyForm.strength != 0) {
+              therapyForm.strength = 100;
+            } else if (therapyForm.strengthUnitsIndex  == 0) {
+              therapyForm.strength = null;
+            }
             setState(() {
-              therapyForm.strengthUnitsIndex = therapyForm.strengthUnitsIndex;
+         
             });
           },
           intakePicker: CupertinoPicker(
@@ -135,7 +140,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {
-              therapyForm.intakeAdviceIndex = therapyForm.intakeAdviceIndex;
+              
             });
             Navigator.pop(context);
           },
@@ -174,7 +179,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {
-              therapyForm.minRest = therapyForm.minRest;
+              
             });
             Navigator.pop(context);
           },
