@@ -41,7 +41,6 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   @override
   Widget build(BuildContext context) {
-    print('yooooooooooooooo' + therapyForm.window.toString());
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: PreferredSize(
@@ -103,7 +102,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   AnimatedOpacity animatedOpacity(Widget e, bool cond) {
     return AnimatedOpacity(
-        opacity: cond ? 1 : 0, duration: Duration(milliseconds: 900), child: e);
+        opacity: cond ? 1 : 0, duration: Duration(milliseconds: 500), child: e);
   }
 
   Container _buildDividerHeader() {
@@ -180,7 +179,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       onTap: () => showMinRestPopup(context),
       placeholder: therapyForm.minRest == null
           ? 'none'
-          : prettyDuration(therapyForm.minRest),
+          : prettyDuration(therapyForm.minRest, abbreviated: false),
       placeholderText: 'Minimum Rest Duration',
     );
   }
