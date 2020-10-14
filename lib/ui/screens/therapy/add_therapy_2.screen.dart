@@ -193,7 +193,10 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showStartEndDate(context),
-      placeholder: DateFormat('dd-MM-yyyy').format(therapyForm.startDate),
+      placeholder: DateFormat('dd-MM-yyyy').format(therapyForm.startDate) +
+          ((therapyForm.endDate == null)
+              ? ''
+              : ' to ' + DateFormat('dd-MM-yyyy').format(therapyForm.endDate)),
       placeholderText: 'Start - End Date',
     );
   }

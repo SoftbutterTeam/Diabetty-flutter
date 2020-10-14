@@ -28,8 +28,8 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
       contentPadding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
-        height: size.height * 0.3,
-        width: size.width * 0.8,
+        height: size.height * 0.35,
+        width: size.width * 0.85,
         child: Column(
           children: [
             _buildCriticalAlertField(size),

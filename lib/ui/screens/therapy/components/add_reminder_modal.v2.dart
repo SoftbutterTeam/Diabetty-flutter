@@ -91,23 +91,19 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
               vertical: 5.0,
             ),
           ),
-          AnimatedOpacity(
-            opacity: _isFilled ? 1 : 0,
-            duration: Duration(milliseconds: 500),
-            child: CupertinoButton(
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                  color: Colors.indigo,
-                ),
+          CupertinoButton(
+            child: Text(
+              'Submit',
+              style: TextStyle(
+                color: _isFilled ? Colors.indigo : Colors.black,
               ),
-              onPressed: () {
-                _handleSubmit();
-              },
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 5.0,
-              ),
+            ),
+            onPressed: () {
+              _isFilled ? _handleSubmit() : null;
+            },
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 5.0,
             ),
           ),
         ],
