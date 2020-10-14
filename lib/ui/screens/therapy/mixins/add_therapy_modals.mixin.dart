@@ -215,7 +215,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             minuteInterval: 5,
             initialTimerDuration: therapyForm.window,
             onTimerDurationChanged: (Duration changedtimer) {
-              therapyForm.window = changedtimer;
+              therapyForm.setWindow = changedtimer;
             },
           ),
         );

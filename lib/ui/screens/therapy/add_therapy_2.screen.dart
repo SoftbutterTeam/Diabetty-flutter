@@ -48,9 +48,10 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
                 widget.manager.therapyForm.reminderRules.length == 0)
             ? List()
             : widget.manager.therapyForm.reminderRules
-                .map((e) => ReminderRuleField(rule: e))
+                .map((e) => ReminderRuleField(rule: e) as Widget)
                 .toList()
-                .cast();
+          ..add(_buildAddReminderField(context));
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -102,23 +103,20 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         visible: therapyForm.isVisible() ? true : false,
         child: _buildStartEndDateField(),
       ),
-      Visibility(
-        visible: therapyForm.isVisible() ? true : false,
-        child: Column(
-          children: [
-            _buildAddReminderField(context),
-          ],
-        ),
-      ),
       if (reminderRulesList.length > 0)
-        (reminderRulesList.length < 20)
-            ? ColumnBuilder(
-                itemCount: reminderRulesList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return reminderRulesList[index];
-                },
-              )
-            : _buildListViewRep(context, reminderRulesList),
+        Visibility(
+            visible: therapyForm.isVisible() ? true : false,
+            child: Container(
+              padding: EdgeInsets.only(top: 9),
+              child: (reminderRulesList.length < 7)
+                  ? ColumnBuilder(
+                      itemCount: reminderRulesList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return reminderRulesList[index];
+                      },
+                    )
+                  : _buildListViewRep(context, reminderRulesList),
+            ))
     ];
 
     return Column(
@@ -252,7 +250,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
           color: Colors.grey[700],
         ),
       ),
-    );
+    ) as Widget;
   }
 
   _buildListViewRep(BuildContext context, List<Widget> widgets) {
