@@ -71,6 +71,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
         Navigator.pop(context);
       },
       onRightTap: () {
+        widget.manager.updateListeners();
         widget.pageController.jumpToPage(1);
       },
     );
@@ -132,6 +133,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       stackIcons: _stackedHeartIcons(therapyForm.isNameValid()),
       controller: medicationNameController,
       placeholder: 'Medication Name...',
+      initalName: therapyForm.name,
       onChanged: (val) {
         therapyForm.name = val;
         setState(() {});

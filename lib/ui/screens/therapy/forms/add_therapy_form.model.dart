@@ -27,10 +27,12 @@ class AddTherapyForm {
 
   set setMinRest(Duration x) {
     print(x.toString());
-    if (Duration(hours: 0, minutes: 5).compareTo(x) < 0)
+
+    if ((x == null) || (Duration(hours: 0, minutes: 5).compareTo(x) > 0))
       window = null;
     else
-      window = x;
+      minRest = x;
+    print(minRest.toString());
   }
   //? could add validation for more setters for more security
 
@@ -51,7 +53,6 @@ class AddTherapyForm {
       this.reminderRules}) {
     this.reminderRules ??= List();
     this.window ??= Duration(minutes: 20);
-    this.minRest ??= Duration(minutes: 20);
     this.name ??= '';
 
     this.intakeAdviceIndex ??= 0;

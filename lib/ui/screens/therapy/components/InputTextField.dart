@@ -3,12 +3,13 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class InputTextField extends StatelessWidget {
-  final controller;
+class InputTextField extends StatefulWidget {
+  final TextEditingController controller;
   final String placeholder;
   final Function onSubmitted;
   final Function validator;
   final Stack stackIcons;
+  final String initalName;
   final ValueChanged<String> onChanged;
   final AnimatedOpacity icon;
   final AnimatedOpacity icon2;
@@ -21,17 +22,31 @@ class InputTextField extends StatelessWidget {
       this.validator,
       this.onChanged,
       this.icon,
+      this.initalName,
       this.icon2});
 
   @override
+  _InputTextFieldState createState() => _InputTextFieldState();
+}
+
+class _InputTextFieldState extends State<InputTextField> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.controller.text = widget.initalName;
+    });
     return Padding(
       padding: const EdgeInsets.only(bottom: 40),
       child: CupertinoTextField(
           autofocus: true,
-          onChanged: onChanged,
-          onSubmitted: onSubmitted,
-          controller: controller,
+          onChanged: widget.onChanged,
+          onSubmitted: widget.onSubmitted,
+          controller: widget.controller,
           decoration: BoxDecoration(
             color: appWhite,
             border: Border.all(
@@ -40,9 +55,9 @@ class InputTextField extends StatelessWidget {
           ),
           prefix: Container(
             padding: EdgeInsets.only(left: 17),
-            child: this.stackIcons,
+            child: this.widget.stackIcons,
           ),
-          placeholder: placeholder,
+          placeholder: widget.placeholder,
           maxLines: 1,
           maxLength: 30,
           padding: EdgeInsets.only(left: 16, top: 9.5, bottom: 9.5, right: 10),

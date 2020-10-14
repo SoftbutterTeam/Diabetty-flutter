@@ -186,7 +186,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
             minuteInterval: 5,
-            initialTimerDuration: therapyForm.minRest,
+            initialTimerDuration: therapyForm.minRest ?? Duration(minutes: 0),
             onTimerDurationChanged: (Duration changedtimer) {
               therapyForm.setMinRest = changedtimer;
             },
