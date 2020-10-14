@@ -17,8 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AddTherapyScreenOne extends StatefulWidget {
-  const AddTherapyScreenOne(
-      {Key key, this.manager, this.pageController})
+  const AddTherapyScreenOne({Key key, this.manager, this.pageController})
       : super(key: key);
   final TherapyManager manager;
   final PageController pageController;
@@ -36,6 +35,8 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
   @override
   void initState() {
     therapyForm = widget.manager.therapyForm;
+    strengthController = TextEditingController();
+    medicationNameController = TextEditingController();
     super.initState();
   }
 
@@ -77,12 +78,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Column _buildBody(BuildContext context) {
     var formWidgets = <Widget>[
-      Padding(
-        padding: EdgeInsets.only(
-          bottom: 20,
-        ),
-        child: text('Med Info'),
-      ),
+      _buildPageTitle(),
       _buildMedicationNameField(),
     ]..addAll(<Widget>[
         _buildUnitField(context),
@@ -108,6 +104,15 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
   AnimatedOpacity animatedOpacity(Widget e, bool cond) {
     return AnimatedOpacity(
         opacity: cond ? 1 : 0, duration: Duration(milliseconds: 500), child: e);
+  }
+
+  Widget _buildPageTitle() {
+    return Container(
+      padding: EdgeInsets.only(
+        bottom: 20,
+      ),
+      child: text('Med Info'),
+    );
   }
 
   Container _buildDividerHeader() {
@@ -145,23 +150,28 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
   }
 
   Widget _buildStrengthField() {
-    return StrengthTextField(
-       initialText: 'n',
-          // (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
+    Function onTap = () {
+      showStrengthUnitPopUp(context, strengthController);
+      print(therapyForm.strength);
+    };
+    return Container(
+        child: StrengthTextField(
+      therapyForm: therapyForm,
+      initialText:
+          (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
+      // (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
       controller: strengthController,
       stackIcons: _stackedHeartIcons(therapyForm.strengthUnitsIndex != 0 &&
           therapyForm.strength != null &&
           therapyForm.strength != 0),
-      onTap: () {
-        showStrengthUnitPopUp(context, strengthController);
-      },
+      onTap: onTap,
       onChange: (String val) {
         therapyForm.strength = val != '' ? int.parse(val) : null;
         setState(() {});
       },
       placeholder: strengthUnits[therapyForm.strengthUnitsIndex],
       placeholderText: 'Set Strength',
-    );
+    ));
   }
 
   Widget _buildAppearanceField(BuildContext context) {

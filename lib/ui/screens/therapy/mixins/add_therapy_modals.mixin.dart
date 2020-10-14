@@ -60,8 +60,10 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             if (therapyForm.strengthUnitsIndex != 0 &&
                 (therapyForm.strength == null || therapyForm.strength == 0)) {
               therapyForm.strength = 100;
+              strengthController.text = '100';
             } else if (therapyForm.strengthUnitsIndex == 0) {
               therapyForm.strength = null;
+              strengthController.text = '';
             }
             setState(() {});
           },
@@ -181,8 +183,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             minuteInterval: 5,
             initialTimerDuration: therapyForm.window,
             onTimerDurationChanged: (Duration changedtimer) {
-              
-              therapyForm.minRest = changedtimer;
+              therapyForm.setMinRest = changedtimer;
             },
           ),
         );

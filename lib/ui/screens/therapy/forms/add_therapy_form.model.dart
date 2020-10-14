@@ -24,6 +24,14 @@ class AddTherapyForm {
     else
       window = x;
   }
+
+  set setMinRest(Duration x) {
+    print(x.toString());
+    if (Duration(hours: 0, minutes: 5).compareTo(x) < 0)
+      window = null;
+    else
+      window = x;
+  }
   //? could add validation for more setters for more security
 
   AddTherapyForm(
@@ -86,8 +94,7 @@ class AddTherapyForm {
   bool isStrengthUnitsValid() =>
       this.strengthUnitsIndex != null && this.strengthUnitsIndex >= 0;
 
-  bool isIntakeAdviceValid() =>
-      this.intakeAdviceIndex != intakeAdviceIndex;
+  bool isIntakeAdviceValid() => this.intakeAdviceIndex != intakeAdviceIndex;
 
   bool isAllFormValid() =>
       isNameValid() && isStrengthValid() && isStrengthUnitsValid();

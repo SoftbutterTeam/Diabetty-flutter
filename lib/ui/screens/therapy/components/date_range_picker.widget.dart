@@ -158,14 +158,15 @@ class _DatePickerHeader extends StatelessWidget {
       );
     }
 
-    final Widget startHeader = new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        renderYearButton(selectedFirstDate),
-        renderDayButton(selectedFirstDate),
-      ],
-    );
-    final Widget endHeader = selectedLastDate != null
+    bool isSameDayAs(DateTime date, DateTime datey) {
+      if (datey.day != date.day) return false;
+      if (datey.month != date.month) return false;
+      if (datey.year != date.year) return false;
+      return true;
+    }
+
+    final Widget endHeader = (selectedLastDate != null &&
+            !isSameDayAs(selectedFirstDate, selectedLastDate))
         ? new Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
@@ -174,6 +175,16 @@ class _DatePickerHeader extends StatelessWidget {
             ],
           )
         : new Container();
+
+    final Widget startHeader = new Column(
+      crossAxisAlignment: (endHeader.runtimeType == Container().runtimeType)
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
+      children: <Widget>[
+        renderYearButton(selectedFirstDate),
+        renderDayButton(selectedFirstDate),
+      ],
+    );
 
     return new Container(
       decoration: BoxDecoration(
@@ -188,19 +199,26 @@ class _DatePickerHeader extends StatelessWidget {
       padding: EdgeInsets.only(left: 8, right: 8, top: 15),
       child: orientation == Orientation.portrait
           ? new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [startHeader, endHeader],
-            )
+              mainAxisAlignment:
+                  (endHeader.runtimeType == Container().runtimeType)
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.spaceBetween,
+              children: [
+                  startHeader,
+                  if (endHeader.runtimeType != Container().runtimeType)
+                    endHeader
+                ])
           : new Column(
               children: [
                 new Container(
                   width: width,
                   child: startHeader,
                 ),
-                new Container(
-                  width: width,
-                  child: endHeader,
-                ),
+                if (endHeader.runtimeType != Container().runtimeType)
+                  new Container(
+                    width: width,
+                    child: endHeader,
+                  ),
               ],
             ),
     );
@@ -478,7 +496,8 @@ class DayPicker extends StatelessWidget {
           decoration = new BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
-                  colors: [Colors.orange[900], Colors.orange[600]]), shape: BoxShape.circle);
+                  colors: [Colors.orange[900], Colors.orange[600]]),
+              shape: BoxShape.circle);
         } else if (isSelectedFirstDay) {
           // The selected day gets a circle background highlight, and a contrasting text color.
           itemStyle = themeData.accentTextTheme.body2;
@@ -1171,7 +1190,8 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
         alignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           new FlatButton(
-            child: new Text(localizations.cancelButtonLabel, style: TextStyle(color: CupertinoColors.destructiveRed)),
+            child: new Text(localizations.cancelButtonLabel,
+                style: TextStyle(color: CupertinoColors.destructiveRed)),
             onPressed: _handleCancel,
           ),
           new FlatButton(
