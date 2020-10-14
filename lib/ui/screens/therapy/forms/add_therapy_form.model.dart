@@ -24,6 +24,13 @@ class AddTherapyForm {
     else
       window = x;
   }
+
+  set setminRest(Duration x) {
+    if (Duration(hours: 0, minutes: 5).compareTo(x) < 0)
+      minRest = Duration(minutes: 5);
+    else
+      minRest = x;
+  }
   //? could add validation for more setters for more security
 
   AddTherapyForm(
@@ -43,6 +50,7 @@ class AddTherapyForm {
       this.reminderRules}) {
     this.reminderRules ??= List();
     this.window ??= Duration(minutes: 20);
+    this.minRest ??= Duration(minutes: 20);
     this.name ??= '';
 
     this.intakeAdviceIndex ??= 0;
@@ -88,8 +96,7 @@ class AddTherapyForm {
   bool isStrengthUnitsValid() =>
       this.strengthUnitsIndex != null && this.strengthUnitsIndex >= 0;
 
-  bool isIntakeAdviceValid() =>
-      this.intakeAdviceIndex != intakeAdviceIndex;
+  bool isIntakeAdviceValid() => this.intakeAdviceIndex != intakeAdviceIndex;
 
   bool isAllFormValid() =>
       isNameValid() && isStrengthValid() && isStrengthUnitsValid();

@@ -78,7 +78,9 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       onLeftTap: () {
         widget.pageController.jumpToPage(0);
       },
-      onRightTap: () {},
+      onRightTap: () {
+        
+      },
     );
   }
 
