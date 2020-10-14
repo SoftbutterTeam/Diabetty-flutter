@@ -78,9 +78,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       onLeftTap: () {
         widget.pageController.jumpToPage(0);
       },
-      onRightTap: () {
-        
-      },
+      onRightTap: () {},
     );
   }
 
@@ -229,9 +227,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: CupertinoTextField(
-        onTap: () {
-          _showReminderModal(context);
-        },
+        onTap: () => showReminderModal(context),
         decoration: BoxDecoration(
           color: appWhite,
           border: Border.all(
@@ -256,13 +252,6 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
           color: Colors.grey[700],
         ),
       ),
-    );
-  }
-
-  _showReminderModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AddReminderModal2(),
     );
   }
 
@@ -292,28 +281,16 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   Widget _buildAlarmSettingsField() {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      onTap: () {
-        _showAlarmSettingsDialog();
-      },
+      onTap: () => showAlarmSettingsDialog(context),
       placeholderText: 'Alarm Settings',
     );
-  }
-
-  _showAlarmSettingsDialog() {
-    showDialog(context: context, builder: (context) => AlarmSettingsDialog());
   }
 
   Widget _buildStockField() {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      onTap: () {
-        _showStockDialog();
-      },
+      onTap: () => showStockDialog(context),
       placeholderText: 'Stock',
     );
-  }
-
-  _showStockDialog() {
-    showDialog(context: context, builder: (context) => StockDialog());
   }
 }

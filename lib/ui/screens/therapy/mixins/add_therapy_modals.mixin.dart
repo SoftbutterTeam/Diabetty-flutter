@@ -1,6 +1,9 @@
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/screens/therapy/components/MinRestPopUp.dart';
+import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
+import 'package:diabetty/ui/screens/therapy/components/alarm_settings_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
+import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -229,4 +232,20 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       print(picked);
     }
   }
+
+    showAlarmSettingsDialog(BuildContext context) {
+    showDialog(context: context, builder: (context) => AlarmSettingsDialog());
+  }
+
+   showStockDialog(BuildContext context) {
+    showDialog(context: context, builder: (context) => StockDialog());
+  }
+
+   showReminderModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AddReminderModal2(),
+    );
+  }
+
 }
