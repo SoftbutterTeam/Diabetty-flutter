@@ -22,6 +22,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   bool friday;
   bool saturday;
   bool sunday;
+  bool _isFilled;
   int lastTapped;
   TextEditingController dosageController;
   String timeString;
@@ -41,10 +42,11 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     dosageController = TextEditingController();
     timeString = "Time";
     timeSelected = DateTime.now();
-    initialDate =
-        DateTime(timeSelected.year, timeSelected.month, timeSelected.day, timeSelected.hour, 0);
+    initialDate = DateTime(timeSelected.year, timeSelected.month,
+        timeSelected.day, timeSelected.hour, 0);
     reminder = ReminderRule();
     reminder.days = Days();
+    _isFilled = false;
   }
 
   @override
@@ -89,19 +91,23 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
               vertical: 5.0,
             ),
           ),
-          CupertinoButton(
-            child: Text(
-              'Submit',
-              style: TextStyle(
-                color: Colors.indigo,
+          AnimatedOpacity(
+            opacity: _isFilled ? 1 : 0,
+            duration: Duration(milliseconds: 500),
+            child: CupertinoButton(
+              child: Text(
+                'Submit',
+                style: TextStyle(
+                  color: Colors.indigo,
+                ),
               ),
-            ),
-            onPressed: () {
-              _handleSubmit();
-            },
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 5.0,
+              onPressed: () {
+                _handleSubmit();
+              },
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 5.0,
+              ),
             ),
           ),
         ],
@@ -113,21 +119,23 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       height: size.height * 0.045,
-      width: size.width * 0.7,
+      width: size.width * 0.5,
       child: CupertinoTextField(
+        textAlign: TextAlign.center,
         enableInteractiveSelection: false,
-        padding: EdgeInsets.only(left: 15.0),
         onTap: () {
           _showTimePicker();
         },
         placeholder: timeString,
-        placeholderStyle: (timeString == 'Time') ? TextStyle(
-          fontSize: textSizeLargeMedium - 3,
-          color: Colors.grey[700],
-        ) : TextStyle(
-          fontSize: textSizeLargeMedium - 2,
-          color: Colors.black,
-        ),
+        placeholderStyle: (timeString == 'Time')
+            ? TextStyle(
+                fontSize: textSizeLargeMedium - 3,
+                color: Colors.grey[700],
+              )
+            : TextStyle(
+                fontSize: textSizeLargeMedium - 2,
+                color: Colors.black,
+              ),
         readOnly: true,
         decoration: BoxDecoration(
           color: Color(0xfff7f7f7),
@@ -152,6 +160,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         return TimerPicker(
           onConfirm: () {
             _updateTime();
+            allFieldsFilled();
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,
@@ -175,16 +184,19 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     return Container(
       margin: EdgeInsets.only(top: 20, bottom: 15),
       height: size.height * 0.045,
-      width: size.width * 0.7,
+      width: size.width * 0.5,
       // color: Colors.red,
       child: CupertinoTextField(
-        padding: EdgeInsets.only(left: 15.0),
+        textAlign: TextAlign.center,
         controller: dosageController,
         placeholder: "Dosage",
         placeholderStyle: TextStyle(
           fontSize: textSizeLargeMedium - 3,
           color: Colors.grey[700],
         ),
+        onChanged: (val) {
+          allFieldsFilled();
+        },
         keyboardType: TextInputType.number,
         maxLength: 3,
         maxLengthEnforced: true,
@@ -246,6 +258,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         // We display the last tapped value in the example app
         onChanged: (v) {
           _updateDaySelected(v);
+          allFieldsFilled();
         },
         values: [
           sunday, // Sunday
@@ -261,38 +274,55 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   }
 
   _handleSubmit() {
-    if (dosageController.text.isEmpty || timeString == 'Time' || (monday && tuesday && wednesday && thursday && friday && saturday && sunday == false)) {
-      print('pls fill it out dumbnuts');
-    } else {
-      monday ? reminder.days.monday = true : reminder.days.monday = false;
-      tuesday ? reminder.days.tuesday = true : reminder.days.tuesday = false;
-      wednesday
-          ? reminder.days.wednesday = true
-          : reminder.days.wednesday = false;
-      thursday ? reminder.days.thursday = true : reminder.days.thursday = false;
-      friday ? reminder.days.friday = true : reminder.days.friday = false;
-      saturday ? reminder.days.saturday = true : reminder.days.saturday = false;
-      sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
-      var doseStringToDouble = double.parse(dosageController.text);
-      reminder.dose = doseStringToDouble;
-      reminder.time = timeSelected;
-      print(reminder.dose);
-      print(reminder.time);
-      print(dosageController.text);
-      print(reminder.days.monday);
-      print(reminder.days.tuesday);
-      print(reminder.days.wednesday);
-      print(reminder.days.thursday);
-      print(reminder.days.friday);
-      print(reminder.days.saturday);
-      print(reminder.days.sunday);
-      final TherapyManager manager =
-          Provider.of<TherapyManager>(context, listen: false);
+    monday ? reminder.days.monday = true : reminder.days.monday = false;
+    tuesday ? reminder.days.tuesday = true : reminder.days.tuesday = false;
+    wednesday
+        ? reminder.days.wednesday = true
+        : reminder.days.wednesday = false;
+    thursday ? reminder.days.thursday = true : reminder.days.thursday = false;
+    friday ? reminder.days.friday = true : reminder.days.friday = false;
+    saturday ? reminder.days.saturday = true : reminder.days.saturday = false;
+    sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
+    var doseStringToDouble = double.parse(dosageController.text);
+    reminder.dose = doseStringToDouble;
+    reminder.time = timeSelected;
+    print(reminder.dose);
+    print(reminder.time);
+    print(dosageController.text);
+    print(reminder.days.monday);
+    print(reminder.days.tuesday);
+    print(reminder.days.wednesday);
+    print(reminder.days.thursday);
+    print(reminder.days.friday);
+    print(reminder.days.saturday);
+    print(reminder.days.sunday);
+    final TherapyManager manager =
+        Provider.of<TherapyManager>(context, listen: false);
 
-      manager.therapyForm.reminderRules.add(reminder);
-      manager.updateListeners();
-      print(manager.therapyForm.reminderRules.length);
-      Navigator.pop(context);
+    manager.therapyForm.reminderRules.add(reminder);
+    manager.updateListeners();
+    print(manager.therapyForm.reminderRules.length);
+    Navigator.pop(context);
+  }
+
+  allFieldsFilled() {
+    if (dosageController.text.isNotEmpty &&
+        timeString != "Time" &&
+        (monday ||
+                tuesday ||
+                wednesday ||
+                thursday ||
+                friday ||
+                saturday ||
+                sunday) ==
+            true) {
+      setState(() {
+        _isFilled = true;
+      });
+    } else {
+      setState(() {
+        _isFilled = false;
+      });
     }
   }
 }

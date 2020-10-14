@@ -1,22 +1,30 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/constants/colors.dart';
+import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
+import 'package:diabetty/ui/screens/therapy/components/alarm_settings_dialog.dart';
+import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
+import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
+import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/components/topbar.dart';
 import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
+import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart' as DateRangePicker;
+import 'package:intl/intl.dart';
 
 import 'components/CustomTextField.dart';
 
 class AddTherapyScreenTwo extends StatefulWidget {
-  const AddTherapyScreenTwo(
-      {Key key, this.manager, this.pageController})
+  const AddTherapyScreenTwo({Key key, this.manager, this.pageController})
       : super(key: key);
   final TherapyManager manager;
   final PageController pageController;
-  
 
   @override
   _AddTherapyScreenTwoState createState() => _AddTherapyScreenTwoState();
@@ -35,6 +43,14 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   Widget build(BuildContext context) {
     print('yooooooooooooooo' + therapyForm.window.toString());
     var size = MediaQuery.of(context).size;
+    List<Widget> reminderRulesList =
+        (widget.manager.therapyForm.reminderRules == null ||
+                widget.manager.therapyForm.reminderRules.length == 0)
+            ? List()
+            : widget.manager.therapyForm.reminderRules
+                .map((e) => ReminderRuleField(rule: e))
+                .toList()
+                .cast();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -44,8 +60,8 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         child: IntrinsicHeight(
           child: SizedBox(
             child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: size.height * 0.7),
-              child: _buildBody(context),
+              constraints: BoxConstraints(minHeight: size.height * 0.85),
+              child: _buildBody(context, reminderRulesList, size),
             ),
           ),
         ),
@@ -66,68 +82,123 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     );
   }
 
-  Column _buildBody(BuildContext context) {
+  Column _buildBody(
+      BuildContext context, List<Widget> reminderRulesList, size) {
     var formWidgets = <Widget>[
-      _buildModeField(),
-      _buildWindowField(),
-      _buildStartEndDateField(),
-    ];
-
-    return Column(children: <Widget>[
-      SizedBox(
-        height: 50,
-      ),
-      Container(
-        child: Column(
-          children: formWidgets,
+      Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: 20,
+          ),
+          child: _buildMedicationCard(),
         ),
       ),
-    ]);
+      _buildModeField(),
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: _buildWindowField(),
+      ),
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: _buildStartEndDateField(),
+      ),
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: Column(
+          children: [
+            _buildAddReminderField(context),
+          ],
+        ),
+      ),
+      if (reminderRulesList.length > 0)
+        (reminderRulesList.length < 20)
+            ? ColumnBuilder(
+                itemCount: reminderRulesList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return reminderRulesList[index];
+                },
+              )
+            : _buildListViewRep(context, reminderRulesList),
+    ];
+
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 20,
+        ),
+        Container(
+          child: Column(
+            children: formWidgets,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            alignment: FractionalOffset.bottomCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Visibility(
+                  visible: therapyForm.isVisible() ? true : false,
+                  child: _buildAlarmSettingsField(),
+                ),
+                Visibility(
+                  visible: therapyForm.isVisible() ? true : false,
+                  child: _buildStockField(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMedicationCard() {
+    return MedicationCard(
+      name: therapyForm.name,
+      appearance: appearance_iconss[therapyForm.apperanceIndex],
+    );
   }
 
   Widget _buildWindowField() {
     return CustomTextField(
-     stackIcons: _stackedHeartIcons(true),
-      onTap: () {},
-      placeholder: 'hixs',
+      stackIcons: _stackedHeartIcons(therapyForm.window != null),
+      onTap: () => showWindow(context),
+      placeholder: therapyForm.window == null
+          ? 'none'
+          : prettyDuration(therapyForm.window, abbreviated: false),
       placeholderText: 'Window',
     );
   }
 
   Widget _buildModeField() {
     return CustomTextField(
-     stackIcons: _stackedHeartIcons(true),
-      onTap: () {},
+      stackIcons: _stackedHeartIcons(true),
+      onTap: () {
+        therapyForm.isVisible()
+            ? setState(() {
+                therapyForm.mode = 'needed';
+              })
+            : setState(() {
+                therapyForm.mode = 'planned';
+              });
+      },
       placeholder: 'As ' + therapyForm.mode.capitalize(),
       placeholderText: 'Mode',
     );
   }
 
-  
-
-  _showStartEndDate() async {
-    final List<DateTime> picked = await DateRangePicker.showDatePicker(
-        context: context,
-        initialFirstDate: new DateTime.now(),
-        initialLastDate: new DateTime.now(),
-        firstDate: DateTime.now().subtract(Duration(days: 1)),
-        lastDate: new DateTime(2026, 12, 31));
-    if (picked != null && picked.length == 2) {
-      print(picked);
-    }
-  }
- 
-
   Widget _buildStartEndDateField() {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      onTap: () => _showStartEndDate(),
-      placeholder: 'hi',
+      onTap: () => showStartEndDate(context),
+      placeholder: DateFormat('dd-MM-yyyy').format(therapyForm.startDate),
       placeholderText: 'Start - End Date',
     );
   }
 
-   Stack _stackedHeartIcons(bool cond) {
+  Stack _stackedHeartIcons(bool cond) {
     return Stack(
       children: [
         AnimatedOpacity(
@@ -152,24 +223,74 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     );
   }
 
-}
+  Widget _buildAddReminderField(context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: CupertinoTextField(
+        onTap: () => showReminderModal(context),
+        decoration: BoxDecoration(
+          color: appWhite,
+          border: Border.all(
+              color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+          borderRadius: BorderRadius.circular(0),
+        ),
+        prefix: Container(
+          padding: EdgeInsets.only(left: 18),
+          child: Icon(
+            CupertinoIcons.add_circled_solid,
+            color: Colors.green,
+            size: 23,
+          ),
+        ),
+        placeholder: 'Add Reminder',
+        readOnly: true,
+        maxLines: 1,
+        maxLength: 30,
+        padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
+        placeholderStyle: TextStyle(
+          fontSize: textSizeLargeMedium - 3,
+          color: Colors.grey[700],
+        ),
+      ),
+    );
+  }
 
-//  ,
-//                   Expanded(
-//                       child: Container(
-//                           padding: EdgeInsets.symmetric(vertical: 10),
-//                           alignment: FractionalOffset.bottomCenter,
-//                           child: Column(
-//                             mainAxisAlignment: MainAxisAlignment.end,
-//                             children: [
-//                               _buildAlarmSettingsField(),
-//                               _buildStockField(),
-//                             ],
-//                           ))),
-//                   SizedBox(height: height * 0.08),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
+  _buildListViewRep(BuildContext context, List<Widget> widgets) {
+    var size = MediaQuery.of(context).size;
+    Widget addRem = widgets.cast().last as Widget;
+
+    List<Widget> mywidgets = List.from(widgets);
+    mywidgets.removeLast();
+    return Container(
+      child: Column(
+        children: [
+          SizedBox(
+            height: size.height * 0.3,
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: mywidgets.cast(),
+            ),
+          ),
+          addRem
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAlarmSettingsField() {
+    return CustomTextField(
+      stackIcons: _stackedHeartIcons(true),
+      onTap: () => showAlarmSettingsDialog(context),
+      placeholderText: 'Alarm Settings',
+    );
+  }
+
+  Widget _buildStockField() {
+    return CustomTextField(
+      stackIcons: _stackedHeartIcons(true),
+      onTap: () => showStockDialog(context),
+      placeholderText: 'Stock',
+    );
+  }
+}

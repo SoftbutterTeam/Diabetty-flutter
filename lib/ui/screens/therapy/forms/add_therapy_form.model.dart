@@ -51,6 +51,7 @@ class AddTherapyForm {
       this.reminderRules}) {
     this.reminderRules ??= List();
     this.window ??= Duration(minutes: 20);
+    this.minRest ??= Duration(minutes: 20);
     this.name ??= '';
 
     this.intakeAdviceIndex ??= 0;
@@ -86,6 +87,8 @@ class AddTherapyForm {
                     : this.endDate)
             : null);
   }
+
+  bool isVisible() => (this.mode == 'planned');
 
   bool isNameValid() => this.name != null && this.name.length > 0;
 
