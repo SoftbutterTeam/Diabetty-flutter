@@ -57,6 +57,7 @@ class AddTherapyForm {
 
     this.intakeAdviceIndex ??= 0;
     this.startDate ??= DateTime.now();
+    this.endDate ??= null;
     this.unitsIndex ??= 0;
     this.strengthUnitsIndex ??= 0;
     this.mode = modeOptions[0];

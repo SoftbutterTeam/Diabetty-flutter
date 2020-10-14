@@ -31,8 +31,8 @@ class _StockDialogState extends State<StockDialog> {
       contentPadding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
-        height: size.height * 0.3,
-        width: size.width * 0.8,
+        height: size.height * 0.35,
+        width: size.width * 0.85,
         child: Column(
           children: [
             _buildStockLevelField(size),
@@ -59,7 +59,7 @@ class _StockDialogState extends State<StockDialog> {
                   fontSize: 18.0, fontFamily: fontBold),
             ],
           ),
-          SizedBox(height: 5),
+          SizedBox(height: size.height * 0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -109,7 +109,7 @@ class _StockDialogState extends State<StockDialog> {
                   fontSize: 18.0, fontFamily: fontBold),
             ],
           ),
-          SizedBox(height: 5),
+          SizedBox(height: size.height * 0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -188,38 +188,37 @@ class _StockDialogState extends State<StockDialog> {
               vertical: 5.0,
             ),
           ),
-          AnimatedOpacity(
-            opacity: _isFilled ? 1 : 0,
-            duration: Duration(milliseconds: 500),
-            child: CupertinoButton(
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                  color: Colors.indigo,
-                ),
+          CupertinoButton(
+            child: Text(
+              'Submit',
+              style: TextStyle(
+                color: _isFilled ? Colors.indigo : Colors.black,
               ),
-              onPressed: () {
-                _validation();
-              },
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 5.0,
-              ),
+            ),
+            onPressed: () {
+              _isFilled ? _validation() : null;
+            },
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 5.0,
             ),
           ),
         ],
       ),
     );
   }
+
   _validation() {
     var inventoryControllerInt = int.parse(inventoryController.text);
     var notifyControllerInt = int.parse(notifyController.text);
     print(notifyControllerInt);
-    (notifyControllerInt > inventoryControllerInt) ? print('cant do that son') : _handleSubmit(inventoryControllerInt);
+    (notifyControllerInt > inventoryControllerInt)
+        ? print('cant do that son')
+        : _handleSubmit(inventoryControllerInt);
   }
 
   _handleSubmit(inventoryControllerInt) {
-    therapyForm.stock =  inventoryControllerInt;
+    therapyForm.stock = inventoryControllerInt;
     Navigator.pop(context);
   }
 }
