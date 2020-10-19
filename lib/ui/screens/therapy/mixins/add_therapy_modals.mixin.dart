@@ -230,7 +230,9 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         initialLastDate: new DateTime.now(),
         firstDate: DateTime.now().subtract(Duration(days: 1)),
         lastDate: new DateTime(2026, 12, 31));
-    if (picked != null && picked.length == 2) {
+    if (picked != null && picked.length > 0) {
+      if (picked.length > 1 && isSameDayAs(picked[0], picked[1]))
+        picked.removeAt(1);
       print(picked);
     }
   }
@@ -248,5 +250,12 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       context: context,
       builder: (context) => AddReminderModal2(),
     );
+  }
+
+  bool isSameDayAs(DateTime date, DateTime datey) {
+    if (datey.day != date.day) return false;
+    if (datey.month != date.month) return false;
+    if (datey.year != date.year) return false;
+    return true;
   }
 }
