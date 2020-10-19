@@ -224,7 +224,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
       friday ? reminder.days.friday = true : reminder.days.friday = false;
       saturday ? reminder.days.saturday = true : reminder.days.saturday = false;
       sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
-      var doseStringToDouble = double.parse(dosageController.text);
+      var doseStringToDouble = int.parse(dosageController.text);
       reminder.dose = doseStringToDouble;
       print(reminder.dose);
       print(reminder.time);

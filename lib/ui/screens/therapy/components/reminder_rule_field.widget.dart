@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
 
 class ReminderRuleField extends StatefulWidget {
   const ReminderRuleField({
@@ -74,7 +76,10 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
       suffix: Container(
           padding: EdgeInsets.only(right: 15),
           child: Text(_getTime(), style: textstyle)),
-      placeholder: _getReminderRuleDaysText(),
+      placeholder: widget.rule.dose.toString() +
+          ' ' +
+          unitTypes[manager.therapyForm.unitsIndex]
+              .plurarlUnits(widget.rule.dose),
       textAlign: TextAlign.right,
       style: TextStyle(
         fontFeatures: [
@@ -87,41 +92,6 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
       padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
       placeholderStyle: textstyle,
     );
-  }
-
-  String _getReminderRuleDaysText() {
-    String text = '';
-    String emptyspace = '-'; // or the 5spaces '     ';
-    String letterspace = ' ';
-    if (widget.rule.days.monday)
-      text += 'M' + letterspace;
-    else
-      text += letterspace + emptyspace + letterspace;
-    if (widget.rule.days.tuesday)
-      text += emptyspace + letterspace;
-    else
-      text += emptyspace + letterspace;
-    if (widget.rule.days.wednesday)
-      text += 'W' + letterspace;
-    else
-      text += emptyspace + letterspace;
-    if (widget.rule.days.thursday)
-      text += emptyspace + letterspace;
-    else
-      text += emptyspace + letterspace;
-    if (widget.rule.days.friday)
-      text += 'F' + letterspace;
-    else
-      text += emptyspace + letterspace;
-    if (widget.rule.days.saturday)
-      text += 'S' + letterspace;
-    else
-      text += emptyspace + letterspace;
-    if (widget.rule.days.saturday)
-      text += 'S' + letterspace;
-    else
-      text += emptyspace + letterspace;
-    return '2 tablets';
   }
 
   String _getTime() {
@@ -142,14 +112,36 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
   }
 
   buildWeekWidgets(BuildContext context) {
+    Text emptyClause = Text('-', style: textstyle);
     return <Widget>[
-      Container(child: Text('M', style: textstyle)),
-      Container(child: Text('T', style: textstyle)),
-      Container(child: Text('W', style: textstyle)),
-      Container(child: Text('-', style: textstyle)),
-      Container(child: Text('F', style: textstyle)),
-      Container(child: Text('S', style: textstyle)),
-      Container(child: Text('S', style: textstyle)),
+      Container(
+          child: widget.rule.days.monday
+              ? Text('M', style: textstyle)
+              : emptyClause),
+      Container(
+          child: widget.rule.days.tuesday
+              ? Text('T', style: textstyle)
+              : emptyClause),
+      Container(
+          child: widget.rule.days.wednesday
+              ? Text('W', style: textstyle)
+              : emptyClause),
+      Container(
+          child: widget.rule.days.thursday
+              ? Text('-', style: textstyle)
+              : emptyClause),
+      Container(
+          child: widget.rule.days.friday
+              ? Text('F', style: textstyle)
+              : emptyClause),
+      Container(
+          child: widget.rule.days.saturday
+              ? Text('S', style: textstyle)
+              : emptyClause),
+      Container(
+          child: widget.rule.days.sunday
+              ? Text('S', style: textstyle)
+              : emptyClause),
     ]
         .map((e) => Flexible(fit: FlexFit.tight, child: Center(child: e)))
         .toList();

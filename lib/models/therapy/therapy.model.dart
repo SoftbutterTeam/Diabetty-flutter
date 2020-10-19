@@ -114,7 +114,7 @@ class Schedule {
 class ReminderRule {
   String uid;
   Days days;
-  double dose;
+  int dose;
   DateTime time;
   ReminderRule(
       {this.uid, this.days, this.dose, this.time, forceGenerateUID = false}) {
@@ -148,7 +148,7 @@ class ReminderRule {
     days.dummyData();
     this.days = days;
 
-    this.dose = (rng.nextDouble() * 5);
+    this.dose = (rng.nextInt(100) * 5);
   }
 }
 

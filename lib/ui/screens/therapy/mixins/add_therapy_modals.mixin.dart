@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
     as DateRangePicker;
+import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
 
 @optionalTypeArgs
 mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
@@ -40,7 +41,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
               unitTypes.length,
               (int index) {
                 return new Center(
-                  child: new Text(unitTypes[index]),
+                  child: new Text(unitTypes[index].plurarlUnits(3)),
                 );
               },
             ),
