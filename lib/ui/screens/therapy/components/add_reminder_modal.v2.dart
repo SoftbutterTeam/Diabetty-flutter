@@ -61,8 +61,8 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         child: Column(
           children: [
             _buildDaySelector(size),
-            _buildDosageField(size),
             _buildTimeField(size),
+            _buildDosageField(size),
             _buildCancelAndSubmitButtons(),
           ],
         ),
@@ -113,7 +113,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
 
   Container _buildTimeField(Size size) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(top: 20, bottom: 15),
       height: size.height * 0.045,
       width: size.width * 0.5,
       child: CupertinoTextField(
@@ -178,7 +178,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
 
   Container _buildDosageField(Size size) {
     return Container(
-      margin: EdgeInsets.only(top: 20, bottom: 15),
+      margin: EdgeInsets.only(bottom: 10),
       height: size.height * 0.045,
       width: size.width * 0.5,
       // color: Colors.red,
