@@ -140,10 +140,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
                   visible: therapyForm.isVisible() ? true : false,
                   child: _buildAlarmSettingsField(),
                 ),
-                Visibility(
-                  visible: therapyForm.isVisible() ? true : false,
-                  child: _buildStockField(),
-                ),
+                _buildStockField(),
               ],
             ),
           ),

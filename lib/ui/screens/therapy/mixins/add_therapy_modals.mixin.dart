@@ -227,8 +227,8 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   showStartEndDate(BuildContext context) async {
     final List<DateTime> picked = await DateRangePicker.showDatePicker(
         context: context,
-        initialFirstDate: DateTime.now(),
-        initialLastDate: DateTime.now(),
+        initialFirstDate: therapyForm.startDate,
+        initialLastDate: therapyForm.endDate ?? therapyForm.startDate,
         firstDate: DateTime.now().subtract(Duration(days: 1)),
         lastDate: new DateTime(2026, 12, 31));
     if (picked != null && picked.length > 0) {

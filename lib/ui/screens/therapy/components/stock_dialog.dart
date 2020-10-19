@@ -31,9 +31,10 @@ class _StockDialogState extends State<StockDialog> {
       contentPadding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
-        height: size.height * 0.35,
+        height: size.height * 0.38,
         width: size.width * 0.85,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildStockLevelField(size),
             _buildNotifyWhenField(size),
@@ -47,7 +48,6 @@ class _StockDialogState extends State<StockDialog> {
   Container _buildStockLevelField(Size size) {
     return Container(
       padding: EdgeInsets.only(top: 10),
-      height: size.height * 0.12,
       width: size.width * 0.8,
       // color: Colors.red,
       child: Column(
@@ -97,7 +97,6 @@ class _StockDialogState extends State<StockDialog> {
 
   Container _buildNotifyWhenField(Size size) {
     return Container(
-      height: size.height * 0.12,
       width: size.width * 0.8,
       // color: Colors.blue,
       child: Column(
