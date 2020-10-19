@@ -39,6 +39,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
   @override
   Widget build(BuildContext context) {
     TherapyManager manager = Provider.of<TherapyManager>(context);
+    var size = MediaQuery.of(context).size;
     List<Widget> weekDays = buildWeekWidgets(context);
     return CupertinoTextField(
       decoration: BoxDecoration(
@@ -52,7 +53,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
           GestureDetector(
             onTap: () => _deleteRule(manager),
             child: Container(
-              padding: EdgeInsets.only(left: 18, right: 16),
+              padding: EdgeInsets.only(left: 18, right: 14),
               child: Icon(
                 CupertinoIcons.minus_circled,
                 color: Colors.red,
@@ -60,10 +61,13 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: weekDays,
+          Container(
+            width: size.width * 0.4,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: weekDays,
+            ),
           )
         ],
       ),
@@ -136,65 +140,18 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
     //* dont worry I already generate the uids
     manager.updateListeners();
   }
-}
 
-buildWeekWidgets(BuildContext context) {
-  return <Widget>[
-    Container(
-      padding: EdgeInsets.only(left: 0),
-      child: Icon(
-        CupertinoIcons.minus_circled,
-        color: Colors.red,
-        size: 23,
-      ),
-    ),
-    Container(
-      padding: EdgeInsets.only(left: 0),
-      child: Icon(
-        CupertinoIcons.minus_circled,
-        color: Colors.red,
-        size: 23,
-      ),
-    ),
-    Container(
-      padding: EdgeInsets.only(left: 0),
-      child: Icon(
-        CupertinoIcons.minus_circled,
-        color: Colors.red,
-        size: 23,
-      ),
-    ),
-    Container(
-      padding: EdgeInsets.only(left: 0),
-      child: Icon(
-        CupertinoIcons.minus_circled,
-        color: Colors.red,
-        size: 23,
-      ),
-    ),
-    Container(
-      padding: EdgeInsets.only(left: 0),
-      child: Icon(
-        CupertinoIcons.minus_circled,
-        color: Colors.red,
-        size: 23,
-      ),
-    ),
-    Container(
-      padding: EdgeInsets.only(left: 0),
-      child: Icon(
-        CupertinoIcons.minus_circled,
-        color: Colors.red,
-        size: 23,
-      ),
-    ),
-    Container(
-      padding: EdgeInsets.only(left: 0),
-      child: Icon(
-        CupertinoIcons.minus_circled,
-        color: Colors.red,
-        size: 23,
-      ),
-    ),
-  ];
+  buildWeekWidgets(BuildContext context) {
+    return <Widget>[
+      Container(child: Text('M', style: textstyle)),
+      Container(child: Text('T', style: textstyle)),
+      Container(child: Text('W', style: textstyle)),
+      Container(child: Text('-', style: textstyle)),
+      Container(child: Text('F', style: textstyle)),
+      Container(child: Text('S', style: textstyle)),
+      Container(child: Text('S', style: textstyle)),
+    ]
+        .map((e) => Flexible(fit: FlexFit.tight, child: Center(child: e)))
+        .toList();
+  }
 }
