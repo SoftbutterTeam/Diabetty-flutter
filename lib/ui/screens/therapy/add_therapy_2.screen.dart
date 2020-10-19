@@ -188,6 +188,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   }
 
   Widget _buildStartEndDateField() {
+    print(therapyForm.endDate);
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showStartEndDate(context),
@@ -196,7 +197,11 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
                   therapyForm.startDate.isSameDayAs(therapyForm.endDate)))
           ? "From Today"
           : (therapyForm.endDate == null)
-              ? 'From ' + DateFormat('dd/MM/yy').format(therapyForm.startDate)
+              ? (therapyForm.startDate
+                      .isSameDayAs(DateTime.now().add(Duration(days: 1))))
+                  ? 'From Tommorow'
+                  : 'From ' +
+                      DateFormat('dd/MM/yy').format(therapyForm.startDate)
               : DateFormat('dd/MM/yy').format(therapyForm.startDate) +
                   ' to ' +
                   DateFormat('dd/MM/yy').format(therapyForm.endDate),
