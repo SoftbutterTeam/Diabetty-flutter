@@ -232,6 +232,12 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         lastDate: new DateTime(2026, 12, 31));
     if (picked != null && picked.length == 2) {
       print(picked);
+      therapyForm.startDate = picked[0];
+      therapyForm.endDate = picked[1];
+      setState(() {});
+    } else if (picked.length == 1) {
+      therapyForm.startDate = picked[0];
+      setState(() {});
     }
   }
 

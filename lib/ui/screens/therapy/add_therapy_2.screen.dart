@@ -191,7 +191,9 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showStartEndDate(context),
-      placeholder: therapyForm.startDate.isSameDayAs(DateTime.now())
+      placeholder: (therapyForm.startDate.isSameDayAs(DateTime.now()) &&
+                  therapyForm.endDate == null ||
+              (therapyForm.startDate.isSameDayAs(therapyForm.endDate)))
           ? 'From Today'
           : DateFormat('dd-MM-yyyy').format(therapyForm.startDate) +
               ((therapyForm.endDate == null)
