@@ -188,16 +188,27 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   }
 
   Widget _buildStartEndDateField() {
+    var equal = (therapyForm.endDate != null) ? DateFormat('dd-MM-yyyy').format(therapyForm.startDate) == DateFormat('dd-MM-yyyy').format(therapyForm.endDate) : null;
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showStartEndDate(context),
-      placeholder: therapyForm.startDate.isSameDayAs(DateTime.now())
-          ? 'From Today'
-          : DateFormat('dd-MM-yyyy').format(therapyForm.startDate) +
-              ((therapyForm.endDate == null)
-                  ? ''
-                  : ' to ' +
-                      DateFormat('dd-MM-yyyy').format(therapyForm.endDate)),
+      placeholder: (therapyForm.startDate.isSameDayAs(DateTime.now()) &&
+              therapyForm.endDate == null)
+          ? "From Today"
+          : (therapyForm.startDate.isSameDayAs(DateTime.now()) &&
+                  (therapyForm.endDate != null && equal))
+              ? "From Today"
+              : DateFormat('dd-MM-yyyy').format(therapyForm.startDate) +
+                  ((therapyForm.endDate == null)
+                      ? ''
+                      : (DateFormat('dd-MM-yyyy')
+                                  .format(therapyForm.startDate) ==
+                              DateFormat('dd-MM-yyyy')
+                                  .format(therapyForm.endDate))
+                          ? 'From Today'
+                          : ' to ' +
+                              DateFormat('dd-MM-yyyy')
+                                  .format(therapyForm.endDate)),
       placeholderText: 'Start - End Date',
     );
   }
