@@ -237,6 +237,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       setState(() {});
     } else if (picked.length == 1) {
       therapyForm.startDate = picked[0];
+      therapyForm.endDate = null;
       setState(() {});
     }
   }
