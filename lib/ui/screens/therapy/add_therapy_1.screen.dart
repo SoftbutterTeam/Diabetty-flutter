@@ -147,7 +147,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showUnitPopUp(context),
       placeholder: unitTypes[therapyForm.unitsIndex],
-      placeholderText: 'Unit',
+      placeholderText: 'Type',
     );
   }
 

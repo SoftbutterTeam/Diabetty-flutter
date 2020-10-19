@@ -36,13 +36,13 @@ class _StrengthTextFieldState extends State<StrengthTextField> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.controller.text = widget.initialText;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.controller.text = widget.initialText;
-    });
     var size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
@@ -59,26 +59,20 @@ class _StrengthTextFieldState extends State<StrengthTextField> {
           borderRadius: BorderRadius.circular(0),
         ),
         prefix: GestureDetector(
-            onTap: () {
-              print('hello');
-              if (widget.therapyForm.strengthUnitsIndex == 0)
-                widget.onTap.call();
-            },
             child: Row(
-              children: [
-                Container(
-                    padding: EdgeInsets.only(left: 18),
-                    child: widget.stackIcons),
-                Container(
-                  child: Text(
-                    'Set Strength',
-                  ),
-                  padding: EdgeInsets.only(
-                    left: 18,
-                  ),
-                ),
-              ],
-            )),
+          children: [
+            Container(
+                padding: EdgeInsets.only(left: 18), child: widget.stackIcons),
+            Container(
+              child: Text(
+                'Set Strength',
+              ),
+              padding: EdgeInsets.only(
+                left: 18,
+              ),
+            ),
+          ],
+        )),
         suffix: GestureDetector(
           onTap: widget.onTap,
           child: Container(
@@ -99,7 +93,8 @@ class _StrengthTextFieldState extends State<StrengthTextField> {
         ),
         textAlign: TextAlign.right,
         readOnly: (widget.placeholder == 'none'),
-        onTap: (widget.placeholder == 'none') ? widget.onTap : null,
+        onTap:
+            (widget.therapyForm.strengthUnitsIndex == 0) ? widget.onTap : null,
         maxLines: 1,
         maxLength: 30,
         padding: EdgeInsets.only(left: 0, top: 9, bottom: 9, right: 10),

@@ -95,7 +95,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
             child: Text(
               'Submit',
               style: TextStyle(
-                color: _isFilled ? Colors.indigo : Colors.black,
+                color: _isFilled ? Colors.indigo : Colors.black26,
               ),
             ),
             onPressed: () {

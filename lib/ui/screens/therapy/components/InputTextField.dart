@@ -33,13 +33,13 @@ class _InputTextFieldState extends State<InputTextField> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.controller.text = widget.initalName;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.controller.text = widget.initalName;
-    });
     return Padding(
       padding: const EdgeInsets.only(bottom: 40),
       child: CupertinoTextField(

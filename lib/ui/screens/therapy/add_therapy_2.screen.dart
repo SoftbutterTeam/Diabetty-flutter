@@ -17,6 +17,7 @@ import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:diabetty/ui/screens/therapy/extensions/datetime_extension.dart';
 
 import 'components/CustomTextField.dart';
 
@@ -41,7 +42,6 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   @override
   Widget build(BuildContext context) {
-    print('yooooooooooooooo' + therapyForm.window.toString());
     var size = MediaQuery.of(context).size;
     List<Widget> reminderRulesList =
         (widget.manager.therapyForm.reminderRules == null ||
@@ -191,10 +191,13 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showStartEndDate(context),
-      placeholder: DateFormat('dd-MM-yyyy').format(therapyForm.startDate) +
-          ((therapyForm.endDate == null)
-              ? ''
-              : ' to ' + DateFormat('dd-MM-yyyy').format(therapyForm.endDate)),
+      placeholder: therapyForm.startDate.isSameDayAs(DateTime.now())
+          ? 'From Today'
+          : DateFormat('dd-MM-yyyy').format(therapyForm.startDate) +
+              ((therapyForm.endDate == null)
+                  ? ''
+                  : ' to ' +
+                      DateFormat('dd-MM-yyyy').format(therapyForm.endDate)),
       placeholderText: 'Start - End Date',
     );
   }

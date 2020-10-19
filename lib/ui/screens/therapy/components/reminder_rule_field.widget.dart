@@ -39,6 +39,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
   @override
   Widget build(BuildContext context) {
     TherapyManager manager = Provider.of<TherapyManager>(context);
+    List<Widget> weekDays = buildWeekWidgets(context);
     return CupertinoTextField(
       decoration: BoxDecoration(
         color: appWhite,
@@ -46,20 +47,36 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
             color: Colors.black54, width: 0.1, style: BorderStyle.solid),
         borderRadius: BorderRadius.circular(0),
       ),
-      prefix: GestureDetector(
-          onTap: () => _deleteRule(manager),
-          child: Container(
-            padding: EdgeInsets.only(left: 18),
-            child: Icon(
-              CupertinoIcons.minus_circled,
-              color: Colors.red,
-              size: 23,
+      prefix: Row(
+        children: [
+          GestureDetector(
+            onTap: () => _deleteRule(manager),
+            child: Container(
+              padding: EdgeInsets.only(left: 18, right: 16),
+              child: Icon(
+                CupertinoIcons.minus_circled,
+                color: Colors.red,
+                size: 23,
+              ),
             ),
-          )),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: weekDays,
+          )
+        ],
+      ),
       suffix: Container(
           padding: EdgeInsets.only(right: 15),
           child: Text(_getTime(), style: textstyle)),
       placeholder: _getReminderRuleDaysText(),
+      textAlign: TextAlign.right,
+      style: TextStyle(
+        fontFeatures: [
+          FontFeature.tabularFigures(),
+        ],
+      ),
       readOnly: true,
       maxLines: 1,
       maxLength: 30,
@@ -70,36 +87,37 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
 
   String _getReminderRuleDaysText() {
     String text = '';
-    String emptyspace = '-  '; // or the 5spaces '     ';
+    String emptyspace = '-'; // or the 5spaces '     ';
+    String letterspace = ' ';
     if (widget.rule.days.monday)
-      text += 'M  ';
+      text += 'M' + letterspace;
     else
-      text += emptyspace;
+      text += letterspace + emptyspace + letterspace;
     if (widget.rule.days.tuesday)
-      text += 'T  ';
+      text += emptyspace + letterspace;
     else
-      text += emptyspace;
+      text += emptyspace + letterspace;
     if (widget.rule.days.wednesday)
-      text += 'W  ';
+      text += 'W' + letterspace;
     else
-      text += emptyspace;
+      text += emptyspace + letterspace;
     if (widget.rule.days.thursday)
-      text += 'T  ';
+      text += emptyspace + letterspace;
     else
-      text += emptyspace;
+      text += emptyspace + letterspace;
     if (widget.rule.days.friday)
-      text += 'F  ';
+      text += 'F' + letterspace;
     else
-      text += emptyspace;
+      text += emptyspace + letterspace;
     if (widget.rule.days.saturday)
-      text += 'S  ';
+      text += 'S' + letterspace;
     else
-      text += emptyspace;
+      text += emptyspace + letterspace;
     if (widget.rule.days.saturday)
-      text += 'S  ';
+      text += 'S' + letterspace;
     else
-      text += emptyspace;
-    return text;
+      text += emptyspace + letterspace;
+    return '2 tablets';
   }
 
   String _getTime() {
@@ -118,4 +136,65 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
     //* dont worry I already generate the uids
     manager.updateListeners();
   }
+}
+
+buildWeekWidgets(BuildContext context) {
+  return <Widget>[
+    Container(
+      padding: EdgeInsets.only(left: 0),
+      child: Icon(
+        CupertinoIcons.minus_circled,
+        color: Colors.red,
+        size: 23,
+      ),
+    ),
+    Container(
+      padding: EdgeInsets.only(left: 0),
+      child: Icon(
+        CupertinoIcons.minus_circled,
+        color: Colors.red,
+        size: 23,
+      ),
+    ),
+    Container(
+      padding: EdgeInsets.only(left: 0),
+      child: Icon(
+        CupertinoIcons.minus_circled,
+        color: Colors.red,
+        size: 23,
+      ),
+    ),
+    Container(
+      padding: EdgeInsets.only(left: 0),
+      child: Icon(
+        CupertinoIcons.minus_circled,
+        color: Colors.red,
+        size: 23,
+      ),
+    ),
+    Container(
+      padding: EdgeInsets.only(left: 0),
+      child: Icon(
+        CupertinoIcons.minus_circled,
+        color: Colors.red,
+        size: 23,
+      ),
+    ),
+    Container(
+      padding: EdgeInsets.only(left: 0),
+      child: Icon(
+        CupertinoIcons.minus_circled,
+        color: Colors.red,
+        size: 23,
+      ),
+    ),
+    Container(
+      padding: EdgeInsets.only(left: 0),
+      child: Icon(
+        CupertinoIcons.minus_circled,
+        color: Colors.red,
+        size: 23,
+      ),
+    ),
+  ];
 }
