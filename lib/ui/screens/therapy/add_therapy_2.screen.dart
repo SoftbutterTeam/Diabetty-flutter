@@ -50,8 +50,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
             : widget.manager.therapyForm.reminderRules
                 .map((e) => ReminderRuleField(rule: e) as Widget)
                 .toList()
-          ..add(
-            _buildAddReminderField(context));
+          ..add(_buildAddReminderField(context));
 
     return Scaffold(
       appBar: PreferredSize(
@@ -203,7 +202,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
           : (therapyForm.endDate == null)
               ? (therapyForm.startDate
                       .isSameDayAs(DateTime.now().add(Duration(days: 1))))
-                  ? 'From Tommorow'
+                  ? 'From Tomorrow'
                   : 'From ' +
                       DateFormat('dd/MM/yy').format(therapyForm.startDate)
               : DateFormat('dd/MM/yy').format(therapyForm.startDate) +
@@ -243,7 +242,8 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          text('Weekly Reminders', isCentered: true, textColor: Colors.black54, fontSize: 12.0),
+          text('Weekly Reminders',
+              isCentered: true, textColor: Colors.black54, fontSize: 12.0),
           CupertinoTextField(
             onTap: () => showReminderModal(context),
             decoration: BoxDecoration(
