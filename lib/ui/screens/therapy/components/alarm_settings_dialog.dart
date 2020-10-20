@@ -29,7 +29,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
       contentPadding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
-        height: size.height * 0.35,
+        height: size.height * 0.36,
         width: size.width * 0.85,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
