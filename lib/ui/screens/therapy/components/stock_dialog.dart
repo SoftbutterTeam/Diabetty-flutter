@@ -31,7 +31,7 @@ class _StockDialogState extends State<StockDialog> {
       contentPadding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
-        height: size.height * 0.35,
+        height: size.height * 0.36,
         width: size.width * 0.85,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -176,20 +176,19 @@ class _StockDialogState extends State<StockDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CupertinoButton(
-            child: Text(
-              'Cancel',
-              style: TextStyle(
-                color: CupertinoColors.destructiveRed,
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: CupertinoColors.destructiveRed,
+                ),
               ),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 5.0,
-            ),
-          ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 5.0,
+              )),
           CupertinoButton(
             child: Text(
               'Submit',
@@ -214,9 +213,8 @@ class _StockDialogState extends State<StockDialog> {
     var inventoryControllerInt = int.parse(inventoryController.text);
     var notifyControllerInt = int.parse(notifyController.text);
     print(notifyControllerInt);
-    (notifyControllerInt > inventoryControllerInt)
-        ? print('cant do that son')
-        : _handleSubmit(inventoryControllerInt);
+    if (notifyControllerInt > inventoryControllerInt) return;
+    _handleSubmit(inventoryControllerInt);
   }
 
   _handleSubmit(inventoryControllerInt) {
