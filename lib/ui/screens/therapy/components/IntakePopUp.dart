@@ -38,7 +38,9 @@ class _IntakePopUpState extends State<IntakePopUp> {
                     color: CupertinoColors.destructiveRed,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
                   vertical: 5.0,

@@ -31,7 +31,7 @@ class _StockDialogState extends State<StockDialog> {
       contentPadding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
-        height: size.height * 0.38,
+        height: size.height * 0.35,
         width: size.width * 0.85,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,7 +56,7 @@ class _StockDialogState extends State<StockDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               text("Set current stock level at",
-                  fontSize: 18.0, fontFamily: fontBold),
+                  fontSize: 16.0, fontFamily: fontBold),
             ],
           ),
           SizedBox(height: size.height * 0.01),
@@ -80,7 +80,7 @@ class _StockDialogState extends State<StockDialog> {
                     color: Colors.black26,
                   ),
                   keyboardType: TextInputType.number,
-                  maxLength: 3,
+                  maxLength: 4,
                   maxLengthEnforced: true,
                   decoration: BoxDecoration(
                     color: Color(0xfff7f7f7),
@@ -105,7 +105,7 @@ class _StockDialogState extends State<StockDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               text("Notify me when there are",
-                  fontSize: 18.0, fontFamily: fontBold),
+                  fontSize: 16.0, fontFamily: fontBold),
             ],
           ),
           SizedBox(height: size.height * 0.01),
@@ -128,7 +128,7 @@ class _StockDialogState extends State<StockDialog> {
                     color: Colors.black26,
                   ),
                   keyboardType: TextInputType.number,
-                  maxLength: 3,
+                  maxLength: 4,
                   maxLengthEnforced: true,
                   enableInteractiveSelection: false,
                   decoration: BoxDecoration(
@@ -154,8 +154,11 @@ class _StockDialogState extends State<StockDialog> {
   }
 
   areBothFieldsFilled() {
+    var inventoryControllerInt = int.parse(inventoryController.text);
+    var notifyControllerInt = int.parse(notifyController.text);
     if (inventoryController.text.isNotEmpty &&
-        notifyController.text.isNotEmpty) {
+        notifyController.text.isNotEmpty &&
+        (notifyControllerInt < inventoryControllerInt)) {
       setState(() {
         _isFilled = true;
       });
@@ -191,7 +194,7 @@ class _StockDialogState extends State<StockDialog> {
             child: Text(
               'Submit',
               style: TextStyle(
-                color: _isFilled ? Colors.indigo : Colors.black,
+                color: _isFilled ? Colors.indigo : Colors.black26,
               ),
             ),
             onPressed: () {

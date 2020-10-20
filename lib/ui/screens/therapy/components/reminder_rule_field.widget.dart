@@ -128,7 +128,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
               : emptyClause),
       Container(
           child: widget.rule.days.thursday
-              ? Text('-', style: textstyle)
+              ? Text('T', style: textstyle)
               : emptyClause),
       Container(
           child: widget.rule.days.friday

@@ -50,7 +50,8 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
             : widget.manager.therapyForm.reminderRules
                 .map((e) => ReminderRuleField(rule: e) as Widget)
                 .toList()
-          ..add(_buildAddReminderField(context));
+          ..add(
+            _buildAddReminderField(context));
 
     return Scaffold(
       appBar: PreferredSize(
@@ -234,31 +235,36 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   Widget _buildAddReminderField(context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
-      child: CupertinoTextField(
-        onTap: () => showReminderModal(context),
-        decoration: BoxDecoration(
-          color: appWhite,
-          border: Border.all(
-              color: Colors.black54, width: 0.1, style: BorderStyle.solid),
-          borderRadius: BorderRadius.circular(0),
-        ),
-        prefix: Container(
-          padding: EdgeInsets.only(left: 18),
-          child: Icon(
-            CupertinoIcons.add_circled_solid,
-            color: Colors.green,
-            size: 23,
+      child: Column(
+        children: [
+          text('Weekly Reminders', isCentered: true, textColor: Colors.black54, fontSize: 12.0),
+          CupertinoTextField(
+            onTap: () => showReminderModal(context),
+            decoration: BoxDecoration(
+              color: appWhite,
+              border: Border.all(
+                  color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+              borderRadius: BorderRadius.circular(0),
+            ),
+            prefix: Container(
+              padding: EdgeInsets.only(left: 18),
+              child: Icon(
+                CupertinoIcons.add_circled_solid,
+                color: Colors.green,
+                size: 23,
+              ),
+            ),
+            placeholder: 'Add Reminder',
+            readOnly: true,
+            maxLines: 1,
+            maxLength: 30,
+            padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
+            placeholderStyle: TextStyle(
+              fontSize: textSizeLargeMedium - 3,
+              color: Colors.grey[700],
+            ),
           ),
-        ),
-        placeholder: 'Add Reminder',
-        readOnly: true,
-        maxLines: 1,
-        maxLength: 30,
-        padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
-        placeholderStyle: TextStyle(
-          fontSize: textSizeLargeMedium - 3,
-          color: Colors.grey[700],
-        ),
+        ],
       ),
     ) as Widget;
   }
