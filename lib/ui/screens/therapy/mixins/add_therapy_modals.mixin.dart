@@ -252,7 +252,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   }
 
   showStockDialog(BuildContext context) {
-    showDialog(context: context, builder: (context) => StockDialog());
+    showDialog(context: context, builder: (context) => StockDialog(therapyForm: therapyForm));
   }
 
   showReminderModal(BuildContext context) {
@@ -267,9 +267,5 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     if (datey.month != date.month) return false;
     if (datey.year != date.year) return false;
     return true;
-  }
-
-  saveAsNeededData() {
-    print('hey');
   }
 }

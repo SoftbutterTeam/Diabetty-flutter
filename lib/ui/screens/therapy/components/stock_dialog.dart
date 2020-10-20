@@ -6,6 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StockDialog extends StatefulWidget {
+  final AddTherapyForm therapyForm;
+
+  StockDialog({this.therapyForm});
   @override
   _StockDialogState createState() => _StockDialogState();
 }
@@ -14,7 +17,6 @@ class _StockDialogState extends State<StockDialog> {
   TextEditingController inventoryController;
   TextEditingController notifyController;
   bool _isFilled;
-  final therapyForm = AddTherapyForm();
 
   @override
   void initState() {
@@ -212,13 +214,13 @@ class _StockDialogState extends State<StockDialog> {
   _validation() {
     int inventoryControllerInt = int.parse(inventoryController.text);
     var notifyControllerInt = int.parse(notifyController.text);
-    print(notifyControllerInt);
     if (notifyControllerInt < inventoryControllerInt)
     _handleSubmit(inventoryControllerInt);
   }
 
   _handleSubmit(int inventoryControllerInt) {
-    therapyForm.stock = inventoryControllerInt;
+    widget.therapyForm.stock = inventoryControllerInt;
+    print(widget.therapyForm.stock);
     Navigator.pop(context);
   }
 }

@@ -50,8 +50,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
             : widget.manager.therapyForm.reminderRules
                 .map((e) => ReminderRuleField(rule: e) as Widget)
                 .toList()
-          ..add(
-            _buildAddReminderField(context));
+          ..add(_buildAddReminderField(context));
 
     return Scaffold(
       appBar: PreferredSize(
@@ -82,9 +81,9 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       },
       onRightTap: () {
         if (therapyForm.mode == 'needed') {
-          therapyForm.printStuff();
+          therapyForm.handleAsNeededSave();
         } else {
-          print('As planned');
+          therapyForm.handleAsPlannedSave();
         }
       },
     );
@@ -109,6 +108,10 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       Visibility(
         visible: therapyForm.isVisible() ? true : false,
         child: _buildStartEndDateField(),
+      ),
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: _buildWeeklyReminderText(),
       ),
       if (reminderRulesList.length > 0)
         Visibility(
@@ -154,6 +157,11 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         ),
       ],
     );
+  }
+
+  Widget _buildWeeklyReminderText() {
+    return text('Weekly Reminders',
+          isCentered: true, textColor: Colors.black54, fontSize: 13.0);
   }
 
   Widget _buildMedicationCard() {
@@ -243,7 +251,6 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          text('Weekly Reminders', isCentered: true, textColor: Colors.black54, fontSize: 12.0),
           CupertinoTextField(
             onTap: () => showReminderModal(context),
             decoration: BoxDecoration(

@@ -64,7 +64,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
             ),
           ),
           Container(
-            width: size.width * 0.4,
+            width: size.width * 0.35,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,9 +73,10 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
           )
         ],
       ),
-      suffix: Container(
-          padding: EdgeInsets.only(right: 15),
-          child: Text(_getTime(), style: textstyle)),
+      suffix: Stack(
+        children: [_buildPlaceboTime(), _buildReminderTime()],
+        alignment: Alignment.centerRight,
+      ),
       placeholder: widget.rule.dose.toString() +
           ' ' +
           unitTypes[manager.therapyForm.unitsIndex]
@@ -92,6 +93,24 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
       padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
       placeholderStyle: textstyle,
     );
+  }
+
+  Container _buildReminderTime() {
+    return Container(
+        padding: EdgeInsets.only(right: 15),
+        child: Text(_getTime(), style: textstyle));
+  }
+
+  Container _buildPlaceboTime() {
+    return Container(
+        padding: EdgeInsets.only(right: 15),
+        child: Text('00:00 AM',
+            style: TextStyle(
+              color: Colors.transparent,
+              letterSpacing: textstyle.letterSpacing,
+              fontFeatures: textstyle.fontFeatures,
+              fontSize: textstyle.fontSize,
+            )));
   }
 
   String _getTime() {

@@ -54,7 +54,7 @@ class AddTherapyForm {
     this.reminderRules ??= List();
     this.window ??= Duration(minutes: 20);
     this.name ??= '';
-
+    this.stock ??= 0;
     this.intakeAdviceIndex ??= 0;
     this.startDate ??= DateTime.now();
     this.endDate ??= null;
@@ -62,6 +62,38 @@ class AddTherapyForm {
     this.strengthUnitsIndex ??= 0;
     this.mode = modeOptions[0];
     this.apperanceIndex = 0;
+  }
+
+  handleAsNeededSave() {
+    if (mode == 'needed') {
+      window = null;
+      startDate = null;
+      endDate = null;
+      print(name);
+      print(strength);
+      print(minRest);
+      print(stock);
+      print(strengthUnitsIndex);
+      print(window);
+    }
+  }
+
+  handleAsPlannedSave() {
+    if (mode == 'planned') {
+      startDate ??= DateTime.now();
+      endDate ??= null;
+    }
+    print(name);
+    print(strength);
+    print(minRest);
+    print(stock);
+    print(strengthUnitsIndex);
+    print(apperanceIndex);
+    print(intakeAdviceIndex);
+    print(unitsIndex);
+    print(startDate);
+    print(endDate);
+    print(window);
   }
 
   Therapy toTherapy() {
@@ -120,13 +152,4 @@ class AddTherapyForm {
   bool isDateValid() => this.startDate != null;
 
   bool isWindowValid() => this.window != null;
- 
-  printStuff() {
-    print(name);
-    print(strength);
-    print(minRest);
-    print(stock);
-    print(strengthUnitsIndex);
-  }
-
 }
