@@ -1,4 +1,5 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
@@ -77,35 +78,29 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CupertinoButton(
-            child: Text(
-              'Cancel',
-              style: TextStyle(
-                color: CupertinoColors.destructiveRed,
-              ),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 5.0,
-            ),
-          ),
+              child: Text('Cancel',
+                  style: TextStyle(
+                    color: CupertinoColors.destructiveRed,
+                  )),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 5.0,
+              )),
           CupertinoButton(
-            child: Text(
-              'Submit',
-              style: TextStyle(
-                color: _isFilled ? Colors.indigo : Colors.black26,
-              ),
-            ),
-            onPressed: () {
-              _isFilled ? _handleSubmit() : null;
-            },
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 5.0,
-            ),
-          ),
+              child: Text('Submit',
+                  style: TextStyle(
+                    color: _isFilled ? Colors.indigo : Colors.black26,
+                  )),
+              onPressed: () {
+                _isFilled ? _handleSubmit() : null;
+              },
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 5.0,
+              ))
         ],
       ),
     );

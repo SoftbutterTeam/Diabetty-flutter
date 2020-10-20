@@ -211,7 +211,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
           : (therapyForm.endDate == null)
               ? (therapyForm.startDate
                       .isSameDayAs(DateTime.now().add(Duration(days: 1))))
-                  ? 'From Tommorow'
+                  ? 'From Tomorrow'
                   : 'From ' +
                       DateFormat('dd/MM/yy').format(therapyForm.startDate)
               : DateFormat('dd/MM/yy').format(therapyForm.startDate) +
