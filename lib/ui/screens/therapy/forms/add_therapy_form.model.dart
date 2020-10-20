@@ -99,8 +99,34 @@ class AddTherapyForm {
   bool isStrengthUnitsValid() =>
       this.strengthUnitsIndex != null && this.strengthUnitsIndex >= 0;
 
-  bool isIntakeAdviceValid() => this.intakeAdviceIndex != intakeAdviceIndex;
+  bool isIntakeAdviceValid() =>
+      this.intakeAdviceIndex != null && this.intakeAdviceIndex >= 0;
 
-  bool isAllFormValid() =>
-      isNameValid() && isStrengthValid() && isStrengthUnitsValid();
+  bool isAppearanceAdviceValid() =>
+      this.apperanceIndex != null && this.apperanceIndex >= 0;
+
+  bool isStockValid() => this.stock != null && this.stock > 0;
+
+  bool isMinRestValid() => this.minRest != null;
+
+  bool isAsNeededFormValid() =>
+      isNameValid() &&
+      isStrengthValid() &&
+      isStrengthUnitsValid() &&
+      isIntakeAdviceValid() &&
+      isAppearanceAdviceValid() &&
+      isStockValid();
+
+  bool isDateValid() => this.startDate != null;
+
+  bool isWindowValid() => this.window != null;
+ 
+  printStuff() {
+    print(name);
+    print(strength);
+    print(minRest);
+    print(stock);
+    print(strengthUnitsIndex);
+  }
+
 }
