@@ -6,7 +6,7 @@ import 'package:diabetty/ui/screens/today/components/reminder_card.widget.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_mini.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:diabetty/blocs/dayplan_manager.dart' as Plan;
+import 'package:diabetty/models/timeslot.model.dart' as Plan;
 import 'package:intl/intl.dart';
 
 class TimeSlot extends StatefulWidget {

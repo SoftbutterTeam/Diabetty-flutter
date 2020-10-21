@@ -25,6 +25,27 @@ class TherapyRepository {
     }
   }
 
+  Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(
+      String uid, String therapyid) async {
+    try {
+      var result = await _db
+          .collection("users")
+          .document('YDpBWyABH3ZluJ9sDKTCTGXCqzz1')
+          .collection('therapies')
+          .getDocuments();
+
+      var data = (result.documents.map((e) {
+        var json = Map<String, dynamic>.from(e.data)..['id'] = e.documentID;
+        return json;
+      }).toList());
+      print(data.map((e) => e.toString()));
+      return DataResult<List<Map<String, dynamic>>>(data: data);
+    } catch (exception, stackTrace) {
+      print('HELLLO');
+      return DataResult(exception: exception, stackTrace: stackTrace);
+    }
+  }
+
   //* TODO review update CRUD and transactions
   Future<void> updateTherapy(Therapy therapy) async {
     Map<String, dynamic> therapyData = Map();
@@ -55,6 +76,17 @@ class TherapyRepository {
     });
     return true;
   }
+
+  /*
+  Stream<List<T>> get onStateChanged {
+    return _db
+        .collection('users')
+        .document(uid)
+        .collection('therapies')
+        .snapshots()
+        .map((e) => null);
+  }
+  */
 }
 
 class DataResult<T> {

@@ -15,6 +15,7 @@ import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/models/timeslot.model.dart';
 
 import 'components/icon_widget.dart';
 
@@ -80,7 +81,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     return StreamBuilder(
       stream: manager.dataStream, //manager.remindersbyDayDataStream,
       builder: (context, snapshot) {
-        List<TimeSlot> timeSlots = manager.getRemindersByTimeSlots();
+        List<TimeSlot> timeSlots = List(); //TODO
         if (widget.isLoading) {
           return LoadingScreen();
         } else if (snapshot.hasError) {
@@ -98,6 +99,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: timeSlots.length,
+              shrinkWrap: true, //recently changed to true
               padding: EdgeInsets.symmetric(vertical: 20),
               itemBuilder: (context, index) {
                 return Container(
@@ -111,31 +113,52 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   Widget _buildCirclePlan(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-        margin: EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(color: appWhite, boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1), //was 0.1
-            spreadRadius: 1,
-            blurRadius: 4, //was 4 , 3
-            offset: Offset(0, 1), // was 1, 2
+    return Stack(
+      children: [
+        Container(
+            margin: EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.white, // was Colors.white
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1), //was 0.1
+                  spreadRadius: 1,
+                  blurRadius: 4, //was 4 , 3
+                  offset: Offset(0, 1), // was 1, 2
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            width: size.width,
+            child: Center(
+              child: CircleList(
+                origin: Offset(0, 0),
+                innerRadius: 100,
+                outerRadius: 130,
+                initialAngle: 0,
+                children: List.generate(24 * 1, (index) {
+                  return index % 3 != 0
+                      ? SizedBox.shrink()
+                      : IconWidget(index: index, iconURL: appearance_icon_0);
+                }),
+              ),
+            )),
+        /*
+        Opacity(
+          opacity: 0,
+          child: Positioned(
+            top: size.width * 0.05,
+            left: size.width * 0,
+            child: RaisedButton(
+              shape: CircleBorder(),
+              onPressed: () {},
+              color: Colors.white,
+              child: Icon(Icons.keyboard_arrow_up, color: Colors.grey[900]),
+            ),
           ),
-        ]),
-        alignment: Alignment.center,
-        width: size.width,
-        child: Center(
-          child: CircleList(
-            origin: Offset(0, 0),
-            innerRadius: 100,
-            outerRadius: 130,
-            initialAngle: 0,
-            children: List.generate(24 * 1, (index) {
-              return index % 3 != 0
-                  ? SizedBox.shrink()
-                  : IconWidget(index: index, iconURL: appearance_icon_0);
-            }),
-          ),
-        ));
+        )*/
+      ],
+    );
   }
 
   Widget _body(BuildContext context) {

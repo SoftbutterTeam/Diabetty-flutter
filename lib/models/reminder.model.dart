@@ -1,31 +1,51 @@
+import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:intl/intl.dart';
 
-class Reminder {
+class Reminder with DateMixin {
   String uid;
+  int apperance;
   String therapyId; //*therapy could have been deleted
   String reminderRuleId;
   String name;
   DateTime time; //*scheduled time
   int dose;
+  String doseUnit;
+  Duration window;
   DateTime takenAt;
   bool rescheduled;
   bool cancelled;
   bool doseEdited;
   List<String> advice;
 
-  set setTime(DateTime dateTime) {
+/** 
+    set setTime12hr(DateTime dateTime) {
     final df = new DateFormat('dd-MM-yyyy hh:mm a');
     String dtFormatted = df.format(dateTime);
     this.time = df.parse(dtFormatted);
-  }
-
-  get getTime {
+    }
+*/
+  DateTime get getDateTimeAs12hr {
     if (time == null) return time;
     final df = new DateFormat('dd-MM-yyyy hh:mm a');
     String dtFormatted = df.format(time);
     return (df.parse(dtFormatted));
   }
+
+  DateTime get date {
+    if (time == null) return null;
+    final df = new DateFormat('dd-MM-yyyy');
+    String dtFormatted = df.format(time);
+    return (df.parse(dtFormatted));
+  }
+
+  bool isToday({DateTime date}) {
+    date = date ?? DateTime.now();
+    return isSameDay(this.date, date);
+  }
+
+  bool get isComplete => takenAt != null;
 
   Reminder(
       {this.uid,
@@ -36,7 +56,22 @@ class Reminder {
       this.dose,
       this.advice,
       this.cancelled,
+      this.window,
       this.doseEdited,
       this.rescheduled,
       this.takenAt});
+
+  ///*  Used to Project Reminders from the Therapys
+  ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
+  Reminder.generated({Therapy therapy, ReminderRule rule, DateTime date}) {
+    this.therapyId = therapy.uid;
+    this.reminderRuleId = rule.uid;
+    this.name = therapy.medicationInfo.name;
+    this.time = DateTime(
+        date.year, date.month, date.day, rule.time.hour, rule.time.minute);
+    this.dose = rule.dose;
+    this.window = rule.window;
+    this.doseUnit = therapy.medicationInfo.unit;
+    this.advice = therapy.medicationInfo.intakeAdvice;
+  }
 }

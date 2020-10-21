@@ -1,12 +1,9 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/constants/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
 import 'package:diabetty/ui/screens/today/components/drop_modal.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class DayPlanHeader extends StatefulWidget {
@@ -16,7 +13,7 @@ class DayPlanHeader extends StatefulWidget {
   _DayPlanHeaderState createState() => _DayPlanHeaderState();
 }
 
-class _DayPlanHeaderState extends State<DayPlanHeader> {
+class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
   @override
   void initState() {
     super.initState();
@@ -28,11 +25,22 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
 
     return Container(
       height: size.height * 0.11,
-      color: Colors.transparent,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 2),
+          ),
+        ],
+        color: appWhite,
+      ),
+      // padding: EdgeInsets.only(left: 15, right: 15),
       child: Stack(
         children: <Widget>[
-          _buildLayoutButton(context),
-          _buildFilterButton(context),
+          _buildSilentButton(context),
+          _buildTakeButton(context),
           _buildDateWidget(context),
         ],
       ),
@@ -85,72 +93,44 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
         child: Container(
           alignment: Alignment.center,
           child: subHeadingText(
-              DateFormat("EEEE d").format(dayManager.currentDateStamp) +
-                  getDayOfMonthSuffix(dayManager.currentDateStamp.day),
-              Colors.white),
+              shortenDateRepresent(dayManager.currentDateStamp),
+              Colors.grey[900]),
         ),
       ),
     ));
   }
 
-  String getDayOfMonthSuffix(final int n) {
-    if (n >= 11 && n <= 13) {
-      return '\u1d57\u02b0';
-    }
-    switch (n % 10) {
-      case 1:
-        return '\u02e2\u1d57';
-      case 2:
-        return '\u207f\u1d48';
-      case 3:
-        return '\u02b3\u1d48';
-      default:
-        return '\u1d57\u02b0';
-    }
-  }
-
-  Widget _buildLayoutButton(BuildContext context) {
+  Widget _buildSilentButton(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Opacity(
       opacity: 0,
       child: Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: size.width * 0.05),
+        padding: EdgeInsets.only(left: size.width * 0),
         child: FlatButton(
+          shape: CircleBorder(),
           onPressed: () {},
-          padding: EdgeInsets.zero,
-          child: Align(
-            child: SvgPicture.asset(
-              'assets/icons/navigation/essentials/012-settings.svg',
-              height: 22,
-              width: 22,
-              color: Colors.white,
-            ),
-            alignment: Alignment.centerLeft,
-          ),
+          color: Colors.white,
+          child:
+              Icon(Icons.keyboard_arrow_up, size: 30, color: Colors.grey[900]),
         ),
       ),
     );
   }
 
-  Widget _buildFilterButton(BuildContext context) {
+  Widget _buildTakeButton(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     return Opacity(
       opacity: 0,
       child: Container(
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: size.width * 0.05),
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: size.width * 0),
         child: FlatButton(
+          shape: CircleBorder(),
           onPressed: () {},
-          color: Colors.transparent,
-          disabledTextColor: Colors.grey,
-          disabledColor: Colors.transparent,
-          padding: EdgeInsets.zero,
-          child: Align(
-            child: Icon(Icons.add, color: Colors.white),
-            alignment: Alignment.centerRight,
-          ),
+          color: Colors.white,
+          child: Icon(Icons.add, size: 30, color: Colors.grey[900]),
         ),
       ),
     );
