@@ -40,6 +40,17 @@ class ReminderRule {
 
     this.dose = (rng.nextInt(100) * 5);
   }
+
+  bool isActiveOn(DateTime date) {
+    if (days.monday && date.weekday == 1) return true;
+    if (days.tuesday && date.weekday == 2) return true;
+    if (days.wednesday && date.weekday == 3) return true;
+    if (days.thursday && date.weekday == 4) return true;
+    if (days.friday && date.weekday == 5) return true;
+    if (days.saturday && date.weekday == 6) return true;
+    if (days.sunday && date.weekday == 7) return true;
+    return false;
+  }
 }
 
 class Days {

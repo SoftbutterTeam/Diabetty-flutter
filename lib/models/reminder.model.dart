@@ -1,5 +1,6 @@
 import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
+import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:intl/intl.dart';
 
@@ -11,7 +12,7 @@ class Reminder with DateMixin {
   String name;
   DateTime time; //*scheduled time
   int dose;
-  String doseUnit;
+  int doseUnit;
   Duration window;
   DateTime takenAt;
   bool rescheduled;
@@ -70,8 +71,8 @@ class Reminder with DateMixin {
     this.time = DateTime(
         date.year, date.month, date.day, rule.time.hour, rule.time.minute);
     this.dose = rule.dose;
-    this.window = rule.window;
-    this.doseUnit = therapy.medicationInfo.unit;
+    this.window = therapy.schedule.window;
+    this.doseUnit = therapy.medicationInfo.unitIndex;
     this.advice = therapy.medicationInfo.intakeAdvice;
   }
 }

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
-import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';

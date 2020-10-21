@@ -20,21 +20,10 @@ import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widge
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
-import 'package:like_button/like_button.dart';
-import "package:diabetty/ui/screens/therapy/extensions/string_extension.dart";
-
-import 'package:diabetty/ui/screens/therapy/components/StrengthTextField.dart';
-import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
-import 'package:diabetty/ui/screens/therapy/components/topbar2.dart';
-import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
-    as DateRangePicker;
-
-import 'package:duration/duration.dart';
 
 final appearanceIcons = appearance_icons;
 

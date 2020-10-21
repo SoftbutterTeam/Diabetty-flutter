@@ -23,7 +23,7 @@ class DayPlanManager extends ChangeNotifier {
 
   ///* user reminders is only fetched reminders/data from store
   List<Reminder> usersReminders = List();
-  List<Therapy> therapies = List();
+  List<Therapy> usersTherapies = List();
 
   DateTime get currentDateStamp => _currentDateStamp;
   Sink<List<Reminder>> get dataSink => _dataController.sink;
@@ -66,7 +66,7 @@ class DayPlanManager extends ChangeNotifier {
     List<Reminder> projectedReminders = List();
     therapies.map((therapy) {
       therapy.schedule.reminders.map((rule) {
-        if (rule.activeOn(date))
+        if (rule.isActiveOn(date))
           projectedReminders
               .add(Reminder.generated(therapy: therapy, rule: rule));
       });
