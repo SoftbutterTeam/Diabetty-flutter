@@ -1,9 +1,10 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
+import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/background.dart';
-import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,75 +33,29 @@ class TherapyScreen extends StatefulWidget {
 
 class _TherapyScreenState extends State<TherapyScreen> {
   TherapyManager manager;
-  void _showExpandedTherapy(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    showGeneralDialog(
-      barrierDismissible: true,
-      barrierLabel: '',
-      transitionDuration: Duration(milliseconds: 300),
-      context: context,
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, -0.5);
-        var end = Offset.zero;
-        var curve = Curves.linear;
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        var offsetAnimation = animation.drive(tween);
-
-        if (offsetAnimation.status == AnimationStatus.reverse) {
-          offsetAnimation.value.translate(0, -0.5);
-          return SizedBox(
-            height: size.height,
-            width: size.width,
-          );
-        }
-        return child; //* to remove animation, I slyly prefer no animation
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
-      },
-      pageBuilder: (_, __, ___) => Dialog(
-        elevation: 0,
-        insetPadding: EdgeInsets.zero,
-        backgroundColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          children: [
-            AddModal2(), //* AddModal or AddModal2
-            Expanded(
-                child: GestureDetector(
-                    onPanStart: (value) {
-                      Navigator.pop(context);
-                    },
-                    child: Container(color: Colors.transparent))),
-          ],
-        ),
-      ),
-    );
-  }
 
   _buildTherapiesList(BuildContext context) {
     var size = MediaQuery.of(context).size;
     List<Therapy> therapyList;
-    return StreamBuilder(stream: manager.therapyStream, builder: (context, snapshot) {
-        //List<TimeSlot> timeSlots = manager.getRemindersByTimeSlots();
-        if (snapshot.hasData) {
-          return LoadingScreen();
-        } else if (snapshot.hasError) {
-          return ErrorScreen();
-        } else if (timeSlots.length == 0) {
-          return Column(
-            children: [
-              Center(
-                child: text('no reminders for today'),
-              ),
-            ],
-          );
-        })
+    return StreamBuilder(
+        stream: manager.therapyStream,
+        builder: (context, snapshot) {
+          //List<TimeSlot> timeSlots = manager.getRemindersByTimeSlots();
+          if (snapshot.hasData) {
+            return LoadingScreen();
+          } else if (snapshot.hasError) {
+            return ErrorScreen();
+          } else if (therapyList.length == 0) {
+            return Column(
+              children: [
+                Center(
+                  child: text('no reminders for today'),
+                ),
+              ],
+            );
+          }
+        });
+
     // return Container(
     //   margin: EdgeInsets.symmetric(horizontal: 20),
     //   child: ListView.builder(

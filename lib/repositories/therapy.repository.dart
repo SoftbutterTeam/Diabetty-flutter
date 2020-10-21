@@ -8,7 +8,6 @@ class TherapyRepository {
   TherapyRepository(String uid) {
     AuthService authService;
     authService.currentUser();
-    TherapySer
     this.uid = uid;
   }
 
@@ -87,13 +86,12 @@ class TherapyRepository {
 //Stream<List<Map<String, dynamic>>>
 //
 
-  Stream<QuerySnapshot> get onStateChanged(String uid) {
+  Stream<QuerySnapshot> get onStateChanged {
     return _db
         .collection('users')
         .document(uid)
         .collection('therapies')
         .snapshots();
-        
   }
 }
 

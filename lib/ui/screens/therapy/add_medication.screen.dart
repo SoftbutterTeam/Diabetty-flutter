@@ -1,22 +1,8 @@
-// import 'package:diabetttty/components/AddReminderModal.dart';
-import 'dart:async';
-import 'dart:ui';
-
 import 'package:diabetty/blocs/therapy_manager.dart';
-import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/reminder_rule.model.dart';
-import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/system/app_context.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/constants/colors.dart';
-import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/therapy/add_therapy_1.screen.dart';
 import 'package:diabetty/ui/screens/therapy/add_therapy_2.screen.dart';
-import 'package:diabetty/ui/screens/therapy/components/index.dart';
-import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
-import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
