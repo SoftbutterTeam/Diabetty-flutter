@@ -2,7 +2,10 @@ import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
 import 'package:random_string/random_string.dart' as random;
 import 'dart:math' show Random;
+import 'dart:convert';
+// import 'package:json_serializable';
 
+//btw Schedule.reminders should be called reminderRules for clarity
 class Therapy {
   String id;
   String uid;
@@ -20,16 +23,24 @@ class Therapy {
     this.mode,
   });
 
-  loadFromJson(Map<String, dynamic> json) {
-    this.id = json['id'];
-    this.name = json['name'];
+  loadFromJson(jsonn) {
+    this.id = jsonn['id'];
+    this.name = jsonn['name'];
 
     Schedule schedule = Schedule();
-    schedule.loadFromJson(json['schedule']);
+    //error here
+    var shed = jsonn['medicationInfo'];
+    // print(jsonn['schedule']['reminders']);
+    // print(json.decode(jsonn));
+    Map<String, dynamic> mmm = new Map<String, dynamic>.from(jsonn['schedule']);
+    //type '_InternalLinkedHashMap<dynamic, dynamic>' is not a subtype of type 'Map<String, dynamic>'
+    schedule.loadFromJson(mmm);
     this.schedule = schedule;
 
     MedicationInfo medicationInfo = MedicationInfo();
-    medicationInfo.loadFromJson(json['medicationInfo']);
+    Map<String, dynamic> nnn =
+        new Map<String, dynamic>.from(jsonn['medicationInfo']);
+    medicationInfo.loadFromJson(nnn);
     this.medicationInfo = medicationInfo;
   }
 
@@ -55,21 +66,21 @@ class Therapy {
 }
 
 class Schedule {
-  List<ReminderRule> reminders;
+  List<ReminderRule> reminderRules;
 
   Schedule({
-    this.reminders,
+    this.reminderRules,
   });
 
   loadFromJson(Map<String, dynamic> json) {
-    List<dynamic> remindersJson = json['reminders'];
-    List<ReminderRule> reminders = createReminders(remindersJson);
+    List<dynamic> remindersJson = json['reminderRules'];
+    List<ReminderRule> reminderRules = createReminders(remindersJson);
     AlarmSettings setting = AlarmSettings();
-    this.reminders = reminders;
+    this.reminderRules = reminderRules;
   }
 
   Map<String, dynamic> toJson() => {
-        'reminders': mapJson(this.reminders),
+        'reminderRules': mapJson(this.reminderRules),
       };
 
   mapJson(list) {
@@ -82,7 +93,8 @@ class Schedule {
   createReminders(List<dynamic> json) {
     List<ReminderRule> returnReminders = List();
     for (var reminder = 0; reminder < json.length; reminder++) {
-      var reminderJson = json.elementAt(reminder);
+      Map<String, dynamic> reminderJson =
+          new Map<String, dynamic>.from(json.elementAt(reminder));
       ReminderRule currReminder = ReminderRule();
       currReminder.loadFromJson(reminderJson);
       returnReminders.add(currReminder);
@@ -93,15 +105,15 @@ class Schedule {
   dummyData() {
     List<ReminderRule> listoreminders = List();
     for (var i = 0; i < 3; i++) {
-      ReminderRule reminders = ReminderRule();
-      reminders.dummyData();
-      listoreminders.add(reminders);
+      ReminderRule reminderRules = ReminderRule();
+      reminderRules.dummyData();
+      listoreminders.add(reminderRules);
     }
     AlarmSettings settings = AlarmSettings();
     //settings.setSettings(true);
 
     // this.settings = settings;
-    this.reminders = listoreminders;
+    this.reminderRules = listoreminders;
   }
 }
 
@@ -118,8 +130,8 @@ class ReminderRule {
       this.time,
       this.window,
       forceGenerateUID = false}) {
-    this.uid = this.uid ?? generateUID();
-    if (forceGenerateUID) this.uid = generateUID();
+    //this.uid = this.uid ?? generateUID();
+    if (this.uid == null) this.uid = generateUID();
   }
 
   String generateUID() {
@@ -128,7 +140,7 @@ class ReminderRule {
   }
 
   loadFromJson(Map<String, dynamic> json) {
-    var daysJson = json['days'];
+    Map<String, dynamic> daysJson = new Map<String, dynamic>.from(json['days']);
     Days days = Days();
     days.loadFromJson(daysJson);
     this.days = days;

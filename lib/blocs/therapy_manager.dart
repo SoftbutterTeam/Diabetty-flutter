@@ -15,6 +15,7 @@ class TherapyManager extends ChangeNotifier {
   final AppContext appContext;
   final AuthService authService;
   List<Therapy> usersTherapies;
+  String uid;
 
   StreamController<List<Therapy>> _dataController = StreamController();
   Sink<List<Therapy>> get dataSink => _dataController.sink;
@@ -22,8 +23,12 @@ class TherapyManager extends ChangeNotifier {
 
   AddTherapyForm therapyForm;
 
+  Stream<List<Therapy>> _therapyStream() {
+    return therapyService.therapyStream(this.appContext.user.uid);
+  }
+
   Stream<List<Therapy>> get therapyStream {
-    return therapyService.therapyStream;
+    return this._therapyStream();
   }
 
   void resetForm() {
@@ -41,9 +46,11 @@ class TherapyManager extends ChangeNotifier {
   }
 
   void init() async {
-    if (usersTherapies == null) {
-      await _getData();
-    }
+    // this.appContext.u
+//     this.appContext.onUserChanged.listen((event) {
+//       this.uid = event.uid;
+// //this.therapyStream = therapyService.therapyStream(this.uid);
+//     });
   }
 
 //   StreamSubscription<T> listen (
@@ -113,7 +120,7 @@ class AddTherapyForm {
             strength: this.strength,
             unit: this.units,
             restDuration: this.minRest),
-        schedule: Schedule(reminders: this.reminderRules));
+        schedule: Schedule(reminderRules: this.reminderRules));
   }
 
   //TODO settings

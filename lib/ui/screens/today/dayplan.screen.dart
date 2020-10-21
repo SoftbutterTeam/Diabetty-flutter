@@ -77,6 +77,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   Widget _buildRemindersList(BuildContext context) {
+    //manager.
     return StreamBuilder(
       stream: manager.dataStream, //manager.remindersbyDayDataStream,
       builder: (context, snapshot) {

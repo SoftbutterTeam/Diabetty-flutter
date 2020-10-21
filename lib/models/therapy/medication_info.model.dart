@@ -42,7 +42,7 @@ class MedicationInfo {
       if (json.containsKey('unit')) this.unit = json['unit'];
       if (json.containsKey('strength')) this.strength = json['strength'];
       if (json.containsKey('intakeAdvice'))
-        this.intakeAdvice = json['intakeAdvice'];
+        this.intakeAdvice = new List<String>.from(json['intakeAdvice']);
       if (json.containsKey('appearance')) this.appearance = json['appearance'];
       return true;
     } catch (e) {

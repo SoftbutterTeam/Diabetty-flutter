@@ -10,6 +10,13 @@ class UserRepository {
   Future<DataResult<dynamic>> getData(String uid) async {
     try {
       var result = await _db.collection("users").document(uid).get();
+      // User user = User();
+      // user.setDummy();
+      // user.setAllAttributes(
+      //     uid: "YDpBWyABH3ZluJ9sDKTCTGXCqzz1", email: "cloudyplays@gmail.com");
+
+      // createUser(user);
+
       var data = Map<String, dynamic>.from(result.data);
       data['id'] = result.documentID;
 
