@@ -81,9 +81,9 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       },
       onRightTap: () {
         if (therapyForm.mode == 'needed') {
-          therapyForm.printStuff();
+          therapyForm.handleAsNeededSave(context);
         } else {
-          print('As planned');
+          therapyForm.handleAsPlannedSave(context);
         }
       },
     );
@@ -108,6 +108,10 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       Visibility(
         visible: therapyForm.isVisible() ? true : false,
         child: _buildStartEndDateField(),
+      ),
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: _buildWeeklyReminderText(),
       ),
       if (reminderRulesList.length > 0)
         Visibility(
@@ -153,6 +157,11 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         ),
       ],
     );
+  }
+
+  Widget _buildWeeklyReminderText() {
+    return text('Weekly Reminders',
+        isCentered: true, textColor: Colors.black54, fontSize: 13.0);
   }
 
   Widget _buildMedicationCard() {
@@ -242,8 +251,6 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          text('Weekly Reminders',
-              isCentered: true, textColor: Colors.black54, fontSize: 12.0),
           CupertinoTextField(
             onTap: () => showReminderModal(context),
             decoration: BoxDecoration(
@@ -308,7 +315,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   Widget _buildStockField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _stackedHeartIcons(true), //TODO
       onTap: () => showStockDialog(context),
       placeholderText: 'Stock',
     );

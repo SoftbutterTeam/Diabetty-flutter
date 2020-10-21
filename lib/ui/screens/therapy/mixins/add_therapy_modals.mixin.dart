@@ -62,7 +62,6 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            Navigator.pop(context);
             if (therapyForm.strengthUnitsIndex != 0 &&
                 (therapyForm.strength == null || therapyForm.strength == 0)) {
               therapyForm.strength = 100;
@@ -72,6 +71,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
               strengthController.text = '';
             }
             setState(() {});
+            Navigator.pop(context);
           },
           intakePicker: CupertinoPicker(
             scrollController: FixedExtentScrollController(
@@ -248,11 +248,15 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   }
 
   showAlarmSettingsDialog(BuildContext context) {
-    showDialog(context: context, builder: (context) => AlarmSettingsDialog());
+    showDialog(
+        context: context,
+        builder: (context) => AlarmSettingsDialog(therapyForm: therapyForm));
   }
 
   showStockDialog(BuildContext context) {
-    showDialog(context: context, builder: (context) => StockDialog());
+    showDialog(
+        context: context,
+        builder: (context) => StockDialog(therapyForm: therapyForm));
   }
 
   showReminderModal(BuildContext context) {
@@ -267,9 +271,5 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     if (datey.month != date.month) return false;
     if (datey.year != date.year) return false;
     return true;
-  }
-
-  saveAsNeededData() {
-    print('hey');
   }
 }

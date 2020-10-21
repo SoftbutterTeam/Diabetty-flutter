@@ -1,7 +1,13 @@
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/models/therapy/alarmsettings.model.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
+import 'package:diabetty/models/therapy/reminder_rule.model.dart';
+import 'package:diabetty/models/therapy/schedule.model.dart';
+import 'package:diabetty/models/therapy/stock.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/screens/therapy/extensions/datetime_extension.dart';
+import 'package:flutter/material.dart';
 
 class AddTherapyForm {
   String name;
@@ -13,8 +19,12 @@ class AddTherapyForm {
   Duration minRest;
   String mode;
   List<ReminderRule> reminderRules = List();
-  AlarmSettings settings;
-  int stock;
+  bool noReminder;
+  bool silent;
+  bool enableCriticalAlerts;
+  int currentLevel;
+  int flagLimit;
+  bool remind;
   DateTime startDate;
   DateTime endDate;
   Duration window;
@@ -45,8 +55,12 @@ class AddTherapyForm {
       this.apperanceIndex,
       this.minRest,
       this.mode,
-      this.settings,
-      this.stock,
+      this.noReminder,
+      this.silent,
+      this.enableCriticalAlerts,
+      this.currentLevel,
+      this.flagLimit,
+      this.remind,
       this.startDate,
       this.endDate,
       this.window,
@@ -54,7 +68,11 @@ class AddTherapyForm {
     this.reminderRules ??= List();
     this.window ??= Duration(minutes: 20);
     this.name ??= '';
-
+    this.enableCriticalAlerts ??= false;
+    this.silent ??= false;
+    this.noReminder ??= false;
+    this.currentLevel ??= 0;
+    this.flagLimit ??= 0;
     this.intakeAdviceIndex ??= 0;
     this.startDate ??= DateTime.now();
     this.endDate ??= null;
@@ -64,21 +82,72 @@ class AddTherapyForm {
     this.apperanceIndex = 0;
   }
 
+  handleAsNeededSave(context) {
+    if (mode == 'needed') {
+      window = null;
+      startDate = null;
+      endDate = null;
+      enableCriticalAlerts = false;
+      noReminder = false;
+      silent = false;
+      print(name);
+      print(strength);
+      print(minRest);
+      print(currentLevel);
+      print(strengthUnitsIndex);
+      print(window);
+      Navigator.pushNamed(context, therapy);
+    }
+  }
+
+  handleAsPlannedSave(context) {
+    if (mode == 'planned' && reminderRules.length >= 1) {
+      startDate ??= DateTime.now();
+      endDate ??= null;
+      print(name);
+      print(reminderRules.length);
+      print(strength);
+      print(minRest);
+      print(currentLevel);
+      print(flagLimit);
+      print(strengthUnitsIndex);
+      print(apperanceIndex);
+      print(intakeAdviceIndex);
+      print(unitsIndex);
+      print(startDate);
+      print(endDate);
+      print(window);
+      print(enableCriticalAlerts);
+      print(noReminder);
+      print(silent);
+      Navigator.pushNamed(context, therapy);
+    }
+  }
+
   Therapy toTherapy() {
     return Therapy(
         mode: this.mode,
-        stock: this.stock,
         name: this.name,
         medicationInfo: MedicationInfo(
-          appearance: this.apperanceIndex,
+          appearanceIndex: this.apperanceIndex,
           intakeAdvice: List<String>()..add(intakeAdvice[intakeAdviceIndex]),
           name: this.name,
           strength: this.strength,
-          unit: unitTypes[this.unitsIndex],
+          unitIndex: this.unitsIndex,
           restDuration: this.minRest,
+        ),
+        stock: Stock(
+          currentLevel: this.currentLevel,
+          flagLimit: this.flagLimit,
+          remind: this.remind,
         ),
         schedule: (mode == 'planned')
             ? Schedule(
+                alarmSettings: AlarmSettings(
+                  noReminder: this.noReminder,
+                  silent: this.silent,
+                  enableCriticalAlerts: this.enableCriticalAlerts,
+                ),
                 reminders: this.reminderRules,
                 startDate: this.startDate ?? DateTime.now(),
                 endDate: (this.endDate == null ||
@@ -105,7 +174,7 @@ class AddTherapyForm {
   bool isAppearanceAdviceValid() =>
       this.apperanceIndex != null && this.apperanceIndex >= 0;
 
-  bool isStockValid() => this.stock != null && this.stock > 0;
+  // bool isStockValid() => this.stock != null && this.stock > 0;
 
   bool isMinRestValid() => this.minRest != null;
 
@@ -114,19 +183,16 @@ class AddTherapyForm {
       isStrengthValid() &&
       isStrengthUnitsValid() &&
       isIntakeAdviceValid() &&
-      isAppearanceAdviceValid() &&
-      isStockValid();
+      isAppearanceAdviceValid();
 
   bool isDateValid() => this.startDate != null;
 
-  bool isWindowValid() => this.window != null;
- 
-  printStuff() {
-    print(name);
-    print(strength);
-    print(minRest);
-    print(stock);
-    print(strengthUnitsIndex);
-  }
+  bool isStockValid() => this.currentLevel != null && this.flagLimit != null;
 
+  bool isAlarmSettingsValid() =>
+      this.noReminder != null &&
+      this.enableCriticalAlerts != null &&
+      this.silent != null;
+
+  bool isWindowValid() => this.window != null;
 }
