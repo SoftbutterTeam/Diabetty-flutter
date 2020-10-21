@@ -71,8 +71,7 @@ class AddTherapyForm {
   Therapy toTherapy() {
     return Therapy(
         mode: this.mode,
-        stock: this
-            .stock, // TODO do it properly, i havent checked the implementation
+        stock: this.stock,
         name: this.name,
         medicationInfo: MedicationInfo(
           appearanceIndex: this.apperanceIndex,

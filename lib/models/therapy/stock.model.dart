@@ -1,7 +1,7 @@
 class Stock {
   int currentLevel;
   int flagLimit;
-  bool remind = true;
+  bool remind;
   Stock({this.currentLevel, this.flagLimit, this.remind = true});
 
   bool get isActive => remind && currentLevel != null && flagLimit != null;
