@@ -5,7 +5,9 @@ import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/schedule.model.dart';
 import 'package:diabetty/models/therapy/stock.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/screens/therapy/extensions/datetime_extension.dart';
+import 'package:flutter/material.dart';
 
 class AddTherapyForm {
   String name;
@@ -80,7 +82,7 @@ class AddTherapyForm {
     this.apperanceIndex = 0;
   }
 
-  handleAsNeededSave() {
+  handleAsNeededSave(context) {
     if (mode == 'needed') {
       window = null;
       startDate = null;
@@ -94,29 +96,32 @@ class AddTherapyForm {
       print(currentLevel);
       print(strengthUnitsIndex);
       print(window);
+      Navigator.pushNamed(context, therapy);
     }
   }
 
-  handleAsPlannedSave() {
-    if (mode == 'planned') {
+  handleAsPlannedSave(context) {
+    if (mode == 'planned' && reminderRules.length >= 1) {
       startDate ??= DateTime.now();
       endDate ??= null;
+      print(name);
+      print(reminderRules.length);
+      print(strength);
+      print(minRest);
+      print(currentLevel);
+      print(flagLimit);
+      print(strengthUnitsIndex);
+      print(apperanceIndex);
+      print(intakeAdviceIndex);
+      print(unitsIndex);
+      print(startDate);
+      print(endDate);
+      print(window);
+      print(enableCriticalAlerts);
+      print(noReminder);
+      print(silent);
+      Navigator.pushNamed(context, therapy);
     }
-    print(name);
-    print(strength);
-    print(minRest);
-    print(currentLevel);
-    print(flagLimit);
-    print(strengthUnitsIndex);
-    print(apperanceIndex);
-    print(intakeAdviceIndex);
-    print(unitsIndex);
-    print(startDate);
-    print(endDate);
-    print(window);
-    print(enableCriticalAlerts);
-    print(noReminder);
-    print(silent);
   }
 
   Therapy toTherapy() {
@@ -181,6 +186,13 @@ class AddTherapyForm {
       isAppearanceAdviceValid();
 
   bool isDateValid() => this.startDate != null;
+
+  bool isStockValid() => this.currentLevel != null && this.flagLimit != null;
+
+  bool isAlarmSettingsValid() =>
+      this.noReminder != null &&
+      this.enableCriticalAlerts != null &&
+      this.silent != null;
 
   bool isWindowValid() => this.window != null;
 }

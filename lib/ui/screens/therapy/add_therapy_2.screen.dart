@@ -81,9 +81,9 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       },
       onRightTap: () {
         if (therapyForm.mode == 'needed') {
-          therapyForm.handleAsNeededSave();
+          therapyForm.handleAsNeededSave(context);
         } else {
-          therapyForm.handleAsPlannedSave();
+          therapyForm.handleAsPlannedSave(context);
         }
       },
     );
@@ -161,7 +161,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   Widget _buildWeeklyReminderText() {
     return text('Weekly Reminders',
-          isCentered: true, textColor: Colors.black54, fontSize: 13.0);
+        isCentered: true, textColor: Colors.black54, fontSize: 13.0);
   }
 
   Widget _buildMedicationCard() {
@@ -315,7 +315,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   Widget _buildStockField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true), //TODO 
+      stackIcons: _stackedHeartIcons(true), //TODO
       onTap: () => showStockDialog(context),
       placeholderText: 'Stock',
     );

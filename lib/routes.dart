@@ -24,7 +24,10 @@ class Router {
         return PageRouteBuilder(
             pageBuilder: (_, a1, a2) => DashBoard(initIndex: 1),
             transitionDuration: Duration(seconds: 0));
-
+      case therapy:
+         return PageRouteBuilder(
+            pageBuilder: (_, a1, a2) => DashBoard(initIndex: 3),
+            transitionDuration: Duration(seconds: 0));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
@@ -39,4 +42,6 @@ const String login = '/login';
 const String register = '/register';
 const String diary = '/dashboard/diary';
 const String today = '/dashboard/today';
+const String therapy = '/dashboard/therapy';
 const String addmedication = '/therapy/addmedication';
+
