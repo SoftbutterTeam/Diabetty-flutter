@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/repositories/therapy.repository.dart';
@@ -7,7 +8,10 @@ import 'package:random_string/random_string.dart' as random;
 import 'package:diabetty/models/user.model.dart' as UserModel;
 
 class TherapyService {
-  TherapyRepository therapyRepo = TherapyRepository();
+  //final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  TherapyRepository therapyRepo =
+      TherapyRepository("YDpBWyABH3ZluJ9sDKTCTGXCqzz1");
 
   Future<bool> addTherapy(Therapy therapy) async {
     try {
@@ -16,6 +20,19 @@ class TherapyService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Stream<List<Therapy>> get therapyStream {
+    return therapyRepo.onStateChanged.map(_therapyListFromSnapshop);
+  }
+
+  List<Therapy> _therapyListFromSnapshop(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      Therapy therapy = Therapy();
+      therapy.uid = doc.documentID;
+      therapy.loadFromJson(doc.data);
+      return therapy;
+    }).toList();
   }
 
   void dispose() {
