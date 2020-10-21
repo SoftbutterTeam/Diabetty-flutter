@@ -1,28 +1,22 @@
 import 'dart:async';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/material.dart';
 
 class TherapyManager extends ChangeNotifier {
-  TherapyManager({@required this.appContext, @required this.authService});
+  TherapyManager({@required this.appContext});
   TherapyService therapyService = TherapyService();
 
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
-  final AuthService authService;
 
   StreamController<List<Therapy>> _dataController = StreamController();
 
   List<Therapy> usersTherapies;
 
   AddTherapyForm therapyForm;
-
-  Stream<List<Therapy>> get therapyStream {
-    return therapyService.therapyStream;
-  }
 
   void resetForm() {
     therapyForm = new AddTherapyForm();
@@ -46,15 +40,6 @@ class TherapyManager extends ChangeNotifier {
       await _getData();
     }
   }
-
-//   StreamSubscription<T> listen (
-// void onData(
-// T event
-// ),
-// {Function? onError,
-// void onDone(),
-// bool? cancelOnError}
-// )
 
   Future<void> _getData() async {
     var result = await this.appContext.getTherapies();

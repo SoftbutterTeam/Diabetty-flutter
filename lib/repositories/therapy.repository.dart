@@ -2,18 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 
 class TherapyRepository {
-  TherapyRepository(String uid) {
-    AuthService authService;
-    authService.currentUser();
-    TherapySer
-    this.uid = uid;
-  }
-
+  TherapyRepository();
   final Firestore _db = Firestore.instance;
-  String uid;
 
   //Dont know if this is ever going to be used
   Future<DataResult<dynamic>> getTherapy(String uid, String therapyid) async {
@@ -84,17 +76,17 @@ class TherapyRepository {
     });
     return true;
   }
-//Stream<List<Map<String, dynamic>>>
-//
 
-  Stream<QuerySnapshot> get onStateChanged(String uid) {
+  /*
+  Stream<List<T>> get onStateChanged {
     return _db
         .collection('users')
         .document(uid)
         .collection('therapies')
-        .snapshots();
-        
+        .snapshots()
+        .map((e) => null);
   }
+  */
 }
 
 class DataResult<T> {
