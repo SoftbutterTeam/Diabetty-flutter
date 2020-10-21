@@ -102,16 +102,16 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       ),
       _buildModeField(),
       Visibility(
-        visible: therapyForm.isPlanned() ? true : false,
+        visible: therapyForm.isVisible() ? true : false,
         child: _buildWindowField(),
       ),
       Visibility(
-        visible: therapyForm.isPlanned() ? true : false,
+        visible: therapyForm.isVisible() ? true : false,
         child: _buildStartEndDateField(),
       ),
       if (reminderRulesList.length > 0)
         Visibility(
-            visible: therapyForm.isPlanned() ? true : false,
+            visible: therapyForm.isVisible() ? true : false,
             child: Container(
               padding: EdgeInsets.only(top: 9),
               child: (reminderRulesList.length < 7)
@@ -143,7 +143,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Visibility(
-                  visible: therapyForm.isPlanned() ? true : false,
+                  visible: therapyForm.isVisible() ? true : false,
                   child: _buildAlarmSettingsField(),
                 ),
                 _buildStockField(),
@@ -177,7 +177,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () {
-        therapyForm.isPlanned()
+        therapyForm.isVisible()
             ? setState(() {
                 therapyForm.mode = 'needed';
               })

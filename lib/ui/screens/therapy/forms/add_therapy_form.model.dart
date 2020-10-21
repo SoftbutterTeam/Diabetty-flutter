@@ -1,9 +1,5 @@
 import 'package:diabetty/constants/therapy_model_constants.dart';
-import 'package:diabetty/models/therapy/alarmsettings.model.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
-import 'package:diabetty/models/therapy/reminder_rule.model.dart';
-import 'package:diabetty/models/therapy/schedule.model.dart';
-import 'package:diabetty/models/therapy/stock.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/screens/therapy/extensions/datetime_extension.dart';
 
@@ -18,7 +14,7 @@ class AddTherapyForm {
   String mode;
   List<ReminderRule> reminderRules = List();
   AlarmSettings settings;
-  Stock stock;
+  int stock;
   DateTime startDate;
   DateTime endDate;
   Duration window;
@@ -71,15 +67,14 @@ class AddTherapyForm {
   Therapy toTherapy() {
     return Therapy(
         mode: this.mode,
-        stock: this
-            .stock, // TODO do it properly, i havent checked the implementation
+        stock: this.stock,
         name: this.name,
         medicationInfo: MedicationInfo(
-          appearanceIndex: this.apperanceIndex,
+          appearance: this.apperanceIndex,
           intakeAdvice: List<String>()..add(intakeAdvice[intakeAdviceIndex]),
           name: this.name,
           strength: this.strength,
-          unitIndex: this.unitsIndex,
+          unit: unitTypes[this.unitsIndex],
           restDuration: this.minRest,
         ),
         schedule: (mode == 'planned')
@@ -95,7 +90,7 @@ class AddTherapyForm {
             : null);
   }
 
-  bool isPlanned() => (this.mode == 'planned');
+  bool isVisible() => (this.mode == 'planned');
 
   bool isNameValid() => this.name != null && this.name.length > 0;
 
@@ -110,7 +105,7 @@ class AddTherapyForm {
   bool isAppearanceAdviceValid() =>
       this.apperanceIndex != null && this.apperanceIndex >= 0;
 
-  //bool isStockValid() => this.stock != null && this.stock > 0; // TODO
+  bool isStockValid() => this.stock != null && this.stock > 0;
 
   bool isMinRestValid() => this.minRest != null;
 
@@ -120,13 +115,12 @@ class AddTherapyForm {
       isStrengthUnitsValid() &&
       isIntakeAdviceValid() &&
       isAppearanceAdviceValid() &&
-      true;
-  //    isStockValid();
+      isStockValid();
 
   bool isDateValid() => this.startDate != null;
 
   bool isWindowValid() => this.window != null;
-
+ 
   printStuff() {
     print(name);
     print(strength);
@@ -134,4 +128,5 @@ class AddTherapyForm {
     print(stock);
     print(strengthUnitsIndex);
   }
+
 }
