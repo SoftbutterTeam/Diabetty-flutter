@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'reminder_rule.model.dart';
 import 'alarmsettings.model.dart';
 import 'schedule.model.dart';
+import 'stock.model.dart';
 // import 'package:json_serializable';
 
 //btw Schedule.reminders should be called reminderRules for clarity
@@ -15,7 +16,7 @@ class Therapy {
   String name;
   Schedule schedule;
   MedicationInfo medicationInfo;
-  int stock;
+  Stock stock;
   String mode;
   Therapy({
     this.uid,
@@ -26,21 +27,21 @@ class Therapy {
     this.mode,
   });
 
-  loadFromJson(jsonn) {
-    this.id = jsonn['id'];
-    this.name = jsonn['name'];
+  loadFromJson(Map<String, dynamic> json) {
+    this.id = json['id'];
+    this.name = json['name'];
 
     Schedule schedule = Schedule();
     //error here
 
     Map<String, dynamic> sheduledata =
-        new Map<String, dynamic>.from(jsonn['schedule']);
+        new Map<String, dynamic>.from(json['schedule']);
     schedule.loadFromJson(sheduledata);
     this.schedule = schedule;
 
     MedicationInfo medicationInfo = MedicationInfo();
     Map<String, dynamic> medicationinfodata =
-        new Map<String, dynamic>.from(jsonn['medicationInfo']);
+        new Map<String, dynamic>.from(json['medicationInfo']);
     medicationInfo.loadFromJson(medicationinfodata);
     this.medicationInfo = medicationInfo;
   }
