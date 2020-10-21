@@ -315,7 +315,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   Widget _buildStockField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _stackedHeartIcons(true), //TODO 
       onTap: () => showStockDialog(context),
       placeholderText: 'Stock',
     );

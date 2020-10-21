@@ -215,12 +215,14 @@ class _StockDialogState extends State<StockDialog> {
     int inventoryControllerInt = int.parse(inventoryController.text);
     var notifyControllerInt = int.parse(notifyController.text);
     if (notifyControllerInt < inventoryControllerInt)
-    _handleSubmit(inventoryControllerInt);
+    _handleSubmit(inventoryControllerInt, notifyControllerInt);
   }
 
-  _handleSubmit(int inventoryControllerInt) {
-    widget.therapyForm.stock = inventoryControllerInt;
-    print(widget.therapyForm.stock);
+  _handleSubmit(int inventoryControllerInt, int notifyControllerInt) {
+    widget.therapyForm.currentLevel = inventoryControllerInt;
+    widget.therapyForm.flagLimit = notifyControllerInt;
+    print(widget.therapyForm.currentLevel);
+    print(widget.therapyForm.flagLimit);
     Navigator.pop(context);
   }
 }

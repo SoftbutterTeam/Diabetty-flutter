@@ -1,3 +1,4 @@
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,7 +10,12 @@ class MinRestPopUp extends StatefulWidget {
   final CupertinoTimerPicker timerPicker;
   final String desciption;
 
-  MinRestPopUp({this.onPressed, this.height, this.width, this.timerPicker, this.desciption});
+  MinRestPopUp(
+      {this.onPressed,
+      this.height,
+      this.width,
+      this.timerPicker,
+      this.desciption});
 
   @override
   _MinRestPopUpState createState() => _MinRestPopUpState();
@@ -26,7 +32,8 @@ class _MinRestPopUpState extends State<MinRestPopUp> {
             child: Container(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
-                    height: size.height * 0.15,
+                    // height: size.height * 0.15,
+                    height: size.height * 0.09,
                     width: size.width,
                     child: Card(
                       color: Colors.white,
@@ -38,21 +45,42 @@ class _MinRestPopUpState extends State<MinRestPopUp> {
                             width: 0.1,
                             color: Colors.deepOrange), //Colors.white
                       ),
+                      // child: Container(
+                      //   alignment: Alignment.center,
+                      //   child: Column(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     children: [
+                      //       Icon(
+                      //         Icons.info_outline,
+                      //         size: size.height * 0.08,
+                      //       ),
+                      //       Text(
+                      //         widget.desciption,
+                      //         maxLines: 3,
+                      //         textAlign: TextAlign.center,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       child: Container(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Icon(
-                              Icons.info_outline,
-                              size: size.height * 0.08,
+                            Flexible(
+                              flex: 1,
+                              child: Icon(
+                                Icons.info_outline,
+                                size: size.height * 0.03,
+                              ),
                             ),
-                            Text(
-                              widget.desciption,
-                              maxLines: 3,
-                              textAlign: TextAlign.center,
-                            ),
+                            Flexible(
+                                flex: 4,
+                                child: text(widget.desciption,
+                                    textColor: Colors.black87,
+                                    fontSize: 13.0,
+                                    maxLine: 3,
+                                    overflow: TextOverflow.ellipsis))
                           ],
                         ),
                       ),
