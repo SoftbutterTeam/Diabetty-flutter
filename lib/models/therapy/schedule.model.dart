@@ -37,7 +37,8 @@ class Schedule {
   createReminders(List<dynamic> json) {
     List<ReminderRule> returnReminders = List();
     for (var reminder = 0; reminder < json.length; reminder++) {
-      var reminderJson = json.elementAt(reminder);
+      Map<String, dynamic> reminderJson =
+          new Map<String, dynamic>.from(json.elementAt(reminder));
       ReminderRule currReminder = ReminderRule();
       currReminder.loadFromJson(reminderJson);
       returnReminders.add(currReminder);

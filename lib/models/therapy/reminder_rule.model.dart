@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:random_string/random_string.dart' as random;
 import 'dart:math' show Random;
 
@@ -18,7 +19,7 @@ class ReminderRule {
   }
 
   loadFromJson(Map<String, dynamic> json) {
-    var daysJson = json['days'];
+    Map<String, dynamic> daysJson = new Map<String, dynamic>.from(json['days']);
     Days days = Days();
     days.loadFromJson(daysJson);
     this.days = days;

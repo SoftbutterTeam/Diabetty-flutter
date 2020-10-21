@@ -1,14 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 
 class TherapyRepository {
-  TherapyRepository(String uid) {
-    AuthService authService;
-    authService.currentUser();
-    this.uid = uid;
+  TherapyRepository() {
+    //AuthService authService;
+    //authService.currentUser();
   }
 
   final Firestore _db = Firestore.instance;
@@ -86,7 +86,7 @@ class TherapyRepository {
 //Stream<List<Map<String, dynamic>>>
 //
 
-  Stream<QuerySnapshot> get onStateChanged {
+  Stream<QuerySnapshot> onStateChanged(String uid) {
     return _db
         .collection('users')
         .document(uid)
