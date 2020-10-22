@@ -15,6 +15,7 @@ import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
     as SlotWidget;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/models/timeslot.model.dart';
 
 import '../components/icon_widget.dart';
 
