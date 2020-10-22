@@ -38,7 +38,10 @@ class Therapy {
         new Map<String, dynamic>.from(json['schedule']);
     schedule.loadFromJson(sheduledata);
     this.schedule = schedule;
-
+    Map<String, dynamic> stockdata =
+        new Map<String, dynamic>.from(json['stock']);
+    Stock stock = new Stock();
+    stock.loadFromJson(stockdata);
     MedicationInfo medicationInfo = MedicationInfo();
     Map<String, dynamic> medicationinfodata =
         new Map<String, dynamic>.from(json['medicationInfo']);
@@ -51,6 +54,7 @@ class Therapy {
         'name': this.name,
         'schedule': this.schedule.toJson(),
         'medicationInfo': this.medicationInfo.toJson(),
+        'stock': this.stock.toJson(),
       };
 
   dummyData() {
