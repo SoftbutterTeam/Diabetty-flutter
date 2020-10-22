@@ -15,6 +15,18 @@ class Stock {
         : currentLevel -= amountTaken;
   }
 
+  loadFromJson(Map<String, dynamic> json) {
+    this.currentLevel = json['currentLevel'];
+    this.flagLimit = json['flagLimit'];
+    this.remind = json['remind'];
+  }
+
+  Map<String, dynamic> toJson() => {
+        'currentLevel': this.currentLevel,
+        'flagLimit': this.flagLimit,
+        'remind': this.remind,
+      };
+
   void refillAdd(int addToStock) {
     (currentLevel == null)
         ? currentLevel = addToStock
