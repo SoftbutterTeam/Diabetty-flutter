@@ -21,9 +21,10 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
   @override
   void initState() {
     super.initState();
-    criticalToggleSwitch = false;
-    noReminderToggle = false;
-    silentToggle = false;
+    criticalToggleSwitch =
+        (widget.therapyForm.settings.enableCriticalAlerts) ? true : false;
+    noReminderToggle = (widget.therapyForm.settings.noReminder) ? true : false;
+    silentToggle = (widget.therapyForm.settings.silent) ? true : false;
   }
 
   @override
@@ -40,14 +41,14 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
           children: [
             _buildCriticalAlertField(size),
             _buildAlarmSound(size),
-            _buildCancelAndSubmitButtons(),
+            _buildButtons(),
           ],
         ),
       ),
     );
   }
 
-  Expanded _buildCancelAndSubmitButtons() {
+  Expanded _buildButtons() {
     return Expanded(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,6 +63,30 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
             ),
             onPressed: () {
               Navigator.pop(context);
+            },
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 5.0,
+            ),
+          ),
+          CupertinoButton(
+            child: Text(
+              'Reset',
+              style: TextStyle(
+                color: (noReminderToggle || silentToggle)
+                    ? Colors.indigo
+                    : Colors.black26,
+              ),
+            ),
+            onPressed: () {
+              if (noReminderToggle || silentToggle || criticalToggleSwitch)
+                criticalToggleSwitch = false;
+              silentToggle = false;
+              noReminderToggle = false;
+              widget.therapyForm.settings.enableCriticalAlerts = false;
+              widget.therapyForm.settings.silent = false;
+              widget.therapyForm.settings.noReminder = false;
+              setState(() {});
             },
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
@@ -205,19 +230,19 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
 
   _handleSubmit() {
     if (silentToggle) {
-      widget.therapyForm.silent = true;
-      widget.therapyForm.noReminder = false;
+      widget.therapyForm.settings.silent = true;
+      widget.therapyForm.settings.noReminder = false;
     }
 
     if (noReminderToggle) {
-      widget.therapyForm.silent = false;
-      widget.therapyForm.noReminder = true;
+      widget.therapyForm.settings.silent = false;
+      widget.therapyForm.settings.noReminder = true;
     }
 
     if (criticalToggleSwitch) {
-      widget.therapyForm.enableCriticalAlerts = true;
+      widget.therapyForm.settings.enableCriticalAlerts = true;
     } else {
-      widget.therapyForm.enableCriticalAlerts = false;
+      widget.therapyForm.settings.enableCriticalAlerts = false;
     }
     Navigator.pop(context);
   }

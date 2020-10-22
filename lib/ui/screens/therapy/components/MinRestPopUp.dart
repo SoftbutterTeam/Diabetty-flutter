@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class MinRestPopUp extends StatefulWidget {
+class CustomTimerPicker extends StatefulWidget {
   final double height;
   final double width;
   final Function onPressed;
   final CupertinoTimerPicker timerPicker;
   final String desciption;
 
-  MinRestPopUp(
+  CustomTimerPicker(
       {this.onPressed,
       this.height,
       this.width,
@@ -18,10 +18,10 @@ class MinRestPopUp extends StatefulWidget {
       this.desciption});
 
   @override
-  _MinRestPopUpState createState() => _MinRestPopUpState();
+  _CustomTimerPickerState createState() => _CustomTimerPickerState();
 }
 
-class _MinRestPopUpState extends State<MinRestPopUp> {
+class _CustomTimerPickerState extends State<CustomTimerPicker> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -33,14 +33,16 @@ class _MinRestPopUpState extends State<MinRestPopUp> {
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
                     // height: size.height * 0.15,
-                    height: size.height * 0.09,
+                    height: size.height * 0.12,
                     width: size.width,
                     child: Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20)),
+                            topRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),),
                         side: BorderSide(
                             width: 0.1,
                             color: Colors.deepOrange), //Colors.white

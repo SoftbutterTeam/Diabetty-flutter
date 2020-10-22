@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/screens/therapy/components/MinRestPopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
@@ -175,7 +176,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
-        return MinRestPopUp(
+        return CustomTimerPicker(
           desciption:
               'A period of time set between occurences of required medication.\nPlease select your window time-frame.',
           height: height,
@@ -203,7 +204,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
-        return MinRestPopUp(
+        return CustomTimerPicker(
           desciption: 'How long you have to take medication or respond :)',
           height: height,
           width: width,
@@ -253,10 +254,10 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         builder: (context) => AlarmSettingsDialog(therapyForm: therapyForm));
   }
 
-  showStockDialog(BuildContext context) {
+  showStockDialog(BuildContext context, TherapyManager manager) {
     showDialog(
         context: context,
-        builder: (context) => StockDialog(therapyForm: therapyForm));
+        builder: (context) => StockDialog(therapyForm: therapyForm, manager: manager));
   }
 
   showReminderModal(BuildContext context) {

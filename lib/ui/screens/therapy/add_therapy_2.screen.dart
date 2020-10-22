@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
@@ -34,6 +35,7 @@ class AddTherapyScreenTwo extends StatefulWidget {
 class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     with AddTherapyModalsMixin {
   AddTherapyForm therapyForm;
+
   @override
   void initState() {
     therapyForm = widget.manager.therapyForm;
@@ -81,9 +83,14 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       },
       onRightTap: () {
         if (therapyForm.mode == 'needed') {
-          therapyForm.handleAsNeededSave(context);
+          therapyForm.handleAsNeededSave();
+          Navigator.pushNamed(context, therapy);
         } else {
-          therapyForm.handleAsPlannedSave(context);
+          if (therapyForm.reminderRules.length >= 1 &&
+              therapyForm.mode == 'planned') {
+            therapyForm.handleAsPlannedSave();
+            Navigator.pushNamed(context, therapy);
+          }
         }
       },
     );
@@ -315,8 +322,8 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   Widget _buildStockField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true), //TODO
-      onTap: () => showStockDialog(context),
+      stackIcons: _stackedHeartIcons(therapyForm.stock.isActive),
+      onTap: () => showStockDialog(context, widget.manager),
       placeholderText: 'Stock',
     );
   }

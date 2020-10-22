@@ -1,4 +1,5 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
@@ -7,8 +8,9 @@ import 'package:flutter/material.dart';
 
 class StockDialog extends StatefulWidget {
   final AddTherapyForm therapyForm;
+  final TherapyManager manager;
 
-  StockDialog({this.therapyForm});
+  StockDialog({this.therapyForm, this.manager});
   @override
   _StockDialogState createState() => _StockDialogState();
 }
@@ -21,9 +23,18 @@ class _StockDialogState extends State<StockDialog> {
   @override
   void initState() {
     super.initState();
-    inventoryController = TextEditingController();
-    notifyController = TextEditingController();
-    _isFilled = false;
+    inventoryController = TextEditingController(
+        text: (widget.therapyForm.stock.currentLevel == null)
+            ? null
+            : widget.therapyForm.stock.currentLevel.toString());
+    notifyController = TextEditingController(
+        text: (widget.therapyForm.stock.flagLimit == null)
+            ? null
+            : widget.therapyForm.stock.flagLimit.toString());
+    _isFilled = (inventoryController.text.isNotEmpty &&
+            notifyController.text.isNotEmpty)
+        ? true
+        : false;
   }
 
   @override
@@ -40,7 +51,7 @@ class _StockDialogState extends State<StockDialog> {
           children: [
             _buildStockLevelField(size),
             _buildNotifyWhenField(size),
-            _buildCancelAndSubmitButtons(),
+            _buildButtons(),
           ],
         ),
       ),
@@ -72,6 +83,7 @@ class _StockDialogState extends State<StockDialog> {
                 child: CupertinoTextField(
                   onChanged: (val) {
                     areBothFieldsFilled();
+                    inventoryController.text = val;
                   },
                   textAlign: TextAlign.center,
                   controller: inventoryController,
@@ -144,7 +156,7 @@ class _StockDialogState extends State<StockDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              text("pill(s) left",
+              text(unitTypes[widget.therapyForm.unitsIndex] + " left",
                   fontSize: 12.0,
                   fontFamily: fontSemibold,
                   textColor: Colors.grey[700]),
@@ -156,11 +168,8 @@ class _StockDialogState extends State<StockDialog> {
   }
 
   areBothFieldsFilled() {
-    var inventoryControllerInt = int.parse(inventoryController.text);
-    var notifyControllerInt = int.parse(notifyController.text);
     if (inventoryController.text.isNotEmpty &&
-        notifyController.text.isNotEmpty &&
-        (notifyControllerInt < inventoryControllerInt)) {
+        notifyController.text.isNotEmpty) {
       setState(() {
         _isFilled = true;
       });
@@ -171,7 +180,7 @@ class _StockDialogState extends State<StockDialog> {
     }
   }
 
-  Expanded _buildCancelAndSubmitButtons() {
+  Expanded _buildButtons() {
     return Expanded(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -192,6 +201,20 @@ class _StockDialogState extends State<StockDialog> {
                 vertical: 5.0,
               )),
           CupertinoButton(
+              child: Text(
+                'Reset',
+                style: TextStyle(
+                  color: _isFilled ? Colors.indigo : Colors.black26,
+                ),
+              ),
+              onPressed: () {
+                if (_isFilled) _reset();
+              },
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 5.0,
+              )),
+          CupertinoButton(
             child: Text(
               'Submit',
               style: TextStyle(
@@ -199,7 +222,7 @@ class _StockDialogState extends State<StockDialog> {
               ),
             ),
             onPressed: () {
-              _isFilled ? _validation() : null;
+              if (_isFilled) _validation();
             },
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
@@ -211,18 +234,27 @@ class _StockDialogState extends State<StockDialog> {
     );
   }
 
+  _reset() {
+    inventoryController.clear();
+    notifyController.clear();
+    widget.therapyForm.stock.currentLevel = null;
+    widget.therapyForm.stock.flagLimit = null;
+    _isFilled = false;
+    setState(() {});
+  }
+
   _validation() {
     int inventoryControllerInt = int.parse(inventoryController.text);
     var notifyControllerInt = int.parse(notifyController.text);
-    if (notifyControllerInt < inventoryControllerInt)
     _handleSubmit(inventoryControllerInt, notifyControllerInt);
   }
 
   _handleSubmit(int inventoryControllerInt, int notifyControllerInt) {
-    widget.therapyForm.currentLevel = inventoryControllerInt;
-    widget.therapyForm.flagLimit = notifyControllerInt;
-    print(widget.therapyForm.currentLevel);
-    print(widget.therapyForm.flagLimit);
+    widget.therapyForm.stock.currentLevel = inventoryControllerInt;
+    widget.therapyForm.stock.flagLimit = notifyControllerInt;
+    widget.manager.updateListeners();
+    print(widget.therapyForm.stock.currentLevel);
+    print(widget.therapyForm.stock.flagLimit);
     Navigator.pop(context);
   }
 }

@@ -19,12 +19,8 @@ class AddTherapyForm {
   Duration minRest;
   String mode;
   List<ReminderRule> reminderRules = List();
-  bool noReminder;
-  bool silent;
-  bool enableCriticalAlerts;
-  int currentLevel;
-  int flagLimit;
-  bool remind;
+  AlarmSettings settings;
+  Stock stock;
   DateTime startDate;
   DateTime endDate;
   Duration window;
@@ -55,24 +51,17 @@ class AddTherapyForm {
       this.apperanceIndex,
       this.minRest,
       this.mode,
-      this.noReminder,
-      this.silent,
-      this.enableCriticalAlerts,
-      this.currentLevel,
-      this.flagLimit,
-      this.remind,
+      this.settings,
+      this.stock,
       this.startDate,
       this.endDate,
       this.window,
       this.reminderRules}) {
+    this.stock ??= Stock();
+    this.settings ??= AlarmSettings();
     this.reminderRules ??= List();
     this.window ??= Duration(minutes: 20);
     this.name ??= '';
-    this.enableCriticalAlerts ??= false;
-    this.silent ??= false;
-    this.noReminder ??= false;
-    this.currentLevel ??= 0;
-    this.flagLimit ??= 0;
     this.intakeAdviceIndex ??= 0;
     this.startDate ??= DateTime.now();
     this.endDate ??= null;
@@ -82,46 +71,22 @@ class AddTherapyForm {
     this.apperanceIndex = 0;
   }
 
-  handleAsNeededSave(context) {
+  handleAsNeededSave() {
     if (mode == 'needed') {
       window = null;
       startDate = null;
       endDate = null;
-      enableCriticalAlerts = false;
-      noReminder = false;
-      silent = false;
-      print(name);
-      print(strength);
-      print(minRest);
-      print(currentLevel);
-      print(strengthUnitsIndex);
-      print(window);
-      Navigator.pushNamed(context, therapy);
+      settings.enableCriticalAlerts = false;
+      settings.noReminder = false;
+      settings.silent = false;
     }
   }
 
-  handleAsPlannedSave(context) {
+  handleAsPlannedSave() {
     if (mode == 'planned' && reminderRules.length >= 1) {
       startDate ??= DateTime.now();
       endDate ??= null;
-      print(name);
-      print(reminderRules.length);
-      print(strength);
-      print(minRest);
-      print(currentLevel);
-      print(flagLimit);
-      print(strengthUnitsIndex);
-      print(apperanceIndex);
-      print(intakeAdviceIndex);
-      print(unitsIndex);
-      print(startDate);
-      print(endDate);
-      print(window);
-      print(enableCriticalAlerts);
-      print(noReminder);
-      print(silent);
-      Navigator.pushNamed(context, therapy);
-    }
+    } 
   }
 
   Therapy toTherapy() {
@@ -137,16 +102,16 @@ class AddTherapyForm {
           restDuration: this.minRest,
         ),
         stock: Stock(
-          currentLevel: this.currentLevel,
-          flagLimit: this.flagLimit,
-          remind: this.remind,
+          currentLevel: stock.currentLevel,
+          flagLimit: stock.flagLimit,
+          remind: stock.remind,
         ),
         schedule: (mode == 'planned')
             ? Schedule(
                 alarmSettings: AlarmSettings(
-                  noReminder: this.noReminder,
-                  silent: this.silent,
-                  enableCriticalAlerts: this.enableCriticalAlerts,
+                  noReminder: settings.noReminder,
+                  silent: settings.silent,
+                  enableCriticalAlerts: settings.enableCriticalAlerts,
                 ),
                 reminders: this.reminderRules,
                 startDate: this.startDate ?? DateTime.now(),
@@ -187,12 +152,10 @@ class AddTherapyForm {
 
   bool isDateValid() => this.startDate != null;
 
-  bool isStockValid() => this.currentLevel != null && this.flagLimit != null;
-
   bool isAlarmSettingsValid() =>
-      this.noReminder != null &&
-      this.enableCriticalAlerts != null &&
-      this.silent != null;
+      settings.noReminder != null &&
+      settings.enableCriticalAlerts != null &&
+      settings.silent != null;
 
   bool isWindowValid() => this.window != null;
 }
