@@ -9,7 +9,8 @@ class Stock {
   bool get runningLow => (isActive) ? currentLevel <= flagLimit : false;
 
   void takenAmount(int amountTaken) {
-    (currentLevel == null || amountTaken > currentLevel)
+    if (currentLevel == null) return;
+    (amountTaken > currentLevel)
         ? currentLevel = 0
         : currentLevel -= amountTaken;
   }
