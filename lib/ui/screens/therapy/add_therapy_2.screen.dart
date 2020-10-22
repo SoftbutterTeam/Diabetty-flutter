@@ -5,11 +5,10 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
-import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
-import 'package:diabetty/ui/screens/therapy/components/alarm_settings_dialog.dart';
+
 import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
-import 'package:diabetty/ui/screens/therapy/components/stock_dialog.dart';
+
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/components/topbar.dart';
@@ -82,12 +81,11 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         widget.pageController.jumpToPage(0);
       },
       onRightTap: () {
-        if (therapyForm.mode == 'needed') {
+        if (therapyForm.isAsNeededValid()) {
           therapyForm.handleAsNeededSave();
           Navigator.pushNamed(context, therapy);
         } else {
-          if (therapyForm.reminderRules.length >= 1 &&
-              therapyForm.mode == 'planned') {
+          if (therapyForm.isPlannedValid()) {
             therapyForm.handleAsPlannedSave();
             Navigator.pushNamed(context, therapy);
           }

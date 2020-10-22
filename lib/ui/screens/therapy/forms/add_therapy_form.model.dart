@@ -126,6 +126,10 @@ class AddTherapyForm {
 
   bool isVisible() => (this.mode == 'planned');
 
+  bool isPlannedValid() => this.mode =='planned' && this.reminderRules.length >= 1 && this.name != null;
+
+  bool isAsNeededValid() => this.mode == 'needed' && this.name != null;
+
   bool isNameValid() => this.name != null && this.name.length > 0;
 
   bool isStrengthValid() => this.strength != null && this.strength > 0;
@@ -139,16 +143,8 @@ class AddTherapyForm {
   bool isAppearanceAdviceValid() =>
       this.apperanceIndex != null && this.apperanceIndex >= 0;
 
-  // bool isStockValid() => this.stock != null && this.stock > 0;
 
   bool isMinRestValid() => this.minRest != null;
-
-  bool isAsNeededFormValid() =>
-      isNameValid() &&
-      isStrengthValid() &&
-      isStrengthUnitsValid() &&
-      isIntakeAdviceValid() &&
-      isAppearanceAdviceValid();
 
   bool isDateValid() => this.startDate != null;
 
