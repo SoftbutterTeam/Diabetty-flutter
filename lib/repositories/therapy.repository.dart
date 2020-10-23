@@ -25,7 +25,7 @@ class TherapyRepository {
           .get();
       var data = Map<String, dynamic>.from(result.data);
       data['id'] = result.documentID;
-
+      data['userId'] = uid;
       return DataResult(data: data);
     } catch (exception, stackTrace) {
       return DataResult(exception: exception, stackTrace: stackTrace);
@@ -58,7 +58,7 @@ class TherapyRepository {
     therapyData = therapy.toJson();
     await _db
         .collection('users')
-        .document(therapy.ownerId)
+        .document(therapy.userId)
         .collection('therapies')
         .document(therapy.id)
         .updateData(therapyData)
@@ -70,12 +70,11 @@ class TherapyRepository {
 
   Future<void> createTherapy(Therapy therapy) async {
     Map<String, dynamic> therapyData = therapy.toJson();
-    therapy.ownerId = uid;
-    print(therapyData.toString());
+    // print(therapyData.toString());
     //* convert to Json here
     await _db
         .collection('users')
-        .document(therapy.ownerId)
+        .document(therapy.userId)
         .collection('therapies')
         .document()
         .setData(therapyData)

@@ -32,7 +32,7 @@ class TherapyService {
       // Map<String, dynamic> values = doc.data;
       //print(values['schedule']);
       Therapy therapy = Therapy();
-      therapy.uid = doc.documentID;
+      therapy.id = doc.documentID;
       therapy.loadFromJson(doc.data);
       // Json.decode(response.body).cast<ObjectName>();
       return therapy;
