@@ -1,25 +1,31 @@
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:circular_check_box/circular_check_box.dart';
 
 class AlarmSettingsDialog extends StatefulWidget {
+  final AddTherapyForm therapyForm;
+  final TherapyManager manager;
+
+  AlarmSettingsDialog({this.therapyForm, this.manager});
   @override
   _AlarmSettingsDialogState createState() => _AlarmSettingsDialogState();
 }
 
 class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
-  bool criticalToggleSwitch;
-  bool checkBox;
-  bool checkBox2;
+  bool enableCriticalToggle;
+  bool noReminderToggle;
+  bool silentToggle;
 
   @override
   void initState() {
     super.initState();
-    criticalToggleSwitch = false;
-    checkBox = false;
-    checkBox2 = false;
+    enableCriticalToggle =
+        (widget.therapyForm.settings.enableCriticalAlerts) ? true : false;
+    noReminderToggle = (widget.therapyForm.settings.noReminder) ? true : false;
+    silentToggle = (widget.therapyForm.settings.silent) ? true : false;
   }
 
   @override
@@ -36,14 +42,14 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
           children: [
             _buildCriticalAlertField(size),
             _buildAlarmSound(size),
-            _buildCancelAndSubmitButtons(),
+            _buildButtons(),
           ],
         ),
       ),
     );
   }
 
-  Expanded _buildCancelAndSubmitButtons() {
+  Expanded _buildButtons() {
     return Expanded(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,8 +62,28 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
                 color: CupertinoColors.destructiveRed,
               ),
             ),
+            onPressed: () => Navigator.pop(context),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 5.0,
+            ),
+          ),
+          CupertinoButton(
+            child: Text(
+              'Reset',
+              style: TextStyle(
+                color: (noReminderToggle || silentToggle)
+                    ? Colors.indigo
+                    : Colors.black26,
+              ),
+            ),
             onPressed: () {
-              Navigator.pop(context);
+              if (noReminderToggle || silentToggle || enableCriticalToggle)
+                enableCriticalToggle = false;
+              silentToggle = false;
+              noReminderToggle = false;
+              widget.therapyForm.settings.handleReset();
+              setState(() {});
             },
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
@@ -68,14 +94,13 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
             child: Text(
               'Submit',
               style: TextStyle(
-                color: (criticalToggleSwitch && (checkBox || checkBox2))
+                color: (noReminderToggle || silentToggle)
                     ? Colors.indigo
                     : Colors.black26,
               ),
             ),
             onPressed: () {
-              if (criticalToggleSwitch && (checkBox || checkBox2))
-                Navigator.pop(context);
+              if (noReminderToggle || silentToggle) _handleSubmit();
             },
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
@@ -90,7 +115,6 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
   Container _buildAlarmSound(Size size) {
     return Container(
         width: size.width * 0.8,
-        // color: Colors.red,
         child: Column(
           children: [
             text("Sound", fontSize: 16.0, textColor: Colors.black),
@@ -103,7 +127,6 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
   Container _buildCriticalAlertField(Size size) {
     return Container(
       padding: EdgeInsets.only(top: 15, bottom: 10),
-      // color: Colors.red,
       child: _buildCriticalAlertToggle("Enable Critical Alerts"),
     );
   }
@@ -118,13 +141,13 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
               fontSize: 15.0,
               fontFamily: fontBold,
               textColor:
-                  (criticalToggleSwitch) ? Colors.black : Colors.black26),
+                  (enableCriticalToggle) ? Colors.black : Colors.black26),
           CupertinoSwitch(
             activeColor: Colors.indigo,
-            value: criticalToggleSwitch,
+            value: enableCriticalToggle,
             onChanged: (v) {
               setState(() {
-                criticalToggleSwitch = v;
+                enableCriticalToggle = v;
               });
             },
           ),
@@ -142,14 +165,14 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
           text(title,
               fontSize: 15.0,
               fontFamily: fontBold,
-              textColor: (checkBox) ? Colors.black : Colors.black26),
+              textColor: (noReminderToggle) ? Colors.black : Colors.black26),
           CupertinoSwitch(
             activeColor: Colors.indigo,
-            value: checkBox,
+            value: noReminderToggle,
             onChanged: (v) {
               setState(() {
-                checkBox = v;
-                checkBox2 = !v;
+                noReminderToggle = v;
+                silentToggle = !v;
               });
             },
           ),
@@ -167,14 +190,14 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
           text(title,
               fontSize: 15.0,
               fontFamily: fontBold,
-              textColor: (checkBox2) ? Colors.black : Colors.black26),
+              textColor: (silentToggle) ? Colors.black : Colors.black26),
           CupertinoSwitch(
             activeColor: Colors.indigo,
-            value: checkBox2,
+            value: silentToggle,
             onChanged: (v) {
               setState(() {
-                checkBox = !v;
-                checkBox2 = v;
+                noReminderToggle = !v;
+                silentToggle = v;
               });
             },
           ),
@@ -182,62 +205,11 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
       ),
     );
   }
+
+  _handleSubmit() {
+    widget.therapyForm.settings
+        .handleValidation(silentToggle, noReminderToggle, enableCriticalToggle);
+    widget.manager.updateListeners();
+    Navigator.pop(context);
+  }
 }
-
-// Row(
-//   children: [
-//     CircularCheckBox(
-//       visualDensity: VisualDensity.comfortable,
-//         value: checkBox,
-//         materialTapTargetSize: MaterialTapTargetSize.padded,
-//         onChanged: (bool value) {
-//           setState(() {
-//             checkBox = value;
-//             checkBox2 = !value;
-//           });
-//         }),
-// Checkbox(
-
-//         onChanged: (bool value) {
-//           setState(() {
-//            checkBox = value;
-//            checkBox2 = !value;
-//           });
-//         },
-//         // tristate: i == 1,
-//        value: checkBox,
-//       ),
-//     Text(
-//       'No Reminder',
-//       style: Theme.of(context).textTheme.subtitle1.copyWith(
-//           color:
-//               (checkBox == true) ? Colors.black38 : Colors.black),
-//     ),
-//   ],
-// ),
-// CheckboxListTile(
-//   title: text("No Reminder",
-//       fontSize: 15.0,
-//       textColor: (checkBox) ? Colors.black : Colors.black26),
-//   value: checkBox,
-//   onChanged: (value) {
-//     setState(() {
-//       checkBox = value;
-//       checkBox2 = !value;
-//     });
-//   },
-//   activeColor: Colors.indigo,
-// ),
-// CheckboxListTile(
-//   title: text("Silent",
-//       fontSize: 15.0,
-//       textColor: (checkBox2) ? Colors.black : Colors.black26),
-//   value: checkBox2,
-//   onChanged: (value) {
-//     setState(() {
-//       checkBox = !value;
-//       checkBox2 = value;
-//     });
-//   },
-//   activeColor: Colors.indigo,
-// ),
