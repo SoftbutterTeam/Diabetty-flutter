@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/screens/therapy/components/MinRestPopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
@@ -247,12 +248,15 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     }
   }
 
-  showAlarmSettingsDialog(BuildContext context) {
-    showDialog(context: context, builder: (context) => AlarmSettingsDialog());
+  showAlarmSettingsDialog(BuildContext context, TherapyManager manager) {
+    showDialog(
+        context: context,
+        builder: (context) => AlarmSettingsDialog(manager: manager));
   }
 
-  showStockDialog(BuildContext context) {
-    showDialog(context: context, builder: (context) => StockDialog());
+  showStockDialog(BuildContext context, TherapyManager manager) {
+    showDialog(
+        context: context, builder: (context) => StockDialog(manager: manager));
   }
 
   showReminderModal(BuildContext context) {

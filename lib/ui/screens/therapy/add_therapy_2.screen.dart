@@ -301,15 +301,15 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   Widget _buildAlarmSettingsField() {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      onTap: () => showAlarmSettingsDialog(context),
+      onTap: () => showAlarmSettingsDialog(context, widget.manager),
       placeholderText: 'Alarm Settings',
     );
   }
 
   Widget _buildStockField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
-      onTap: () => showStockDialog(context),
+      stackIcons: _stackedHeartIcons(therapyForm.stock.isActive),
+      onTap: () => showStockDialog(context, widget.manager),
       placeholderText: 'Stock',
     );
   }
