@@ -176,7 +176,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
-        return MinRestPopUp(
+        return CustomTimerPicker(
           desciption:
               'A period of time set between occurences of required medication.\nPlease select your window time-frame.',
           height: height,
@@ -204,7 +204,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
-        return MinRestPopUp(
+        return CustomTimerPicker(
           desciption: 'How long you have to take medication or respond :)',
           height: height,
           width: width,
@@ -251,12 +251,12 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   showAlarmSettingsDialog(BuildContext context, TherapyManager manager) {
     showDialog(
         context: context,
-        builder: (context) => AlarmSettingsDialog(manager: manager));
+        builder: (context) => AlarmSettingsDialog(therapyForm: therapyForm, manager: manager));
   }
 
   showStockDialog(BuildContext context, TherapyManager manager) {
     showDialog(
-        context: context, builder: (context) => StockDialog(manager: manager));
+        context: context, builder: (context) => StockDialog(therapyForm: therapyForm ,manager: manager));
   }
 
   showReminderModal(BuildContext context) {
