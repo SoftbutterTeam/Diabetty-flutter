@@ -2,20 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class MinRestPopUp extends StatefulWidget {
+class CustomTimerPicker extends StatefulWidget {
   final double height;
   final double width;
   final Function onPressed;
   final CupertinoTimerPicker timerPicker;
   final String desciption;
 
-  MinRestPopUp({this.onPressed, this.height, this.width, this.timerPicker, this.desciption});
+  CustomTimerPicker({this.onPressed, this.height, this.width, this.timerPicker, this.desciption});
 
   @override
-  _MinRestPopUpState createState() => _MinRestPopUpState();
+  _CustomTimerPickerState createState() => _CustomTimerPickerState();
 }
 
-class _MinRestPopUpState extends State<MinRestPopUp> {
+class _CustomTimerPickerState extends State<CustomTimerPicker> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
