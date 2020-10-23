@@ -90,7 +90,6 @@ class AddTherapyForm {
   Therapy toTherapy() {
     return Therapy(
         mode: this.mode,
-        stock: this.stock,
         name: this.name,
         medicationInfo: MedicationInfo(
           appearanceIndex: this.apperanceIndex,
@@ -100,9 +99,18 @@ class AddTherapyForm {
           unitIndex: this.unitsIndex,
           restDuration: this.minRest,
         ),
+        stock: Stock(
+          currentLevel: stock.currentLevel,
+          flagLimit: stock.flagLimit,
+          remind: stock.remind,
+        ),
         schedule: (mode == 'planned')
             ? Schedule(
-                alarmSettings: this.settings,
+                alarmSettings: AlarmSettings(
+                  noReminder: settings.noReminder,
+                  silent: settings.silent,
+                  enableCriticalAlerts: settings.enableCriticalAlerts,
+                ),
                 reminders: this.reminderRules,
                 startDate: this.startDate ?? DateTime.now(),
                 endDate: (this.endDate == null ||
@@ -114,9 +122,13 @@ class AddTherapyForm {
             : null);
   }
 
-  bool isPlanned() => (this.mode == 'planned');
+  bool isVisible() => (this.mode == 'planned');
 
   bool isNameValid() => this.name != null && this.name.length > 0;
+
+  bool isPlannedValid() => this.mode =='planned' && this.reminderRules.length >= 1 && isNameValid();
+
+  bool isAsNeededValid() => this.mode == 'needed' && isNameValid();
 
   bool isStrengthValid() => this.strength != null && this.strength > 0;
 
@@ -129,28 +141,15 @@ class AddTherapyForm {
   bool isAppearanceAdviceValid() =>
       this.apperanceIndex != null && this.apperanceIndex >= 0;
 
-  //bool isStockValid() => this.stock != null && this.stock > 0; // TODO
 
   bool isMinRestValid() => this.minRest != null;
 
-  bool isAsNeededFormValid() =>
-      isNameValid() &&
-      isStrengthValid() &&
-      isStrengthUnitsValid() &&
-      isIntakeAdviceValid() &&
-      isAppearanceAdviceValid() &&
-      true;
-  //    isStockValid();
-
   bool isDateValid() => this.startDate != null;
 
-  bool isWindowValid() => this.window != null;
+  bool isAlarmSettingsValid() =>
+      settings.noReminder != null &&
+      settings.enableCriticalAlerts != null &&
+      settings.silent != null;
 
-  printStuff() {
-    print(name);
-    print(strength);
-    print(minRest);
-    print(stock);
-    print(strengthUnitsIndex);
-  }
+  bool isWindowValid() => this.window != null;
 }
