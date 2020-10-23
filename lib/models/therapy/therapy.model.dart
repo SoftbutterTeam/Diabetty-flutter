@@ -11,15 +11,16 @@ import 'stock.model.dart';
 
 //btw Schedule.reminders should be called reminderRules for clarity
 class Therapy {
+  String ownerid;
   String id;
-  String uid;
   String name;
   Schedule schedule;
   MedicationInfo medicationInfo;
   Stock stock;
   String mode;
   Therapy({
-    this.uid,
+    this.ownerid,
+    this.id,
     this.name,
     this.schedule,
     this.medicationInfo,

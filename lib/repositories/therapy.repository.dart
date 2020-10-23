@@ -53,15 +53,14 @@ class TherapyRepository {
     }
   }
 
-  //* TODO review update CRUD and transactions
   Future<void> updateTherapy(Therapy therapy) async {
     Map<String, dynamic> therapyData = Map();
     therapyData = therapy.toJson();
     await _db
         .collection('users')
-        .document(therapy.id)
+        .document(therapy.ownerId)
         .collection('therapies')
-        .document(therapy.uid)
+        .document(therapy.id)
         .updateData(therapyData)
         .catchError((e) {
       print(e);
@@ -71,10 +70,12 @@ class TherapyRepository {
 
   Future<void> createTherapy(Therapy therapy) async {
     Map<String, dynamic> therapyData = therapy.toJson();
+    therapy.ownerId = uid;
     print(therapyData.toString());
+    //* convert to Json here
     await _db
         .collection('users')
-        .document(therapy.id)
+        .document(therapy.ownerId)
         .collection('therapies')
         .document()
         .setData(therapyData)
@@ -83,8 +84,6 @@ class TherapyRepository {
     });
     return true;
   }
-//Stream<List<Map<String, dynamic>>>
-//
 
   Stream<QuerySnapshot> onStateChanged(String uid) {
     return _db
