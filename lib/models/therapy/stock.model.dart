@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Stock {
   int currentLevel;
   int flagLimit;
@@ -13,6 +15,19 @@ class Stock {
     (amountTaken > currentLevel)
         ? currentLevel = 0
         : currentLevel -= amountTaken;
+  }
+
+  void handleReset() {
+    currentLevel = null;
+    flagLimit = null;
+  }
+
+  void handleValidation(TextEditingController currentLevelController,
+      TextEditingController flagLimitController) {
+    int currentLevelControllerToInt = int.parse(currentLevelController.text);
+    int flagLimitControllerToInt = int.parse(flagLimitController.text);
+    currentLevel = currentLevelControllerToInt;
+    flagLimit = flagLimitControllerToInt;
   }
 
   loadFromJson(Map<String, dynamic> json) {
