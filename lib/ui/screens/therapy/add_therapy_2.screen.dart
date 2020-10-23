@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
@@ -77,10 +78,14 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         widget.pageController.jumpToPage(0);
       },
       onRightTap: () {
-        if (therapyForm.mode == 'needed') {
-          therapyForm.printStuff();
+         if (therapyForm.isAsNeededValid()) {
+          therapyForm.handleAsNeededSave();
+          Navigator.pushNamed(context, therapy);
         } else {
-          print('As planned');
+          if (therapyForm.isPlannedValid()) {
+            therapyForm.handleAsPlannedSave();
+            Navigator.pushNamed(context, therapy);
+          }
         }
       },
     );
@@ -99,16 +104,16 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       ),
       _buildModeField(),
       Visibility(
-        visible: therapyForm.isPlanned() ? true : false,
+        visible: therapyForm.isVisible() ? true : false,
         child: _buildWindowField(),
       ),
       Visibility(
-        visible: therapyForm.isPlanned() ? true : false,
+        visible: therapyForm.isVisible() ? true : false,
         child: _buildStartEndDateField(),
       ),
       if (reminderRulesList.length > 0)
         Visibility(
-            visible: therapyForm.isPlanned() ? true : false,
+            visible: therapyForm.isVisible() ? true : false,
             child: Container(
               padding: EdgeInsets.only(top: 9),
               child: (reminderRulesList.length < 7)
@@ -140,7 +145,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Visibility(
-                  visible: therapyForm.isPlanned() ? true : false,
+                  visible: therapyForm.isVisible() ? true : false,
                   child: _buildAlarmSettingsField(),
                 ),
                 _buildStockField(),
@@ -174,7 +179,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () {
-        therapyForm.isPlanned()
+        therapyForm.isVisible()
             ? setState(() {
                 therapyForm.mode = 'needed';
               })
