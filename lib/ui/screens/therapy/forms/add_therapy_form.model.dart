@@ -55,10 +55,11 @@ class AddTherapyForm {
       this.endDate,
       this.window,
       this.reminderRules}) {
+    this.stock ??= Stock();
+    this.settings ??= AlarmSettings();
     this.reminderRules ??= List();
     this.window ??= Duration(minutes: 20);
     this.name ??= '';
-
     this.intakeAdviceIndex ??= 0;
     this.startDate ??= DateTime.now();
     this.endDate ??= null;
@@ -66,6 +67,24 @@ class AddTherapyForm {
     this.strengthUnitsIndex ??= 0;
     this.mode = modeOptions[0];
     this.apperanceIndex = 0;
+  }
+
+  handleAsNeededSave() {
+    if (mode == 'needed') {
+      window = null;
+      startDate = null;
+      endDate = null;
+      settings.enableCriticalAlerts = false;
+      settings.noReminder = false;
+      settings.silent = false;
+    }
+  }
+
+  handleAsPlannedSave() {
+    if (mode == 'planned' && reminderRules.length >= 1) {
+      startDate ??= DateTime.now();
+      endDate ??= null;
+    }
   }
 
   Therapy toTherapy() {
@@ -83,6 +102,7 @@ class AddTherapyForm {
         ),
         schedule: (mode == 'planned')
             ? Schedule(
+                alarmSettings: this.settings,
                 reminders: this.reminderRules,
                 startDate: this.startDate ?? DateTime.now(),
                 endDate: (this.endDate == null ||
