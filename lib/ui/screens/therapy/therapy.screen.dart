@@ -102,13 +102,13 @@ class _TherapyScreenState extends State<TherapyScreen> {
         stream: manager.therapyStream,
         builder: (context, snapshot) {
           //List<TimeSlot> timeSlots = manager.getRemindersByTimeSlots();
-          if (snapshot.hasData) {
-            print("has data");
+          if (!snapshot.hasData) {
+            print("no has data");
             print(snapshot.data.toString());
             return Column(
               children: [
                 Center(
-                  child: text('has datta'),
+                  child: text('has data'),
                 ),
               ],
             );
@@ -129,7 +129,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return MedicationCard(
-                    name: "Medication Name",
+                    name: snapshot.data[index].name,
                     appearance: 'assets/icons/navigation/essentials/pills.svg',
                   );
                 }),
