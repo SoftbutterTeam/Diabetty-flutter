@@ -11,7 +11,7 @@ import 'stock.model.dart';
 
 //btw Schedule.reminders should be called reminderRules for clarity
 class Therapy {
-  String ownerId;
+  String userId;
   String id;
   String name;
   Schedule schedule;
@@ -19,7 +19,7 @@ class Therapy {
   Stock stock;
   String mode;
   Therapy({
-    this.ownerId,
+    this.userId,
     this.id,
     this.name,
     this.schedule,
@@ -30,6 +30,7 @@ class Therapy {
 
   loadFromJson(Map<String, dynamic> json) {
     this.id = json['id'];
+    this.userId = json['userId'];
     this.name = json['name'];
 
     Schedule schedule = Schedule();

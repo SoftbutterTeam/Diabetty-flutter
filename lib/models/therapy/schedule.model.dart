@@ -14,6 +14,7 @@ class Schedule {
     this.window,
     this.startDate,
     this.endDate,
+    this.alarmSettings,
   });
 
   loadFromJson(Map<String, dynamic> json) {
