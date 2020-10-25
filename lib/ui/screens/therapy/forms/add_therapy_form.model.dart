@@ -6,6 +6,7 @@ import 'package:diabetty/models/therapy/schedule.model.dart';
 import 'package:diabetty/models/therapy/stock.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/screens/therapy/extensions/datetime_extension.dart';
+import 'package:flutter/services.dart';
 
 class AddTherapyForm {
   String name;
@@ -69,24 +70,6 @@ class AddTherapyForm {
     this.apperanceIndex = 0;
   }
 
-  handleAsNeededSave() {
-    if (mode == 'needed') {
-      window = null;
-      startDate = null;
-      endDate = null;
-      settings.enableCriticalAlerts = false;
-      settings.noReminder = false;
-      settings.silent = false;
-    }
-  }
-
-  handleAsPlannedSave() {
-    if (mode == 'planned' && reminderRules.length >= 1) {
-      startDate ??= DateTime.now();
-      endDate ??= null;
-    }
-  }
-
   Therapy toTherapy() {
     return Therapy(
         mode: this.mode,
@@ -106,6 +89,7 @@ class AddTherapyForm {
         ),
         schedule: (mode == 'planned')
             ? Schedule(
+                window: window,
                 alarmSettings: AlarmSettings(
                   noReminder: settings.noReminder,
                   silent: settings.silent,
@@ -126,7 +110,8 @@ class AddTherapyForm {
 
   bool isNameValid() => this.name != null && this.name.length > 0;
 
-  bool isPlannedValid() => this.mode =='planned' && this.reminderRules.length >= 1 && isNameValid();
+  bool isPlannedValid() =>
+      this.mode == 'planned' && this.reminderRules.length >= 1 && isNameValid();
 
   bool isAsNeededValid() => this.mode == 'needed' && isNameValid();
 
@@ -141,7 +126,6 @@ class AddTherapyForm {
   bool isAppearanceAdviceValid() =>
       this.apperanceIndex != null && this.apperanceIndex >= 0;
 
-
   bool isMinRestValid() => this.minRest != null;
 
   bool isDateValid() => this.startDate != null;
@@ -152,4 +136,20 @@ class AddTherapyForm {
       settings.silent != null;
 
   bool isWindowValid() => this.window != null;
+
+  bool neededValidation({bool toThrow = false}) {
+    if (isAsNeededValid()) return true;
+    if (toThrow) throw Exception("Name is empty");
+    return false;
+  }
+
+  bool plannedValidation({bool toThrow = false}) {
+    if (isPlannedValid()) return true;
+    if (toThrow) throw Exception("Must have at least 1 Reminder");
+    return false;
+  }
+
+  bool isPlannedMode() => this.mode == 'planned';
+
+  bool isNeededMode() => this.mode == 'needed';
 }

@@ -49,6 +49,7 @@ class TherapyManager extends ChangeNotifier {
   }
 
   void init() async {
+    this.uid = appContext.user.uid;
     // this.appContext.u
 //     this.appContext.onUserChanged.listen((event) {
 //       this.uid = event.uid;
@@ -81,8 +82,13 @@ class TherapyManager extends ChangeNotifier {
 
   Future<bool> sumbitAddTherapy(AddTherapyForm addForm) async {
     try {
-      await therapyService.addTherapy(addForm.toTherapy());
+      Therapy therapy = addForm.toTherapy();
+      print('hello');
+
+      print(therapy.name);
+      await therapyService.addTherapy(therapy);
     } catch (e) {
+      print(e.toString());
       rethrow;
     }
   }

@@ -104,7 +104,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
         stream: manager.therapyStream,
         builder: (context, snapshot) {
           //List<TimeSlot> timeSlots = manager.getRemindersByTimeSlots();
-          if (!snapshot.hasData) {
+          if (!snapshot.hasData || snapshot.data.length == 0) {
             print("no has data");
             print(snapshot.data.toString());
             return Column(

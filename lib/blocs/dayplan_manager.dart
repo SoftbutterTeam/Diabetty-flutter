@@ -45,6 +45,7 @@ class DayPlanManager extends ChangeNotifier {
 
   List<Reminder> getFinalRemindersList({DateTime date}) {
     date = date ?? currentDateStamp;
+
     List<Reminder> finalReminders = getProjectedReminders(date: date);
 
     List<Reminder> fetchedReminders = usersReminders
@@ -61,7 +62,7 @@ class DayPlanManager extends ChangeNotifier {
   List<Reminder> getProjectedReminders({DateTime date}) {
     date = date ?? currentDateStamp;
     List<Therapy> therapies = List();
-
+    //* get therapies
     List<Reminder> projectedReminders = List();
     therapies.map((therapy) {
       therapy.schedule.reminders.map((rule) {
