@@ -81,7 +81,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     return StreamBuilder(
       stream: manager.dataStream, //manager.remindersbyDayDataStream,
       builder: (context, snapshot) {
-        List<TimeSlot> timeSlots = List(); //TODO
+        List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots(); //TODO
         if (widget.isLoading) {
           return LoadingScreen();
         } else if (snapshot.hasError) {

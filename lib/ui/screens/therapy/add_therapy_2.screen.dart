@@ -115,6 +115,10 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         visible: therapyForm.isVisible() ? true : false,
         child: _buildStartEndDateField(),
       ),
+      Visibility(
+        visible: therapyForm.isVisible() ? true : false,
+        child: _buildWeeklyReminderText(),
+      ),
       if (reminderRulesList.length > 0)
         Visibility(
             visible: therapyForm.isVisible() ? true : false,
@@ -158,6 +162,14 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildWeeklyReminderText() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.0),
+      child: text('Weekly Reminders',
+          isCentered: true, textColor: Colors.black54, fontSize: 13.0),
     );
   }
 
@@ -248,8 +260,6 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          text('Weekly Reminders',
-              isCentered: true, textColor: Colors.black54, fontSize: 12.0),
           CupertinoTextField(
             onTap: () => showReminderModal(context),
             decoration: BoxDecoration(
