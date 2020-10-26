@@ -83,9 +83,8 @@ class TherapyManager extends ChangeNotifier {
   Future<bool> sumbitAddTherapy(AddTherapyForm addForm) async {
     try {
       Therapy therapy = addForm.toTherapy();
-      print('hello');
-
-      print(therapy.name);
+      therapy.userId = appContext.user.uid;
+      print(therapy.userId);
       await therapyService.addTherapy(therapy);
     } catch (e) {
       print(e.toString());
@@ -93,45 +92,3 @@ class TherapyManager extends ChangeNotifier {
     }
   }
 }
-
-// class AddTherapyForm {
-//   String name;
-//   int strength;
-//   String units;
-//   String intakeAdvice;
-//   int apperanceIndex;
-//   Duration minRest;
-//   String mode;
-//   List<ReminderRule> reminderRules = List();
-//   AlarmSettings settings;
-//   int stock;
-
-//   AddTherapyForm(
-//       {this.name,
-//       this.strength,
-//       this.units,
-//       this.intakeAdvice,
-//       this.apperanceIndex,
-//       this.minRest,
-//       this.mode,
-//       this.settings,
-//       this.stock});
-
-//   Therapy toTherapy() {
-//     return Therapy(
-//         mode: this.mode,
-//         stock: this.stock,
-//         name: this.name,
-//         medicationInfo: MedicationInfo(
-//             appearance: this.apperanceIndex,
-//             intakeAdvice: List<String>()..add(this.intakeAdvice),
-//             name: this.name,
-//             strength: this.strength,
-//             unit: this.units,
-//             restDuration: this.minRest),
-//         schedule: Schedule(reminderRules: this.reminderRules));
-//   }
-
-//   //TODO settings
-//   //TODO intake advice should be a list
-// }

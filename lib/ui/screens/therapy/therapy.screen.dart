@@ -103,23 +103,18 @@ class _TherapyScreenState extends State<TherapyScreen> {
     return StreamBuilder(
         stream: manager.therapyStream,
         builder: (context, snapshot) {
-          //List<TimeSlot> timeSlots = manager.getRemindersByTimeSlots();
           if (!snapshot.hasData || snapshot.data.length == 0) {
             print("no has data");
             print(snapshot.data.toString());
-            return Column(
-              children: [
-                Center(
-                  child: text('has data'),
-                ),
-              ],
+            return Container(
+              child: null,
             );
           } else if (snapshot.hasError) {
             print(snapshot.error.toString());
             return Column(
               children: [
                 Center(
-                  child: text(snapshot.error.toString()),
+                  child: text('Error'),
                 ),
               ],
             );
@@ -213,57 +208,3 @@ class CustomDialog extends StatelessWidget {
     );
   }
 }
-
-/*
-  I REMOVED THIS FROM THIS FILE BUT I DIDN'T KNOW IF YOU NEEDED IT SO HERE IT IS
-
-    // return Container(
-    //   margin: EdgeInsets.symmetric(horizontal: 20),
-    //   child: ListView.builder(
-    //       scrollDirection: Axis.vertical,
-    //       itemCount: 3,
-    //       itemBuilder: (context, index) {
-    //         return MedicationCard(
-    //           name: "Medication Name",
-    //           appearance: 'assets/icons/navigation/essentials/pills.svg',
-    //         );
-    //       }),
-    // );
-  }
-
-  Widget _body(BuildContext context) {
-@ -75,36 +142,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
-    return Background(
-      onPressed2: () {},
-      onPressed: () {
-        // _showExpandedTherapy(context);
-        final actionsheet = CupertinoActionSheet(
-          actions: [
-            CupertinoActionSheetAction(
-              child:
-                  text("Medication", fontSize: 18.0, textColor: Colors.indigo),
-              onPressed: () {
-                final TherapyManager therapyManager =
-                    Provider.of<TherapyManager>(context, listen: false);
-                therapyManager.resetForm();
-                print('this far');
-                Navigator.pushReplacementNamed(context, addmedication);
-              },
-            ),
-            CupertinoActionSheetAction(
-              child:
-                  text("Other Types", fontSize: 18.0, textColor: Colors.indigo),
-              onPressed: () {},
-            ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: Text("Cancel",
-                style: TextStyle(color: CupertinoColors.destructiveRed)),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        );
-        showCupertinoModalPopup(
-            context: context, builder: (context) => actionsheet);
-*/

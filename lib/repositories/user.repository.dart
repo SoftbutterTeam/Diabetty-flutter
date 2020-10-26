@@ -46,12 +46,16 @@ class UserRepository {
         .updateData(userData)
         .catchError((e) {
       print(e);
-    });
+    }).;
     return true;
   }
 
   Future<void> createUser(User user) async {
     Map<String, dynamic> userData = user.toJson();
+    if (user.uid = null) {
+      print('no user id given in repo');
+      return;
+    }
     print(userData.toString());
     await _db
         .collection('users')

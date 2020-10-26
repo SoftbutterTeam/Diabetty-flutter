@@ -74,7 +74,9 @@ class TherapyRepository {
   Future<void> createTherapy(Therapy therapy) async {
     print(therapy.userId);
     if (therapy.userId == null)
-      _firebaseAuth.currentUser().then((value) => therapy.userId = value.uid);
+      await _firebaseAuth
+          .currentUser()
+          .then((value) => therapy.userId = value.uid);
     Map<String, dynamic> therapyData = therapy.toJson();
     // print(therapyData.toString());
     //* convert to Json here

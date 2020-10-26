@@ -9,7 +9,6 @@ class TherapyService {
   Future<bool> addTherapy(Therapy therapy) async {
     try {
       print(therapy.name);
-
       await therapyRepo.createTherapy(therapy);
       return true;
     } catch (e) {
