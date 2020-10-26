@@ -95,6 +95,7 @@ class TherapyRepository {
   }
 
   Stream<QuerySnapshot> onStateChanged(String uid) {
+    print('hererehere' + uid);
     return _db
         .collection('users')
         .document(uid)

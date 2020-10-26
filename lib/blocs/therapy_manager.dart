@@ -21,8 +21,6 @@ class TherapyManager extends ChangeNotifier {
   String uid;
 
   StreamController<List<Therapy>> _dataController = StreamController();
-  Sink<List<Therapy>> get dataSink => _dataController.sink;
-  Stream<List<Therapy>> get dataStream => _dataController.stream;
 
   AddTherapyForm therapyForm;
 
@@ -50,34 +48,9 @@ class TherapyManager extends ChangeNotifier {
 
   void init() async {
     this.uid = appContext.user.uid;
-    // this.appContext.u
-//     this.appContext.onUserChanged.listen((event) {
-//       this.uid = event.uid;
-// //this.therapyStream = therapyService.therapyStream(this.uid);
-//     });
-  }
-
-//   StreamSubscription<T> listen (
-// void onData(
-// T event
-// ),
-// {Function? onError,
-// void onDone(),
-// bool? cancelOnError}
-// )
-
-  Future<void> _getData() async {
-    var result = await this.appContext.getTherapies();
-    if (result.isSuccess) {
-      dataSink.add(result.data);
-    } else {
-      usersTherapies = [];
-      _dataController.addError(result.exception, result.stackTrace);
-    }
-  }
-
-  Future<void> refresh() async {
-    return _getData();
+    this._therapyStream().listen((event) async {
+      print('Listennn');
+    });
   }
 
   Future<bool> sumbitAddTherapy(AddTherapyForm addForm) async {
