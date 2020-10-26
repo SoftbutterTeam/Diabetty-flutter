@@ -2,10 +2,12 @@ import 'dart:ui';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/components/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:diabetty/models/timeslot.model.dart';
+import 'package:intl/intl.dart';
 
 @optionalTypeArgs
 mixin ReminderActionsMixin<T extends Widget> {
@@ -42,7 +44,6 @@ mixin ReminderActionsMixin<T extends Widget> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             elevation: 0,
-            backgroundColor: Colors.transparent,
             child: ReminderInfoModal(reminder: reminder)),
         transitionBuilder: _transitionBuilderStyle1(),
         transitionDuration: Duration(milliseconds: 250),
@@ -99,27 +100,26 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
       child: Container(
           margin: EdgeInsets.only(bottom: 10),
           alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(curve),
-                  topRight: Radius.circular(curve),
-                  bottomLeft: Radius.circular(bottomCurve ?? curve),
-                  bottomRight: Radius.circular(bottomCurve ?? curve)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: Offset(0, 3),
-                ),
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 0,
-                  offset: Offset(0, 0.5),
-                ),
-              ]),
+          // decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.only(
+          //         topLeft: Radius.circular(curve),
+          //         topRight: Radius.circular(curve),
+          //         bottomLeft: Radius.circular(bottomCurve ?? curve),
+          //         bottomRight: Radius.circular(bottomCurve ?? curve)),
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Colors.grey.withOpacity(0.2),
+          //         spreadRadius: 1,
+          //         blurRadius: 3,
+          //         offset: Offset(0, 3),
+          //       ),
+          //       BoxShadow(
+          //         color: Colors.grey.withOpacity(0.2),
+          //         spreadRadius: 1,
+          //         blurRadius: 0,
+          //         offset: Offset(0, 0.5),
+          //       ),
+          //     ]),
           child: SizedBox(
             width: 350,
             height: 300,
@@ -162,7 +162,30 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
 
   Widget _buildBody() {
     return Container(
-      child: null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(Icons.trip_origin),
+          text('Medication Name'),
+          Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.date_range, size: 20),
+              SizedBox(width: 10),
+              text('Scheduled for 08:00, today', fontSize: 12.0),
+            ],
+          ),
+          Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.filter_center_focus, size: 20),
+              SizedBox(width: 10),
+              text('Take 3 pill(s)', fontSize: 12.0),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -170,8 +193,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
     return Container(
       color: Colors.white,
       child: Container(
-          color: widget.reminder.isComplete ? Colors.greenAccent : null,
           decoration: BoxDecoration(
+              color: widget.reminder.isComplete ? Colors.greenAccent : null,
               gradient: RadialGradient(
                 radius: 5,
                 tileMode: TileMode.mirror,
@@ -204,8 +227,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
 
   Widget _buildFooter(BuildContext context) {
     return Container(
-        color: widget.reminder.isComplete ? Colors.greenAccent : null,
         decoration: BoxDecoration(
+            color: widget.reminder.isComplete ? Colors.greenAccent : null,
             gradient: RadialGradient(
               radius: 5,
               tileMode: TileMode.mirror,
@@ -236,7 +259,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                     children: <Widget>[
                       IconButton(
                         onPressed: () {
-                          print('Skipped');
+                          _skipActionSheet(context);
                         },
                         padding: EdgeInsets.all(3),
                         icon: SvgPicture.asset(
@@ -249,7 +272,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                       SizedBox(height: 5),
                       text(
                         "Skip",
-                        textColor: Colors.white,
+                        textColor: Colors.black,
                         fontFamily: fontSemibold,
                         fontSize: 12.0,
                         maxLine: 2,
@@ -272,7 +295,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                   child: Column(
                     children: <Widget>[
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _takenActionSheet(context);
+                        },
                         padding: EdgeInsets.all(3),
                         icon: SvgPicture.asset(
                           'assets/icons/navigation/checkbox/tick_outline2.svg',
@@ -284,7 +309,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                       SizedBox(height: 5),
                       text(
                         "Take",
-                        textColor: Colors.white,
+                        textColor: Colors.black,
                         fontFamily: fontSemibold,
                         fontSize: 12.0,
                         maxLine: 2,
@@ -307,7 +332,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                   child: Column(
                     children: <Widget>[
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _snoozeActionSheet(context);
+                        },
                         padding: EdgeInsets.all(3),
                         icon: SvgPicture.asset(
                           'assets/icons/navigation/clock/wall-clock.svg',
@@ -318,7 +345,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
                       ),
                       SizedBox(height: 5),
                       text(
-                        "Postpone",
+                        "Snooze",
                         textColor: Colors.black,
                         fontFamily: fontSemibold,
                         fontSize: 12.0,
@@ -332,5 +359,149 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
             ),
           ],
         ));
+  }
+
+  void _snoozeActionSheet(BuildContext context) {
+    final snoozeActionSheet = CupertinoActionSheet(
+      message: text("How long do you want to snooze for?",
+          fontSize: 16.0, textColor: Colors.black, isCentered: true),
+      actions: [
+        CupertinoActionSheetAction(
+          child: text("Snooze 10m", fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Snooze 30m", fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Snooze 1hr", fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Postpone until...",
+              fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+            _showSnooze(context);
+          },
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Text("Cancel",
+            style: TextStyle(color: CupertinoColors.destructiveRed)),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+    showCupertinoModalPopup(
+        context: context, builder: (context) => snoozeActionSheet);
+  }
+
+  _showSnooze(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return CustomTimerPicker(
+          desciption:
+              'A period of time set to snooze your reminder of Medication Name',
+          height: height,
+          width: width,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          timerPicker: CupertinoTimerPicker(
+            mode: CupertinoTimerPickerMode.hm,
+            minuteInterval: 5,
+            initialTimerDuration: Duration(minutes: 0),
+            onTimerDurationChanged: (Duration changedtimer) {
+              print(changedtimer);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void _skipActionSheet(BuildContext context) {
+    final skipActionSheet = CupertinoActionSheet(
+      message: text("Can you please indicate why you're skipping this dose?",
+          maxLine: 2,
+          fontSize: 16.0,
+          textColor: Colors.black,
+          isCentered: true),
+      actions: [
+        CupertinoActionSheetAction(
+          child: text("Med isn't near me",
+              fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Forgot / busy / asleep",
+              fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Ran out of medication",
+              fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Side effects / other health concerns",
+              fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Other", fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Text("Cancel",
+            style: TextStyle(color: CupertinoColors.destructiveRed)),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+    showCupertinoModalPopup(
+        context: context, builder: (context) => skipActionSheet);
+  }
+
+  void _takenActionSheet(BuildContext context) {
+    final takenActionSheet = CupertinoActionSheet(
+      message: text("When did you take your meds?",
+          fontSize: 16.0, textColor: Colors.black, isCentered: true),
+      actions: [
+        CupertinoActionSheetAction(
+          child: text("On Time", fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text(
+              "Now (" + DateFormat('HH:mm').format(DateTime.now()) + ")",
+              fontSize: 16.0,
+              textColor: Colors.black),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child:
+              text("Pick Exact Time", fontSize: 16.0, textColor: Colors.black),
+          onPressed: () {},
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Text("Cancel",
+            style: TextStyle(color: CupertinoColors.destructiveRed)),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+    showCupertinoModalPopup(
+        context: context, builder: (context) => takenActionSheet);
   }
 }

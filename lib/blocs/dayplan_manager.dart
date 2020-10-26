@@ -45,6 +45,8 @@ class DayPlanManager extends ChangeNotifier {
 
   List<Reminder> getFinalRemindersList({DateTime date}) {
     date = date ?? currentDateStamp;
+   
+    
     List<Reminder> finalReminders = getProjectedReminders(date: date);
 
     List<Reminder> fetchedReminders = usersReminders
@@ -79,7 +81,52 @@ class DayPlanManager extends ChangeNotifier {
     List<Reminder> tempReminders = List.from(usersReminders)
       ..retainWhere((element) => element.isToday(date: currentDateStamp));
     //** now we have a list of all the FETCHED Reminders for the current timestamp */
+    tempReminders = [
+      Reminder(
+        uid: '1',
+        name: 'Medication1',
+        advice: ['Hello'],
+        dose: 4,
+        window: Duration(minutes: 30),
+        time: DateTime.now(),
+        cancelled: false,
+        doseEdited: false,
+        reminderRuleId: '1',
+        rescheduled: false,
+        takenAt: DateTime.now(),
+        therapyId: '1',
+      ),
+       Reminder(
+        uid: '2',
+        name: 'Medication2',
+        advice: ['Hello'],
+        dose: 4,
+        window: Duration(minutes: 30),
+        time: DateTime.now(),
+        cancelled: false,
+        doseEdited: false,
+        reminderRuleId: '2',
+        rescheduled: false,
+        takenAt: DateTime.now(),
+        therapyId: '2',
+      ),
+        Reminder(
+        uid: '3',
+        name: 'Medication3',
+        advice: ['Hello'],
+        dose: 4,
+        window: Duration(minutes: 30),
+        time: DateTime.now(),
+        cancelled: false,
+        doseEdited: false,
+        reminderRuleId: '3',
+        rescheduled: false,
+        takenAt: DateTime.now(),
+        therapyId: '3',
+      ),
+    ];
 
+    
     List<TimeSlot> timeSlots = new List();
 
     print(usersReminders.length);

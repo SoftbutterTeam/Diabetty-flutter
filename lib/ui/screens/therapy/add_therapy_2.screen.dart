@@ -162,8 +162,11 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   }
 
   Widget _buildWeeklyReminderText() {
-    return text('Weekly Reminders',
-        isCentered: true, textColor: Colors.black54, fontSize: 13.0);
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.0),
+      child: text('Weekly Reminders',
+          isCentered: true, textColor: Colors.black54, fontSize: 13.0),
+    );
   }
 
   Widget _buildMedicationCard() {

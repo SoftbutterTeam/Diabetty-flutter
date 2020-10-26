@@ -1,6 +1,8 @@
+import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:marquee/marquee.dart';
 
 class CustomTimerPicker extends StatefulWidget {
   final double height;
@@ -9,7 +11,12 @@ class CustomTimerPicker extends StatefulWidget {
   final CupertinoTimerPicker timerPicker;
   final String desciption;
 
-  CustomTimerPicker({this.onPressed, this.height, this.width, this.timerPicker, this.desciption});
+  CustomTimerPicker(
+      {this.onPressed,
+      this.height,
+      this.width,
+      this.timerPicker,
+      this.desciption});
 
   @override
   _CustomTimerPickerState createState() => _CustomTimerPickerState();
@@ -26,33 +33,53 @@ class _CustomTimerPickerState extends State<CustomTimerPicker> {
             child: Container(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
-                    height: size.height * 0.15,
+                    height: size.height * 0.13,
                     width: size.width,
                     child: Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20)),
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
                         side: BorderSide(
                             width: 0.1,
                             color: Colors.deepOrange), //Colors.white
                       ),
                       child: Container(
+                        height: size.height * 0.13,
+                        width: size.width,
                         alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.info_outline,
-                              size: size.height * 0.08,
+                              size: size.height * 0.06,
                             ),
-                            Text(
-                              widget.desciption,
-                              maxLines: 3,
-                              textAlign: TextAlign.center,
-                            ),
+                            SizedBox(
+                              height: size.height * 0.03,
+                              width: size.width * 0.78,
+                              child: Marquee(
+                                style: TextStyle(
+                                  letterSpacing: 1.0,
+                                  fontSize: textSizeLargeMedium - 2,
+                                  fontFamily: fontBold,
+                                  color: Colors.grey[700],
+                                ),
+                                accelerationCurve: Curves.ease,
+                                accelerationDuration:
+                                    Duration(milliseconds: 100),
+                                showFadingOnlyWhenScrolling: true,
+                                blankSpace: 150,
+                                velocity: 100,
+                                text: widget.desciption,
+                                scrollAxis: Axis.horizontal,
+                              ),
+                            )
                           ],
                         ),
                       ),
