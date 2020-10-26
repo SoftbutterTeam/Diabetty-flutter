@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
@@ -70,25 +71,28 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   TopBar _buildHeader(BuildContext context) {
     return TopBar(
-      btnEnabled: (therapyForm.name.isEmpty) ? false : true,
-      centerText: 'Add Reminders',
-      leftButtonText: 'Back',
-      rightButtonText: 'Save',
-      onLeftTap: () {
-        widget.pageController.jumpToPage(0);
-      },
-      onRightTap: () {
-        if (therapyForm.isAsNeededValid()) {
-          therapyForm.handleAsNeededSave();
-          Navigator.pushNamed(context, therapy);
-        } else {
-          if (therapyForm.isPlannedValid()) {
-            therapyForm.handleAsPlannedSave();
+        btnEnabled: (therapyForm.name.isEmpty) ? false : true,
+        centerText: 'Add Reminders',
+        leftButtonText: 'Back',
+        rightButtonText: 'Save',
+        onLeftTap: () {
+          widget.pageController.jumpToPage(0);
+        },
+        onRightTap: () async {
+          print(therapyForm.name);
+
+          try {
+            if (therapyForm.isNeededMode())
+              therapyForm.neededValidation(toThrow: true);
+            else if (therapyForm.isPlannedMode())
+              therapyForm.plannedValidation(toThrow: true);
+            await widget.manager.sumbitAddTherapy(therapyForm);
             Navigator.pushNamed(context, therapy);
+          } catch (e) {
+            print(e.message);
+            // TODO Display Model with describing the error
           }
-        }
-      },
-    );
+        });
   }
 
   Column _buildBody(

@@ -4,15 +4,17 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
+import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TherapyRepository {
   TherapyRepository() {
     //AuthService authService;
     //authService.currentUser();
   }
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   final Firestore _db = Firestore.instance;
-  String uid;
 
   //Dont know if this is ever going to be used
   Future<DataResult<dynamic>> getTherapy(String uid, String therapyid) async {
@@ -54,6 +56,7 @@ class TherapyRepository {
   }
 
   Future<void> updateTherapy(Therapy therapy) async {
+    print(therapy.name);
     Map<String, dynamic> therapyData = Map();
     therapyData = therapy.toJson();
     await _db
@@ -69,9 +72,16 @@ class TherapyRepository {
   }
 
   Future<void> createTherapy(Therapy therapy) async {
+    print(therapy.userId);
+    if (therapy.userId == null)
+      await _firebaseAuth
+          .currentUser()
+          .then((value) => therapy.userId = value.uid);
     Map<String, dynamic> therapyData = therapy.toJson();
     // print(therapyData.toString());
     //* convert to Json here
+    print(therapy.name);
+
     await _db
         .collection('users')
         .document(therapy.userId)

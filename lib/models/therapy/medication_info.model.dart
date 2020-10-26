@@ -29,7 +29,8 @@ class MedicationInfo {
         intakeAdvice = json['intakeAdvice'];
 
   Map<String, dynamic> toJson() => {
-        'restDuration': this.restDuration.inSeconds,
+        'restDuration':
+            this.restDuration == null ? null : this.restDuration.inSeconds,
         'name': this.name,
         'strength': this.strength,
         'intakeAdvice': this.intakeAdvice,
