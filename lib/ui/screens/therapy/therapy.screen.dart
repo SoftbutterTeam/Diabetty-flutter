@@ -116,15 +116,14 @@ class _TherapyScreenState extends State<TherapyScreen> {
             );
           }
           List<Therapy> therapiesData = snapshot.data;
-          print('ahhhahahaha' + therapiesData.length.toString());
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: 3,
+                itemCount: therapiesData.length,
                 itemBuilder: (context, index) {
                   return MedicationCard(
-                    name: snapshot.data[index].name,
+                    name: therapiesData[index].name,
                     appearance: 'assets/icons/navigation/essentials/pills.svg',
                   );
                 }),

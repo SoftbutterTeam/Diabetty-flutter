@@ -8,7 +8,7 @@ class User {
   String phoneNumber;
 
   User({
-    uid,
+    this.uid,
     this.name,
     this.email,
     this.displayName,

@@ -114,9 +114,17 @@ class _LinkAccountScreenState extends State<LinkAccountScreen> {
     }
   }
 
+  Future<void> _logoutAccount() async {
+    try {
+      await widget.manager.logoutAccount();
+    } on PlatformException catch (e) {
+      _showSignInError(context, e);
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: false,
       body: _body(context),
     );
   }
@@ -169,14 +177,25 @@ class _LinkAccountScreenState extends State<LinkAccountScreen> {
         }));
   }
 
+  Widget _buildBackButton(BuildContext context) {
+    return (RoundedButton(
+        text: "Back to Login",
+        color: kPrimaryLightColor,
+        textColor: Colors.black,
+        press: () {
+          _logoutAccount();
+        }));
+  }
+
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Background(
-        child: Container(
+    return Container(
+      alignment: Alignment.center,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+            scrollDirection: Axis.vertical,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -186,11 +205,12 @@ class _LinkAccountScreenState extends State<LinkAccountScreen> {
                 if (widget.linkable) OrDivider(),
                 SizedBox(height: size.height * 0.1),
                 _buildCreateAccountButton(context),
+                _buildBackButton(context)
               ],
             ),
           ),
         ],
       ),
-    ));
+    );
   }
 }

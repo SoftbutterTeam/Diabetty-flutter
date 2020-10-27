@@ -80,6 +80,7 @@ class TherapyRepository {
     Map<String, dynamic> therapyData = therapy.toJson();
     // print(therapyData.toString());
     //* convert to Json here
+    print('ahhhhhhaaaa');
     print(therapy.name);
 
     await _db

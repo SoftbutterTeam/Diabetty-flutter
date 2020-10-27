@@ -21,21 +21,23 @@ class Background extends StatelessWidget {
       height: size.height,
 
       // Here i can use size.width but use double.infinity because both work as a same
-      child: Column(
-        children: [
-          SizedBox(
-            height: size.height * 0.11,
-          ),
-          Expanded(
-              child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50))),
-            child: child,
-          )),
-        ],
+      child: Container(
+        child: Column(
+          children: [
+            SizedBox(
+              height: size.height * 0.11,
+            ),
+            Expanded(
+                child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50))),
+              child: child,
+            )),
+          ],
+        ),
       ),
     );
   }

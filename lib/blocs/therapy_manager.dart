@@ -1,13 +1,9 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:diabetty/models/therapy/medication_info.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetty/models/therapy/alarmsettings.model.dart';
-import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 
 class TherapyManager extends ChangeNotifier {
@@ -24,21 +20,12 @@ class TherapyManager extends ChangeNotifier {
 
   AddTherapyForm therapyForm;
 
-  Stream<List<Therapy>> _therapyStream() {
-    return therapyService.therapyStream(this.appContext.user.uid);
-  }
+  Stream<List<Therapy>> _therapyStream() =>
+      therapyService.therapyStream(this.appContext.user.uid);
 
-  Stream<List<Therapy>> get therapyStream {
-    return this._therapyStream();
-  }
-
-  void resetForm() {
-    therapyForm = new AddTherapyForm();
-  }
-
-  void updateListeners() {
-    notifyListeners();
-  }
+  Stream<List<Therapy>> get therapyStream => this._therapyStream();
+  void resetForm() => therapyForm = new AddTherapyForm();
+  void updateListeners() => notifyListeners();
 
   @override
   void dispose() {
@@ -53,7 +40,7 @@ class TherapyManager extends ChangeNotifier {
     });
   }
 
-  Future<bool> sumbitAddTherapy(AddTherapyForm addForm) async {
+  Future<void> submitAddTherapy(AddTherapyForm addForm) async {
     try {
       Therapy therapy = addForm.toTherapy();
       therapy.userId = appContext.user.uid;
