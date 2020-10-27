@@ -1,4 +1,5 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart' as random;
 import 'dart:math' show Random;
 
@@ -6,7 +7,7 @@ class ReminderRule {
   String uid;
   Days days;
   int dose;
-  DateTime time;
+  TimeOfDay time;
   ReminderRule(
       {this.uid, this.days, this.dose, this.time, forceGenerateUID = false}) {
     this.uid = this.uid ?? generateUID();

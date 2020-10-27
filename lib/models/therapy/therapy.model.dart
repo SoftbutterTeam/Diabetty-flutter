@@ -32,6 +32,7 @@ class Therapy {
     this.id = json['id'];
     this.userId = json['userId'];
     this.name = json['name'];
+    this.mode = json['mode'];
     print(json.toString());
     Schedule schedule = Schedule();
     if (json['schedule'] != null) {
@@ -59,6 +60,7 @@ class Therapy {
         'schedule': (this.schedule == null) ? null : this.schedule.toJson(),
         'medicationInfo': this.medicationInfo.toJson(),
         'stock': this.stock.toJson(),
+        'mode': this.mode,
       };
 
   dummyData() {
