@@ -3,6 +3,7 @@ import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
+import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,10 @@ import 'package:weekday_selector/weekday_selector.dart';
 import 'package:intl/intl.dart';
 
 class AddReminderModal2 extends StatefulWidget {
+  final AddTherapyForm therapyForm;
+  final TherapyManager manager;
+
+  AddReminderModal2({this.therapyForm, this.manager});
   @override
   _AddReminderModal2State createState() => _AddReminderModal2State();
 }
@@ -33,21 +38,38 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   @override
   void initState() {
     super.initState();
-    monday = false;
-    tuesday = false;
-    wednesday = false;
-    thursday = false;
-    friday = false;
-    saturday = false;
-    sunday = false;
+
+    monday = true;
+    tuesday = true;
+    wednesday = true;
+    thursday = true;
+    friday = true;
+    saturday = true;
+    sunday = true;
     dosageController = TextEditingController();
-    timeString = "Time";
     timeSelected = DateTime.now();
-    initialDate = DateTime(timeSelected.year, timeSelected.month,
-        timeSelected.day, timeSelected.hour, 0);
+
+    initialDate = DateTime(
+        timeSelected.year, timeSelected.month, timeSelected.day, 8, 00);
     reminder = ReminderRule();
     reminder.days = Days();
     _isFilled = false;
+    timeString = (widget.therapyForm.reminderRules.length == 0)
+        ? "8:00 AM"
+        : (widget.therapyForm.reminderRules.length > 0 &&
+                widget.therapyForm.minRest == null)
+            ? DateFormat.jm().format(
+                (widget.therapyForm.reminderRules.last.time)
+                    .add(Duration(hours: 2)))
+            : (widget.therapyForm.reminderRules.length > 0 &&
+                    widget.therapyForm.minRest != null)
+                ? DateFormat.jm().format(
+                    (widget.therapyForm.reminderRules.last.time).add(Duration(
+                        hours: widget.therapyForm.minRest.inHours,
+                        minutes: (widget.therapyForm.minRest.inMinutes < 60)
+                            ? widget.therapyForm.minRest.inMinutes
+                            : widget.therapyForm.minRest.inMinutes % 60)))
+                : null;
   }
 
   @override
@@ -84,6 +106,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
                   )),
               onPressed: () {
                 Navigator.pop(context);
+                print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -157,13 +180,18 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
             use24hFormat: false,
             mode: CupertinoDatePickerMode.time,
             minuteInterval: 5,
-            initialDateTime: initialDate,
+            initialDateTime: (widget.therapyForm.reminderRules.length == 0)
+                ? initialDate
+                : DateTime(
+                    timeSelected.year,
+                    timeSelected.month,
+                    timeSelected.day,
+                    widget.therapyForm.reminderRules.last.time.hour,
+                    widget.therapyForm.reminderRules.last.time.minute),
             onDateTimeChanged: (dateTimeChange) {
-              print(dateTimeChange);
-              setState(() {
-                timeSelected = dateTimeChange;
-              });
-              print(timeSelected);
+              timeSelected = dateTimeChange;
+              setState(() {});
+              print(initialDate);
             },
           ),
         );

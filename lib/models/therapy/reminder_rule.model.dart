@@ -57,13 +57,13 @@ class ReminderRule {
 class Days {
   bool monday, tuesday, wednesday, thursday, friday, saturday, sunday = false;
   Days({
-    this.monday = false,
-    this.tuesday = false,
-    this.wednesday = false,
-    this.thursday = false,
-    this.friday = false,
-    this.saturday = false,
-    this.sunday = false,
+    this.monday = true,
+    this.tuesday = true,
+    this.wednesday = true,
+    this.thursday = true,
+    this.friday = true,
+    this.saturday = true,
+    this.sunday = true,
   });
 
   loadFromJson(Map<String, dynamic> json) {

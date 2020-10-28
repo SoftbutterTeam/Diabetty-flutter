@@ -61,25 +61,17 @@ class _CustomTimerPickerState extends State<CustomTimerPicker> {
                               size: size.height * 0.06,
                             ),
                             SizedBox(
-                              height: size.height * 0.03,
-                              width: size.width * 0.78,
-                              child: Marquee(
-                                style: TextStyle(
-                                  letterSpacing: 1.0,
-                                  fontSize: textSizeLargeMedium - 2,
-                                  fontFamily: fontBold,
-                                  color: Colors.grey[700],
-                                ),
-                                accelerationCurve: Curves.ease,
-                                accelerationDuration:
-                                    Duration(milliseconds: 100),
-                                showFadingOnlyWhenScrolling: true,
-                                blankSpace: 150,
-                                velocity: 100,
-                                text: widget.desciption,
-                                scrollAxis: Axis.horizontal,
-                              ),
-                            )
+                                height: size.height * 0.06,
+                                width: size.width * 0.78,
+                                child: Text(
+                                  widget.desciption,
+                                  style: TextStyle(
+                                    letterSpacing: 1.0,
+                                    fontSize: textSizeLargeMedium - 3,
+                                    fontFamily: fontBold,
+                                    color: Colors.grey[700],
+                                  ),
+                                ))
                           ],
                         ),
                       ),

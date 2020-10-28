@@ -261,7 +261,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       child: Column(
         children: [
           CupertinoTextField(
-            onTap: () => showReminderModal(context),
+            onTap: () => showReminderModal(context, widget.manager),
             decoration: BoxDecoration(
               color: appWhite,
               border: Border.all(

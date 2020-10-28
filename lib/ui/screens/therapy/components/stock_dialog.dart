@@ -237,6 +237,7 @@ class _StockDialogState extends State<StockDialog> {
     widget.therapyForm.stock.handleReset();
     _isFilled = false;
     setState(() {});
+    widget.manager.updateListeners();
   }
 
   _handleSubmit() {

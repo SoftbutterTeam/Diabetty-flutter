@@ -77,14 +77,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
                     : Colors.black26,
               ),
             ),
-            onPressed: () {
-              if (noReminderToggle || silentToggle || enableCriticalToggle)
-                enableCriticalToggle = false;
-              silentToggle = false;
-              noReminderToggle = false;
-              widget.therapyForm.settings.handleReset();
-              setState(() {});
-            },
+            onPressed: _reset,
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
               vertical: 5.0,
@@ -111,6 +104,16 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
       ),
     );
   }
+
+  void _reset() {
+            if (noReminderToggle || silentToggle || enableCriticalToggle)
+              enableCriticalToggle = false;
+            silentToggle = false;
+            noReminderToggle = false;
+            widget.therapyForm.settings.handleReset();
+            setState(() {});
+            widget.manager.updateListeners();
+          }
 
   Container _buildAlarmSound(Size size) {
     return Container(

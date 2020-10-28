@@ -2,6 +2,7 @@ import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/models/therapy/medication_info.model.dart';
 import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/routes.dart';
 import 'package:intl/intl.dart';
 
 class Reminder with DateMixin {
@@ -53,6 +54,7 @@ class Reminder with DateMixin {
       this.therapyId,
       this.reminderRuleId,
       this.name,
+      this.apperance,
       this.time,
       this.dose,
       this.advice,
@@ -68,6 +70,7 @@ class Reminder with DateMixin {
     this.therapyId = therapy.id;
     this.reminderRuleId = rule.uid;
     this.name = therapy.medicationInfo.name;
+    this.apperance = therapy.medicationInfo.appearanceIndex;
     this.time = DateTime(
         date.year, date.month, date.day, rule.time.hour, rule.time.minute);
     this.dose = rule.dose;

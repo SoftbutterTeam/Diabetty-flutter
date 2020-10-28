@@ -82,8 +82,9 @@ class DayPlanManager extends ChangeNotifier {
     tempReminders = [
       Reminder(
         uid: '1',
-        name: 'Medication1',
-        advice: ['Hello'],
+        name: 'Cancur Cureee',
+        advice: ['After Meal'],
+        apperance: 0,
         dose: 4,
         window: Duration(minutes: 30),
         time: DateTime.now(),
@@ -96,8 +97,9 @@ class DayPlanManager extends ChangeNotifier {
       ),
        Reminder(
         uid: '2',
-        name: 'Medication2',
-        advice: ['Hello'],
+        name: 'Nunya Bizness',
+        advice: ['Before Bed'],
+        apperance: 1,
         dose: 4,
         window: Duration(minutes: 30),
         time: DateTime.now(),
@@ -110,8 +112,9 @@ class DayPlanManager extends ChangeNotifier {
       ),
         Reminder(
         uid: '3',
-        name: 'Medication3',
-        advice: ['Hello'],
+        name: 'Tenacious D',
+        advice: ['Before Meal'],
+        apperance: 1,
         dose: 4,
         window: Duration(minutes: 30),
         time: DateTime.now(),

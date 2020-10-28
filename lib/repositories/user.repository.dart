@@ -46,7 +46,7 @@ class UserRepository {
         .updateData(userData)
         .catchError((e) {
       print(e);
-    }).;
+    });
     return true;
   }
 

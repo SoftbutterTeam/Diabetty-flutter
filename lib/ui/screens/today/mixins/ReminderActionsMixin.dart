@@ -1,8 +1,10 @@
 import 'dart:ui';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
+import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,7 +14,125 @@ import 'package:intl/intl.dart';
 @optionalTypeArgs
 mixin ReminderActionsMixin<T extends Widget> {
   @protected
-  Reminder get reminder;
+  Reminder get reminder => reminder;
+
+  void showSnoozeActionSheet(context) => showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+            message: text("How long do you want to snooze for?",
+                fontSize: 16.0, textColor: Colors.black, isCentered: true),
+            actions: [
+              CupertinoActionSheetAction(
+                child:
+                    text("Snooze 10m", fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child:
+                    text("Snooze 30m", fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child:
+                    text("Snooze 1hr", fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child: text("Postpone until...",
+                    fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {
+                  Navigator.pop(context);
+                  showPostponePicker(context);
+                },
+              ),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text("Cancel",
+                  style: TextStyle(color: CupertinoColors.destructiveRed)),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ));
+
+  void showSkipActionSheet(context) => showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+            message: text(
+                "Can you please indicate why you're skipping this dose?",
+                maxLine: 2,
+                fontSize: 16.0,
+                textColor: Colors.black,
+                isCentered: true),
+            actions: [
+              CupertinoActionSheetAction(
+                child: text("Med isn't near me",
+                    fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child: text("Forgot / busy / asleep",
+                    fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child: text("Ran out of medication",
+                    fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child: text("Side effects / other health concerns",
+                    fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child: text("Other", fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text("Cancel",
+                  style: TextStyle(color: CupertinoColors.destructiveRed)),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ));
+
+  void showTakenActionSheet(context) => showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+            message: text("When did you take your meds?",
+                fontSize: 16.0, textColor: Colors.black, isCentered: true),
+            actions: [
+              CupertinoActionSheetAction(
+                child: text("On Time", fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child: text(
+                    "Now (" + DateFormat('HH:mm').format(DateTime.now()) + ")",
+                    fontSize: 16.0,
+                    textColor: Colors.black),
+                onPressed: () {},
+              ),
+              CupertinoActionSheetAction(
+                child: text("Pick Exact Time",
+                    fontSize: 16.0, textColor: Colors.black),
+                onPressed: () {
+                  Navigator.pop(context);
+                  showExactTimePicker(context);
+                },
+              ),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: Text("Cancel",
+                  style: TextStyle(color: CupertinoColors.destructiveRed)),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ));
 
   void showTakeModalPopup(BuildContext context) => showCupertinoModalPopup(
         context: context,
@@ -33,6 +153,48 @@ mixin ReminderActionsMixin<T extends Widget> {
           ),
         ),
       );
+
+  void showPostponePicker(BuildContext context) => showCupertinoModalPopup(
+        context: context,
+        builder: (context) {
+          return TimerPicker(
+            onConfirm: () {
+              Navigator.pop(context);
+            },
+            timepicker: CupertinoDatePicker(
+              use24hFormat: false,
+              mode: CupertinoDatePickerMode.time,
+              minuteInterval: 1,
+              initialDateTime: DateTime.now(),
+              onDateTimeChanged: (dateTimeChange) {
+                print(dateTimeChange);
+              },
+            ),
+          );
+        },
+      );
+
+  void showExactTimePicker(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return TimerPicker(
+          onConfirm: () {
+            Navigator.pop(context);
+          },
+          timepicker: CupertinoDatePicker(
+            use24hFormat: false,
+            mode: CupertinoDatePickerMode.time,
+            minuteInterval: 1,
+            initialDateTime: DateTime.now(),
+            onDateTimeChanged: (dateTimeChange) {
+              print(dateTimeChange);
+            },
+          ),
+        );
+      },
+    );
+  }
 
   void showReminderPopupModal(BuildContext context) => showGeneralDialog(
         barrierDismissible: true,
@@ -79,7 +241,8 @@ class ReminderInfoModal extends StatefulWidget {
   _ReminderInfoModalState createState() => _ReminderInfoModalState();
 }
 
-class _ReminderInfoModalState extends State<ReminderInfoModal> {
+class _ReminderInfoModalState extends State<ReminderInfoModal>
+    with ReminderActionsMixin {
   MaterialColor colorToFade;
   double opacity;
 
@@ -121,22 +284,22 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
           //       ),
           //     ]),
           child: SizedBox(
-            width: 350,
-            height: 300,
+            width: size.width * 0.8,
+            height: size.height * 0.32,
             child: Card(
-              shadowColor: Colors.black12,
-              elevation: 1,
+              shadowColor: null,
+              elevation: 0,
               clipBehavior: Clip.antiAliasWithSaveLayer,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(curve),
               ),
-              child: _buildContent(context),
+              child: _buildContent(context, size),
             ),
           )),
     );
   }
 
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContent(BuildContext context, size) {
     return Container(
       color: Colors.transparent,
       margin: EdgeInsets.zero,
@@ -149,7 +312,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
           ),
           Flexible(
             flex: 3,
-            child: _buildBody(),
+            child: _buildBody2(size),
           ),
           Flexible(
             flex: 2,
@@ -160,20 +323,27 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(size) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(Icons.trip_origin),
-          text('Medication Name'),
+          SvgPicture.asset(
+            appearance_iconss[widget.reminder.apperance],
+            width: 30,
+            height: 30,
+          ),
+          text(widget.reminder.name),
           Row(
             children: [
               SizedBox(width: 10),
               Icon(Icons.date_range, size: 20),
               SizedBox(width: 10),
-              text('Scheduled for 08:00, today', fontSize: 12.0),
+              text(
+                  'Scheduled for ' +
+                      DateFormat('dd/MM/yy').format(widget.reminder.time),
+                  fontSize: 12.0),
             ],
           ),
           Row(
@@ -181,9 +351,83 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
               SizedBox(width: 10),
               Icon(Icons.filter_center_focus, size: 20),
               SizedBox(width: 10),
-              text('Take 3 pill(s)', fontSize: 12.0),
+              text('Take ' + widget.reminder.dose.toString() + ' pill(s)',
+                  fontSize: 12.0),
             ],
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBody2(size) {
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      appearance_iconss[widget.reminder.apperance],
+                      width: 30,
+                      height: 30,
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    child: text(widget.reminder.name,
+                        fontSize: 18.0,
+                        textColor: Colors.black,
+                        fontFamily: fontBold,
+                        latterSpacing: 1.5),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 5, bottom: 10),
+                    child: text(widget.reminder.advice[0],
+                        fontSize: 15.0,
+                        textColor: Colors.black87,
+                        fontFamily: fontSemibold),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Container(
+            height: 1,
+            width: size.width * 0.75,
+            color: Colors.black26,
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              SizedBox(width: 15),
+              Icon(Icons.date_range, size: 20),
+              SizedBox(width: 20),
+              text(
+                  'Scheduled for ' +
+                      DateFormat('dd/MM/yy').format(widget.reminder.time),
+                  fontSize: 12.0),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              SizedBox(width: 15),
+              Icon(Icons.filter_center_focus, size: 20),
+              SizedBox(width: 20),
+              text('Take ' + widget.reminder.dose.toString() + ' pill(s)',
+                  fontSize: 12.0),
+            ],
+          ),
+          SizedBox(height: 2),
         ],
       ),
     );
@@ -212,14 +456,15 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
               )),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 40),
-            child: Container(
-              alignment: Alignment.center,
-              child: text(
-                'random text',
-                textColor: Colors.black87,
-                fontFamily: 'Regular',
-                fontSize: textSizeMedium,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.more_vert, color: Colors.transparent),
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.more_horiz),
+                ),
+              ],
             ),
           )),
     );
@@ -362,146 +607,14 @@ class _ReminderInfoModalState extends State<ReminderInfoModal> {
   }
 
   void _snoozeActionSheet(BuildContext context) {
-    final snoozeActionSheet = CupertinoActionSheet(
-      message: text("How long do you want to snooze for?",
-          fontSize: 16.0, textColor: Colors.black, isCentered: true),
-      actions: [
-        CupertinoActionSheetAction(
-          child: text("Snooze 10m", fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child: text("Snooze 30m", fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child: text("Snooze 1hr", fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child: text("Postpone until...",
-              fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-            _showSnooze(context);
-          },
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: Text("Cancel",
-            style: TextStyle(color: CupertinoColors.destructiveRed)),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-    showCupertinoModalPopup(
-        context: context, builder: (context) => snoozeActionSheet);
-  }
-
-  _showSnooze(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    showCupertinoModalPopup(
-      context: context,
-      builder: (context) {
-        return CustomTimerPicker(
-          desciption:
-              'A period of time set to snooze your reminder of Medication Name',
-          height: height,
-          width: width,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          timerPicker: CupertinoTimerPicker(
-            mode: CupertinoTimerPickerMode.hm,
-            minuteInterval: 5,
-            initialTimerDuration: Duration(minutes: 0),
-            onTimerDurationChanged: (Duration changedtimer) {
-              print(changedtimer);
-            },
-          ),
-        );
-      },
-    );
+    showSnoozeActionSheet(context);
   }
 
   void _skipActionSheet(BuildContext context) {
-    final skipActionSheet = CupertinoActionSheet(
-      message: text("Can you please indicate why you're skipping this dose?",
-          maxLine: 2,
-          fontSize: 16.0,
-          textColor: Colors.black,
-          isCentered: true),
-      actions: [
-        CupertinoActionSheetAction(
-          child: text("Med isn't near me",
-              fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child: text("Forgot / busy / asleep",
-              fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child: text("Ran out of medication",
-              fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child: text("Side effects / other health concerns",
-              fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child: text("Other", fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: Text("Cancel",
-            style: TextStyle(color: CupertinoColors.destructiveRed)),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-    showCupertinoModalPopup(
-        context: context, builder: (context) => skipActionSheet);
+    showSkipActionSheet(context);
   }
 
   void _takenActionSheet(BuildContext context) {
-    final takenActionSheet = CupertinoActionSheet(
-      message: text("When did you take your meds?",
-          fontSize: 16.0, textColor: Colors.black, isCentered: true),
-      actions: [
-        CupertinoActionSheetAction(
-          child: text("On Time", fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child: text(
-              "Now (" + DateFormat('HH:mm').format(DateTime.now()) + ")",
-              fontSize: 16.0,
-              textColor: Colors.black),
-          onPressed: () {},
-        ),
-        CupertinoActionSheetAction(
-          child:
-              text("Pick Exact Time", fontSize: 16.0, textColor: Colors.black),
-          onPressed: () {},
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: Text("Cancel",
-            style: TextStyle(color: CupertinoColors.destructiveRed)),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-    showCupertinoModalPopup(
-        context: context, builder: (context) => takenActionSheet);
+    showTakenActionSheet(context);
   }
 }

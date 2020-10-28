@@ -182,6 +182,8 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
+            print(therapyForm.minRest.inHours);
+            print(therapyForm.minRest.inMinutes);
             setState(() {});
             Navigator.pop(context);
           },
@@ -259,10 +261,10 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         context: context, builder: (context) => StockDialog(therapyForm: therapyForm ,manager: manager));
   }
 
-  showReminderModal(BuildContext context) {
+  showReminderModal(BuildContext context, TherapyManager manager) {
     showDialog(
       context: context,
-      builder: (context) => AddReminderModal2(),
+      builder: (context) => AddReminderModal2(therapyForm: therapyForm, manager: manager),
     );
   }
 
