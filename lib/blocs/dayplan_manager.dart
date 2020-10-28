@@ -24,6 +24,7 @@ class DayPlanManager extends ChangeNotifier {
 
   ///* user reminders is only fetched reminders/data from store
   List<Reminder> usersReminders = List();
+  get userTherapies => (therapyManager?.usersTherapies) ?? List();
 
   DateTime get currentDateStamp => _currentDateStamp;
   Sink<List<Reminder>> get dataSink => _dataController.sink;
@@ -47,16 +48,13 @@ class DayPlanManager extends ChangeNotifier {
   List<Reminder> getFinalRemindersList({DateTime date}) {
     date = date ?? currentDateStamp;
     print('rr');
-
     List<Reminder> finalReminders = getProjectedReminders(date: date);
     print('rr');
-
     List<Reminder> fetchedReminders = usersReminders
         .where((reminder) => reminder.isToday(date: _currentDateStamp))
         .toList();
     print('rr');
-    //!HERE is ther error and remember to remove the test line
-    finalReminders.retainWhere((element) => fetchedReminders.any((e) =>
+    finalReminders.removeWhere((element) => fetchedReminders.any((e) =>
         element.therapyId == e.therapyId &&
         element.reminderRuleId == e.reminderRuleId));
     finalReminders.addAll(fetchedReminders);
@@ -69,8 +67,7 @@ class DayPlanManager extends ChangeNotifier {
     //testing line
     date..add(Duration(days: 2));
     date ??= currentDateStamp;
-    print(therapyManager.usersTherapies);
-
+    print('hereeee' + userTherapies.toString());
     List<Therapy> therapies = List.of(therapyManager.usersTherapies);
     print(therapies.length);
     List<Reminder> projectedReminders = List();

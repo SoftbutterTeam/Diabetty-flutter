@@ -13,7 +13,7 @@ class TherapyManager extends ChangeNotifier {
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
   AuthService authService;
-  List<Therapy> usersTherapies;
+  List<Therapy> usersTherapies = List();
   String uid;
 
   StreamController<List<Therapy>> _dataController = StreamController();
@@ -33,14 +33,21 @@ class TherapyManager extends ChangeNotifier {
     super.dispose();
   }
 
-  void init() {
+  void init() async {
+    print('Init is runnning');
     authService = appContext.authService;
+    Future.wait([initFutures()]);
+  }
+
+  Future initFutures() async {
     this.uid = appContext.user.uid;
+    usersTherapies = await therapyService.getTherapies(uid);
     this._therapyStream().listen((event) async {
       usersTherapies = event;
       usersTherapies ??= List();
       print('Listennn');
     });
+    return;
   }
 
   Future<void> submitAddTherapy(AddTherapyForm addForm) async {

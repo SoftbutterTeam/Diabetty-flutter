@@ -36,7 +36,7 @@ class AppContext {
       if (firebaseUser != null) {
         //await Future.delayed(Duration(seconds: 10), null);
         print(' - got user: ${firebaseUser.uid}');
-        fetchUser(toSinkUserChange: true);
+        Future.wait([fetchUser(toSinkUserChange: true)]);
       } else {
         print(" -- no user");
         _user = null;
@@ -49,6 +49,7 @@ class AppContext {
     isFetching = true;
     print("isFetching: turned on");
     _firebaseUser = (await authService.currentUser());
+    Future.delayed(Duration(seconds: 5));
 
     if (_firebaseUser != null) {
       try {

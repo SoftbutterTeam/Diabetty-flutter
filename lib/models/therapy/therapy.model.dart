@@ -29,8 +29,8 @@ class Therapy {
   });
 
   loadFromJson(Map<String, dynamic> json) {
-    this.id = json['id'];
-    this.userId = json['userId'];
+    this.id ??= json['id'];
+    this.userId ??= json['userId'];
     this.name = json['name'];
     this.mode = json['mode'];
     print(json.toString());

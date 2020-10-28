@@ -25,7 +25,7 @@ class ReminderRule {
     Days days = Days();
     days.loadFromJson(daysJson);
     this.days = days;
-    this.id = json['id'];
+    this.id ??= json['id'];
     this.dose = json['dose'];
     this.time = TimeOfDay.now().stringToTimeOfDay(json['time']);
   }

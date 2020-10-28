@@ -45,7 +45,7 @@ class User {
 
   bool loadFromJson(Map<String, dynamic> json) {
     try {
-      if (json.containsKey('uid')) this.uid = json['uid'];
+      if (json.containsKey('uid')) this.uid ??= json['uid'];
       if (json.containsKey('displayName'))
         this.displayName = json['displayName'];
       // if (json.containsKey('id')) this.documentId = json['id'];

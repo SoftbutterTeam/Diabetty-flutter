@@ -35,11 +35,11 @@ class TherapyRepository {
   }
 
   Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(
-      String uid, String therapyid) async {
+      String userId) async {
     try {
       var result = await _db
           .collection("users")
-          .document('YDpBWyABH3ZluJ9sDKTCTGXCqzz1')
+          .document(userId)
           .collection('therapies')
           .getDocuments();
 
