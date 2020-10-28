@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/user.service.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 
 class AppContext {
-  AuthService _authService;
+  AuthService authService;
+
   UserService _userService = new UserService();
 
   User _firebaseUser;
@@ -13,7 +16,7 @@ class AppContext {
   UserModel.User _user;
   UserModel.User get user => _user;
 
-  AppContext(this._authService);
+  AppContext(this.authService);
 
   StreamController<UserModel.User> _onUserChanged = StreamController();
 
@@ -27,7 +30,7 @@ class AppContext {
   /// but it will cause a reset all the time
 
   Future<void> init() async {
-    _authService.onAuthStateChanged.listen((firebaseUser) async {
+    authService.onAuthStateChanged.listen((firebaseUser) async {
       print(' - onAuthStateChange: $firebaseUser');
       _firebaseUser = firebaseUser;
       if (firebaseUser != null) {
@@ -45,7 +48,7 @@ class AppContext {
   Future<UserModel.User> fetchUser({bool toSinkUserChange = false}) async {
     isFetching = true;
     print("isFetching: turned on");
-    _firebaseUser = (await _authService.currentUser());
+    _firebaseUser = (await authService.currentUser());
 
     if (_firebaseUser != null) {
       try {

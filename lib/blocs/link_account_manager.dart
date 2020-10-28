@@ -20,6 +20,16 @@ class LinkAccountManager {
     }
   }
 
+  Future<void> logoutAccount() async {
+    try {
+      isLoading.value = true;
+      await auth.signOut();
+    } catch (e) {
+      isLoading.value = false;
+      rethrow;
+    }
+  }
+
   Future<void> linkAccount(AppContext appContext, String password) async {
     try {
       isLoading.value = true;

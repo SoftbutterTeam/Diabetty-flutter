@@ -5,8 +5,7 @@ import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/schedule.model.dart';
 import 'package:diabetty/models/therapy/stock.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/ui/screens/therapy/extensions/datetime_extension.dart';
-import 'package:flutter/services.dart';
+import 'package:diabetty/extensions/datetime_extension.dart';
 
 class AddTherapyForm {
   String name;
@@ -39,7 +38,6 @@ class AddTherapyForm {
       minRest = x;
     print(minRest.toString());
   }
-  //? could add validation for more setters for more security
 
   AddTherapyForm(
       {this.name,
@@ -66,8 +64,8 @@ class AddTherapyForm {
     this.endDate ??= null;
     this.unitsIndex ??= 0;
     this.strengthUnitsIndex ??= 0;
-    this.mode = modeOptions[0];
-    this.apperanceIndex = 0;
+    this.mode ??= modeOptions[0];
+    this.apperanceIndex ??= 0;
   }
 
   Therapy toTherapy() {

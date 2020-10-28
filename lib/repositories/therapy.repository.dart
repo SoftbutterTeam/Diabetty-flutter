@@ -35,11 +35,11 @@ class TherapyRepository {
   }
 
   Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(
-      String uid, String therapyid) async {
+      String userId) async {
     try {
       var result = await _db
           .collection("users")
-          .document('YDpBWyABH3ZluJ9sDKTCTGXCqzz1')
+          .document(userId)
           .collection('therapies')
           .getDocuments();
 
@@ -59,6 +59,8 @@ class TherapyRepository {
     print(therapy.name);
     Map<String, dynamic> therapyData = Map();
     therapyData = therapy.toJson();
+    var timeNow = DateTime.now().toString();
+    therapyData['lastUpdated'] = timeNow;
     await _db
         .collection('users')
         .document(therapy.userId)
@@ -74,14 +76,12 @@ class TherapyRepository {
   Future<void> createTherapy(Therapy therapy) async {
     print(therapy.userId);
     if (therapy.userId == null)
-      await _firebaseAuth
-          .currentUser()
-          .then((value) => therapy.userId = value.uid);
+      therapy.userId = (await _firebaseAuth.currentUser()).uid;
     Map<String, dynamic> therapyData = therapy.toJson();
-    // print(therapyData.toString());
-    //* convert to Json here
+    var timeNow = DateTime.now().toString();
+    therapyData['createdAt'] = timeNow;
+    therapyData['lastUpdated'] = timeNow;
     print(therapy.name);
-
     await _db
         .collection('users')
         .document(therapy.userId)
@@ -89,12 +89,15 @@ class TherapyRepository {
         .document()
         .setData(therapyData)
         .catchError((e) {
+      print('ahhhhhhaaaa');
+
       print(e);
     });
-    return true;
+    return;
   }
 
   Stream<QuerySnapshot> onStateChanged(String uid) {
+    print('hererehere' + uid);
     return _db
         .collection('users')
         .document(uid)

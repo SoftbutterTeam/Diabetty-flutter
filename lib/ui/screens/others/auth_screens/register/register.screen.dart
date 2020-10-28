@@ -229,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           children: [
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.vertical,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

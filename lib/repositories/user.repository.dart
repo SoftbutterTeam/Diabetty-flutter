@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/user.model.dart';
+import 'package:flutter/services.dart';
 
 class UserRepository {
   UserRepository();
@@ -52,9 +53,9 @@ class UserRepository {
 
   Future<void> createUser(User user) async {
     Map<String, dynamic> userData = user.toJson();
-    if (user.uid = null) {
+    if (user.uid == null) {
       print('no user id given in repo');
-      return;
+      return false;
     }
     print(userData.toString());
     await _db

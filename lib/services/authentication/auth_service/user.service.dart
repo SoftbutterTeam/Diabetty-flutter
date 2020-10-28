@@ -10,6 +10,7 @@ class UserService {
       _userRepository.createUser(user);
       return true;
     } catch (e) {
+      print('here x 3');
       print(e);
       rethrow;
     }

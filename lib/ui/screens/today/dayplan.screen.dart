@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/system/app_Context.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
@@ -23,17 +24,22 @@ class DayPlanScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ValueNotifier<bool>>(
-      create: (_) => ValueNotifier<bool>(false),
-      child: Consumer<ValueNotifier<bool>>(
-        builder: (_, ValueNotifier<bool> isLoading, __) =>
-            Consumer<DayPlanManager>(
-          builder: (_, DayPlanManager manager, __) => DayPlanScreen._(
-            isLoading: isLoading.value,
-            manager: manager,
+        create: (_) => ValueNotifier<bool>(false),
+        child: Consumer<ValueNotifier<bool>>(
+          builder: (_, ValueNotifier<bool> isLoading, __) =>
+              Consumer<TherapyManager>(
+            builder: (_, TherapyManager therapyManager, __) =>
+                Consumer<DayPlanManager>(
+              builder: (_, DayPlanManager manager, __) {
+                manager.therapyManager = therapyManager;
+                return DayPlanScreen._(
+                  isLoading: isLoading.value,
+                  manager: manager,
+                );
+              },
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -81,6 +87,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     return StreamBuilder(
       stream: manager.dataStream, //manager.remindersbyDayDataStream,
       builder: (context, snapshot) {
+        print('here');
         List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots(); //TODO
         if (widget.isLoading) {
           return LoadingScreen();
@@ -95,6 +102,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             ],
           );
         }
+        print('here');
+
         return Container(
           child: ListView.builder(
               scrollDirection: Axis.vertical,

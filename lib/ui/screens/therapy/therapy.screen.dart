@@ -12,9 +12,6 @@ import 'package:provider/provider.dart';
 class TherapyScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TherapyManager therapyManager = null;
-    final isLoading = null;
-    // return TherapyScreen._(isLoading: true, manager: therapyManager);
     return ChangeNotifierProvider<ValueNotifier<bool>>(
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
@@ -44,7 +41,6 @@ class TherapyScreen extends StatefulWidget {
 class _TherapyScreenState extends State<TherapyScreen> {
   TherapyManager manager;
   _TherapyScreenState(this.manager);
-  // TherapyManager manager = TherapyManager();
   void _showExpandedTherapy(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     showGeneralDialog(
@@ -58,7 +54,6 @@ class _TherapyScreenState extends State<TherapyScreen> {
         var curve = Curves.linear;
         var tween =
             Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
         var offsetAnimation = animation.drive(tween);
 
         if (offsetAnimation.status == AnimationStatus.reverse) {
@@ -98,8 +93,6 @@ class _TherapyScreenState extends State<TherapyScreen> {
 
   _buildTherapiesList(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
-    List<Therapy> therapyList;
     return StreamBuilder(
         stream: manager.therapyStream,
         builder: (context, snapshot) {
@@ -119,14 +112,15 @@ class _TherapyScreenState extends State<TherapyScreen> {
               ],
             );
           }
+          List<Therapy> therapiesData = snapshot.data;
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: 3,
+                itemCount: therapiesData.length,
                 itemBuilder: (context, index) {
                   return MedicationCard(
-                    name: snapshot.data[index].name,
+                    name: therapiesData[index].name,
                     appearance: 'assets/icons/navigation/essentials/pills.svg',
                   );
                 }),

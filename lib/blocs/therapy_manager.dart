@@ -1,46 +1,31 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:diabetty/models/therapy/medication_info.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetty/models/therapy/alarmsettings.model.dart';
-import 'package:diabetty/models/therapy/reminder_rule.model.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 
 class TherapyManager extends ChangeNotifier {
-  TherapyManager({@required this.appContext, @required this.authService});
+  TherapyManager({@required this.appContext});
   TherapyService therapyService = TherapyService();
 
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
-  final AuthService authService;
-  List<Therapy> usersTherapies;
+  AuthService authService;
+  List<Therapy> usersTherapies = List();
   String uid;
 
   StreamController<List<Therapy>> _dataController = StreamController();
-  Sink<List<Therapy>> get dataSink => _dataController.sink;
-  Stream<List<Therapy>> get dataStream => _dataController.stream;
 
   AddTherapyForm therapyForm;
 
-  Stream<List<Therapy>> _therapyStream() {
-    return therapyService.therapyStream(this.appContext.user.uid);
-  }
+  Stream<List<Therapy>> _therapyStream() =>
+      therapyService.therapyStream(this.appContext.user.uid);
 
-  Stream<List<Therapy>> get therapyStream {
-    return this._therapyStream();
-  }
-
-  void resetForm() {
-    therapyForm = new AddTherapyForm();
-  }
-
-  void updateListeners() {
-    notifyListeners();
-  }
+  Stream<List<Therapy>> get therapyStream => this._therapyStream();
+  void resetForm() => therapyForm = new AddTherapyForm();
+  void updateListeners() => notifyListeners();
 
   @override
   void dispose() {
@@ -49,44 +34,25 @@ class TherapyManager extends ChangeNotifier {
   }
 
   void init() async {
+    print('Init is runnning');
+    authService = appContext.authService;
     this.uid = appContext.user.uid;
-    // this.appContext.u
-//     this.appContext.onUserChanged.listen((event) {
-//       this.uid = event.uid;
-// //this.therapyStream = therapyService.therapyStream(this.uid);
-//     });
+    //usertherapies = [therapyService.getTherapies(uid))
+    this._therapyStream().listen((event) async {
+      usersTherapies = event;
+      usersTherapies ??= List();
+      print('Listennn');
+    });
   }
 
-//   StreamSubscription<T> listen (
-// void onData(
-// T event
-// ),
-// {Function? onError,
-// void onDone(),
-// bool? cancelOnError}
-// )
-
-  Future<void> _getData() async {
-    var result = await this.appContext.getTherapies();
-    if (result.isSuccess) {
-      dataSink.add(result.data);
-    } else {
-      usersTherapies = [];
-      _dataController.addError(result.exception, result.stackTrace);
-    }
-  }
-
-  Future<void> refresh() async {
-    return _getData();
-  }
-
-  Future<bool> sumbitAddTherapy(AddTherapyForm addForm) async {
+  Future<void> submitAddTherapy(AddTherapyForm addForm) async {
     try {
       Therapy therapy = addForm.toTherapy();
       therapy.userId = appContext.user.uid;
       print(therapy.userId);
       await therapyService.addTherapy(therapy);
     } catch (e) {
+      print('herrrre');
       print(e.toString());
       rethrow;
     }

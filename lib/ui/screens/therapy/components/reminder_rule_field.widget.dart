@@ -9,7 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
+import 'package:diabetty/extensions/string_extension.dart';
+import 'package:diabetty/extensions/datetime_extension.dart';
 
 class ReminderRuleField extends StatefulWidget {
   const ReminderRuleField({
@@ -95,16 +96,19 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
   }
 
   String _getTime() {
-    return DateFormat.jm().format(widget.rule.time);
+    return DateFormat("h:mm a")
+        .format(DateTime.now().applyTimeOfDay(widget.rule.time));
+
+    //DateFormat.jm().format(widget.rule.time);
+
     // or this one - not sure how cute that first one is gonna be
     // change the : if you want it to be something else, its smart it will get u
     // add spaces where ever too
-    return DateFormat("h:mm a").format(widget.rule.time);
   }
 
   _deleteRule(TherapyManager manager) {
     manager.therapyForm.reminderRules
-        .removeWhere((element) => element.uid == widget.rule.uid);
+        .removeWhere((element) => element.id == widget.rule.id);
     //*  that should delete it  e.g.  element == widget.rule
     //* if not use element.uid == widget.rule.uid
     //* dont worry I already generate the uids

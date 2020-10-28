@@ -103,7 +103,7 @@ class FirebaseEmailLinkHandler {
 
   void dispose() {
     _errorController.close();
-    isLoading.dispose();
+    isLoading?.dispose();
   }
 
   Future<void> _processDynamicLink(Uri deepLink) async {

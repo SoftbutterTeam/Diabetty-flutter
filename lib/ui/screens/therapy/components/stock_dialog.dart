@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
@@ -35,6 +37,13 @@ class _StockDialogState extends State<StockDialog> {
             flagLimitController.text.isNotEmpty)
         ? true
         : false;
+  }
+
+  @override
+  void dispose() {
+    currentLevelController?.dispose();
+    flagLimitController?.dispose();
+    super.dispose();
   }
 
   @override

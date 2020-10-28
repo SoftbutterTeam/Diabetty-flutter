@@ -73,6 +73,12 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   }
 
   @override
+  void dispose() {
+    dosageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return AlertDialog(
@@ -304,17 +310,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
     var doseStringToDouble = int.parse(dosageController.text);
     reminder.dose = doseStringToDouble;
-    reminder.time = timeSelected;
-    print(reminder.dose);
-    print(reminder.time);
-    print(dosageController.text);
-    print(reminder.days.monday);
-    print(reminder.days.tuesday);
-    print(reminder.days.wednesday);
-    print(reminder.days.thursday);
-    print(reminder.days.friday);
-    print(reminder.days.saturday);
-    print(reminder.days.sunday);
+    reminder.time = TimeOfDay.fromDateTime(timeSelected);
     final TherapyManager manager =
         Provider.of<TherapyManager>(context, listen: false);
 

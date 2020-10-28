@@ -29,21 +29,24 @@ class Therapy {
   });
 
   loadFromJson(Map<String, dynamic> json) {
-    this.id = json['id'];
-    this.userId = json['userId'];
+    this.id ??= json['id'];
+    this.userId ??= json['userId'];
     this.name = json['name'];
-
+    this.mode = json['mode'];
+    print(json.toString());
     Schedule schedule = Schedule();
-    //error here
-
-    Map<String, dynamic> sheduledata =
-        new Map<String, dynamic>.from(json['schedule']);
-    schedule.loadFromJson(sheduledata);
-    this.schedule = schedule;
-    Map<String, dynamic> stockdata =
-        new Map<String, dynamic>.from(json['stock']);
-    Stock stock = new Stock();
-    stock.loadFromJson(stockdata);
+    if (json['schedule'] != null) {
+      Map<String, dynamic> sheduledata =
+          new Map<String, dynamic>.from(json['schedule']);
+      schedule.loadFromJson(sheduledata);
+      this.schedule = schedule;
+    }
+    if (json['stock'] != null) {
+      Map<String, dynamic> stockdata =
+          new Map<String, dynamic>.from(json['stock']);
+      Stock stock = new Stock();
+      stock.loadFromJson(stockdata);
+    }
     MedicationInfo medicationInfo = MedicationInfo();
     Map<String, dynamic> medicationinfodata =
         new Map<String, dynamic>.from(json['medicationInfo']);
@@ -57,6 +60,7 @@ class Therapy {
         'schedule': (this.schedule == null) ? null : this.schedule.toJson(),
         'medicationInfo': this.medicationInfo.toJson(),
         'stock': this.stock.toJson(),
+        'mode': this.mode,
       };
 
   dummyData() {

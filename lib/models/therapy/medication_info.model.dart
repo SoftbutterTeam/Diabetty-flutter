@@ -22,12 +22,9 @@ class MedicationInfo {
     this.typeIndex,
   });
 
-  MedicationInfo.fromJson(Map<String, dynamic> json)
-      : restDuration = json['restDuration'],
-        name = json['name'],
-        strength = json['strength'],
-        intakeAdvice = json['intakeAdvice'];
-
+  MedicationInfo.fromJson(Map<String, dynamic> json) {
+    loadFromJson(json);
+  }
   Map<String, dynamic> toJson() => {
         'restDuration':
             this.restDuration == null ? null : this.restDuration.inSeconds,
@@ -39,7 +36,7 @@ class MedicationInfo {
 
   bool loadFromJson(Map<String, dynamic> json) {
     try {
-      if (json.containsKey('restDuration')) {
+      if (json.containsKey('restDuration') && json['restDuration'] != null) {
         Duration temp = new Duration(seconds: json['restDuration']);
         this.restDuration = temp;
       }

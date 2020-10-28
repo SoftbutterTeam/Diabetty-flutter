@@ -11,12 +11,12 @@ import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widge
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/components/topbar.dart';
-import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
+import 'package:diabetty/extensions/string_extension.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:diabetty/ui/screens/therapy/extensions/datetime_extension.dart';
+import 'package:diabetty/extensions/datetime_extension.dart';
 
 import 'components/CustomTextField.dart';
 
@@ -86,7 +86,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
               therapyForm.neededValidation(toThrow: true);
             else if (therapyForm.isPlannedMode())
               therapyForm.plannedValidation(toThrow: true);
-            await widget.manager.sumbitAddTherapy(therapyForm);
+            await widget.manager.submitAddTherapy(therapyForm);
             Navigator.pushNamed(context, therapy);
           } catch (e) {
             print(e.message);

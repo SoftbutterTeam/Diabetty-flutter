@@ -15,7 +15,7 @@ import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
+import 'package:diabetty/extensions/string_extension.dart';
 
 class AddTherapyScreenOne extends StatefulWidget {
   const AddTherapyScreenOne({Key key, this.manager, this.pageController})
@@ -39,6 +39,13 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     strengthController = TextEditingController();
     medicationNameController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    strengthController?.dispose();
+    medicationNameController?.dispose();
+    super.dispose();
   }
 
   @override

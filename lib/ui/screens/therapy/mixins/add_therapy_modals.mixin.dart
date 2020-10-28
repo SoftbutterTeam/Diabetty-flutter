@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
     as DateRangePicker;
-import 'package:diabetty/ui/screens/therapy/extensions/string_extension.dart';
+import 'package:diabetty/extensions/string_extension.dart';
 
 @optionalTypeArgs
 mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
@@ -253,12 +253,15 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   showAlarmSettingsDialog(BuildContext context, TherapyManager manager) {
     showDialog(
         context: context,
-        builder: (context) => AlarmSettingsDialog(therapyForm: therapyForm, manager: manager));
+        builder: (context) =>
+            AlarmSettingsDialog(therapyForm: therapyForm, manager: manager));
   }
 
   showStockDialog(BuildContext context, TherapyManager manager) {
     showDialog(
-        context: context, builder: (context) => StockDialog(therapyForm: therapyForm ,manager: manager));
+        context: context,
+        builder: (context) =>
+            StockDialog(therapyForm: therapyForm, manager: manager));
   }
 
   showReminderModal(BuildContext context, TherapyManager manager) {
