@@ -59,6 +59,8 @@ class TherapyRepository {
     print(therapy.name);
     Map<String, dynamic> therapyData = Map();
     therapyData = therapy.toJson();
+    var timeNow = DateTime.now().toString();
+    therapyData['lastUpdated'] = timeNow;
     await _db
         .collection('users')
         .document(therapy.userId)
@@ -75,11 +77,10 @@ class TherapyRepository {
     print(therapy.userId);
     if (therapy.userId == null)
       therapy.userId = (await _firebaseAuth.currentUser()).uid;
-    print('ahhhhhhaaaa');
     Map<String, dynamic> therapyData = therapy.toJson();
-    // print(therapyData.toString());
-    //* convert to Json here
-    print('ahhhhhhaaaa');
+    var timeNow = DateTime.now().toString();
+    therapyData['createdAt'] = timeNow;
+    therapyData['lastUpdated'] = timeNow;
     print(therapy.name);
     await _db
         .collection('users')
