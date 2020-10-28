@@ -263,26 +263,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
       child: Container(
           margin: EdgeInsets.only(bottom: 10),
           alignment: Alignment.center,
-          // decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.only(
-          //         topLeft: Radius.circular(curve),
-          //         topRight: Radius.circular(curve),
-          //         bottomLeft: Radius.circular(bottomCurve ?? curve),
-          //         bottomRight: Radius.circular(bottomCurve ?? curve)),
-          //     boxShadow: [
-          //       BoxShadow(
-          //         color: Colors.grey.withOpacity(0.2),
-          //         spreadRadius: 1,
-          //         blurRadius: 3,
-          //         offset: Offset(0, 3),
-          //       ),
-          //       BoxShadow(
-          //         color: Colors.grey.withOpacity(0.2),
-          //         spreadRadius: 1,
-          //         blurRadius: 0,
-          //         offset: Offset(0, 0.5),
-          //       ),
-          //     ]),
           child: SizedBox(
             width: size.width * 0.8,
             height: size.height * 0.32,

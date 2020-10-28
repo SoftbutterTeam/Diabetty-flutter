@@ -59,8 +59,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         : (widget.therapyForm.reminderRules.length > 0 &&
                 widget.therapyForm.minRest == null)
             ? DateFormat.jm().format(
-                (widget.therapyForm.reminderRules.last.time)
-                    .add(Duration(hours: 2)))
+                (widget.therapyForm.reminderRules.last.time).add(Duration(hours: 2)))
             : (widget.therapyForm.reminderRules.length > 0 &&
                     widget.therapyForm.minRest != null)
                 ? DateFormat.jm().format(
