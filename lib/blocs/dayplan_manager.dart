@@ -64,8 +64,7 @@ class DayPlanManager extends ChangeNotifier {
   }
 
   List<Reminder> getProjectedReminders({DateTime date}) {
-    //testing line
-    date..add(Duration(days: 2));
+    //testing line date..add(Duration(days: 2));
     date ??= currentDateStamp;
     print('hereeee' + userTherapies.toString());
     List<Therapy> therapies = List.of(therapyManager.usersTherapies);
