@@ -36,18 +36,13 @@ class TherapyManager extends ChangeNotifier {
   void init() async {
     print('Init is runnning');
     authService = appContext.authService;
-    Future.wait([initFutures()]);
-  }
-
-  Future initFutures() async {
     this.uid = appContext.user.uid;
-    usersTherapies = await therapyService.getTherapies(uid);
+    //usertherapies = [therapyService.getTherapies(uid))
     this._therapyStream().listen((event) async {
       usersTherapies = event;
       usersTherapies ??= List();
       print('Listennn');
     });
-    return;
   }
 
   Future<void> submitAddTherapy(AddTherapyForm addForm) async {
