@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 
 class TherapyManager extends ChangeNotifier {
-  TherapyManager({@required this.appContext, @required this.authService});
+  TherapyManager({@required this.appContext});
   TherapyService therapyService = TherapyService();
 
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
-  final AuthService authService;
+  AuthService authService;
   List<Therapy> usersTherapies;
   String uid;
 
@@ -33,9 +33,12 @@ class TherapyManager extends ChangeNotifier {
     super.dispose();
   }
 
-  void init() async {
+  void init() {
+    authService = appContext.authService;
     this.uid = appContext.user.uid;
     this._therapyStream().listen((event) async {
+      usersTherapies = event;
+      usersTherapies ??= List();
       print('Listennn');
     });
   }

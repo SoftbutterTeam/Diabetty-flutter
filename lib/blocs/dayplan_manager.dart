@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/system/app_context.dart';
@@ -14,6 +15,7 @@ class DayPlanManager extends ChangeNotifier {
   });
 
   final AppContext appContext;
+  TherapyManager therapyManager;
 
   AnimationController pushAnimation;
   DatePickerController dateController = DatePickerController();
@@ -22,7 +24,6 @@ class DayPlanManager extends ChangeNotifier {
 
   ///* user reminders is only fetched reminders/data from store
   List<Reminder> usersReminders = List();
-  List<Therapy> usersTherapies = List();
 
   DateTime get currentDateStamp => _currentDateStamp;
   Sink<List<Reminder>> get dataSink => _dataController.sink;
@@ -39,92 +40,67 @@ class DayPlanManager extends ChangeNotifier {
     super.dispose();
   }
 
-  void init() async {
+  void init() {
     _currentDateStamp = DateTime.now();
   }
 
   List<Reminder> getFinalRemindersList({DateTime date}) {
     date = date ?? currentDateStamp;
+    print('rr');
+
     List<Reminder> finalReminders = getProjectedReminders(date: date);
+    print('rr');
 
     List<Reminder> fetchedReminders = usersReminders
-        .where((reminder) => reminder.isToday(date: _currentDateStamp));
-
+        .where((reminder) => reminder.isToday(date: _currentDateStamp))
+        .toList();
+    print('rr');
+    //!HERE is ther error and remember to remove the test line
     finalReminders.retainWhere((element) => fetchedReminders.any((e) =>
         element.therapyId == e.therapyId &&
         element.reminderRuleId == e.reminderRuleId));
     finalReminders.addAll(fetchedReminders);
-
+    print('rr');
+    print(finalReminders);
     return finalReminders;
   }
 
   List<Reminder> getProjectedReminders({DateTime date}) {
-    date = date ?? currentDateStamp;
-    List<Therapy> therapies = List();
-    //* get therapies
+    //testing line
+    date..add(Duration(days: 2));
+    date ??= currentDateStamp;
+    print(therapyManager.usersTherapies);
+
+    List<Therapy> therapies = List.of(therapyManager.usersTherapies);
+    print(therapies.length);
     List<Reminder> projectedReminders = List();
-    therapies.map((therapy) {
-      therapy.schedule.reminders.map((rule) {
+    therapies
+        .where(
+            (therapy) => therapy.mode == "planned" && therapy.schedule != null)
+        .forEach((therapy) {
+      print('made it into map');
+      print(therapy.schedule.reminders.length);
+
+      therapy.schedule.reminders.forEach((rule) {
+        print('made it into rule map');
+
         if (rule.isActiveOn(date))
-          projectedReminders
-              .add(Reminder.generated(therapy: therapy, rule: rule));
+          projectedReminders.add(Reminder.generated(therapy, rule, date));
       });
     });
+    print(projectedReminders);
+    return projectedReminders;
   }
 
   List<TimeSlot> sortRemindersByTimeSlots({DateTime date}) {
     date = date ?? currentDateStamp;
-
+    print('yy');
     //this is bs, gonna update is soon
-    List<Reminder> tempReminders = List.from(usersReminders)
+    List<Reminder> tempReminders = List.from(getFinalRemindersList(date: date))
       ..retainWhere((element) => element.isToday(date: currentDateStamp));
     //** now we have a list of all the FETCHED Reminders for the current timestamp */
-    tempReminders = [
-      Reminder(
-        uid: '1',
-        name: 'Medication1',
-        advice: ['Hello'],
-        dose: 4,
-        window: Duration(minutes: 30),
-        time: DateTime.now(),
-        cancelled: false,
-        doseEdited: false,
-        reminderRuleId: '1',
-        rescheduled: false,
-        takenAt: DateTime.now(),
-        therapyId: '1',
-      ),
-       Reminder(
-        uid: '2',
-        name: 'Medication2',
-        advice: ['Hello'],
-        dose: 4,
-        window: Duration(minutes: 30),
-        time: DateTime.now(),
-        cancelled: false,
-        doseEdited: false,
-        reminderRuleId: '2',
-        rescheduled: false,
-        takenAt: DateTime.now(),
-        therapyId: '2',
-      ),
-        Reminder(
-        uid: '3',
-        name: 'Medication3',
-        advice: ['Hello'],
-        dose: 4,
-        window: Duration(minutes: 30),
-        time: DateTime.now(),
-        cancelled: false,
-        doseEdited: false,
-        reminderRuleId: '3',
-        rescheduled: false,
-        takenAt: DateTime.now(),
-        therapyId: '3',
-      ),
-    ];
+    print('yy');
 
-    
     List<TimeSlot> timeSlots = new List();
 
     print(usersReminders.length);

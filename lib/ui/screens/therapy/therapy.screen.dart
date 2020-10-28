@@ -12,9 +12,6 @@ import 'package:provider/provider.dart';
 class TherapyScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TherapyManager therapyManager = null;
-    final isLoading = null;
-    // return TherapyScreen._(isLoading: true, manager: therapyManager);
     return ChangeNotifierProvider<ValueNotifier<bool>>(
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(

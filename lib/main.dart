@@ -60,15 +60,16 @@ class MyApp extends StatelessWidget {
             create: (_) => authService,
             dispose: (_, AuthService authService) => authService.dispose(),
           ),
-
           Provider<AppContext>(
             create: (_) => appContext,
-            dispose: (_, AppContext appContext) => appContext.dispose(),
+            dispose: (
+              _,
+              AppContext appContext,
+            ) =>
+                appContext.dispose(),
           ),
           ChangeNotifierProvider<TherapyManager>(
-            create: (_) =>
-                TherapyManager(authService: authService, appContext: appContext)
-                  ..init(),
+            create: (_) => TherapyManager(appContext: appContext)..init(),
           ),
           ChangeNotifierProvider<DayPlanManager>(
             create: (_) => DayPlanManager(appContext: appContext)..init(),
