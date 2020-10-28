@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'package:diabetty/blocs/mixins/reminder_manager_mixin.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 
-class DayPlanManager extends ChangeNotifier {
+class DayPlanManager extends ChangeNotifier with ReminderManagerMixin {
   DayPlanManager({
     @required this.appContext,
   });

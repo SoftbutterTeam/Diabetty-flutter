@@ -12,7 +12,7 @@ class Reminder with DateMixin {
   String name;
   DateTime time; //*scheduled time
   int dose;
-  int doseUnit;
+  int doseUnitIndex;
   Duration window;
   DateTime takenAt;
   bool rescheduled;
@@ -20,13 +20,6 @@ class Reminder with DateMixin {
   bool doseEdited;
   List<String> advice;
 
-/** 
-    set setTime12hr(DateTime dateTime) {
-    final df = new DateFormat('dd-MM-yyyy hh:mm a');
-    String dtFormatted = df.format(dateTime);
-    this.time = df.parse(dtFormatted);
-    }
-*/
   DateTime get getDateTimeAs12hr {
     if (time == null) return time;
     final df = new DateFormat('dd-MM-yyyy hh:mm a');
@@ -72,7 +65,7 @@ class Reminder with DateMixin {
         date.year, date.month, date.day, rule.time.hour, rule.time.minute);
     this.dose = rule.dose;
     this.window = therapy.schedule.window;
-    this.doseUnit = therapy.medicationInfo.unitIndex;
+    this.doseUnitIndex = therapy.medicationInfo.unitIndex;
     this.advice = therapy.medicationInfo.intakeAdvice;
   }
 }
