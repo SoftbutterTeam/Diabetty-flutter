@@ -22,6 +22,7 @@ class Stock {
     flagLimit = null;
   }
 
+  //TODO THIS SHOULD NOT BE HERE DAN
   void handleValidation(TextEditingController currentLevelController,
       TextEditingController flagLimitController) {
     int currentLevelControllerToInt = int.parse(currentLevelController.text);

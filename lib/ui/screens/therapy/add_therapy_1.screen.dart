@@ -42,6 +42,13 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
   }
 
   @override
+  void dispose() {
+    strengthController?.dispose();
+    medicationNameController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(

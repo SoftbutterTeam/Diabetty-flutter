@@ -51,6 +51,12 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   }
 
   @override
+  void dispose() {
+    dosageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return AlertDialog(

@@ -66,7 +66,7 @@ class Reminder with DateMixin {
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
   Reminder.generated({Therapy therapy, ReminderRule rule, DateTime date}) {
     this.therapyId = therapy.id;
-    this.reminderRuleId = rule.uid;
+    this.reminderRuleId = rule.id;
     this.name = therapy.medicationInfo.name;
     this.time = DateTime(
         date.year, date.month, date.day, rule.time.hour, rule.time.minute);

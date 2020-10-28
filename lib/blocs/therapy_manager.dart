@@ -47,6 +47,7 @@ class TherapyManager extends ChangeNotifier {
       print(therapy.userId);
       await therapyService.addTherapy(therapy);
     } catch (e) {
+      print('herrrre');
       print(e.toString());
       rethrow;
     }

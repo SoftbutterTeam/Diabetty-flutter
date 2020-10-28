@@ -2,16 +2,17 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart' as random;
 import 'dart:math' show Random;
+import 'package:diabetty/extensions/timeofday_extension.dart';
 
 class ReminderRule {
-  String uid;
+  String id;
   Days days;
   int dose;
   TimeOfDay time;
   ReminderRule(
-      {this.uid, this.days, this.dose, this.time, forceGenerateUID = false}) {
-    this.uid = this.uid ?? generateUID();
-    if (forceGenerateUID) this.uid = generateUID();
+      {this.id, this.days, this.dose, this.time, forceGenerateUID = false}) {
+    this.id = this.id ?? generateUID();
+    if (forceGenerateUID) this.id = generateUID();
   }
 
   String generateUID() {
@@ -24,14 +25,16 @@ class ReminderRule {
     Days days = Days();
     days.loadFromJson(daysJson);
     this.days = days;
+    this.id = json['id'];
     this.dose = json['dose'];
-    this.time = json['time'];
+    this.time = TimeOfDay.now().stringToTimeOfDay(json['time']);
   }
 
   Map<String, dynamic> toJson() => {
+        'id': this.id,
         'days': this.days.toJson(),
         'dose': this.dose,
-        'time': this.time,
+        'time': TimeOfDay.now().formatTimeOfDay(this.time),
       };
 
   dummyData() {

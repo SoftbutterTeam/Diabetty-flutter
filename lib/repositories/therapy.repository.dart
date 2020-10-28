@@ -74,15 +74,13 @@ class TherapyRepository {
   Future<void> createTherapy(Therapy therapy) async {
     print(therapy.userId);
     if (therapy.userId == null)
-      await _firebaseAuth
-          .currentUser()
-          .then((value) => therapy.userId = value.uid);
+      therapy.userId = (await _firebaseAuth.currentUser()).uid;
+    print('ahhhhhhaaaa');
     Map<String, dynamic> therapyData = therapy.toJson();
     // print(therapyData.toString());
     //* convert to Json here
     print('ahhhhhhaaaa');
     print(therapy.name);
-
     await _db
         .collection('users')
         .document(therapy.userId)
@@ -90,9 +88,11 @@ class TherapyRepository {
         .document()
         .setData(therapyData)
         .catchError((e) {
+      print('ahhhhhhaaaa');
+
       print(e);
     });
-    return true;
+    return;
   }
 
   Stream<QuerySnapshot> onStateChanged(String uid) {

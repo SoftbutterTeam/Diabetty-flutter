@@ -108,7 +108,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
 
   _deleteRule(TherapyManager manager) {
     manager.therapyForm.reminderRules
-        .removeWhere((element) => element.uid == widget.rule.uid);
+        .removeWhere((element) => element.id == widget.rule.id);
     //*  that should delete it  e.g.  element == widget.rule
     //* if not use element.uid == widget.rule.uid
     //* dont worry I already generate the uids

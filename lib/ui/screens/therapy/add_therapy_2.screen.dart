@@ -86,7 +86,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
               therapyForm.neededValidation(toThrow: true);
             else if (therapyForm.isPlannedMode())
               therapyForm.plannedValidation(toThrow: true);
-            await widget.manager.sumbitAddTherapy(therapyForm);
+            await widget.manager.submitAddTherapy(therapyForm);
             Navigator.pushNamed(context, therapy);
           } catch (e) {
             print(e.message);
