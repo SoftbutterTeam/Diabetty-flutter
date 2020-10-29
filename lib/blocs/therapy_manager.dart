@@ -5,8 +5,9 @@ import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
+import 'package:diabetty/blocs/manager_abstract.dart';
 
-class TherapyManager extends ChangeNotifier {
+class TherapyManager extends Manager {
   TherapyManager({@required this.appContext});
   TherapyService therapyService = TherapyService();
 
@@ -34,9 +35,10 @@ class TherapyManager extends ChangeNotifier {
   }
 
   void init() async {
+    super.init();
     print('Init is runnning');
     authService = appContext.authService;
-    this.uid = appContext.user.uid;
+    this.uid = appContext.user?.uid;
     //usertherapies = [therapyService.getTherapies(uid))
     this._therapyStream().listen((event) async {
       usersTherapies = event;

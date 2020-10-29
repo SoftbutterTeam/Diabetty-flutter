@@ -9,8 +9,9 @@ import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:diabetty/models/timeslot.model.dart';
+import 'package:diabetty/blocs/manager_abstract.dart';
 
-class DayPlanManager extends ChangeNotifier with ReminderManagerMixin {
+class DayPlanManager extends Manager with ReminderManagerMixin {
   DayPlanManager({
     @required this.appContext,
   });
@@ -42,7 +43,9 @@ class DayPlanManager extends ChangeNotifier with ReminderManagerMixin {
     super.dispose();
   }
 
+  @override
   void init() {
+    super.init();
     _currentDateStamp = DateTime.now();
   }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/manager_abstract.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/user.service.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
@@ -24,6 +25,8 @@ class AppContext {
 
   bool isFetching = false;
 
+  List<Manager> systemManagerBlocs = List();
+
   /// could use
   ///  final ValueNotifier<bool> isLoading;
   /// and the builders listen to value notifier instead
@@ -32,16 +35,21 @@ class AppContext {
   Future<void> init() async {
     authService.onAuthStateChanged.listen((firebaseUser) async {
       print(' - onAuthStateChange: $firebaseUser');
+
       _firebaseUser = firebaseUser;
       if (firebaseUser != null) {
         //await Future.delayed(Duration(seconds: 10), null);
         print(' - got user: ${firebaseUser.uid}');
-        fetchUser(toSinkUserChange: true);
+        await fetchUser(toSinkUserChange: true);
       } else {
         print(" -- no user");
         _user = null;
         _onUserChanged.sink.add(_user);
       }
+      print(systemManagerBlocs);
+      systemManagerBlocs.forEach((element) async {
+        await element.init();
+      });
     });
   }
 
