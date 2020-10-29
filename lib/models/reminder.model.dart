@@ -1,6 +1,6 @@
 import 'package:diabetty/mixins/date_mixin.dart';
-import 'package:diabetty/models/therapy/medication_info.model.dart';
-import 'package:diabetty/models/therapy/reminder_rule.model.dart';
+import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
+import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:intl/intl.dart';
 

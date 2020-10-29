@@ -1,9 +1,9 @@
 import 'package:diabetty/constants/therapy_model_constants.dart';
-import 'package:diabetty/models/therapy/alarmsettings.model.dart';
-import 'package:diabetty/models/therapy/medication_info.model.dart';
-import 'package:diabetty/models/therapy/reminder_rule.model.dart';
-import 'package:diabetty/models/therapy/schedule.model.dart';
-import 'package:diabetty/models/therapy/stock.model.dart';
+import 'package:diabetty/models/therapy/sub_models/alarmsettings.model.dart';
+import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
+import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
+import 'package:diabetty/models/therapy/sub_models/schedule.model.dart';
+import 'package:diabetty/models/therapy/sub_models/stock.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 
