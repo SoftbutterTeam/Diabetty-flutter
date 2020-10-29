@@ -1,6 +1,8 @@
+import 'package:diabetty/blocs/manager_abstract.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:flutter/cupertino.dart';
 
-class ReminderManagerMixin {
+abstract class ReminderManagerMixin<T extends Manager> {
   /**
     Big Brain todos
       - what if a Reminder is Taken, and then cancelled after. Does it still have takenAt
@@ -9,6 +11,8 @@ class ReminderManagerMixin {
     Tips if you need something from the day manager use @protected get. 
     e.g. is in the ReminderActionsMixin
    */
+  @protected
+  void updateListeners();
 
   void takeReminder(Reminder reminder, DateTime takenAt) {
     takenAt ??= DateTime.now();
@@ -17,7 +21,9 @@ class ReminderManagerMixin {
      Calls the Service Code.
      -> reminder.takenAt -> DateTime takenAt
      -> if Reminder is not Stored, Save.
+     -> then calls updateListeners 
     */
+    updateListeners();
   }
 
   void skipReminder(Reminder reminder) {
@@ -25,6 +31,8 @@ class ReminderManagerMixin {
      Calls the Service Code.
      -> reminder.cancelled -> true
      -> if Reminder is not Stored, Save.
+     -> then calls updateListeners 
+
     */
   }
 
@@ -34,7 +42,7 @@ class ReminderManagerMixin {
      -> reminder.time -> time.add( duration snoozeFor)
      -> reminder.rescheduled -> true
      -> if Reminder is not Stored, Save.
-     
+      -> then calls updateListeners 
     */
   }
 
@@ -44,6 +52,7 @@ class ReminderManagerMixin {
      -> reminder.time -> rescheduledTo
      -> reminder.rescheduled -> true
      -> if Reminder is not Stored, Save.
+     -> then calls updateListeners 
     */
   }
 
@@ -53,6 +62,7 @@ class ReminderManagerMixin {
      -> dose-> dose
      -> reminder.doseEdited -> true
      -> if Reminder is not Stored, Save.
+     -> then calls updateListeners 
     */
   }
 }

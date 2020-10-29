@@ -26,7 +26,6 @@ class TherapyManager extends Manager {
 
   Stream<List<Therapy>> get therapyStream => this._therapyStream();
   void resetForm() => therapyForm = new AddTherapyForm();
-  void updateListeners() => notifyListeners();
 
   @override
   void dispose() {
