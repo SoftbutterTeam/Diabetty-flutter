@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'package:intl/intl.dart';
+import 'package:diabetty/extensions/timeofday_extension.dart';
+import 'package:diabetty/extensions/datetime_extension.dart';
 
 class AddReminderModal2 extends StatefulWidget {
   final AddTherapyForm therapyForm;
@@ -21,45 +23,38 @@ class AddReminderModal2 extends StatefulWidget {
 
 class _AddReminderModal2State extends State<AddReminderModal2> {
   ReminderRule reminder;
-  bool monday;
-  bool tuesday;
-  bool wednesday;
-  bool thursday;
-  bool friday;
-  bool saturday;
-  bool sunday;
   bool _isFilled;
   int lastTapped;
   TextEditingController dosageController;
   String timeString;
   DateTime initialDate;
   DateTime timeSelected;
+  Days days;
 
   @override
   void initState() {
     super.initState();
+    final rules = widget.therapyForm.reminderRules;
+    days = Days.fromDays(rules.isNotEmpty ? rules.last.days : Days());
+    dosageController = TextEditingController(
+        text: (rules.length == 0) ? '' : rules.last.dose.toString());
+    timeSelected = getInitialTime();
 
-    monday = true;
-    tuesday = true;
-    wednesday = true;
-    thursday = true;
-    friday = true;
-    saturday = true;
-    sunday = true;
-    dosageController = TextEditingController();
-    timeSelected = DateTime.now();
-
-    initialDate = DateTime(
-        timeSelected.year, timeSelected.month, timeSelected.day, 8, 00);
+    initialDate = timeSelected;
     reminder = ReminderRule();
     reminder.days = Days();
     _isFilled = false;
-    timeString = (widget.therapyForm.reminderRules.length == 0)
-        ? "8:00 AM"
-        : (widget.therapyForm.reminderRules.length > 0 &&
-                widget.therapyForm.minRest == null)
-            ? (widget.therapyForm.reminderRules.last.time.toString())
-            : null;
+    timeString = timeSelected.formatTime();
+  }
+
+  DateTime getInitialTime() {
+    if (widget.therapyForm.reminderRules.isEmpty)
+      return DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day, 8, 00);
+    else
+      return widget.therapyForm.reminderRules.last.time
+          .applyTimeOfDay()
+          .add(widget.therapyForm.minRest ?? Duration(hours: 2));
   }
 
   @override
@@ -114,7 +109,9 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
                     color: _isFilled ? Colors.indigo : Colors.black26,
                   )),
               onPressed: () {
-                _isFilled ? _handleSubmit() : null;
+                if (_isFilled) {
+                  _handleSubmit();
+                }
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -160,6 +157,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     setState(() {
       timeString = hourAndMin;
     });
+    print(hourAndMin);
     Navigator.pop(context);
   }
 
@@ -175,19 +173,13 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
             } else {
               print('naw way fam');
             }
+            print(timeSelected);
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,
             mode: CupertinoDatePickerMode.time,
             minuteInterval: 5,
-            initialDateTime: (widget.therapyForm.reminderRules.length == 0)
-                ? initialDate
-                : DateTime(
-                    timeSelected.year,
-                    timeSelected.month,
-                    timeSelected.day,
-                    widget.therapyForm.reminderRules.last.time.hour,
-                    widget.therapyForm.reminderRules.last.time.minute),
+            initialDateTime: timeSelected,
             onDateTimeChanged: (dateTimeChange) {
               timeSelected = dateTimeChange;
               setState(() {});
@@ -228,41 +220,43 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   }
 
   _updateDaySelected(int v) {
-    (v == 1)
-        ? setState(() {
-            monday = !monday;
-          })
-        : null;
-    (v == 2)
-        ? setState(() {
-            tuesday = !tuesday;
-          })
-        : null;
-    (v == 3)
-        ? setState(() {
-            wednesday = !wednesday;
-          })
-        : null;
-    (v == 4)
-        ? setState(() {
-            thursday = !thursday;
-          })
-        : null;
-    (v == 5)
-        ? setState(() {
-            friday = !friday;
-          })
-        : null;
-    (v == 6)
-        ? setState(() {
-            saturday = !saturday;
-          })
-        : null;
-    (v == 7)
-        ? setState(() {
-            sunday = !sunday;
-          })
-        : null;
+    switch (v) {
+      case 1:
+        setState(() {
+          days.monday = !days.monday;
+        });
+        break;
+      case 2:
+        setState(() {
+          days.tuesday = !days.tuesday;
+        });
+        break;
+      case 3:
+        setState(() {
+          days.wednesday = !days.wednesday;
+        });
+        break;
+      case 4:
+        setState(() {
+          days.thursday = !days.thursday;
+        });
+        break;
+      case 5:
+        setState(() {
+          days.friday = !days.friday;
+        });
+        break;
+      case 6:
+        setState(() {
+          days.saturday = !days.saturday;
+        });
+        break;
+      case 7:
+        setState(() {
+          days.sunday = !days.sunday;
+        });
+        break;
+    }
     print(v);
     setState(() => lastTapped = v);
   }
@@ -280,28 +274,20 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
           allFieldsFilled();
         },
         values: [
-          sunday, // Sunday
-          monday, // Monday
-          tuesday, // Tuesday
-          wednesday, // Wednesday
-          thursday, // Thursday
-          friday, // Friday
-          saturday, // Saturday
+          days.sunday, // Sunday
+          days.monday, // Monday
+          days.tuesday, // Tuesday
+          days.wednesday, // Wednesday
+          days.thursday, // Thursday
+          days.friday, // Friday
+          days.saturday, // Saturday
         ],
       ),
     );
   }
 
   _handleSubmit() {
-    monday ? reminder.days.monday = true : reminder.days.monday = false;
-    tuesday ? reminder.days.tuesday = true : reminder.days.tuesday = false;
-    wednesday
-        ? reminder.days.wednesday = true
-        : reminder.days.wednesday = false;
-    thursday ? reminder.days.thursday = true : reminder.days.thursday = false;
-    friday ? reminder.days.friday = true : reminder.days.friday = false;
-    saturday ? reminder.days.saturday = true : reminder.days.saturday = false;
-    sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
+    reminder.days = days;
     var doseStringToDouble = int.parse(dosageController.text);
     reminder.dose = doseStringToDouble;
     reminder.time = TimeOfDay.fromDateTime(timeSelected);
@@ -315,16 +301,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
   }
 
   allFieldsFilled() {
-    if (dosageController.text.isNotEmpty &&
-        timeString != "Time" &&
-        (monday ||
-                tuesday ||
-                wednesday ||
-                thursday ||
-                friday ||
-                saturday ||
-                sunday) ==
-            true) {
+    if (dosageController.text.isNotEmpty && days.isADaySelected) {
       setState(() {
         _isFilled = true;
       });

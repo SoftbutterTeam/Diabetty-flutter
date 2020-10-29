@@ -12,4 +12,8 @@ extension DateTimeExtension on DateTime {
   DateTime applyTimeOfDay(TimeOfDay time) {
     return DateTime(year, month, day, time.hour, time.minute);
   }
+
+  String formatTime() {
+    return DateFormat.jm().format(this);
+  }
 }

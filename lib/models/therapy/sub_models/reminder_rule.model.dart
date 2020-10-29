@@ -34,7 +34,7 @@ class ReminderRule {
         'id': this.id,
         'days': this.days.toJson(),
         'dose': this.dose,
-        'time': TimeOfDay.now().formatTimeOfDay(this.time),
+        'time': this.time.formatTimeOfDay(),
       };
 
   dummyData() {
@@ -69,6 +69,22 @@ class Days {
     this.saturday = true,
     this.sunday = true,
   });
+  Days.fromDays(Days days)
+      : monday = days.monday,
+        tuesday = days.tuesday,
+        wednesday = days.wednesday,
+        thursday = days.thursday,
+        friday = days.friday,
+        saturday = days.saturday,
+        sunday = days.sunday;
+
+  bool get isADaySelected => (monday ||
+        tuesday ||
+        wednesday ||
+        thursday ||
+        friday ||
+        saturday ||
+        sunday);
 
   loadFromJson(Map<String, dynamic> json) {
     this.monday = json['monday'];

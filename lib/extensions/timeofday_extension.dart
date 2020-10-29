@@ -7,10 +7,15 @@ extension TimeOfDayExtension on TimeOfDay {
     return TimeOfDay.fromDateTime(format.parse(tod));
   }
 
-  String formatTimeOfDay(TimeOfDay tod) {
+  String formatTimeOfDay() {
     final now = new DateTime.now();
-    final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
+    final dt = DateTime(now.year, now.month, now.day, this.hour, this.minute);
     final format = DateFormat.jm(); //"6:00 AM"
     return format.format(dt);
+  }
+
+  DateTime applyTimeOfDay() {
+    final now = new DateTime.now();
+    return DateTime(now.year, now.month, now.day, this.hour, this.minute);
   }
 }
