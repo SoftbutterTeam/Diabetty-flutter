@@ -19,27 +19,26 @@ mixin ReminderActionsMixin<T extends Widget> {
   void showSnoozeActionSheet(context) => showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
-            message: text("How long do you want to snooze for?",
-                fontSize: 16.0, textColor: Colors.black, isCentered: true),
+            message: Text(
+              "How long do you want to snooze for?",
+            ),
             actions: [
               CupertinoActionSheetAction(
-                child:
-                    text("Snooze 10m", fontSize: 16.0, textColor: Colors.black),
+                child: Text("Snooze 10m"),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
-                child:
-                    text("Snooze 30m", fontSize: 16.0, textColor: Colors.black),
+                child: Text("Snooze 30m"),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
-                child:
-                    text("Snooze 1hr", fontSize: 16.0, textColor: Colors.black),
+                child: Text("Snooze 1hr"),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
-                child: text("Postpone until...",
-                    fontSize: 16.0, textColor: Colors.black),
+                child: Text(
+                  "Postpone until...",
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                   showPostponePicker(context);
@@ -47,8 +46,7 @@ mixin ReminderActionsMixin<T extends Widget> {
               ),
             ],
             cancelButton: CupertinoActionSheetAction(
-              child: Text("Cancel",
-                  style: TextStyle(color: CupertinoColors.destructiveRed)),
+              child: Container(color: Colors.white, child: Text('Cancel')),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -58,41 +56,40 @@ mixin ReminderActionsMixin<T extends Widget> {
   void showSkipActionSheet(context) => showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
-            message: text(
-                "Can you please indicate why you're skipping this dose?",
-                maxLine: 2,
-                fontSize: 16.0,
-                textColor: Colors.black,
-                isCentered: true),
+            message:
+                Text("Can you please indicate why you're skipping this dose?"),
             actions: [
               CupertinoActionSheetAction(
-                child: text("Med isn't near me",
-                    fontSize: 16.0, textColor: Colors.black),
+                child: Text(
+                  "Med isn't near me",
+                ),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
-                child: text("Forgot / busy / asleep",
-                    fontSize: 16.0, textColor: Colors.black),
+                child: Text(
+                  "Forgot / busy / asleep",
+                ),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
-                child: text("Ran out of medication",
-                    fontSize: 16.0, textColor: Colors.black),
+                child: Text(
+                  "Ran out of medication",
+                ),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
-                child: text("Side effects / other health concerns",
-                    fontSize: 16.0, textColor: Colors.black),
+                child: Text(
+                  "Side effects / other health concerns",
+                ),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
-                child: text("Other", fontSize: 16.0, textColor: Colors.black),
+                child: Text("Other"),
                 onPressed: () {},
               ),
             ],
             cancelButton: CupertinoActionSheetAction(
-              child: Text("Cancel",
-                  style: TextStyle(color: CupertinoColors.destructiveRed)),
+              child: Container(color: Colors.white, child: Text('Cancel')),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -102,35 +99,21 @@ mixin ReminderActionsMixin<T extends Widget> {
   void showTakenActionSheet(context) => showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
-            message: text("When did you take your meds?",
-                fontSize: 16.0, textColor: Colors.black, isCentered: true),
-            actions: [
+            message: const Text('When did you take it?'),
+            actions: <Widget>[
+              CupertinoActionSheetAction(onPressed: () {}, child: Text('Now')),
               CupertinoActionSheetAction(
-                child: text("On Time", fontSize: 16.0, textColor: Colors.black),
-                onPressed: () {},
-              ),
+                  onPressed: () {}, child: Text('On Time')),
               CupertinoActionSheetAction(
-                child: text(
-                    "Now (" + DateFormat('HH:mm').format(DateTime.now()) + ")",
-                    fontSize: 16.0,
-                    textColor: Colors.black),
-                onPressed: () {},
-              ),
-              CupertinoActionSheetAction(
-                child: text("Pick Exact Time",
-                    fontSize: 16.0, textColor: Colors.black),
-                onPressed: () {
-                  Navigator.pop(context);
-                  showExactTimePicker(context);
-                },
-              ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    showExactTimePicker(context);
+                  },
+                  child: Text('Choose a Time')),
             ],
             cancelButton: CupertinoActionSheetAction(
-              child: Text("Cancel",
-                  style: TextStyle(color: CupertinoColors.destructiveRed)),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
+              child: Container(color: Colors.white, child: Text('Cancel')),
             ),
           ));
 
@@ -145,7 +128,11 @@ mixin ReminderActionsMixin<T extends Widget> {
             CupertinoActionSheetAction(
                 onPressed: () {}, child: Text('On Time')),
             CupertinoActionSheetAction(
-                onPressed: () {}, child: Text('Choose a Time')),
+                onPressed: () {
+                  Navigator.pop(context);
+                  showExactTimePicker(context);
+                },
+                child: Text('Choose a Time')),
           ],
           cancelButton: CupertinoActionSheetAction(
             onPressed: () => Navigator.pop(context),
@@ -331,7 +318,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               SizedBox(width: 10),
               Icon(Icons.filter_center_focus, size: 20),
               SizedBox(width: 10),
-              text('Take ' + widget.reminder.dose.toString() + ' pill(s)',
+              text('Take ' + 'widget.reminder.dose.toString()' + ' pill(s)',
                   fontSize: 12.0),
             ],
           ),
@@ -351,7 +338,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 child: Column(
                   children: [
                     SvgPicture.asset(
-                      appearance_iconss[widget.reminder.apperance],
+                      appearance_iconss[0],
                       width: 30,
                       height: 30,
                     ),
@@ -363,7 +350,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 5, top: 5),
-                    child: text(widget.reminder.name,
+                    child: text('widget.reminder.name',
                         fontSize: 18.0,
                         textColor: Colors.black,
                         fontFamily: fontBold,
@@ -371,7 +358,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 5, bottom: 10),
-                    child: text(widget.reminder.advice[0],
+                    child: text('widget.reminder.advice[0]',
                         fontSize: 15.0,
                         textColor: Colors.black87,
                         fontFamily: fontSemibold),
@@ -383,7 +370,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           Container(
             height: 1,
             width: size.width * 0.75,
-            color: Colors.black26,
+            color: Colors.black12,
           ),
           SizedBox(height: 5),
           Row(
@@ -391,9 +378,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               SizedBox(width: 15),
               Icon(Icons.date_range, size: 20),
               SizedBox(width: 20),
-              text(
-                  'Scheduled for ' +
-                      DateFormat('dd/MM/yy').format(widget.reminder.time),
+              text('Scheduled for ',
+                  // DateFormat('dd/MM/yy').format(widget.reminder.time),
                   fontSize: 12.0),
             ],
           ),
@@ -403,7 +389,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               SizedBox(width: 15),
               Icon(Icons.filter_center_focus, size: 20),
               SizedBox(width: 20),
-              text('Take ' + widget.reminder.dose.toString() + ' pill(s)',
+              text('Takepill(s)', //  ' + widget.reminder.dose.toString() + '
                   fontSize: 12.0),
             ],
           ),

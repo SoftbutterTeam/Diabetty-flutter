@@ -1,10 +1,12 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
+import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/background.dart';
 import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -131,7 +133,9 @@ class _TherapyScreenState extends State<TherapyScreen> {
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-      onPressed2: () {},
+      onPressed2: () {
+        FirebaseAuth.instance.signOut();
+      },
       onPressed: () {
         final actionsheet = CupertinoActionSheet(
           actions: [
@@ -153,8 +157,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
             ),
           ],
           cancelButton: CupertinoActionSheetAction(
-            child: Text("Cancel",
-                style: TextStyle(color: CupertinoColors.destructiveRed)),
+            child: Container(color: Colors.white, child: Text('Cancel')),
             onPressed: () {
               Navigator.pop(context);
             },

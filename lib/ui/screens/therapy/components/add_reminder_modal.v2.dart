@@ -58,17 +58,8 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         ? "8:00 AM"
         : (widget.therapyForm.reminderRules.length > 0 &&
                 widget.therapyForm.minRest == null)
-            ? DateFormat.jm().format(
-                (widget.therapyForm.reminderRules.last.time).add(Duration(hours: 2)))
-            : (widget.therapyForm.reminderRules.length > 0 &&
-                    widget.therapyForm.minRest != null)
-                ? DateFormat.jm().format(
-                    (widget.therapyForm.reminderRules.last.time).add(Duration(
-                        hours: widget.therapyForm.minRest.inHours,
-                        minutes: (widget.therapyForm.minRest.inMinutes < 60)
-                            ? widget.therapyForm.minRest.inMinutes
-                            : widget.therapyForm.minRest.inMinutes % 60)))
-                : null;
+            ? (widget.therapyForm.reminderRules.last.time.toString())
+            : null;
   }
 
   @override
@@ -178,8 +169,12 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
       builder: (context) {
         return TimerPicker(
           onConfirm: () {
-            _updateTime();
-            allFieldsFilled();
+            if (timeSelected.minute % 5 == 0) {
+              _updateTime();
+              allFieldsFilled();
+            } else {
+              print('naw way fam');
+            }
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,

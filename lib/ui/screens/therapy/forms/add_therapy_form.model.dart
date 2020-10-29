@@ -147,6 +147,7 @@ class AddTherapyForm {
     return false;
   }
 
+
   bool isPlannedMode() => this.mode == 'planned';
 
   bool isNeededMode() => this.mode == 'needed';

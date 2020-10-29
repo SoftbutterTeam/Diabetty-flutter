@@ -6,6 +6,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
@@ -54,7 +55,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: _buildHeader(context),
+        child: _buildHeader(context, size),
       ),
       body: SingleChildScrollView(
         child: IntrinsicHeight(
@@ -69,7 +70,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     );
   }
 
-  TopBar _buildHeader(BuildContext context) {
+  TopBar _buildHeader(BuildContext context, size) {
     return TopBar(
         btnEnabled: (therapyForm.name.isEmpty) ? false : true,
         centerText: 'Add Reminders',
@@ -90,9 +91,20 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
             Navigator.pushNamed(context, therapy);
           } catch (e) {
             print(e.message);
+            print('this shows up');
+            showErrorModal(context);
             // TODO Display Model with describing the error
           }
         });
+  }
+
+  Future showErrorModal(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => NoResponseErrorModal(
+        errorDescription: 'Please add at least one tomorrow',
+      ),
+    );
   }
 
   Column _buildBody(
