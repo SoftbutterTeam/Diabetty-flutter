@@ -1,4 +1,4 @@
-import 'package:diabetty/blocs/manager_abstract.dart';
+import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:flutter/cupertino.dart';
 

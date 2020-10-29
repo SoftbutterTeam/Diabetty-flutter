@@ -5,7 +5,7 @@ import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
-import 'package:diabetty/blocs/manager_abstract.dart';
+import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 
 class TherapyManager extends Manager {
   TherapyManager({@required this.appContext});

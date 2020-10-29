@@ -9,7 +9,7 @@ import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:diabetty/models/timeslot.model.dart';
-import 'package:diabetty/blocs/manager_abstract.dart';
+import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 
 class DayPlanManager extends Manager with ReminderManagerMixin {
   DayPlanManager({

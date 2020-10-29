@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/blocs/manager_abstract.dart';
+import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/user.service.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
