@@ -1,6 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
-import 'package:diabetty/ui/screens/therapy/components/MinRestPopUp.dart';
+import 'package:diabetty/ui/screens/therapy/components/custom_timer_picker.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/alarm_settings_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
@@ -182,8 +182,6 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            print(therapyForm.minRest.inHours);
-            print(therapyForm.minRest.inMinutes);
             setState(() {});
             Navigator.pop(context);
           },
@@ -207,7 +205,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       context: context,
       builder: (context) {
         return CustomTimerPicker(
-          desciption: 'How long you have to take medication or respond :)',
+          desciption: 'How long you have to take medication or respond',
           height: height,
           width: width,
           onPressed: () {
@@ -267,7 +265,8 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   showReminderModal(BuildContext context, TherapyManager manager) {
     showDialog(
       context: context,
-      builder: (context) => AddReminderModal2(therapyForm: therapyForm, manager: manager),
+      builder: (context) =>
+          AddReminderModal2(therapyForm: therapyForm, manager: manager),
     );
   }
 

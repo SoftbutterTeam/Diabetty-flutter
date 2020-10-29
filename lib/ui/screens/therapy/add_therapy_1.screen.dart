@@ -6,7 +6,7 @@ import 'package:diabetty/ui/screens/therapy/components/AppearancePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
-import 'package:diabetty/ui/screens/therapy/components/MinRestPopUp.dart';
+import 'package:diabetty/ui/screens/therapy/components/custom_timer_picker.dart';
 import 'package:diabetty/ui/screens/therapy/components/StrengthTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/topbar.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';

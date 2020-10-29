@@ -2,7 +2,6 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:marquee/marquee.dart';
 
 class CustomTimerPicker extends StatefulWidget {
   final double height;
@@ -32,50 +31,39 @@ class _CustomTimerPickerState extends State<CustomTimerPicker> {
         Expanded(
             child: Container(
                 alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                    height: size.height * 0.13,
-                    width: size.width,
-                    child: Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
+                child: IntrinsicHeight(
+                  child: Container(
+                      width: size.width,
+                      child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          side: BorderSide(
+                              width: 0.1,
+                              color: Colors.deepOrange), //Colors.white
                         ),
-                        side: BorderSide(
-                            width: 0.1,
-                            color: Colors.deepOrange), //Colors.white
-                      ),
-                      child: Container(
-                        height: size.height * 0.13,
-                        width: size.width,
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.info_outline,
-                              size: size.height * 0.06,
-                            ),
-                            SizedBox(
-                                height: size.height * 0.06,
-                                width: size.width * 0.78,
-                                child: Text(
-                                  widget.desciption,
-                                  style: TextStyle(
-                                    letterSpacing: 1.0,
-                                    fontSize: textSizeLargeMedium - 3,
-                                    fontFamily: fontBold,
-                                    color: Colors.grey[700],
-                                  ),
-                                ))
-                          ],
-                        ),
-                      ),
-                    )))),
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.height * 0.02,
+                                horizontal: size.width * 0.05),
+                            alignment: Alignment.center,
+                            child: Text(
+                              widget.desciption,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                letterSpacing: 1.0,
+                                fontSize: textSizeLargeMedium - 3,
+                                fontFamily: fontBold,
+                                color: Colors.grey[700],
+                              ),
+                            )),
+                      )),
+                ))),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,

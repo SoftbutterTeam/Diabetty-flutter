@@ -54,7 +54,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     else
       return widget.therapyForm.reminderRules.last.time
           .applyTimeOfDay()
-          .add(widget.therapyForm.minRest ?? Duration(hours: 2));
+          .add(widget.therapyForm.minRest ?? Duration(hours: 4));
   }
 
   @override
