@@ -372,7 +372,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             width: size.width * 0.75,
             color: Colors.black12,
           ),
-          SizedBox(height: 5),
+          SizedBox(height: size.height * 0.005),
           Row(
             children: [
               SizedBox(width: 15),
@@ -383,7 +383,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   fontSize: 12.0),
             ],
           ),
-          SizedBox(height: 5),
+          SizedBox(height: size.height * 0.005),
           Row(
             children: [
               SizedBox(width: 15),
@@ -393,7 +393,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   fontSize: 12.0),
             ],
           ),
-          SizedBox(height: 2),
         ],
       ),
     );

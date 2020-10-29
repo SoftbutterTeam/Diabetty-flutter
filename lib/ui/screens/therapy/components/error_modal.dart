@@ -17,7 +17,7 @@ class NoResponseErrorModal extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20)),
       content: Container(
-        height: size.height * 0.15,
+        height: size.height * 0.18,
         width: size.width * 0.03,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
