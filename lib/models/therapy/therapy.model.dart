@@ -1,12 +1,12 @@
 import 'package:diabetty/models/reminder.model.dart';
-import 'package:diabetty/models/therapy/medication_info.model.dart';
+import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
 import 'package:random_string/random_string.dart' as random;
 import 'dart:math' show Random;
 import 'dart:convert';
-import 'reminder_rule.model.dart';
-import 'alarmsettings.model.dart';
-import 'schedule.model.dart';
-import 'stock.model.dart';
+import 'sub_models/reminder_rule.model.dart';
+import 'sub_models/alarmsettings.model.dart';
+import 'sub_models/schedule.model.dart';
+import 'sub_models/stock.model.dart';
 // import 'package:json_serializable';
 
 //btw Schedule.reminders should be called reminderRules for clarity

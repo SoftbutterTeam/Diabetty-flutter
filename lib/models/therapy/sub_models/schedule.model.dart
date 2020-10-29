@@ -1,5 +1,5 @@
-import 'package:diabetty/models/therapy/alarmsettings.model.dart';
-import 'package:diabetty/models/therapy/reminder_rule.model.dart';
+import 'package:diabetty/models/therapy/sub_models/alarmsettings.model.dart';
+import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 
 class Schedule {

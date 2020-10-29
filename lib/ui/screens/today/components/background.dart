@@ -30,8 +30,8 @@ class Background extends StatelessWidget {
               decoration: BoxDecoration(
                 color: appWhite, //Colors.grey[50], appWhite,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
+                    topLeft: Radius.circular(0), //was 20
+                    topRight: Radius.circular(0)), // was 20
               ),
               child: child,
             )),

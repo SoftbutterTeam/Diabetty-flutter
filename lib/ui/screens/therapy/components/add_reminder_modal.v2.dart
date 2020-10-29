@@ -1,5 +1,5 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
-import 'package:diabetty/models/therapy/reminder_rule.model.dart';
+import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
