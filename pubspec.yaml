@@ -76,6 +76,26 @@ flutter:
     - assets/icons/navigation/more/
     - assets/icons/navigation/other/
     - assets/icons/navigation/x/
+
+fonts:
+- family: Neue-Book
+  fonts:
+    - assets/fonts/frutiger-neue-It-cufonfonts/Frutiger-Neue-LT-Book.ttf
+- family: Neue-Lt
+  fonts:
+    - assets/fonts/frutiger-neue-It-cufonfonts/Frutiger-Neue-LT.ttf
+- family: Heletica-Font
+  fonts:
+    - assets/fonts/Helvetica-Font/Helvetica.ttf
+- family: Heletica-Bold
+  fonts:
+    - assets/fonts/Helvetica-Font/Helvetica-Bold.ttf
+- family: Futura
+  fonts:
+    - assets/fonts/futura-book-bt-22240.ttf
+- family: Nimbus
+  fonts:
+    - assets/fonts/Nimbus-Sans.ttf
   
   
   

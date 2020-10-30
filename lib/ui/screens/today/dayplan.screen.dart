@@ -85,7 +85,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   Widget _buildRemindersList(BuildContext context) {
     return StreamBuilder(
-      stream: manager.dataStream, //manager.remindersbyDayDataStream,
+      stream: manager.dataStream, // manager.remindersbyDayDataStream,
       builder: (context, snapshot) {
         print('here');
         List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots(); //TODO
@@ -130,9 +130,9 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               color: Colors.white, // was Colors.white
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1), //was 0.1
+                  color: Colors.grey.withOpacity(0.1), // was 0.1
                   spreadRadius: 1,
-                  blurRadius: 4, //was 4 , 3
+                  blurRadius: 4, // was 4 , 3
                   offset: Offset(0, 1), // was 1, 2
                 ),
               ],
@@ -145,6 +145,16 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 innerRadius: 100,
                 outerRadius: 130,
                 initialAngle: 0,
+                rotateMode: RotateMode.stopRotate,
+                centerWidget: Container(
+                  child: Text(
+                    "8:26 AM",
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 15,
+                        fontFamily: 'Neue-Lt'),
+                  ),
+                ),
                 children: List.generate(24 * 1, (index) {
                   return index % 3 != 0
                       ? SizedBox.shrink()
@@ -152,20 +162,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 }),
               ),
             )),
-        /*
-        Opacity(
-          opacity: 0,
-          child: Positioned(
-            top: size.width * 0.05,
-            left: size.width * 0,
-            child: RaisedButton(
-              shape: CircleBorder(),
-              onPressed: () {},
-              color: Colors.white,
-              child: Icon(Icons.keyboard_arrow_up, color: Colors.grey[900]),
-            ),
-          ),
-        )*/
       ],
     );
   }

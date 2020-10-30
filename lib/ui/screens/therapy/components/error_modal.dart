@@ -4,18 +4,15 @@ import 'package:flutter/material.dart';
 
 class NoResponseErrorModal extends StatelessWidget {
   final String errorDescription;
-  const NoResponseErrorModal({
-    Key key,
-    this.errorDescription
-  }) : super(key: key);
+  const NoResponseErrorModal({Key key, this.errorDescription})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return AlertDialog(
       contentPadding: EdgeInsets.all(20),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
         height: size.height * 0.18,
         width: size.width * 0.03,
@@ -25,10 +22,10 @@ class NoResponseErrorModal extends StatelessWidget {
           children: [
             text(errorDescription,
                 isCentered: true, maxLine: 3, fontSize: 18.0),
-                SizedBox(height: size.height * 0.02),
+            SizedBox(height: size.height * 0.02),
             CupertinoButton(
               onPressed: () => Navigator.pop(context),
-              child: text('sorry father', textColor: Colors.indigo, fontSize: 15.0),
+              child: text('OK', textColor: Colors.indigo, fontSize: 15.0),
             )
           ],
         ),
