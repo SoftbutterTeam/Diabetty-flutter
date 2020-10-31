@@ -24,7 +24,6 @@ class User {
   factory User.fromDocument(DocumentSnapshot document) {
     var data = Map<String, dynamic>.from(document.data);
     data['uid'] = document.documentID;
-
     return User.fromJson(data);
   }
 
