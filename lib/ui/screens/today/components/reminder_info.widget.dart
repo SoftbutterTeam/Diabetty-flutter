@@ -39,23 +39,24 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return IntrinsicHeight(
-      child: Container(
-          margin: EdgeInsets.only(bottom: 10),
-          alignment: Alignment.center,
-          child: SizedBox(
-            width: size.width * 0.8,
-            height: size.height * 0.32,
-            child: Card(
-              shadowColor: null,
-              elevation: 0,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(curve),
+    return Container(
+      child: IntrinsicHeight(
+        child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: size.height * 0.4),
+            child: Container(
+              margin: EdgeInsets.only(bottom: 5),
+              alignment: Alignment.center,
+              child: Card(
+                shadowColor: null,
+                elevation: 0,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(curve),
+                ),
+                child: _buildContent(context, size),
               ),
-              child: _buildContent(context, size),
-            ),
-          )),
+            )),
+      ),
     );
   }
 
@@ -65,6 +66,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Flexible(
             flex: 1,
@@ -84,80 +87,86 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   Widget _buildBody2(size) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
+    var size = MediaQuery.of(context).size;
+    return ConstrainedBox(
+        constraints: BoxConstraints(minHeight: size.height * 0.2),
+        child: Container(
+          child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      appearance_iconss[0],
-                      width: 30,
-                      height: 30,
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    child: text(widget.reminder.name,
-                        fontSize: 18.0,
-                        textColor: Colors.black,
-                        fontFamily: fontBold,
-                        latterSpacing: 1.5),
-                  ),
-                  if (widget.reminder.advice.isNotEmpty ||
-                      widget.reminder?.advice[0] != 'none')
-                    Padding(
-                      padding: EdgeInsets.only(left: 5, bottom: 10),
-                      child: text(widget.reminder?.advice[0],
-                          fontSize: 15.0,
-                          textColor: Colors.black87,
-                          fontFamily: fontSemibold),
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: Column(
+                      children: [
+                        SvgPicture.asset(
+                          appearance_iconss[0],
+                          width: 30,
+                          height: 30,
+                        ),
+                      ],
                     ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 5, top: 5),
+                        child: text(widget.reminder.name,
+                            fontSize: 18.0,
+                            textColor: Colors.black,
+                            fontFamily: fontBold,
+                            latterSpacing: 1.5),
+                      ),
+                      if (widget.reminder.advice.isNotEmpty ||
+                          widget.reminder?.advice[0] != 'none')
+                        Padding(
+                          padding: EdgeInsets.only(left: 5, bottom: 10),
+                          child: text(widget.reminder?.advice[0],
+                              fontSize: 15.0,
+                              textColor: Colors.black87,
+                              fontFamily: fontSemibold),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+              Container(
+                height: 1,
+                width: size.width * 0.75,
+                color: Colors.black12,
+              ),
+              Row(
+                children: [
+                  SizedBox(width: 15),
+                  Icon(Icons.date_range, size: 20),
+                  SizedBox(width: 20),
+                  text('Scheduled for ',
+                      // DateFormat('dd/MM/yy').format(widget.reminder.time),
+                      fontSize: 12.0),
+                ],
+              ),
+              Row(
+                children: [
+                  SizedBox(width: 15),
+                  Icon(Icons.filter_center_focus, size: 20),
+                  SizedBox(width: 20),
+                  text(
+                      'Takepill(s)', //  ' + widget.reminder.dose.toString() + '
+                      fontSize: 12.0),
                 ],
               ),
             ],
           ),
-          Container(
-            height: 1,
-            width: size.width * 0.75,
-            color: Colors.black12,
-          ),
-          Row(
-            children: [
-              SizedBox(width: 15),
-              Icon(Icons.date_range, size: 20),
-              SizedBox(width: 20),
-              text('Scheduled for ',
-                  // DateFormat('dd/MM/yy').format(widget.reminder.time),
-                  fontSize: 12.0),
-            ],
-          ),
-          Row(
-            children: [
-              SizedBox(width: 15),
-              Icon(Icons.filter_center_focus, size: 20),
-              SizedBox(width: 20),
-              text('Takepill(s)', //  ' + widget.reminder.dose.toString() + '
-                  fontSize: 12.0),
-            ],
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _buildHeader() {
     return Container(
+      alignment: Alignment.topCenter,
       color: Colors.white,
       child: Container(
+          alignment: Alignment.topCenter,
           decoration: BoxDecoration(
               color: widget.reminder.isComplete ? Colors.greenAccent : null,
               gradient: RadialGradient(
@@ -177,14 +186,16 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               )),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
+              alignment: Alignment.topCenter,
               children: [
-                Icon(Icons.more_vert, color: Colors.transparent),
-                Padding(
-                  padding: EdgeInsets.only(right: 8.0),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Icon(Icons.more_vert, color: Colors.black)),
+                Container(
+                  alignment: Alignment.centerRight,
                   child: Icon(Icons.more_horiz),
-                ),
+                )
               ],
             ),
           )),
@@ -212,114 +223,24 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    height: 75,
-                    width: 60,
-                    child: Column(children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          _skipActionSheet(context);
-                        },
-                        padding: EdgeInsets.all(3),
-                        icon: SvgPicture.asset(
-                          'assets/icons/navigation/x/close.svg',
-                          width: 30,
-                          height: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      text(
-                        "Skip",
-                        textColor: Colors.black,
-                        fontFamily: fontSemibold,
-                        fontSize: 12.0,
-                        maxLine: 2,
-                        isCentered: true,
-                      ),
-                    ]))
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10)),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  height: 75,
-                  width: 60,
-                  child: Column(
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          _takenActionSheet(context);
-                        },
-                        padding: EdgeInsets.all(3),
-                        icon: SvgPicture.asset(
-                          'assets/icons/navigation/checkbox/tick_outline2.svg',
-                          width: 30,
-                          height: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      text(
-                        "Take",
-                        textColor: Colors.black,
-                        fontFamily: fontSemibold,
-                        fontSize: 12.0,
-                        maxLine: 2,
-                        isCentered: true,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10)),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  height: 75,
-                  width: 60,
-                  child: Column(
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          _snoozeActionSheet(context);
-                        },
-                        padding: EdgeInsets.all(3),
-                        icon: SvgPicture.asset(
-                          'assets/icons/navigation/clock/wall-clock.svg',
-                          width: 30,
-                          height: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      text(
-                        "Snooze",
-                        textColor: Colors.black,
-                        fontFamily: fontSemibold,
-                        fontSize: 12.0,
-                        maxLine: 2,
-                        isCentered: true,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            ReminderModalFooterButton(
+                text2: "Skip",
+                assetName: 'assets/icons/navigation/x/close.svg',
+                onTap: () {
+                  _skipActionSheet(context);
+                }),
+            ReminderModalFooterButton(
+                text2: "Take",
+                assetName: 'assets/icons/navigation/checkbox/tick_outline2.svg',
+                onTap: () {
+                  _takenActionSheet(context);
+                }),
+            ReminderModalFooterButton(
+                text2: "Snooze",
+                assetName: 'assets/icons/navigation/clock/wall-clock.svg',
+                onTap: () {
+                  _snoozeActionSheet(context);
+                }),
           ],
         ));
   }
@@ -334,5 +255,56 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   void _takenActionSheet(BuildContext context) {
     showTakenActionSheet(context);
+  }
+}
+
+class ReminderModalFooterButton extends StatelessWidget {
+  const ReminderModalFooterButton({
+    Key key,
+    @required this.text2,
+    @required this.assetName,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final double height2 = 75.0;
+  final double width2 = 60;
+  final double width3 = 30;
+  final double height3 = 30;
+  final color = Colors.black;
+
+  final String text2;
+  final String assetName;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    var edgeInsets = EdgeInsets.fromLTRB(10, 10, 10, 0);
+    return Container(
+        decoration: BoxDecoration(
+            color: Colors.transparent, borderRadius: BorderRadius.circular(10)),
+        margin: edgeInsets,
+        height: height2,
+        width: width2,
+        child: Column(children: <Widget>[
+          IconButton(
+            onPressed: onTap,
+            padding: EdgeInsets.all(3),
+            icon: SvgPicture.asset(
+              assetName,
+              width: width3,
+              height: height3,
+              color: color,
+            ),
+          ),
+          SizedBox(height: 5),
+          text(
+            text2,
+            textColor: Colors.black,
+            fontFamily: fontSemibold,
+            fontSize: 12.0,
+            maxLine: 2,
+            isCentered: true,
+          ),
+        ]));
   }
 }
