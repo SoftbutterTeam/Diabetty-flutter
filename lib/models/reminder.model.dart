@@ -20,6 +20,7 @@ class Reminder with DateMixin {
   bool cancelled;
   bool doseEdited;
   List<String> advice;
+  int adviceIndex;
 
   DateTime get getDateTimeAs12hr {
     if (time == null) return time;
@@ -55,7 +56,8 @@ class Reminder with DateMixin {
       this.window,
       this.doseEdited,
       this.rescheduled,
-      this.takenAt});
+      this.takenAt,
+      this.adviceIndex});
 
   ///*  Used to Project Reminders from the Therapys
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
@@ -70,5 +72,6 @@ class Reminder with DateMixin {
     this.window = therapy.schedule.window;
     this.doseUnitIndex = therapy.medicationInfo.unitIndex;
     this.advice = therapy.medicationInfo.intakeAdvice;
+    this.adviceIndex = therapy.medicationInfo.intakeIndex;
   }
 }

@@ -6,6 +6,7 @@ class MedicationInfo {
   int appearanceIndex;
   int typeIndex;
   int unitIndex;
+  int intakeIndex;
   List<String> intakeAdvice;
   //! intake advice index too? so list<int>
   //! maybe not even  a list anymore too
@@ -20,6 +21,7 @@ class MedicationInfo {
     this.restDuration,
     this.unitIndex,
     this.typeIndex,
+    this.intakeIndex,
   });
 
   MedicationInfo.fromJson(Map<String, dynamic> json) {

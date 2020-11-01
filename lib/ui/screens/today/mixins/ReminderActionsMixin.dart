@@ -1,15 +1,19 @@
 import 'dart:ui';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
+import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:intl/intl.dart';
+import 'package:diabetty/extensions/datetime_extension.dart';
 
 @optionalTypeArgs
 mixin ReminderActionsMixin<T extends Widget> {
@@ -24,20 +28,16 @@ mixin ReminderActionsMixin<T extends Widget> {
             ),
             actions: [
               CupertinoActionSheetAction(
-                child: Text("Snooze 10m"),
+                child: Text("Snooze 10 min"),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
-                child: Text("Snooze 30m"),
-                onPressed: () {},
-              ),
-              CupertinoActionSheetAction(
-                child: Text("Snooze 1hr"),
+                child: Text("Snooze 30 min"),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
                 child: Text(
-                  "Postpone until...",
+                  "Reschedule till...",
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -56,24 +56,17 @@ mixin ReminderActionsMixin<T extends Widget> {
   void showSkipActionSheet(context) => showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
-            message:
-                Text("Can you please indicate why you're skipping this dose?"),
+            message: Text("Why are you skipping this dose?"),
             actions: [
               CupertinoActionSheetAction(
                 child: Text(
-                  "Med isn't near me",
+                  "No access / out of stock",
                 ),
                 onPressed: () {},
               ),
               CupertinoActionSheetAction(
                 child: Text(
-                  "Forgot / busy / asleep",
-                ),
-                onPressed: () {},
-              ),
-              CupertinoActionSheetAction(
-                child: Text(
-                  "Ran out of medication",
+                  "Busy / unavailable",
                 ),
                 onPressed: () {},
               ),
@@ -219,10 +212,12 @@ mixin ReminderActionsMixin<T extends Widget> {
 class ReminderInfoModal extends StatefulWidget {
   const ReminderInfoModal({
     this.reminder,
+    this.manager,
     Key key,
   }) : super(key: key);
 
   final Reminder reminder;
+  final TherapyManager manager;
 
   @override
   _ReminderInfoModalState createState() => _ReminderInfoModalState();
@@ -252,7 +247,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           alignment: Alignment.center,
           child: SizedBox(
             width: size.width * 0.8,
-            height: size.height * 0.32,
+            height: size.height * 0.33,
             child: Card(
               shadowColor: null,
               elevation: 0,
@@ -350,7 +345,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 5, top: 5),
-                    child: text('widget.reminder.name',
+                    child: text(widget.reminder.name,
                         fontSize: 18.0,
                         textColor: Colors.black,
                         fontFamily: fontBold,
@@ -358,10 +353,11 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 5, bottom: 10),
-                    child: text('widget.reminder.advice[0]',
+                    child: text('widget.reminder.advice',
                         fontSize: 15.0,
                         textColor: Colors.black87,
-                        fontFamily: fontSemibold),
+                        fontFamily: fontSemibold,
+                        overflow: TextOverflow.ellipsis),
                   ),
                 ],
               ),
@@ -371,23 +367,28 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             height: 1,
             width: size.width * 0.75,
             color: Colors.black12,
+            margin: EdgeInsets.only(bottom: 10),
           ),
           Row(
             children: [
               SizedBox(width: 15),
               Icon(Icons.date_range, size: 20),
               SizedBox(width: 20),
-              text('Scheduled for ',
-                  // DateFormat('dd/MM/yy').format(widget.reminder.time),
+              text(
+                  'Scheduled for ' +
+                      DateFormat('dd/MM/yy').format(widget.reminder.time) +
+                      ' at ' +
+                      widget.reminder.time.formatTime(),
                   fontSize: 12.0),
             ],
           ),
+          SizedBox(height: size.height * 0.005),
           Row(
             children: [
               SizedBox(width: 15),
               Icon(Icons.filter_center_focus, size: 20),
               SizedBox(width: 20),
-              text('Takepill(s)', //  ' + widget.reminder.dose.toString() + '
+              text('Take ' + widget.reminder.dose.toString() + ' pill(s)',
                   fontSize: 12.0),
             ],
           ),
@@ -425,7 +426,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 Icon(Icons.more_vert, color: Colors.transparent),
                 Padding(
                   padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.more_horiz),
+                  child: GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, therapyprofile),
+                      child: Icon(Icons.more_horiz)),
                 ),
               ],
             ),
