@@ -8,6 +8,7 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
+import 'package:diabetty/ui/screens/today/components/reminder_info.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
