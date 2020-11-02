@@ -334,7 +334,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 child: Column(
                   children: [
                     SvgPicture.asset(
-                      appearance_iconss[0],
+                      appearance_iconss[(widget.reminder.apperance == null)
+                          ? 0
+                          : widget.reminder.apperance],
                       width: 30,
                       height: 30,
                     ),
@@ -354,7 +356,10 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 5, bottom: 10),
-                    child: text('widget.reminder.advice',
+                    child: text(
+                        intakeAdvice[(widget.reminder.adviceIndex == null)
+                            ? 0
+                            : widget.reminder.adviceIndex],
                         fontSize: 15.0,
                         textColor: Colors.black87,
                         fontFamily: fontSemibold,
@@ -389,7 +394,11 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               SizedBox(width: 15),
               Icon(Icons.filter_center_focus, size: 20),
               SizedBox(width: 20),
-              text('Take ' + widget.reminder.dose.toString() + ' pill(s)',
+              text(
+                  'Take ' +
+                      widget.reminder.dose.toString() +
+                      ' ' +
+                      unitTypes[widget.reminder.doseUnitIndex],
                   fontSize: 12.0),
             ],
           ),
