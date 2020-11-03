@@ -12,6 +12,7 @@ import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
     as SlotWidget;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
@@ -62,12 +63,12 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   AnimationController _dateController;
   Animation _animation;
 
-  DateTime initalTime =
-      DateTime.now().applyTimeOfDay(TimeOfDay(hour: 0, minute: 0));
-  DateTime endTime = DateTime.now().applyTimeOfDay(TimeOfDay(
-    hour: 12,
-    minute: 0,
-  ));
+  DateTime get initalTime =>
+      manager.currentDateStamp.applyTimeOfDay(TimeOfDay(hour: 0, minute: 0));
+  DateTime get endTime => manager.currentDateStamp.applyTimeOfDay(TimeOfDay(
+        hour: 12,
+        minute: 0,
+      ));
 
   @override
   void initState() {
