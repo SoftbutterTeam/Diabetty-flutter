@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Stock {
   int currentLevel;
   int flagLimit;
@@ -20,15 +18,6 @@ class Stock {
   void handleReset() {
     currentLevel = null;
     flagLimit = null;
-  }
-
-  //TODO THIS SHOULD NOT BE HERE DAN
-  void handleValidation(TextEditingController currentLevelController,
-      TextEditingController flagLimitController) {
-    int currentLevelControllerToInt = int.parse(currentLevelController.text);
-    int flagLimitControllerToInt = int.parse(flagLimitController.text);
-    currentLevel = currentLevelControllerToInt;
-    flagLimit = flagLimitControllerToInt;
   }
 
   loadFromJson(Map<String, dynamic> json) {

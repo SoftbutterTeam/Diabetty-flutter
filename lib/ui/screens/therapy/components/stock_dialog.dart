@@ -250,8 +250,11 @@ class _StockDialogState extends State<StockDialog> {
   }
 
   _handleSubmit() {
-    widget.therapyForm.stock
-        .handleValidation(currentLevelController, flagLimitController);
+    int currentLevelControllerToInt = int.parse(currentLevelController.text);
+    int flagLimitControllerToInt = int.parse(flagLimitController.text);
+    widget.therapyForm.stock.currentLevel = currentLevelControllerToInt;
+    widget.therapyForm.stock.flagLimit = flagLimitControllerToInt;
+
     widget.manager.updateListeners();
     Navigator.pop(context);
   }
