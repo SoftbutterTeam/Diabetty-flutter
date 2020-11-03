@@ -31,10 +31,10 @@ class Background extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.only(top: 20),
-            height: size.height * 0.11,
+            height: size.height * 0.105,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
                   child: FlatButton(

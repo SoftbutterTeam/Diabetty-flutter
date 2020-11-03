@@ -7,8 +7,8 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
-import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
+import 'package:diabetty/ui/screens/therapy/components/therapy_card.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/components/topbar.dart';
@@ -186,9 +186,8 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   }
 
   Widget _buildMedicationCard() {
-    return MedicationCard(
-      name: therapyForm.name,
-      appearance: appearance_iconss[therapyForm.apperanceIndex],
+    return TherapyCard(
+      therapyData: therapyForm.toTherapy(),
     );
   }
 

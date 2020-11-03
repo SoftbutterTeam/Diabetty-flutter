@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:diabetty/extensions/string_extension.dart';
+import 'package:diabetty/extensions/datetime_extension.dart';
 
 class ReminderInfoModal extends StatefulWidget {
   const ReminderInfoModal({
@@ -87,38 +89,37 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   Widget _buildBody2(size) {
-    var size = MediaQuery.of(context).size;
-    return ConstrainedBox(
-        constraints: BoxConstraints(minHeight: size.height * 0.2),
-        child: Container(
-          child: Column(
+    return Container(
+      child: Column(
+        children: [
+          Row(
             children: [
-              Row(
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      appearance_iconss[(widget.reminder.apperance == null)
+                          ? 0
+                          : widget.reminder.apperance],
+                      width: 30,
+                      height: 30,
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: Column(
-                      children: [
-                        SvgPicture.asset(
-                          appearance_iconss[0],
-                          width: 30,
-                          height: 30,
-                        ),
-                      ],
-                    ),
+                    padding: EdgeInsets.only(left: 5, top: 5),
+                    child: text(widget.reminder.name,
+                        fontSize: 18.0,
+                        textColor: Colors.black,
+                        fontFamily: fontBold,
+                        latterSpacing: 1.5),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 5, top: 5),
-                        child: text(widget.reminder.name,
-                            fontSize: 18.0,
-                            textColor: Colors.black,
-                            fontFamily: fontBold,
-                            latterSpacing: 1.5),
-                      ),
-                      if (widget.reminder.advice.isNotEmpty ||
+                  if (widget.reminder.advice.isNotEmpty ||
                           widget.reminder?.advice[0] != 'none')
                         Padding(
                           padding: EdgeInsets.only(left: 5, bottom: 10),
@@ -127,38 +128,47 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                               textColor: Colors.black87,
                               fontFamily: fontSemibold),
                         ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                height: 1,
-                width: size.width * 0.75,
-                color: Colors.black12,
-              ),
-              Row(
-                children: [
-                  SizedBox(width: 15),
-                  Icon(Icons.date_range, size: 20),
-                  SizedBox(width: 20),
-                  text('Scheduled for ',
-                      // DateFormat('dd/MM/yy').format(widget.reminder.time),
-                      fontSize: 12.0),
-                ],
-              ),
-              Row(
-                children: [
-                  SizedBox(width: 15),
-                  Icon(Icons.filter_center_focus, size: 20),
-                  SizedBox(width: 20),
-                  text(
-                      'Takepill(s)', //  ' + widget.reminder.dose.toString() + '
-                      fontSize: 12.0),
                 ],
               ),
             ],
           ),
-        ));
+          Container(
+            height: 1,
+            width: size.width * 0.75,
+            color: Colors.black12,
+            margin: EdgeInsets.only(bottom: 10),
+          ),
+          Row(
+            children: [
+              SizedBox(width: 15),
+              Icon(Icons.date_range, size: 20),
+              SizedBox(width: 20),
+              text(
+                  'Scheduled for ' +
+                      DateFormat('dd/MM/yy').format(widget.reminder.time) +
+                      ' at ' +
+                      widget.reminder.time.formatTime(),
+                  fontSize: 12.0),
+            ],
+          ),
+          SizedBox(height: size.height * 0.005),
+          Row(
+            children: [
+              SizedBox(width: 15),
+              Icon(Icons.filter_center_focus, size: 20),
+              SizedBox(width: 20),
+              text(
+                  'Take ' +
+                      widget.reminder.dose.toString() +
+                      ' ' +
+                      unitTypes[widget.reminder.doseUnitIndex]
+                          .plurarlUnits(widget.reminder.dose),
+                  fontSize: 12.0),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildHeader() {

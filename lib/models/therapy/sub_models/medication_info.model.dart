@@ -3,7 +3,7 @@ import 'dart:core';
 class MedicationInfo {
   String name;
   int strength;
-  int appearanceIndex;
+  int appearanceIndex = 0;
   int typeIndex;
   int unitIndex;
   int intakeIndex;
@@ -16,7 +16,7 @@ class MedicationInfo {
   MedicationInfo({
     this.name,
     this.strength,
-    this.appearanceIndex,
+    this.appearanceIndex = 0,
     this.intakeAdvice,
     this.restDuration,
     this.unitIndex,
@@ -28,6 +28,7 @@ class MedicationInfo {
     loadFromJson(json);
   }
   Map<String, dynamic> toJson() => {
+        'appearance' : this.appearanceIndex,
         'restDuration':
             this.restDuration == null ? null : this.restDuration.inSeconds,
         'name': this.name,

@@ -1,7 +1,6 @@
 export 'AppearancePopUp.dart';
 export 'CustomTextField.dart';
 export 'InputTextField.dart';
-export 'medication_card.dart';
 export 'custom_timer_picker.dart';
 export 'ModePopUp.dart';
 export 'placeholder.dart';

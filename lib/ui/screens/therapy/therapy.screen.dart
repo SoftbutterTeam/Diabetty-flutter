@@ -1,11 +1,12 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/background.dart';
-import 'package:diabetty/ui/screens/therapy/components/medication_card.dart';
+import 'package:diabetty/ui/screens/therapy/components/therapy_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -121,9 +122,8 @@ class _TherapyScreenState extends State<TherapyScreen> {
                 scrollDirection: Axis.vertical,
                 itemCount: therapiesData.length,
                 itemBuilder: (context, index) {
-                  return MedicationCard(
-                    name: therapiesData[index].name,
-                    appearance: 'assets/icons/navigation/essentials/pills.svg',
+                  return TherapyCard(
+                    therapyData: therapiesData[index],
                   );
                 }),
           );
