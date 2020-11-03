@@ -108,9 +108,8 @@ class _CircleListState extends State<CircleList>
     ///the origin is the point to left and top
     final Offset origin = widget.origin ?? Offset(0, -outerRadius);
     double backgroundCircleAngle = 0.0;
-    if (rotateMode == RotateMode.allRotate) {
+    if (rotateMode == RotateMode.allRotate)
       backgroundCircleAngle = dragModel.angleDiff + widget.initialAngle;
-    }
 
     return Container(
       width: outerRadius * 2,
@@ -223,10 +222,10 @@ class _CircleListState extends State<CircleList>
                       : (-_animationRotate.value * pi * 2 +
                           widget.initialAngle),
                   child: Stack(
-                    children: List.generate(widget.children.length, (index) {
+                    children: List.generate(widget.children.length, (ind) {
+                      final index = (ind - (widget.children.length - 1)).abs();
                       final double childrenDiameter =
                           2 * pi * listRadius / 12 - widget.childrenPadding;
-                      print(childrenDiameter);
                       Offset childPoint = getChildPoint(index,
                           widget.children.length, listRadius, childrenDiameter);
                       return Positioned(
