@@ -17,7 +17,6 @@ class Background extends StatelessWidget {
       decoration: BoxDecoration(
           gradient: LinearGradient(begin: Alignment.topCenter, colors: [
         Colors.orange[900],
-        Colors.orange[200],
         Colors.orange[600]
       ])),
       height: size.height,

@@ -22,64 +22,47 @@ class Background extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-        Colors.orange[900],
-        Colors.orange[200],
-        Colors.orange[600]
-      ])),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [Colors.orange[900], Colors.orange[600]])),
       height: size.height,
-
       // Here i can use size.width but use double.infinity because both work as a same
       child: Column(
         children: [
           Container(
+            padding: EdgeInsets.only(top: 20),
             height: size.height * 0.11,
-            child: Stack(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Positioned(
-                  top: 35,
-                  right: 5,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 5),
-                    child: FlatButton(
-                      onPressed: onPressed,
-                      color: Colors.transparent,
-                      disabledTextColor: Colors.grey,
-                      disabledColor: Colors.transparent,
-                      padding: EdgeInsets.zero,
-                      child: Align(
-                        child: Icon(Icons.add, color: Colors.white),
-                        alignment: Alignment.centerRight,
+                Container(
+                  child: FlatButton(
+                    onPressed: onPressed2,
+                    padding: EdgeInsets.zero,
+                    child: Align(
+                      child: CircleAvatar(
+                        backgroundColor: Colors.indigo,
+                        radius: 20.0,
                       ),
+                      alignment: Alignment.centerLeft,
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 35,
-                  left: 5,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 5),
-                    child: FlatButton(
-                      onPressed: onPressed2,
-                      padding: EdgeInsets.zero,
-                      child: Align(
-                        child: SvgPicture.asset(
-                          'assets/icons/navigation/essentials/settings (10).svg',
-                          height: 22,
-                          width: 22,
-                          color: Colors.white,
-                        ),
-                        alignment: Alignment.centerLeft,
-                      ),
-                    ),
-                  ),
+                Container(
+                  alignment: Alignment.center,
+                  child: subHeadingText("Therapy Planner", Colors.white),
                 ),
-                Positioned(
-                  child: Center(
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(top: 30),
-                      child: subHeadingText("Therapy Planner", Colors.white),
+                Container(
+                  child: FlatButton(
+                    onPressed: onPressed,
+                    color: Colors.transparent,
+                    disabledTextColor: Colors.grey,
+                    disabledColor: Colors.transparent,
+                    padding: EdgeInsets.zero,
+                    child: Align(
+                      child: Icon(Icons.add, color: Colors.white),
+                      alignment: Alignment.centerRight,
                     ),
                   ),
                 ),
@@ -89,8 +72,8 @@ class Background extends StatelessWidget {
           Expanded(
               child: Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-                ),
+              color: Colors.white,
+            ),
             child: child,
           )),
         ],

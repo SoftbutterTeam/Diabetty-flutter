@@ -26,15 +26,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
     return Container(
       height: size.height * 0.11,
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: Offset(0, 2),
-          ),
-        ],
-        color: appWhite,
+        color: Colors.transparent,
       ),
       // padding: EdgeInsets.only(left: 15, right: 15),
       child: Stack(
@@ -94,7 +86,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
           alignment: Alignment.center,
           child: subHeadingText(
               shortenDateRepresent(dayManager.currentDateStamp),
-              Colors.grey[900]),
+              Colors.white),
         ),
       ),
     ));
