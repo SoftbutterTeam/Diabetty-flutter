@@ -63,12 +63,11 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   AnimationController _dateController;
   Animation _animation;
 
+  TimeOfDay _initalTime = TimeOfDay(hour: 0, minute: 0);
+
   DateTime get initalTime =>
-      manager.currentDateStamp.applyTimeOfDay(TimeOfDay(hour: 0, minute: 0));
-  DateTime get endTime => manager.currentDateStamp.applyTimeOfDay(TimeOfDay(
-        hour: 12,
-        minute: 0,
-      ));
+      manager.currentDateStamp.applyTimeOfDay(_initalTime);
+  DateTime get endTime => initalTime.add(Duration(hours: 6));
 
   @override
   void initState() {
@@ -166,15 +165,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 initialAngle: -1.5,
                 showInitialAnimation: true,
                 rotateMode: RotateMode.stopRotate,
-                centerWidget: Container(
-                  child: Text(
-                    "",
-                    style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 15,
-                        fontFamily: 'Neue-Lt'),
-                  ),
-                ),
+                centerWidget: Container(child: Text("")),
                 children: List.generate(12 * 4, (index) {
                   final rems = getReminderOnIndex(index, reminders);
                   return rems.isNotEmpty
@@ -194,15 +185,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   List<Reminder> getReminderOnIndex(int index, List<Reminder> reminders) {
     DateTime indexTime = initalTime.add(Duration(minutes: index * 15));
     List<Reminder> results = [];
-    print(indexTime.toIso8601String());
     reminders.forEach((reminder) {
-      print(reminder.time.roundToNearest(15));
-
       if (reminder.time.roundToNearest(15).compareTo(indexTime) == 0)
         results.add(reminder);
-//      reminders.remove(reminder);
     });
-    print(results.toString());
     return results;
   }
 
@@ -210,5 +196,23 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     return _body(context);
   }
 
-  void calcTimeFrames() {}
+  void calcTimeFrames() {
+    _initalTime = TimeOfDay(hour: 0, minute: 0);
+    return;
+    if (DateTime.now().compareTo(manager.currentDateStamp
+            .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
+        0) {
+      _initalTime = TimeOfDay(hour: 0, minute: 0);
+    } else if (DateTime.now().compareTo(manager.currentDateStamp
+            .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
+        0) {
+      _initalTime = TimeOfDay(hour: 6, minute: 0);
+    } else if (DateTime.now().compareTo(manager.currentDateStamp
+            .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
+        0) {
+      _initalTime = TimeOfDay(hour: 12, minute: 0);
+    } else {
+      _initalTime = TimeOfDay(hour: 18, minute: 0);
+    }
+  }
 }

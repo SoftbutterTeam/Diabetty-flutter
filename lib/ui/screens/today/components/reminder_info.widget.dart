@@ -1,6 +1,8 @@
 import 'dart:ui';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
@@ -14,10 +16,12 @@ import 'package:diabetty/extensions/datetime_extension.dart';
 class ReminderInfoModal extends StatefulWidget {
   const ReminderInfoModal({
     this.reminder,
+    this.manager,
     Key key,
   }) : super(key: key);
 
   final Reminder reminder;
+  final TherapyManager manager;
 
   @override
   _ReminderInfoModalState createState() => _ReminderInfoModalState();
@@ -41,24 +45,23 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      child: IntrinsicHeight(
-        child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: size.height * 0.4),
-            child: Container(
-              margin: EdgeInsets.only(bottom: 5),
-              alignment: Alignment.center,
-              child: Card(
-                shadowColor: null,
-                elevation: 0,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(curve),
-                ),
-                child: _buildContent(context, size),
+    return IntrinsicHeight(
+      child: Container(
+          margin: EdgeInsets.only(bottom: 10),
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: size.width * 0.8,
+            height: size.height * 0.33,
+            child: Card(
+              shadowColor: null,
+              elevation: 0,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(curve),
               ),
-            )),
-      ),
+              child: _buildContent(context, size),
+            ),
+          )),
     );
   }
 
@@ -68,8 +71,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Flexible(
             flex: 1,
@@ -82,6 +83,43 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           Flexible(
             flex: 2,
             child: _buildFooter(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBody(size) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SvgPicture.asset(
+            appearance_iconss[widget.reminder.apperance],
+            width: 30,
+            height: 30,
+          ),
+          text(widget.reminder.name),
+          Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.date_range, size: 20),
+              SizedBox(width: 10),
+              text(
+                  'Scheduled for ' +
+                      DateFormat('dd/MM/yy').format(widget.reminder.time),
+                  fontSize: 12.0),
+            ],
+          ),
+          Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.filter_center_focus, size: 20),
+              SizedBox(width: 10),
+              text('Take ' + 'widget.reminder.dose.toString()' + ' pill(s)',
+                  fontSize: 12.0),
+            ],
           ),
         ],
       ),
@@ -119,15 +157,17 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                         fontFamily: fontBold,
                         latterSpacing: 1.5),
                   ),
-                  if (widget.reminder.advice.isNotEmpty ||
-                          widget.reminder?.advice[0] != 'none')
-                        Padding(
-                          padding: EdgeInsets.only(left: 5, bottom: 10),
-                          child: text(widget.reminder?.advice[0],
-                              fontSize: 15.0,
-                              textColor: Colors.black87,
-                              fontFamily: fontSemibold),
-                        ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 5, bottom: 10),
+                    child: text(
+                        intakeAdvice[(widget.reminder.adviceIndex == null)
+                            ? 0
+                            : widget.reminder.adviceIndex],
+                        fontSize: 15.0,
+                        textColor: Colors.black87,
+                        fontFamily: fontSemibold,
+                        overflow: TextOverflow.ellipsis),
+                  ),
                 ],
               ),
             ],
@@ -161,8 +201,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   'Take ' +
                       widget.reminder.dose.toString() +
                       ' ' +
-                      unitTypes[widget.reminder.doseUnitIndex]
-                          .plurarlUnits(widget.reminder.dose),
+                      unitTypes[widget.reminder.doseUnitIndex],
                   fontSize: 12.0),
             ],
           ),
@@ -173,10 +212,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   Widget _buildHeader() {
     return Container(
-      alignment: Alignment.topCenter,
       color: Colors.white,
       child: Container(
-          alignment: Alignment.topCenter,
           decoration: BoxDecoration(
               color: widget.reminder.isComplete ? Colors.greenAccent : null,
               gradient: RadialGradient(
@@ -196,16 +233,16 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               )),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 40),
-            child: Stack(
-              alignment: Alignment.topCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(Icons.more_vert, color: Colors.black)),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Icon(Icons.more_horiz),
-                )
+                Icon(Icons.more_vert, color: Colors.transparent),
+                Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, therapyprofile),
+                      child: Icon(Icons.more_horiz)),
+                ),
               ],
             ),
           )),
@@ -233,24 +270,109 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            ReminderModalFooterButton(
-                text2: "Skip",
-                assetName: 'assets/icons/navigation/x/close.svg',
-                onTap: () {
-                  _skipActionSheet(context);
-                }),
-            ReminderModalFooterButton(
-                text2: "Take",
-                assetName: 'assets/icons/navigation/checkbox/tick_outline2.svg',
-                onTap: () {
-                  _takenActionSheet(context);
-                }),
-            ReminderModalFooterButton(
-                text2: "Snooze",
-                assetName: 'assets/icons/navigation/clock/wall-clock.svg',
-                onTap: () {
-                  _snoozeActionSheet(context);
-                }),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+              height: 75,
+              width: 60,
+              child: Column(
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      _skipActionSheet(context);
+                    },
+                    padding: EdgeInsets.all(3),
+                    icon: SvgPicture.asset(
+                      'assets/icons/navigation/x/close.svg',
+                      width: 30,
+                      height: 30,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  text(
+                    "Skip",
+                    textColor: Colors.black,
+                    fontFamily: fontSemibold,
+                    fontSize: 12.0,
+                    maxLine: 2,
+                    isCentered: true,
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(10)),
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  height: 75,
+                  width: 60,
+                  child: Column(
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          _takenActionSheet(context);
+                        },
+                        padding: EdgeInsets.all(3),
+                        icon: SvgPicture.asset(
+                          'assets/icons/navigation/checkbox/tick_outline2.svg',
+                          width: 30,
+                          height: 30,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      text(
+                        "Take",
+                        textColor: Colors.black,
+                        fontFamily: fontSemibold,
+                        fontSize: 12.0,
+                        maxLine: 2,
+                        isCentered: true,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+              height: 75,
+              width: 60,
+              child: Column(
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      _snoozeActionSheet(context);
+                    },
+                    padding: EdgeInsets.all(3),
+                    icon: SvgPicture.asset(
+                      'assets/icons/navigation/clock/wall-clock.svg',
+                      width: 30,
+                      height: 30,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  text(
+                    "Snooze",
+                    textColor: Colors.black,
+                    fontFamily: fontSemibold,
+                    fontSize: 12.0,
+                    maxLine: 2,
+                    isCentered: true,
+                  ),
+                ],
+              ),
+            ),
           ],
         ));
   }
