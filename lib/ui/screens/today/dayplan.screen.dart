@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
@@ -63,10 +65,11 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   AnimationController _dateController;
   Animation _animation;
 
-  TimeOfDay _initalTime = TimeOfDay(hour: 0, minute: 0);
+  TimeOfDay _initialTime = TimeOfDay(hour: 0, minute: 0);
+  double initialAngle;
 
   DateTime get initalTime =>
-      manager.currentDateStamp.applyTimeOfDay(_initalTime);
+      manager.currentDateStamp.applyTimeOfDay(_initialTime);
   DateTime get endTime => initalTime.add(Duration(hours: 12));
 
   @override
@@ -162,7 +165,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 origin: Offset(0, 0),
                 innerRadius: 100,
                 outerRadius: 130,
-                initialAngle: -1.5,
+                initialAngle: initialAngle,
                 showInitialAnimation: true,
                 rotateMode: RotateMode.stopRotate,
                 centerWidget: Container(child: Text("")),
@@ -202,17 +205,21 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
         0) {
-      _initalTime = TimeOfDay(hour: 0, minute: 0);
+      _initialTime = TimeOfDay(hour: 0, minute: 0);
+      initialAngle = -(pi / 2);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
         0) {
-      _initalTime = TimeOfDay(hour: 6, minute: 0);
+      _initialTime = TimeOfDay(hour: 6, minute: 0);
+      initialAngle = (pi / 2);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
         0) {
-      _initalTime = TimeOfDay(hour: 12, minute: 0);
+      _initialTime = TimeOfDay(hour: 12, minute: 0);
+      initialAngle = -(pi / 2);
     } else {
-      _initalTime = TimeOfDay(hour: 18, minute: 0);
+      _initialTime = TimeOfDay(hour: 18, minute: 0);
+      initialAngle = (pi / 2);
     }
     print(initalTime.toIso8601String());
     print(endTime.toIso8601String());
