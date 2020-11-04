@@ -67,7 +67,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   DateTime get initalTime =>
       manager.currentDateStamp.applyTimeOfDay(_initalTime);
-  DateTime get endTime => initalTime.add(Duration(hours: 6));
+  DateTime get endTime => initalTime.add(Duration(hours: 12));
 
   @override
   void initState() {
@@ -185,10 +185,12 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   List<Reminder> getReminderOnIndex(int index, List<Reminder> reminders) {
     DateTime indexTime = initalTime.add(Duration(minutes: index * 15));
     List<Reminder> results = [];
+    print(indexTime);
     reminders.forEach((reminder) {
       if (reminder.time.roundToNearest(15).compareTo(indexTime) == 0)
         results.add(reminder);
     });
+    print(results);
     return results;
   }
 
@@ -197,8 +199,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   void calcTimeFrames() {
-    _initalTime = TimeOfDay(hour: 0, minute: 0);
-    return;
     if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
         0) {
@@ -214,5 +214,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     } else {
       _initalTime = TimeOfDay(hour: 18, minute: 0);
     }
+    print(initalTime.toIso8601String());
+    print(endTime.toIso8601String());
   }
 }

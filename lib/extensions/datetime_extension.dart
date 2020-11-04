@@ -20,9 +20,15 @@ extension DateTimeExtension on DateTime {
 
   DateTime roundToNearest(int roundToMins) {
     var minute = this.minute;
+    if (minute % roundToMins == 0) print('hello' + this.toIso8601String());
+
     if (minute % roundToMins == 0) return this;
 
     var minuteRoundUp = round(minute, roundToMins);
+    if (this.minute == 39) {
+      print(39);
+      print(round(minute, roundToMins));
+    }
 
     if (minuteRoundUp > 60)
       return new DateTime(this.year, this.month, this.day, this.hour)
@@ -33,10 +39,10 @@ extension DateTimeExtension on DateTime {
   }
 }
 
-int round(int num, int roundTo) {
-  int temp = num % roundTo;
+int round(int numm, int roundTo) {
+  int temp = numm % roundTo;
   if (temp < roundTo ~/ 2)
-    return num - temp;
+    return numm - temp;
   else
-    return num + 15 - roundTo;
+    return numm + roundTo - temp;
 }

@@ -44,63 +44,37 @@ class TherapyScreen extends StatefulWidget {
 class _TherapyScreenState extends State<TherapyScreen> {
   TherapyManager manager;
   _TherapyScreenState(this.manager);
-  void _showExpandedTherapy(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    showGeneralDialog(
-      barrierDismissible: true,
-      barrierLabel: '',
-      transitionDuration: Duration(milliseconds: 300),
-      context: context,
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, -0.5);
-        var end = Offset.zero;
-        var curve = Curves.linear;
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        var offsetAnimation = animation.drive(tween);
 
-        if (offsetAnimation.status == AnimationStatus.reverse) {
-          offsetAnimation.value.translate(0, -0.5);
-          return SizedBox(
-            height: size.height,
-            width: size.width,
-          );
-        }
-        return child; //* to remove animation, I slyly prefer no animation
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _body(context),
+    );
+  }
+
+  Widget _body(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Background(
+      onPressed2: () {
+        FirebaseAuth.instance.signOut();
       },
-      pageBuilder: (_, __, ___) => Dialog(
-        elevation: 0,
-        insetPadding: EdgeInsets.zero,
-        backgroundColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          children: [
-            AddModal2(), //* AddModal or AddModal2
-            Expanded(
-                child: GestureDetector(
-                    onPanStart: (value) {
-                      Navigator.pop(context);
-                    },
-                    child: Container(color: Colors.transparent))),
-          ],
-        ),
+      onPressed: () {
+        final actionsheet = addTherapyActionSheet(context);
+        showCupertinoModalPopup(
+            context: context, builder: (context) => actionsheet);
+      },
+      child: Container(
+        width: size.width,
+        child: _buildTherapiesList(context),
       ),
     );
   }
 
   _buildTherapiesList(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return StreamBuilder(
         stream: manager.therapyStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.length == 0) {
-            print("no has data");
             print(snapshot.data.toString());
             return Container(
               child: null,
@@ -130,78 +104,30 @@ class _TherapyScreenState extends State<TherapyScreen> {
         });
   }
 
-  Widget _body(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Background(
-      onPressed2: () {
-        FirebaseAuth.instance.signOut();
-      },
-      onPressed: () {
-        final actionsheet = CupertinoActionSheet(
-          actions: [
-            CupertinoActionSheetAction(
-              child:
-                  text("Medication", fontSize: 18.0, textColor: Colors.indigo),
-              onPressed: () {
-                final TherapyManager therapyManager =
-                    Provider.of<TherapyManager>(context, listen: false);
-                therapyManager.resetForm();
-                print('this far');
-                Navigator.pushReplacementNamed(context, addmedication);
-              },
-            ),
-            CupertinoActionSheetAction(
-              child:
-                  text("Other Types", fontSize: 18.0, textColor: Colors.indigo),
-              onPressed: () {},
-            ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: Container(color: Colors.white, child: Text('Cancel')),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        );
-        showCupertinoModalPopup(
-            context: context, builder: (context) => actionsheet);
-      },
-      child: Container(
-        width: size.width,
-        child: _buildTherapiesList(context),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _body(context),
-    );
-  }
-}
-
-class CustomDialog extends StatelessWidget {
-  CustomDialog();
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      elevation: 0.0,
-      backgroundColor: Colors.transparent,
-      child: dialogContent(context),
-    );
-  }
-
-  Widget dialogContent(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        //...bottom card part,
-        //...top circlular image part,
+  CupertinoActionSheet addTherapyActionSheet(BuildContext context) {
+    return CupertinoActionSheet(
+      actions: [
+        CupertinoActionSheetAction(
+          child: text("Medication", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {
+            final TherapyManager therapyManager =
+                Provider.of<TherapyManager>(context, listen: false);
+            therapyManager.resetForm();
+            print('this far');
+            Navigator.pushReplacementNamed(context, addmedication);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: text("Other Types", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
       ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Container(color: Colors.white, child: Text('Cancel')),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }

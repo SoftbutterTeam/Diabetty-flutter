@@ -10,7 +10,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:diabetty/extensions/string_extension.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 
 class ReminderInfoModal extends StatefulWidget {
