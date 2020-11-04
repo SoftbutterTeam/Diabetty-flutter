@@ -56,7 +56,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
     Size size = MediaQuery.of(context).size;
     return Background(
       onPressed2: () {
-        FirebaseAuth.instance.signOut();
+        Navigator.pushNamed(context, appsettings);
       },
       onPressed: () {
         final actionsheet = addTherapyActionSheet(context);
