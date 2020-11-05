@@ -168,6 +168,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 initialAngle: initialAngle,
                 showInitialAnimation: true,
                 rotateMode: RotateMode.stopRotate,
+                progressColor: Colors.orangeAccent,
                 centerWidget: Container(child: Text("")),
                 children: List.generate(12 * 4, (index) {
                   final rems = getReminderOnIndex(index, reminders);
@@ -203,8 +204,12 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   void calcTimeFrames() {
     if (DateTime.now().compareTo(manager.currentDateStamp
-            .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
-        0) {
+                .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
+            0 &&
+        hasReminderBetween(
+            DateTime.now().applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
+            DateTime.now().applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
+            manager.getFinalRemindersList())) {
       _initialTime = TimeOfDay(hour: 0, minute: 0);
       initialAngle = -(pi / 2);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
@@ -222,4 +227,11 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       initialAngle = (pi / 2);
     }
   }
+}
+
+bool hasReminderBetween(
+    DateTime firstTime, lastTime, List<Reminder> reminders) {
+  return reminders.any((element) =>
+      element.date.compareTo(firstTime) >= 0 &&
+      element.date.compareTo(firstTime) < 0);
 }

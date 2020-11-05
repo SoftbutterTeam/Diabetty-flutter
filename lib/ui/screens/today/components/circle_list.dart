@@ -28,6 +28,7 @@ class CircleList extends StatefulWidget {
   final RadialDragEnd onDragEnd;
   final AnimationSetting animationSetting;
   final DragAngleRange dragAngleRange;
+  final Color progressColor;
 
   CircleList({
     this.innerRadius,
@@ -50,6 +51,7 @@ class CircleList extends StatefulWidget {
     this.animationSetting,
     this.rotateMode,
     this.dragAngleRange,
+    this.progressColor,
   }) : assert(children != null);
 
   @override
@@ -104,6 +106,7 @@ class _CircleListState extends State<CircleList>
     final double listRadius = innerRadius * 1.03;
     final rotateMode = widget.rotateMode ?? RotateMode.onlyChildrenRotate;
     final dragAngleRange = widget.dragAngleRange;
+    final progressColor = widget.progressColor;
 
     ///the origin is the point to left and top
     final Offset origin = widget.origin ?? Offset(0, -outerRadius);
@@ -130,11 +133,16 @@ class _CircleListState extends State<CircleList>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: appWhite,
+                    border: Border.all(
+                      color: progressColor ?? Colors.transparent,
+                      width: 2,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.2), // a 0.2 is dope
                         spreadRadius: 5,
                         blurRadius: 7,
+
                         offset: Offset(0, 1), // a 1 is dope
                       ),
                     ],
