@@ -221,7 +221,5 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       _initialTime = TimeOfDay(hour: 12, minute: 0);
       initialAngle = (pi / 2);
     }
-    print(initalTime.toIso8601String());
-    print(endTime.toIso8601String());
   }
 }
