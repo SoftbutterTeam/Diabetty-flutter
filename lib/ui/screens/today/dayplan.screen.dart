@@ -167,6 +167,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 outerRadius: 130,
                 initialAngle: initialAngle,
                 showInitialAnimation: true,
+                innerCircleRotateWithChildren: true,
                 rotateMode: RotateMode.stopRotate,
                 progressColor: Colors.orangeAccent,
                 centerWidget: Container(child: Text("")),
@@ -207,24 +208,26 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
             0 &&
         hasReminderBetween(
-            DateTime.now().applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
-            DateTime.now().applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
             manager.getFinalRemindersList())) {
       _initialTime = TimeOfDay(hour: 0, minute: 0);
-      initialAngle = -(pi / 2);
+      initialAngle = 0;
     } else if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
         0) {
       _initialTime = TimeOfDay(hour: 6, minute: 0);
-      initialAngle = (pi / 2);
+      initialAngle = (pi);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
         0) {
       _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = -(pi / 2);
+      initialAngle = 0;
     } else {
       _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = (pi / 2);
+      initialAngle = 0;
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
@@ -46,21 +47,18 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     var size = MediaQuery.of(context).size;
     return IntrinsicHeight(
       child: Container(
-          margin: EdgeInsets.only(bottom: 10),
-          alignment: Alignment.center,
-          child: SizedBox(
-            width: size.width * 0.8,
-            height: size.height * 0.33,
-            child: Card(
-              shadowColor: null,
-              elevation: 0,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(curve),
-              ),
-              child: _buildContent(context, size),
-            ),
-          )),
+        margin: EdgeInsets.only(bottom: 10),
+        alignment: Alignment.center,
+        child: Card(
+          shadowColor: null,
+          elevation: 0,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(curve),
+          ),
+          child: _buildContent(context, size),
+        ),
+      ),
     );
   }
 
@@ -269,99 +267,18 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      _skipActionSheet(context);
-                    },
-                    padding: EdgeInsets.all(3),
-                    icon: SvgPicture.asset(
-                      'assets/icons/navigation/x/close.svg',
-                      width: 30,
-                      height: 30,
-                      color: Colors.black,
-                    ),
-                  ),
-                  text(
-                    "Skip",
-                    textColor: Colors.black,
-                    fontFamily: fontSemibold,
-                    fontSize: 12.0,
-                    maxLine: 2,
-                    isCentered: true,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      _takenActionSheet(context);
-                    },
-                    padding: EdgeInsets.all(3),
-                    icon: SvgPicture.asset(
-                      'assets/icons/navigation/checkbox/tick_outline2.svg',
-                      width: 30,
-                      height: 30,
-                      color: Colors.black,
-                    ),
-                  ),
-                  text(
-                    "Take",
-                    textColor: Colors.black,
-                    fontFamily: fontSemibold,
-                    fontSize: 12.0,
-                    maxLine: 2,
-                    isCentered: true,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      _snoozeActionSheet(context);
-                    },
-                    padding: EdgeInsets.all(3),
-                    icon: SvgPicture.asset(
-                      'assets/icons/navigation/clock/wall-clock.svg',
-                      width: 30,
-                      height: 30,
-                      color: Colors.black,
-                    ),
-                  ),
-                  text(
-                    "Snooze",
-                    textColor: Colors.black,
-                    fontFamily: fontSemibold,
-                    fontSize: 12.0,
-                    maxLine: 2,
-                    isCentered: true,
-                  ),
-                ],
-              ),
-            ),
+            ReminderModalFooterButton(
+                text2: "Skip",
+                assetName: 'assets/icons/navigation/x/close.svg',
+                onTap: () => _skipActionSheet(context)),
+            ReminderModalFooterButton(
+                text2: "Take",
+                assetName: 'assets/icons/navigation/checkbox/tick_outline2.svg',
+                onTap: () => _takenActionSheet(context)),
+            ReminderModalFooterButton(
+                text2: "Snooze",
+                assetName: 'assets/icons/navigation/clock/wall-clock.svg',
+                onTap: () => _snoozeActionSheet(context)),
           ],
         ));
   }

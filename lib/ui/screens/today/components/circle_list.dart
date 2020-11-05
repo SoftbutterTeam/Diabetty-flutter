@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:circle_list/radial_drag_gesture_detector.dart';
 import 'package:diabetty/ui/constants/colors.dart';
+import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 export 'package:circle_list/radial_drag_gesture_detector.dart';
 import 'package:flutter/material.dart';
 
@@ -127,28 +128,31 @@ class _CircleListState extends State<CircleList>
                     ? dragModel.angleDiff + widget.initialAngle
                     : 0,
                 child: Container(
-                  width: innerRadius * 2,
-                  height: innerRadius * 2,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: appWhite,
-                    border: Border.all(
-                      color: progressColor ?? Colors.transparent,
-                      width: 2,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2), // a 0.2 is dope
-                        spreadRadius: 5,
-                        blurRadius: 7,
+                    width: innerRadius * 2,
+                    height: innerRadius * 2,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: appWhite,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2), // a 0.2 is dope
+                          spreadRadius: 5,
+                          blurRadius: 7,
 
-                        offset: Offset(0, 1), // a 1 is dope
-                      ),
-                    ],
-                  ),
-                  child: widget.centerWidget ?? SizedBox(),
-                ),
+                          offset: Offset(0, 1), // a 1 is dope
+                        ),
+                      ],
+                    ),
+                    child: new Container(
+                        height: double.maxFinite,
+                        width: double.maxFinite,
+                        child: new CustomPaint(
+                            foregroundPainter: new MyPainter(
+                                completeColor: Colors.orangeAccent,
+                                completePercent: 50,
+                                width: 2.0),
+                            child: null))),
               )),
           Positioned(
             left: origin.dx,
