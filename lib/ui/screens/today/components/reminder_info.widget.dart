@@ -275,6 +275,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   borderRadius: BorderRadius.circular(10)),
               margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
                     onPressed: () {
@@ -288,7 +289,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 5),
                   text(
                     "Skip",
                     textColor: Colors.black,
@@ -308,6 +308,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                       borderRadius: BorderRadius.circular(10)),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       IconButton(
                         onPressed: () {
@@ -321,7 +322,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 5),
                       text(
                         "Take",
                         textColor: Colors.black,
@@ -341,6 +341,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   borderRadius: BorderRadius.circular(10)),
               margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
                     onPressed: () {
@@ -354,7 +355,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 5),
                   text(
                     "Snooze",
                     textColor: Colors.black,
