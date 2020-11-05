@@ -300,40 +300,36 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 ],
               ),
             ),
-            Column(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10)),
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          _takenActionSheet(context);
-                        },
-                        padding: EdgeInsets.all(3),
-                        icon: SvgPicture.asset(
-                          'assets/icons/navigation/checkbox/tick_outline2.svg',
-                          width: 30,
-                          height: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                      text(
-                        "Take",
-                        textColor: Colors.black,
-                        fontFamily: fontSemibold,
-                        fontSize: 12.0,
-                        maxLine: 2,
-                        isCentered: true,
-                      ),
-                    ],
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      _takenActionSheet(context);
+                    },
+                    padding: EdgeInsets.all(3),
+                    icon: SvgPicture.asset(
+                      'assets/icons/navigation/checkbox/tick_outline2.svg',
+                      width: 30,
+                      height: 30,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-              ],
+                  text(
+                    "Take",
+                    textColor: Colors.black,
+                    fontFamily: fontSemibold,
+                    fontSize: 12.0,
+                    maxLine: 2,
+                    isCentered: true,
+                  ),
+                ],
+              ),
             ),
             Container(
               decoration: BoxDecoration(
