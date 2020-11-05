@@ -274,8 +274,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(10)),
               margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              height: 75,
-              width: 60,
               child: Column(
                 children: <Widget>[
                   IconButton(
@@ -309,8 +307,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10)),
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  height: 75,
-                  width: 60,
                   child: Column(
                     children: <Widget>[
                       IconButton(
@@ -344,8 +340,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(10)),
               margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              height: 75,
-              width: 60,
               child: Column(
                 children: <Widget>[
                   IconButton(
