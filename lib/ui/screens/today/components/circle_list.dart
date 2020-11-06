@@ -30,6 +30,9 @@ class CircleList extends StatefulWidget {
   final AnimationSetting animationSetting;
   final DragAngleRange dragAngleRange;
   final Color progressColor;
+  final double progressAngle;
+
+  final double progressCompletion;
 
   CircleList({
     this.innerRadius,
@@ -37,6 +40,7 @@ class CircleList extends StatefulWidget {
     this.listRadius,
     this.childrenPadding = 0,
     this.initialAngle = 0,
+    this.progressAngle = 0,
     this.outerCircleColor,
     this.innerCircleColor,
     this.origin,
@@ -53,6 +57,7 @@ class CircleList extends StatefulWidget {
     this.rotateMode,
     this.dragAngleRange,
     this.progressColor,
+    this.progressCompletion = 0,
   }) : assert(children != null);
 
   @override
@@ -108,6 +113,7 @@ class _CircleListState extends State<CircleList>
     final rotateMode = widget.rotateMode ?? RotateMode.onlyChildrenRotate;
     final dragAngleRange = widget.dragAngleRange;
     final progressColor = widget.progressColor;
+    final progressCompletion = widget.progressCompletion;
 
     ///the origin is the point to left and top
     final Offset origin = widget.origin ?? Offset(0, -outerRadius);
@@ -125,7 +131,7 @@ class _CircleListState extends State<CircleList>
               top: -origin.dy + outerRadius - innerRadius,
               child: Transform.rotate(
                 angle: widget.innerCircleRotateWithChildren
-                    ? dragModel.angleDiff + 2 * widget.initialAngle
+                    ? dragModel.angleDiff + widget.progressAngle
                     : 0,
                 child: Container(
                     width: innerRadius * 2,
@@ -149,10 +155,12 @@ class _CircleListState extends State<CircleList>
                         width: double.maxFinite,
                         child: new CustomPaint(
                             foregroundPainter: new MyPainter(
-                                completeColor: Colors.orangeAccent,
-                                completePercent: 50,
+                                completeColor: progressColor,
+                                completePercent: progressCompletion,
                                 width: 2.0),
-                            child: null))),
+                            child: Container(
+                                alignment: Alignment.center,
+                                child: widget.centerWidget)))),
               )),
           Positioned(
             left: origin.dx,
@@ -193,7 +201,8 @@ class _CircleListState extends State<CircleList>
                         border: Border.all(
                           color: widget.outerCircleColor ?? Colors.transparent,
                           width: outerRadius - innerRadius,
-                        ))),
+                        )),
+                    child: null),
               ),
             ),
           ),

@@ -9,6 +9,7 @@ import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
 import 'package:diabetty/ui/screens/today/components/circle_list.dart';
+import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 //*swtich versions. animation differences*/
     as SlotWidget;
@@ -67,7 +68,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   TimeOfDay _initialTime = TimeOfDay(hour: 0, minute: 0);
   double initialAngle;
-
+  double progressAngle;
   DateTime get initalTime =>
       manager.currentDateStamp.applyTimeOfDay(_initialTime);
   DateTime get endTime => initalTime.add(Duration(hours: 12));
@@ -166,11 +167,32 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 innerRadius: 100,
                 outerRadius: 130,
                 initialAngle: initialAngle,
+                progressAngle: progressAngle,
                 showInitialAnimation: true,
                 innerCircleRotateWithChildren: true,
                 rotateMode: RotateMode.stopRotate,
                 progressColor: Colors.orangeAccent,
-                centerWidget: Container(child: Text("")),
+                progressCompletion: calcProgressTime(),
+                centerWidget: new Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(12),
+                    height: double.maxFinite,
+                    width: double.maxFinite,
+                    child: new CustomPaint(
+                        foregroundPainter: new MyPainter(
+                            completeColor: Colors.orangeAccent,
+                            completePercent: calcProgressTime(
+                                        TimeOfDay(hour: 12, minute: 0)) >
+                                    0
+                                ? calcProgressTime(
+                                    TimeOfDay(hour: 0, minute: 0))
+                                : 0,
+                            width: 1.0),
+                        child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(0),
+                            height: double.maxFinite,
+                            width: double.maxFinite))),
                 children: List.generate(12 * 4, (index) {
                   final rems = getReminderOnIndex(index, reminders);
                   return rems.isNotEmpty
@@ -204,7 +226,37 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   void calcTimeFrames() {
-    if (DateTime.now().compareTo(manager.currentDateStamp
+    if (hasReminderBetween(
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
+            manager.getFinalRemindersList()) &&
+        !hasReminderBetween(
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
+            manager.getFinalRemindersList())) {
+      _initialTime = TimeOfDay(hour: 0, minute: 0);
+      initialAngle = -(pi / 2);
+      progressAngle = 0;
+    } else if (!hasReminderBetween(
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
+            manager.getFinalRemindersList()) &&
+        hasReminderBetween(
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
+            manager.getFinalRemindersList())) {
+      _initialTime = TimeOfDay(hour: 12, minute: 0);
+      initialAngle = -(pi / 2);
+      progressAngle = 0;
+    } else if (DateTime.now().compareTo(manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
             0 &&
         hasReminderBetween(
@@ -214,7 +266,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
             manager.getFinalRemindersList())) {
       _initialTime = TimeOfDay(hour: 0, minute: 0);
-      initialAngle = 0;
+      initialAngle = -(pi / 2);
+      progressAngle = 0;
     } else if (DateTime.now().compareTo(manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
             0 &&
@@ -227,17 +280,54 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       print("12aaa");
       _initialTime = TimeOfDay(hour: 6, minute: 0);
       initialAngle = (pi / 2);
+      progressAngle = (pi);
+    } else if (DateTime.now().compareTo(manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
+            0 &&
+        hasReminderBetween(
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
+            manager.getFinalRemindersList()) &&
+        !hasReminderBetween(
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
+            manager.getFinalRemindersList())) {
+      print("18aaa0");
+      _initialTime = TimeOfDay(hour: 6, minute: 0);
+      initialAngle = (pi / 2);
+      progressAngle = (pi);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
         0) {
       print("18aaa");
       _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = 0;
+      initialAngle = -(pi / 2);
+      progressAngle = 0;
     } else {
       print("18aaa2");
       _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = 0;
+      initialAngle = -(pi / 2);
+      progressAngle = 0;
     }
+  }
+
+  double calcProgressTime([TimeOfDay timeOfDay]) {
+    if (DateTime.now().compareTo(initalTime) <= 0) return 0;
+
+    DateTime lastTime = timeOfDay == null
+        ? initalTime
+        : DateTime.now().applyTimeOfDay(timeOfDay);
+
+    final double perc = (DateTime.now().difference(lastTime).inMinutes /
+            Duration(hours: 12).inMinutes) *
+        100;
+    print("hella");
+    print(perc);
+    return perc <= 100 ? perc : 100;
   }
 }
 
