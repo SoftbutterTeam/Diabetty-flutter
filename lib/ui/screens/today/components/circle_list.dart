@@ -125,7 +125,7 @@ class _CircleListState extends State<CircleList>
               top: -origin.dy + outerRadius - innerRadius,
               child: Transform.rotate(
                 angle: widget.innerCircleRotateWithChildren
-                    ? dragModel.angleDiff + widget.initialAngle
+                    ? dragModel.angleDiff + 2 * widget.initialAngle
                     : 0,
                 child: Container(
                     width: innerRadius * 2,

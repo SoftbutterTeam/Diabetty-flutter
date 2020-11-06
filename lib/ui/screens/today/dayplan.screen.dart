@@ -216,16 +216,25 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       _initialTime = TimeOfDay(hour: 0, minute: 0);
       initialAngle = 0;
     } else if (DateTime.now().compareTo(manager.currentDateStamp
-            .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
-        0) {
+                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
+            0 &&
+        hasReminderBetween(
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
+            manager.getFinalRemindersList())) {
+      print("12aaa");
       _initialTime = TimeOfDay(hour: 6, minute: 0);
-      initialAngle = (pi);
+      initialAngle = (pi / 2);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
         0) {
+      print("18aaa");
       _initialTime = TimeOfDay(hour: 12, minute: 0);
       initialAngle = 0;
     } else {
+      print("18aaa2");
       _initialTime = TimeOfDay(hour: 12, minute: 0);
       initialAngle = 0;
     }
@@ -234,7 +243,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
 bool hasReminderBetween(
     DateTime firstTime, lastTime, List<Reminder> reminders) {
-  return reminders.any((element) =>
-      element.date.compareTo(firstTime) >= 0 &&
-      element.date.compareTo(firstTime) < 0);
+  return (reminders.any((element) =>
+      element.time.compareTo(firstTime) >= 0 &&
+      element.time.compareTo(lastTime) < 0));
 }
