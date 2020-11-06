@@ -90,7 +90,7 @@ class SceneState extends State<Scene> with SingleTickerProviderStateMixin {
   void _updatePalette() {
     var isDarkMode = widget.brightness == Brightness.dark;
     _palette = Rnd.getPalette(widget.palettes, isDarkMode);
-    _bgColor = _palette.components[0];
+    _bgColor = Colors.transparent;
     _accentColor = _palette.components[_palette.components.length - 1];
     _fx.setPalette(_palette);
     _bgFx.setPalette(_palette);
@@ -110,12 +110,13 @@ class SceneState extends State<Scene> with SingleTickerProviderStateMixin {
       child: ClipRect(
         child: Stack(
           children: <Widget>[
-            _buildBgBlurFx(),
-            _buildClockFace(),
-            CustomPaint(
-              painter: ClockFxPainter(fx: _fx),
-              child: Container(),
-            ),
+            //_buildBgBlurFx(),
+            //_buildClockFace(),
+            if (true)
+              CustomPaint(
+                painter: ClockFxPainter(fx: _fx),
+                child: Container(),
+              ),
           ],
         ),
       ),

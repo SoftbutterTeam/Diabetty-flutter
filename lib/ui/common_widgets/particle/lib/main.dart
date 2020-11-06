@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'particle_clock.dart';
 
-void main() {
+void mainn() {
   // A temporary measure until Platform supports web and TargetPlatform supports
   // macOS.
   if (!kIsWeb && Platform.isMacOS) {

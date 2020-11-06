@@ -27,7 +27,7 @@ class ClockFxPainter extends CustomPainter {
       double a;
 
       // Fade in particles by calculating alpha based on distance.
-      if (p.type == ParticleType.noise) {
+      /*  if (p.type == ParticleType.noise) {
         a = max(0.0, (p.distFrac - .13) / p.distFrac) * 255;
         a = min(a, min(noiseAlpha, p.lifeLeft * 3 * 255));
       } else {
@@ -35,6 +35,9 @@ class ClockFxPainter extends CustomPainter {
             ? 255 * Curves.easeIn.transform(p.distFrac / handlesStart)
             : min(255, p.lifeLeft * 10 * 255);
       }
+      */
+      a = max(0.0, (p.distFrac - .13) / p.distFrac) * 255;
+      a = min(a, min(noiseAlpha, p.lifeLeft * 3 * 255));
 
       var alpha = a.floor();
 
