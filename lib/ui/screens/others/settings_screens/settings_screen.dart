@@ -1,7 +1,14 @@
+import 'dart:wasm';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
+  Icon arrowRight = Icon(Icons.keyboard_arrow_right);
+  Color arrowColour = Colors.grey;
+  TextStyle settingsTextStyle = TextStyle(fontSize: 20);
+
+  /*
   @override
   Future navigateToAppearanceSettings(context, pick) async {
     if (pick != null) {
@@ -12,132 +19,124 @@ class SettingsScreen extends StatelessWidget {
           MaterialPageRoute(builder: (context) => NotificationSettingsPage()));
     }
   }
+*/
+
+  Widget _buildListTile(BuildContext context, Icon leadingIcon,
+      String cardTitle, Icon trailingIcon, String navigationString) {
+    return ListTile(
+      title: Text(cardTitle),
+      leading: leadingIcon,
+      trailing: trailingIcon,
+      onTap: () {
+        Navigator.pushNamed(context, navigationString);
+      },
+    );
+  }
+
+  Widget _buildSettingTitleContainer(
+      BuildContext context, String containerTitle) {
+    return Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 5),
+        child: Text(containerTitle, style: settingsTextStyle));
+  }
+
+  Widget _buildProfileCard(BuildContext context) {
+    String forename = "Mr. Example";
+    return Card(
+        child: ListTile(
+            title: Text(forename),
+            leading: CircleAvatar(backgroundColor: arrowColour),
+            trailing: Icon(Icons.edit, color: arrowColour)));
+  }
+
+  List<Widget> _buildAccountSettingsCards(BuildContext context) {
+    String pick;
+    double elevation = 4.0;
+    List<String> Titles = [
+      "Account Settings",
+      "Update Email Address",
+      "Change Password",
+      "Manage Notification Settings",
+      "Appearance Settings"
+    ];
+
+    return [
+      _buildSettingTitleContainer(context, Titles[0]),
+      Card(
+        elevation: elevation,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: Column(
+          children: <Widget>[
+            _buildListTile(
+                context, Icon(Icons.email), Titles[1], arrowRight, null),
+            _buildListTile(
+                context, Icon(Icons.lock_open), Titles[2], arrowRight, null),
+            _buildListTile(context, Icon(Icons.notifications_active), Titles[3],
+                arrowRight, pick),
+            _buildListTile(context, Icon(Icons.photo_size_select_actual),
+                Titles[4], arrowRight, pick)
+            /*trailing: Icon(arrowRight, color: Colors.grey),
+            onTap: () {
+              pick = "a";
+              navigateToAppearanceSettings(
+                  context, pick); // Insert open password code here later */
+          ],
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> _buildGeneralSettingsCards(BuildContext context) {
+    List GeneralSettingsNames = [
+      "General Settings",
+      "Submit User Feedback",
+      "Report a Bug",
+      "App Version"
+    ];
+
+    return [
+      _buildSettingTitleContainer(context, GeneralSettingsNames[0]),
+      Card(
+        elevation: 4.0,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: Column(
+          children: <Widget>[
+            _buildListTile(context, Icon(Icons.feedback),
+                GeneralSettingsNames[1], arrowRight, null),
+            _buildListTile(context, Icon(Icons.bug_report),
+                GeneralSettingsNames[2], arrowRight, null),
+            _buildListTile(context, Icon(Icons.info_outline),
+                GeneralSettingsNames[3], arrowRight, null)
+          ],
+        ),
+      ),
+    ];
+  }
 
   Widget build(BuildContext context) {
-    String pick;
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Settings'),
-          backgroundColor: Colors.lightBlue,
+      appBar: AppBar(
+        title: Text('Settings'),
+        backgroundColor: Colors.lightBlue,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildProfileCard(context),
+          ]
+            ..addAll(_buildAccountSettingsCards(context))
+            ..addAll(_buildGeneralSettingsCards(context)),
         ),
-        body: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                    Widget>[
-          Card(
-            child: ListTile(
-              title: Text("Profile Name"),
-              leading: CircleAvatar(
-                backgroundColor: Colors.grey,
-              ),
-              trailing: Icon(Icons.edit, color: Colors.grey),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 5),
-            child: Text(
-              "Account Settings",
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10.0),
-          Card(
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.email, color: Colors.grey),
-                  title: Text("Update Email Address"),
-                  trailing:
-                      Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                  onTap: () {
-                    // Insert open password code here later
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.lock_open, color: Colors.grey),
-                  title: Text("Change Password"),
-                  trailing:
-                      Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                  onTap: () {
-                    // Insert open password code here later
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.notifications_active, color: Colors.grey),
-                  title: Text("Manage Notification Settings"),
-                  trailing:
-                      Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                  onTap: () {
-                    navigateToAppearanceSettings(context, pick);
-                    // Insert open password code here later
-                  },
-                ),
-                ListTile(
-                  leading:
-                      Icon(Icons.photo_size_select_actual, color: Colors.grey),
-                  title: Text("Appearance Settings"),
-                  trailing:
-                      Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                  onTap: () {
-                    pick = "a";
-                    navigateToAppearanceSettings(
-                        context, pick); // Insert open password code here later
-                  },
-                ),
-              ],
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(5),
-            child: Text(
-              "General Settings",
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          ),
-          Card(
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            child: Column(children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.feedback, color: Colors.grey),
-                title: Text("Submit User Feedback"),
-                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                onTap: () {
-                  // Insert open password code here later
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.bug_report, color: Colors.grey),
-                title: Text("Report Bug"),
-                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                onTap: () {
-                  // Insert open password code here later
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.info_outline, color: Colors.grey),
-                title: Text("App Version"),
-                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-                onTap: () {
-                  // Insert open password code here later
-                },
-              ),
-            ]),
-          ),
-        ])));
+      ),
+    );
   }
 }
 
+/*
 class AppearanceSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -250,3 +249,4 @@ class NotificationSettingsPage extends StatelessWidget {
     );
   }
 }
+*/

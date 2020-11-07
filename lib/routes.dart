@@ -55,3 +55,4 @@ const String therapy = '/dashboard/therapy';
 const String addmedication = '/therapy/addmedication';
 const String therapyprofile = '/therapy/therapyprofile';
 const String appsettings = '/settings';
+const String appearanceSettings = '/appearanceSettings';
