@@ -19,6 +19,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
+import 'package:diabetty/extensions/string_extension.dart';
 import 'components/icon_widget.dart';
 
 class DayPlanScreenBuilder extends StatelessWidget {
@@ -26,19 +27,20 @@ class DayPlanScreenBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ValueNotifier<bool>>(
         create: (_) => ValueNotifier<bool>(false),
-        child: Consumer<ValueNotifier<bool>>(
-          builder: (_, ValueNotifier<bool> isLoading, __) =>
-              Consumer<TherapyManager>(
-            builder: (_, TherapyManager therapyManager, __) =>
-                Consumer<DayPlanManager>(
-              builder: (_, DayPlanManager manager, __) {
-                manager.therapyManager = therapyManager;
-                return DayPlanScreen._(
-                  isLoading: isLoading.value,
-                  manager: manager,
-                );
-              },
-            ),
+        child: Consumer<TherapyManager>(
+          builder: (_, TherapyManager therapyManager, __) =>
+              Consumer<DayPlanManager>(
+            builder: (_, DayPlanManager manager, __) {
+              manager.therapyManager = therapyManager;
+              return Consumer<ValueNotifier<bool>>(
+                builder: (_, ValueNotifier<bool> isPagePushed, __) {
+                  manager.isPagePushed = isPagePushed;
+                  return DayPlanScreen._(
+                    manager: manager,
+                  );
+                },
+              );
+            },
           ),
         ));
   }
@@ -48,41 +50,42 @@ class DayPlanScreen extends StatefulWidget {
   @override
   const DayPlanScreen._({
     Key key,
-    this.isLoading,
+    this.pagePushedDown,
     this.manager,
   }) : super(key: key);
   final DayPlanManager manager;
-  final bool isLoading;
+  final ValueNotifier<bool> pagePushedDown;
 
   @override
   _DayPlanScreenState createState() => _DayPlanScreenState(manager);
 }
 
 class _DayPlanScreenState extends State<DayPlanScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   DayPlanManager manager;
   _DayPlanScreenState(this.manager);
 
   AnimationController _dateController;
-  Animation _animation;
-
   TimeOfDay _initialTime = TimeOfDay(hour: 0, minute: 0);
   double initialAngle;
   double progressAngle;
-  DateTime get initalTime =>
+  bool circleMinimized;
+  DateTime get initalDateTime =>
       manager.currentDateStamp.applyTimeOfDay(_initialTime);
-  DateTime get endTime => initalTime.add(Duration(hours: 12));
-
+  DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
+  bool get isPagePushed => manager.isPagePushed.value;
+  double dragSensitivity = 5;
   @override
   void initState() {
-    super.initState();
     _dateController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 200),
         reverseDuration: Duration(milliseconds: 200));
-    _animation = Tween<double>(begin: 0, end: 0.165).animate(_dateController);
 
     manager.pushAnimation = _dateController;
+    super.initState();
+
+    circleMinimized = false;
   }
 
   @override
@@ -93,22 +96,77 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double heightOfCircleSpace = size.height * 0.35;
     return Background(
       child: StreamBuilder(
           stream: manager.dataStream, // manager.remindersbyDayDataStream,
           builder: (context, snapshot) {
             return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 if (true)
-                  AnimatedBox(
-                    animation: _animation,
+                  AnimatedSize(
+                      duration: Duration(milliseconds: 600),
+                      vsync: this,
+                      curve: Curves.easeInOut,
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        height: size.height * (isPagePushed ? 0.165 : 0),
+                      )),
+                GestureDetector(
+                  onVerticalDragUpdate: (details) {
+                    if (details.delta.dy > dragSensitivity) {
+                      if (circleMinimized)
+                        setState(() {
+                          circleMinimized = false;
+                        });
+                    } else if (details.delta.dy < -dragSensitivity) {
+                      if (!circleMinimized)
+                        setState(() {
+                          circleMinimized = true;
+                        });
+                    }
+                  },
+                  onDoubleTap: () {
+                    setState(() {
+                      circleMinimized = !circleMinimized;
+                    });
+                  },
+                  child: AnimatedSize(
+                      duration: Duration(milliseconds: 500),
+                      vsync: this,
+                      curve: Curves.easeInOut,
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                          height: heightOfCircleSpace /
+                              (circleMinimized ? 2.8 : 1), // 2.8
+                          child: _buildCirclePlan(context, snapshot))),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                            offset: Offset(0, -1),
+                          ),
+                        ],
+                        border: Border(
+                            top: BorderSide(
+                                color: (circleMinimized
+                                    ? Colors.orangeAccent
+                                    : Colors.transparent),
+                                width: 1))),
+                    child: Container(
+                        margin: EdgeInsets.only(top: 5),
+                        child: _buildRemindersList(context, snapshot)),
                   ),
-                SizedBox(
-                    height: size.height * 0.35, //was 0.35
-                    child: _buildCirclePlan(context, snapshot) // was 0.35
-                    ),
-                if (true)
-                  Expanded(child: _buildRemindersList(context, snapshot)),
+                )
               ],
             );
           }),
@@ -117,9 +175,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   Widget _buildRemindersList(
       BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-    if (widget.isLoading)
-      return LoadingScreen();
-    else if (snapshot.hasError) return ErrorScreen();
+    if (snapshot.hasError) return ErrorScreen();
 
     List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
 
@@ -130,7 +186,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           scrollDirection: Axis.vertical,
           itemCount: timeSlots.length,
           shrinkWrap: true, //recently changed to true
-          padding: EdgeInsets.symmetric(vertical: 20),
+          padding: EdgeInsets.symmetric(vertical: 10), //was 20
           itemBuilder: (context, index) {
             return Container(
                 margin: EdgeInsets.only(top: 10),
@@ -147,17 +203,9 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     return Stack(
       children: [
         Container(
-            margin: EdgeInsets.only(bottom: 10),
+            // padding: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: Offset(0, 1),
-                ),
-              ],
             ),
             alignment: Alignment.center,
             width: size.width,
@@ -166,7 +214,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                 origin: Offset(0, 0),
                 innerRadius: 100,
                 outerRadius: 130,
-                initialAngle: initialAngle,
+                initialAngle: initialAngle, //2 * pi * calcProgressTime() / 100,
                 progressAngle: progressAngle,
                 showInitialAnimation: true,
                 innerCircleRotateWithChildren: true,
@@ -182,11 +230,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                         foregroundPainter: new MyPainter(
                             completeColor: Colors.orangeAccent,
                             completePercent: calcProgressTime(
-                                        TimeOfDay(hour: 12, minute: 0)) >
-                                    0
-                                ? calcProgressTime(
-                                    TimeOfDay(hour: 0, minute: 0))
-                                : 0,
+                              TimeOfDay(hour: 0, minute: 0),
+                              _initialTime,
+                            ),
+                            //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
                             width: 1.0),
                         child: Container(
                             alignment: Alignment.center,
@@ -210,7 +257,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   List<Reminder> getReminderOnIndex(int index, List<Reminder> reminders) {
-    DateTime indexTime = initalTime.add(Duration(minutes: index * 15));
+    DateTime indexTime = initalDateTime.add(Duration(minutes: index * 15));
     List<Reminder> results = [];
     print(indexTime);
     reminders.forEach((reminder) {
@@ -271,6 +318,19 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     } else if (DateTime.now().compareTo(manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
             0 &&
+        hasNotTakenReminderBetween(
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
+            manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
+            manager.getFinalRemindersList())) {
+      print("0yyy");
+      _initialTime = TimeOfDay(hour: 0, minute: 0);
+      initialAngle = -(pi / 2);
+      progressAngle = (0);
+    } else if (DateTime.now().compareTo(manager.currentDateStamp
+                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
+            0 &&
         hasReminderBetween(
             manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
@@ -315,20 +375,45 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     }
   }
 
-  double calcProgressTime([TimeOfDay timeOfDay]) {
-    if (DateTime.now().compareTo(initalTime) <= 0) return 0;
-
-    DateTime lastTime = timeOfDay == null
-        ? initalTime
+  double calcProgressTime([TimeOfDay timeOfDay, TimeOfDay limit]) {
+    if (DateTime.now().compareTo(initalDateTime) <= 0) return 0;
+    print(timeOfDay);
+    print(limit);
+    DateTime firstTime = timeOfDay == null
+        ? initalDateTime
         : DateTime.now().applyTimeOfDay(timeOfDay);
-
-    final double perc = (DateTime.now().difference(lastTime).inMinutes /
+    if (limit != null &&
+        DateTime.now()
+                .applyTimeOfDay(limit)
+                .compareTo(DateTime.now().applyTimeOfDay(timeOfDay)) <=
+            0) {
+      return 0;
+    }
+    DateTime percTimeLimit = DateTime.now();
+    if (limit != null) {
+      print('yooo');
+      if (DateTime.now().compareTo(DateTime.now().applyTimeOfDay(limit)) > 0) {
+        percTimeLimit = DateTime.now().applyTimeOfDay(limit);
+      }
+      print("perclimit");
+      print(percTimeLimit.toIso8601String());
+    }
+    print(firstTime.toIso8601String());
+    final double perc = (percTimeLimit.difference(firstTime).inMinutes /
             Duration(hours: 12).inMinutes) *
         100;
     print("hella");
     print(perc);
     return perc <= 100 ? perc : 100;
   }
+}
+
+bool hasNotTakenReminderBetween(
+    DateTime firstTime, DateTime lastTime, List<Reminder> reminders) {
+  return (reminders.any((element) =>
+      element.time.compareTo(firstTime) >= 0 &&
+      element.time.compareTo(lastTime) < 0 &&
+      element.takenAt == null));
 }
 
 bool hasReminderBetween(

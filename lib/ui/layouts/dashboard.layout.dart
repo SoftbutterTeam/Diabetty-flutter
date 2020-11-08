@@ -1,5 +1,6 @@
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
+import 'package:diabetty/ui/screens/diary/diary.screen.dart';
 import 'package:diabetty/ui/screens/draft_screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
 import 'package:diabetty/ui/screens/therapy/therapy.screen.dart';
@@ -23,7 +24,7 @@ class _DashBoardState extends State<DashBoard> {
   int currentIndex = 0;
 
   var _pages = [
-    DrafttScreen(),
+    DiaryScreen(),
     DayPlanScreenBuilder(),
     DrafttScreen(),
     TherapyScreenBuilder()

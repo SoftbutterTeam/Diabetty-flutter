@@ -12,4 +12,8 @@ extension StringExtension on String {
       return this.replaceRange(this.length - 3, this.length, '');
     return this;
   }
+
+  bool isNotEmpty() {
+    return this != "" && this != null;
+  }
 }

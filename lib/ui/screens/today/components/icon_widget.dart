@@ -22,12 +22,12 @@ class _IconWidgetState extends State<IconWidget> {
   Widget build(BuildContext context) {
     getIconSizes();
     return SizedBox(
-      width: 40, //* was 35
-      height: 40,
+      width: 37, //* was 35
+      height: 37,
       child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              width: 2,
+              width: 2, // was 2, 1 is good
               color: Colors.white,
             ),
             borderRadius: BorderRadius.circular(60),

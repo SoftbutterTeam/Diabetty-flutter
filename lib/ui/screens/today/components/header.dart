@@ -19,6 +19,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
     super.initState();
   }
 
+  final DropModal dropModal = DropModal();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -66,10 +67,11 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
             width: size.width,
           );
         }
-        dayManager.pushAnimation.forward();
+
+//        dayManager.pushAnimation.forward();
         return child;
       },
-      pageBuilder: (_, __, ___) => DropModal(),
+      pageBuilder: (_, __, ___) => dropModal,
     );
   }
 
@@ -79,14 +81,15 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
     return Center(
         child: FlatButton(
       onPressed: () {
+        if (dayManager.isPagePushed.value != true)
+          dayManager.isPagePushed.value = true;
         _showDateSelectDropModal(context, null);
       },
       child: Center(
         child: Container(
           alignment: Alignment.center,
           child: subHeadingText(
-              shortenDateRepresent(dayManager.currentDateStamp),
-              Colors.white),
+              shortenDateRepresent(dayManager.currentDateStamp), Colors.white),
         ),
       ),
     ));

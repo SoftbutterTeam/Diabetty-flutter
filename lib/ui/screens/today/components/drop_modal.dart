@@ -18,7 +18,8 @@ class DropModal extends StatefulWidget {
   _DropModalState createState() => _DropModalState();
 }
 
-class _DropModalState extends State<DropModal> {
+class _DropModalState extends State<DropModal>
+    with AutomaticKeepAliveClientMixin {
   DatePickerController _controller;
 
   DateTime _selectedValue;
@@ -27,11 +28,18 @@ class _DropModalState extends State<DropModal> {
   void initState() {
     final manager = Provider.of<DayPlanManager>(context, listen: false);
     _selectedValue = manager.currentDateStamp;
+    print('newState');
+
     super.initState();
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     Size size = MediaQuery.of(context).size;
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
@@ -64,7 +72,9 @@ class _DropModalState extends State<DropModal> {
             Expanded(
                 child: GestureDetector(
                     onPanStart: (value) {
-                      dayManager.pushAnimation.reverse();
+                      if (dayManager.isPagePushed.value != false)
+                        dayManager.isPagePushed.value = false;
+                      //dayManager.pushAnimation.reverse();
                       Navigator.pop(context);
                     },
                     child: Container(color: Colors.transparent))),

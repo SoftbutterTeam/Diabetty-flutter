@@ -159,8 +159,7 @@ class _CircleListState extends State<CircleList>
                                 completePercent: progressCompletion,
                                 width: 2.0),
                             child: Container(
-                                alignment: Alignment.center,
-                                child: widget.centerWidget)))),
+                                alignment: Alignment.center, child: null)))),
               )),
           Positioned(
             left: origin.dx,
@@ -202,7 +201,7 @@ class _CircleListState extends State<CircleList>
                           color: widget.outerCircleColor ?? Colors.transparent,
                           width: outerRadius - innerRadius,
                         )),
-                    child: null),
+                    child: widget.centerWidget),
               ),
             ),
           ),
