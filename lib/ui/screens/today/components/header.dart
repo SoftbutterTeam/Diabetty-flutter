@@ -67,11 +67,10 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
             width: size.width,
           );
         }
-
-//        dayManager.pushAnimation.forward();
+        dayManager.pushAnimation.forward();
         return child;
       },
-      pageBuilder: (_, __, ___) => dropModal,
+      pageBuilder: (_, __, ___) => DropModal(),
     );
   }
 
@@ -81,8 +80,6 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
     return Center(
         child: FlatButton(
       onPressed: () {
-        if (dayManager.isPagePushed.value != true)
-          dayManager.isPagePushed.value = true;
         _showDateSelectDropModal(context, null);
       },
       child: Center(

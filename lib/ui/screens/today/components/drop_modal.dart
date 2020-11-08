@@ -39,7 +39,6 @@ class _DropModalState extends State<DropModal>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     Size size = MediaQuery.of(context).size;
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
@@ -72,9 +71,7 @@ class _DropModalState extends State<DropModal>
             Expanded(
                 child: GestureDetector(
                     onPanStart: (value) {
-                      if (dayManager.isPagePushed.value != false)
-                        dayManager.isPagePushed.value = false;
-                      //dayManager.pushAnimation.reverse();
+                      dayManager.pushAnimation.reverse();
                       Navigator.pop(context);
                     },
                     child: Container(color: Colors.transparent))),

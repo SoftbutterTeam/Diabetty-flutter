@@ -13,11 +13,12 @@ import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 
 class DayPlanManager extends Manager with ReminderManagerMixin {
-  DayPlanManager({@required this.appContext});
+  DayPlanManager({
+    @required this.appContext,
+  });
 
   final AppContext appContext;
   TherapyManager therapyManager;
-  ValueNotifier<bool> isPagePushed;
 
   AnimationController pushAnimation;
   DatePickerController dateController = DatePickerController();

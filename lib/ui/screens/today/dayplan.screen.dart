@@ -27,20 +27,19 @@ class DayPlanScreenBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ValueNotifier<bool>>(
         create: (_) => ValueNotifier<bool>(false),
-        child: Consumer<TherapyManager>(
-          builder: (_, TherapyManager therapyManager, __) =>
-              Consumer<DayPlanManager>(
-            builder: (_, DayPlanManager manager, __) {
-              manager.therapyManager = therapyManager;
-              return Consumer<ValueNotifier<bool>>(
-                builder: (_, ValueNotifier<bool> isPagePushed, __) {
-                  manager.isPagePushed = isPagePushed;
-                  return DayPlanScreen._(
-                    manager: manager,
-                  );
-                },
-              );
-            },
+        child: Consumer<ValueNotifier<bool>>(
+          builder: (_, ValueNotifier<bool> isLoading, __) =>
+              Consumer<TherapyManager>(
+            builder: (_, TherapyManager therapyManager, __) =>
+                Consumer<DayPlanManager>(
+              builder: (_, DayPlanManager manager, __) {
+                manager.therapyManager = therapyManager;
+                return DayPlanScreen._(
+                  isLoading: isLoading.value,
+                  manager: manager,
+                );
+              },
+            ),
           ),
         ));
   }
@@ -50,11 +49,11 @@ class DayPlanScreen extends StatefulWidget {
   @override
   const DayPlanScreen._({
     Key key,
-    this.pagePushedDown,
+    this.isLoading,
     this.manager,
   }) : super(key: key);
   final DayPlanManager manager;
-  final ValueNotifier<bool> pagePushedDown;
+  final bool isLoading;
 
   @override
   _DayPlanScreenState createState() => _DayPlanScreenState(manager);
@@ -66,6 +65,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   _DayPlanScreenState(this.manager);
 
   AnimationController _dateController;
+  Animation _animation;
+
   TimeOfDay _initialTime = TimeOfDay(hour: 0, minute: 0);
   double initialAngle;
   double progressAngle;
@@ -73,18 +74,17 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   DateTime get initalDateTime =>
       manager.currentDateStamp.applyTimeOfDay(_initialTime);
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
-  bool get isPagePushed => manager.isPagePushed.value;
   double dragSensitivity = 5;
   @override
   void initState() {
+    super.initState();
     _dateController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 200),
         reverseDuration: Duration(milliseconds: 200));
+    _animation = Tween<double>(begin: 0, end: 0.165).animate(_dateController);
 
     manager.pushAnimation = _dateController;
-    super.initState();
-
     circleMinimized = false;
   }
 
@@ -105,15 +105,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                if (true)
-                  AnimatedSize(
-                      duration: Duration(milliseconds: 600),
-                      vsync: this,
-                      curve: Curves.easeInOut,
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(
-                        height: size.height * (isPagePushed ? 0.165 : 0),
-                      )),
+                AnimatedBox(animation: _animation),
                 GestureDetector(
                   onVerticalDragUpdate: (details) {
                     if (details.delta.dy > dragSensitivity) {
@@ -175,7 +167,9 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   Widget _buildRemindersList(
       BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-    if (snapshot.hasError) return ErrorScreen();
+    if (widget.isLoading)
+      return LoadingScreen();
+    else if (snapshot.hasError) return ErrorScreen();
 
     List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
 
