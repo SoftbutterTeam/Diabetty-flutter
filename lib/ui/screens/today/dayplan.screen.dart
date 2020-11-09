@@ -78,7 +78,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   DateTime get initalDateTime =>
       manager.currentDateStamp.applyTimeOfDay(_initialTime);
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
-  double dragSensitivity = 5;
+  double dragSensitivity = 3;
   @override
   void initState() {
     super.initState();
