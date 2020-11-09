@@ -126,7 +126,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                     });
                   },
                   child: AnimatedSize(
-                      duration: Duration(milliseconds: 500),
+                      duration: Duration(milliseconds: 600),
                       vsync: this,
                       curve: Curves.easeInOut,
                       alignment: Alignment.topCenter,
@@ -203,7 +203,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             ),
             alignment: Alignment.center,
             width: size.width,
-            child: Center(
+            child: Transform.rotate(
+              angle: (circleMinimized) ? 180 : 0,
               child: CircleList(
                 origin: Offset(0, 0),
                 innerRadius: 100,
@@ -377,16 +378,17 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         ? initalDateTime
         : DateTime.now().applyTimeOfDay(timeOfDay);
     if (limit != null &&
-        DateTime.now()
-                .applyTimeOfDay(limit)
-                .compareTo(DateTime.now().applyTimeOfDay(timeOfDay)) <=
+        DateTime.now().applyTimeOfDay(limit).compareTo(
+                manager.currentDateStamp.applyTimeOfDay(timeOfDay)) <=
             0) {
       return 0;
     }
     DateTime percTimeLimit = DateTime.now();
     if (limit != null) {
       print('yooo');
-      if (DateTime.now().compareTo(DateTime.now().applyTimeOfDay(limit)) > 0) {
+      if (DateTime.now()
+              .compareTo(manager.currentDateStamp.applyTimeOfDay(limit)) >
+          0) {
         percTimeLimit = DateTime.now().applyTimeOfDay(limit);
       }
       print("perclimit");
