@@ -7,6 +7,7 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 export 'package:circle_list/radial_drag_gesture_detector.dart';
 import 'package:flutter/material.dart';
+import 'package:diabetty/ui/screens/today/components/animated_transform_rotate.dart';
 
 class CircleList extends StatefulWidget {
   final double innerRadius;
@@ -34,6 +35,8 @@ class CircleList extends StatefulWidget {
 
   final double progressCompletion;
 
+  Animation<double> spinFactor;
+
   CircleList({
     this.innerRadius,
     this.outerRadius,
@@ -44,6 +47,7 @@ class CircleList extends StatefulWidget {
     this.outerCircleColor,
     this.innerCircleColor,
     this.origin,
+    this.spinFactor,
     @required this.children,
     this.onDragStart,
     this.onDragUpdate,
@@ -73,6 +77,7 @@ class _CircleListState extends State<CircleList>
 
   @override
   void initState() {
+    print('yo init');
     if (widget.showInitialAnimation) {
       _controller = AnimationController(
           vsync: this,
@@ -124,93 +129,51 @@ class _CircleListState extends State<CircleList>
     return Container(
       width: outerRadius * 2,
       height: outerRadius * 2,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-              left: origin.dx + outerRadius - innerRadius,
-              top: -origin.dy + outerRadius - innerRadius,
-              child: Transform.rotate(
-                angle: widget.innerCircleRotateWithChildren
-                    ? dragModel.angleDiff + widget.progressAngle
-                    : 0,
-                child: Container(
-                    width: innerRadius * 2,
-                    height: innerRadius * 2,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: appWhite,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2), // a 0.2 is dope
-                          spreadRadius: 5,
-                          blurRadius: 7,
-
-                          offset: Offset(0, 1), // a 1 is dope
-                        ),
-                      ],
-                    ),
-                    child: new Container(
-                        height: double.maxFinite,
-                        width: double.maxFinite,
-                        child: new CustomPaint(
-                            foregroundPainter: new MyPainter(
-                                completeColor: progressColor,
-                                completePercent: progressCompletion,
-                                width: 2.0),
-                            child: Container(
-                                alignment: Alignment.center, child: null)))),
-              )),
-          Positioned(
-            left: origin.dx,
-            top: -origin.dy,
-            child: RadialDragGestureDetector(
-              stopRotate: rotateMode == RotateMode.stopRotate,
-              onRadialDragUpdate: (PolarCoord updateCoord) {
-                if (widget.onDragUpdate != null) {
-                  widget.onDragUpdate(updateCoord);
-                }
-                setState(() {
-                  dragModel.getAngleDiff(updateCoord, dragAngleRange);
-                });
-              },
-              onRadialDragStart: (PolarCoord startCoord) {
-                if (widget.onDragStart != null) {
-                  widget.onDragStart(startCoord);
-                }
-                setState(() {
-                  dragModel.start = startCoord;
-                });
-              },
-              onRadialDragEnd: () {
-                if (widget.onDragEnd != null) {
-                  widget.onDragEnd();
-                }
-                dragModel.end = dragModel.start;
-                dragModel.end.angle = dragModel.angleDiff;
-              },
-              child: Transform.rotate(
-                angle: backgroundCircleAngle,
-                child: Container(
-                    width: outerRadius * 2,
-                    height: outerRadius * 2,
-                    decoration: BoxDecoration(
-                        gradient: widget.gradient,
+      child: AnimatedTransformRotate(
+        animation: widget.spinFactor,
+        transformValue:
+            -(progressCompletion / 100 * 2 * pi) + widget.progressAngle,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+                left: origin.dx + outerRadius - innerRadius,
+                top: -origin.dy + outerRadius - innerRadius,
+                child: Transform.rotate(
+                  angle: widget.innerCircleRotateWithChildren
+                      ? dragModel.angleDiff + widget.progressAngle
+                      : 0,
+                  child: Container(
+                      width: innerRadius * 2,
+                      height: innerRadius * 2,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: widget.outerCircleColor ?? Colors.transparent,
-                          width: outerRadius - innerRadius,
-                        )),
-                    child: widget.centerWidget),
-              ),
-            ),
-          ),
-          Positioned(
-            left: origin.dx,
-            top: -origin.dy,
-            child: Container(
-              width: outerRadius * 2,
-              height: outerRadius * 2,
+                        color: appWhite,
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                Colors.grey.withOpacity(0.2), // a 0.2 is dope
+                            spreadRadius: 5,
+                            blurRadius: 7,
+
+                            offset: Offset(0, 1), // a 1 is dope
+                          ),
+                        ],
+                      ),
+                      child: new Container(
+                          height: double.maxFinite,
+                          width: double.maxFinite,
+                          child: new CustomPaint(
+                              foregroundPainter: new MyPainter(
+                                  completeColor: progressColor,
+                                  completePercent: progressCompletion,
+                                  width: 2.0),
+                              child: Container(
+                                  alignment: Alignment.center, child: null)))),
+                )),
+            Positioned(
+              left: origin.dx,
+              top: -origin.dy,
               child: RadialDragGestureDetector(
                 stopRotate: rotateMode == RotateMode.stopRotate,
                 onRadialDragUpdate: (PolarCoord updateCoord) {
@@ -237,38 +200,97 @@ class _CircleListState extends State<CircleList>
                   dragModel.end.angle = dragModel.angleDiff;
                 },
                 child: Transform.rotate(
-                  angle: isAnimationStop
-                      ? (dragModel.angleDiff + widget.initialAngle)
-                      : (-_animationRotate.value * pi * 2 +
-                          widget.initialAngle),
-                  child: Stack(
-                    children: List.generate(widget.children.length, (ind) {
-                      final index = (ind - (widget.children.length - 1)).abs();
-                      final double childrenDiameter =
-                          2 * pi * listRadius / 12 - widget.childrenPadding;
-                      Offset childPoint = getChildPoint(index,
-                          widget.children.length, listRadius, childrenDiameter);
-                      return Positioned(
-                        left: outerRadius + childPoint.dx,
-                        top: outerRadius + childPoint.dy,
-                        child: Transform.rotate(
-                          angle: widget.isChildrenVertical
-                              ? (-(dragModel.angleDiff) - widget.initialAngle)
-                              : ((dragModel.angleDiff) + widget.initialAngle),
-                          child: Container(
-                              width: childrenDiameter,
-                              height: childrenDiameter,
-                              alignment: Alignment.center,
-                              child: widget.children[index]),
-                        ),
-                      );
-                    }),
+                  angle: backgroundCircleAngle,
+                  child: Container(
+                      width: outerRadius * 2,
+                      height: outerRadius * 2,
+                      decoration: BoxDecoration(
+                          gradient: widget.gradient,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color:
+                                widget.outerCircleColor ?? Colors.transparent,
+                            width: outerRadius - innerRadius,
+                          )),
+                      child: widget.centerWidget),
+                ),
+              ),
+            ),
+            Positioned(
+              left: origin.dx,
+              top: -origin.dy,
+              child: Container(
+                width: outerRadius * 2,
+                height: outerRadius * 2,
+                child: RadialDragGestureDetector(
+                  stopRotate: rotateMode == RotateMode.stopRotate,
+                  onRadialDragUpdate: (PolarCoord updateCoord) {
+                    if (widget.onDragUpdate != null) {
+                      widget.onDragUpdate(updateCoord);
+                    }
+                    setState(() {
+                      dragModel.getAngleDiff(updateCoord, dragAngleRange);
+                    });
+                  },
+                  onRadialDragStart: (PolarCoord startCoord) {
+                    if (widget.onDragStart != null) {
+                      widget.onDragStart(startCoord);
+                    }
+                    setState(() {
+                      dragModel.start = startCoord;
+                    });
+                  },
+                  onRadialDragEnd: () {
+                    if (widget.onDragEnd != null) {
+                      widget.onDragEnd();
+                    }
+                    dragModel.end = dragModel.start;
+                    dragModel.end.angle = dragModel.angleDiff;
+                  },
+                  child: Transform.rotate(
+                    angle: isAnimationStop
+                        ? (dragModel.angleDiff + widget.initialAngle)
+                        : (-_animationRotate.value * pi * 2 +
+                            widget.initialAngle),
+                    child: Stack(
+                      children: List.generate(widget.children.length, (ind) {
+                        final index =
+                            (ind - (widget.children.length - 1)).abs();
+                        final double childrenDiameter =
+                            2 * pi * listRadius / 12 - widget.childrenPadding;
+                        Offset childPoint = getChildPoint(
+                            index,
+                            widget.children.length,
+                            listRadius,
+                            childrenDiameter);
+                        return Positioned(
+                          left: outerRadius + childPoint.dx,
+                          top: outerRadius + childPoint.dy,
+                          child: Transform.rotate(
+                            angle: widget.isChildrenVertical
+                                ? (-(dragModel.angleDiff) - widget.initialAngle)
+                                : ((dragModel.angleDiff) + widget.initialAngle),
+                            child: AnimatedTransformRotate(
+                              animation: widget.spinFactor,
+                              transformValue:
+                                  (progressCompletion / 100 * 2 * pi) +
+                                      widget.progressAngle,
+                              child: Container(
+                                  width: childrenDiameter,
+                                  height: childrenDiameter,
+                                  alignment: Alignment.center,
+                                  child: widget.children[index]),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

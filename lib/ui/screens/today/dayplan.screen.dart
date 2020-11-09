@@ -62,6 +62,10 @@ class DayPlanScreen extends StatefulWidget {
 class _DayPlanScreenState extends State<DayPlanScreen>
     with TickerProviderStateMixin {
   DayPlanManager manager;
+
+  AnimationController _minController;
+
+  Animation<double> _minAnimationRotate;
   _DayPlanScreenState(this.manager);
 
   AnimationController _dateController;
@@ -82,10 +86,15 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         vsync: this,
         duration: Duration(milliseconds: 200),
         reverseDuration: Duration(milliseconds: 200));
-    _animation = Tween<double>(begin: 0, end: 0.165).animate(_dateController);
+    _animation = Tween<double>(begin: 0, end: 0.175).animate(_dateController);
 
     manager.pushAnimation = _dateController;
     circleMinimized = false;
+
+    _minController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 600));
+    _minAnimationRotate =
+        Tween<double>(begin: 0, end: 1).animate(_minController);
   }
 
   @override
@@ -95,6 +104,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   Widget _body(BuildContext context) {
+    print(_minAnimationRotate.value.toString() + "ds");
     Size size = MediaQuery.of(context).size;
     double heightOfCircleSpace = size.height * 0.35;
     return Background(
@@ -103,37 +113,62 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           builder: (context, snapshot) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                AnimatedBox(animation: _animation),
-                GestureDetector(
-                  onVerticalDragUpdate: (details) {
-                    if (details.delta.dy > dragSensitivity) {
-                      if (circleMinimized)
+                AnimatedBox(
+                    animation: _animation, shouldAnim: !circleMinimized),
+                AnimatedSize(
+                  duration: Duration(milliseconds: 600),
+                  vsync: this,
+                  curve: Curves.easeInOut,
+                  alignment: Alignment.topCenter,
+                  child: GestureDetector(
+                    onVerticalDragUpdate: (details) {
+                      if (details.delta.dy > dragSensitivity) {
+                        if (circleMinimized) {
+                          setState(() {
+                            _minController.reverse();
+                            circleMinimized = false;
+                          });
+                        }
+                      } else if (details.delta.dy < -dragSensitivity) {
+                        if (!circleMinimized) {
+                          setState(() {
+                            _minController.forward();
+                            circleMinimized = true;
+                          });
+                        }
+                      }
+                    },
+                    onDoubleTap: () {
+                      if (circleMinimized) {
+                        // circleMinimized = false;
                         setState(() {
+                          _minController.reverse();
+
                           circleMinimized = false;
                         });
-                    } else if (details.delta.dy < -dragSensitivity) {
-                      if (!circleMinimized)
+                      } else {
+                        //  circleMinimized = true;
                         setState(() {
+                          _minController.forward();
+
                           circleMinimized = true;
                         });
-                    }
-                  },
-                  onDoubleTap: () {
-                    setState(() {
-                      circleMinimized = !circleMinimized;
-                    });
-                  },
-                  child: AnimatedSize(
-                      duration: Duration(milliseconds: 600),
-                      vsync: this,
-                      curve: Curves.easeInOut,
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(
-                          height: heightOfCircleSpace /
-                              (circleMinimized ? 2.8 : 1), // 2.8
-                          child: _buildCirclePlan(context, snapshot))),
+                      }
+                    },
+                    child: SizedBox(
+                        width: size.width,
+                        height:
+                            heightOfCircleSpace / (circleMinimized ? 2.8 : 1),
+                        // 2.8
+                        child: FittedBox(
+                          alignment: Alignment.topCenter,
+                          fit: BoxFit.none,
+                          child: Container(
+                              alignment: Alignment.center,
+                              child: _buildCirclePlan(context, snapshot)),
+                        )),
+                  ),
                 ),
                 Expanded(
                   child: Container(
@@ -194,61 +229,55 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     List<Reminder> reminders = List.from(manager.getFinalRemindersList());
     print('remidners length ' + reminders.length.toString());
     calcTimeFrames();
-    return Stack(
-      children: [
-        Container(
-            // padding: EdgeInsets.only(bottom: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            alignment: Alignment.center,
-            width: size.width,
-            child: Transform.rotate(
-              angle: (circleMinimized) ? 180 : 0,
-              child: CircleList(
-                origin: Offset(0, 0),
-                innerRadius: 100,
-                outerRadius: 130,
-                initialAngle: initialAngle, //2 * pi * calcProgressTime() / 100,
-                progressAngle: progressAngle,
-                showInitialAnimation: true,
-                innerCircleRotateWithChildren: true,
-                rotateMode: RotateMode.stopRotate,
-                progressColor: Colors.orangeAccent,
-                progressCompletion: calcProgressTime(),
-                centerWidget: new Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(12),
-                    height: double.maxFinite,
-                    width: double.maxFinite,
-                    child: new CustomPaint(
-                        foregroundPainter: new MyPainter(
-                            completeColor: Colors.orangeAccent,
-                            completePercent: calcProgressTime(
-                              TimeOfDay(hour: 0, minute: 0),
-                              _initialTime,
-                            ),
-                            //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
-                            width: 1.0),
-                        child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(0),
-                            height: double.maxFinite,
-                            width: double.maxFinite))),
-                children: List.generate(12 * 4, (index) {
-                  final rems = getReminderOnIndex(index, reminders);
-                  return rems.isNotEmpty
-                      ? IconWidget(
-                          index: index,
-                          iconURL: appearance_icon_0,
-                          reminder: rems[0],
-                        )
-                      : SizedBox.shrink();
-                }),
-              ),
-            )),
-      ],
-    );
+    return Container(
+        // padding: EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        alignment: Alignment.center,
+        width: size.width,
+        child: CircleList(
+          origin: Offset(0, 0),
+          innerRadius: 100,
+          outerRadius: 130,
+          spinFactor: _minAnimationRotate,
+          initialAngle: initialAngle,
+          progressAngle: progressAngle,
+          showInitialAnimation: true,
+          innerCircleRotateWithChildren: true,
+          rotateMode: RotateMode.stopRotate,
+          progressColor: Colors.orangeAccent,
+          progressCompletion: calcProgressTime(),
+          centerWidget: new Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(12),
+              height: double.maxFinite,
+              width: double.maxFinite,
+              child: new CustomPaint(
+                  foregroundPainter: new MyPainter(
+                      completeColor: Colors.orangeAccent,
+                      completePercent: calcProgressTime(
+                        TimeOfDay(hour: 0, minute: 0),
+                        _initialTime,
+                      ),
+                      //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
+                      width: 1.0),
+                  child: Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(0),
+                      height: double.maxFinite,
+                      width: double.maxFinite))),
+          children: List.generate(12 * 4, (index) {
+            final rems = getReminderOnIndex(index, reminders);
+            return rems.isNotEmpty
+                ? IconWidget(
+                    index: index,
+                    iconURL: appearance_icon_0,
+                    reminder: rems[0],
+                  )
+                : SizedBox.shrink();
+          }),
+        ));
   }
 
   List<Reminder> getReminderOnIndex(int index, List<Reminder> reminders) {
