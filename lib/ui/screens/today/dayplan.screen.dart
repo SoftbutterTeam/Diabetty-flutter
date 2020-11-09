@@ -86,7 +86,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         vsync: this,
         duration: Duration(milliseconds: 200),
         reverseDuration: Duration(milliseconds: 200));
-    _animation = Tween<double>(begin: 0, end: 0.175).animate(_dateController);
+    _animation = Tween<double>(begin: 0, end: 0.173).animate(_dateController);
 
     manager.pushAnimation = _dateController;
     circleMinimized = false;
@@ -162,8 +162,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                             heightOfCircleSpace / (circleMinimized ? 2.8 : 1),
                         // 2.8
                         child: FittedBox(
-                          alignment: Alignment.topCenter,
-                          fit: BoxFit.none,
+                          alignment: circleMinimized
+                              ? Alignment.topCenter
+                              : Alignment.center,
+                          fit: circleMinimized ? BoxFit.none : BoxFit.contain,
                           child: Container(
                               alignment: Alignment.center,
                               child: _buildCirclePlan(context, snapshot)),
