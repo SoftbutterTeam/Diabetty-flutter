@@ -62,7 +62,7 @@ class CustomTextField extends StatelessWidget {
         readOnly: (placeholderText == "Set Strength & Units") ? false : true,
         maxLines: 1,
         maxLength: 30,
-        padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
+        padding: EdgeInsets.only(left: 18, top: 11, bottom: 11, right: 10),
         placeholderStyle: TextStyle(
           fontSize: textSizeLargeMedium - 3,
           color: Colors.grey[700],
