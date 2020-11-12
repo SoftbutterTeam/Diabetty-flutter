@@ -48,9 +48,10 @@ class _InputTextFieldState extends State<InputTextField> {
         controller: widget.controller,
         decoration: BoxDecoration(
           color: appWhite,
-          border: Border.all(
-              color: Colors.black54, width: 0.1, style: BorderStyle.solid),
-          borderRadius: BorderRadius.circular(0),
+          border: Border.symmetric(
+            vertical: BorderSide(
+                color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+          ),
         ),
         prefix: Container(
           padding: EdgeInsets.only(left: 17),
@@ -59,7 +60,7 @@ class _InputTextFieldState extends State<InputTextField> {
         placeholder: widget.placeholder,
         maxLines: 1,
         maxLength: 30,
-        padding: EdgeInsets.only(left: 16, top: 9.5, bottom: 9.5, right: 10),
+        padding: EdgeInsets.only(left: 16, top: 12, bottom: 12, right: 10),
         style: TextStyle(
             fontSize: textSizeLargeMedium - 1.5, fontFamily: 'Regular'));
   }
