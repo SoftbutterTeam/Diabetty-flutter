@@ -33,7 +33,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   double opacity;
 
   @override
-  
   Reminder get reminder => widget.reminder;
 
   @override
@@ -78,7 +77,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             child: _buildHeader(),
           ),
           Flexible(
-            flex: 3,
+            flex: 4,
             child: _buildBody2(size),
           ),
           Flexible(
@@ -128,85 +127,89 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   Widget _buildBody2(size) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Column(
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: size.height * 0.15),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(
+                        appearance_iconss[(reminder.apperance == null)
+                            ? 0
+                            : reminder.apperance],
+                        width: 30,
+                        height: 30,
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SvgPicture.asset(
-                      appearance_iconss[(reminder.apperance == null)
-                          ? 0
-                          : reminder.apperance],
-                      width: 30,
-                      height: 30,
+                    Padding(
+                      padding: EdgeInsets.only(left: 5, top: 5),
+                      child: text(reminder.name,
+                          fontSize: 18.0,
+                          textColor: Colors.black,
+                          fontFamily: fontBold,
+                          latterSpacing: 1.5),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 5, bottom: 10),
+                      child: text(
+                          intakeAdvice[(reminder.adviceIndex == null)
+                              ? 0
+                              : reminder.adviceIndex],
+                          fontSize: 15.0,
+                          textColor: Colors.black87,
+                          fontFamily: fontSemibold,
+                          overflow: TextOverflow.ellipsis),
                     ),
                   ],
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 5, top: 5),
-                    child: text(reminder.name,
-                        fontSize: 18.0,
-                        textColor: Colors.black,
-                        fontFamily: fontBold,
-                        latterSpacing: 1.5),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 5, bottom: 10),
-                    child: text(
-                        intakeAdvice[(reminder.adviceIndex == null)
-                            ? 0
-                            : reminder.adviceIndex],
-                        fontSize: 15.0,
-                        textColor: Colors.black87,
-                        fontFamily: fontSemibold,
-                        overflow: TextOverflow.ellipsis),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Container(
-            height: 1,
-            width: size.width * 0.75,
-            color: Colors.black12,
-            margin: EdgeInsets.only(bottom: 10),
-          ),
-          Row(
-            children: [
-              SizedBox(width: 15),
-              Icon(Icons.date_range, size: 20),
-              SizedBox(width: 20),
-              text(
-                  'Scheduled for ' +
-                      DateFormat('dd/MM/yy').format(reminder.time) +
-                      ' at ' +
-                      reminder.time.formatTime(),
-                  fontSize: 12.0),
-            ],
-          ),
-          SizedBox(height: size.height * 0.005),
-          Row(
-            children: [
-              SizedBox(width: 15),
-              Icon(Icons.filter_center_focus, size: 20),
-              SizedBox(width: 20),
-              text(
-                  'Take ' +
-                      reminder.dose.toString() +
-                      ' ' +
-                      unitTypes[reminder.doseUnitIndex],
-                  fontSize: 12.0),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Container(
+              height: 1,
+              width: size.width * 0.75,
+              color: Colors.black12,
+              margin: EdgeInsets.only(bottom: 10),
+            ),
+            Row(
+              children: [
+                SizedBox(width: 15),
+                Icon(Icons.date_range, size: 20),
+                SizedBox(width: 20),
+                text(
+                    'Scheduled for ' +
+                        DateFormat('dd/MM/yy').format(reminder.time) +
+                        ' at ' +
+                        reminder.time.formatTime(),
+                    fontSize: 12.0),
+              ],
+            ),
+            SizedBox(height: size.height * 0.005),
+            Row(
+              children: [
+                SizedBox(width: 15),
+                Icon(Icons.filter_center_focus, size: 20),
+                SizedBox(width: 20),
+                text(
+                    'Take ' +
+                        reminder.dose.toString() +
+                        ' ' +
+                        unitTypes[reminder.doseUnitIndex],
+                    fontSize: 12.0),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -298,8 +301,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   void _takenActionSheet(BuildContext context) {
     showTakenActionSheet(context);
   }
-
-  
 }
 
 class ReminderModalFooterButton extends StatelessWidget {

@@ -41,27 +41,30 @@ class _InputTextFieldState extends State<InputTextField> {
   @override
   @override
   Widget build(BuildContext context) {
-    return CupertinoTextField(
-        autofocus: true,
-        onChanged: widget.onChanged,
-        onSubmitted: widget.onSubmitted,
-        controller: widget.controller,
-        decoration: BoxDecoration(
-          color: appWhite,
-          border: Border.symmetric(
-            vertical: BorderSide(
-                color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 40.0),
+      child: CupertinoTextField(
+          autofocus: true,
+          onChanged: widget.onChanged,
+          onSubmitted: widget.onSubmitted,
+          controller: widget.controller,
+          decoration: BoxDecoration(
+            color: appWhite,
+            border: Border.symmetric(
+              vertical: BorderSide(
+                  color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+            ),
           ),
-        ),
-        prefix: Container(
-          padding: EdgeInsets.only(left: 17),
-          child: this.widget.stackIcons,
-        ),
-        placeholder: widget.placeholder,
-        maxLines: 1,
-        maxLength: 30,
-        padding: EdgeInsets.only(left: 16, top: 12, bottom: 12, right: 10),
-        style: TextStyle(
-            fontSize: textSizeLargeMedium - 1.5, fontFamily: 'Regular'));
+          prefix: Container(
+            padding: EdgeInsets.only(left: 17),
+            child: this.widget.stackIcons,
+          ),
+          placeholder: widget.placeholder,
+          maxLines: 1,
+          maxLength: 30,
+          padding: EdgeInsets.only(left: 16, top: 12, bottom: 12, right: 10),
+          style: TextStyle(
+              fontSize: textSizeLargeMedium - 1.5, fontFamily: 'Regular')),
+    );
   }
 }
