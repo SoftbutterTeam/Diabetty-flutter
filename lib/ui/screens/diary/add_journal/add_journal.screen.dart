@@ -29,6 +29,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
         header: AddJournalHeader(),
         child: Container(
           color: Colors.white,
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: SingleChildScrollView(
               scrollDirection: Axis.vertical, child: _body(context)),
         ));
