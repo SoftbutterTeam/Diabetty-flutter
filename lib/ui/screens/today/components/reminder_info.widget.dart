@@ -237,7 +237,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, therapyprofile),
+                      onTap: () => navigateTherapyProfile(context),
                       child: Icon(Icons.more_horiz)),
                 ),
               ],

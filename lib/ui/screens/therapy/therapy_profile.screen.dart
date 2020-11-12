@@ -1,8 +1,11 @@
-import 'package:diabetty/blocs/therapy_manager.dart';
+import 'dart:ui';
+
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/components/edit_modal.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TherapyProfileScreen extends StatefulWidget {
@@ -16,53 +19,184 @@ class TherapyProfileScreen extends StatefulWidget {
 
 class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     with ReminderActionsMixin {
+  final int count = 0;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('hi'),
+      body: Stack(
+        overflow: Overflow.visible,
+        children: [
+          _buildHeader(size),
+          _buildBody(size),
+        ],
       ),
-      body: SafeArea(
-              child: Stack(
-          children: <Widget>[
-            _buildHeader(size, context),
-            SingleChildScrollView(
-              padding: EdgeInsets.only(top: 80),
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 50),
-                    padding: EdgeInsets.only(top: 60),
-                    alignment: Alignment.topCenter,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        text('widget.reminder.name',
-                            textColor: Colors.black,
-                            fontFamily: fontMedium,
-                            fontSize: textSizeNormal),
-                        SizedBox(height: size.height * 0.02),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              text('Active Reminders',
-                                  fontSize: textSizeLargeMedium),
-                            ],
-                          ),
+    );
+  }
+
+  Padding _buildBody(Size size) {
+    return Padding(
+      padding: EdgeInsets.only(top: size.height * 0.4),
+      child: Container(
+        width: size.width,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: SingleChildScrollView(
+          child: (count == 0) ? _buildNoActiveReminderBody(size) : Text('yeye'),
+        ),
+      ),
+    );
+  }
+
+  Column _buildNoActiveReminderBody(Size size) {
+    return Column(
+      children: [
+        Icon(Icons.error_outline, size: 50),
+        SizedBox(height: size.height * 0.02),
+        Text(
+          'No Active Reminder',
+          style: TextStyle(
+            fontSize: 22.0,
+            color: Colors.black,
+            fontFamily: fontBold,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: size.height * 0.4),
+          child: Container(
+            width: size.width * 0.7,
+            height: size.height * 0.06,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  colors: [Colors.orange[900], Colors.orange[600]]),
+              borderRadius: BorderRadius.circular(40),
+            ),
+            child: GestureDetector(
+              onTap: () => showEditModal(context),
+              child: Center(
+                  child: Text('Edit Profile',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w400))),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Container _buildHeader(Size size) {
+    return Container(
+      height: size.height * 0.25,
+      width: size.width,
+      decoration: BoxDecoration(
+        // color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 1), // changes position of shadow
+          ),
+        ],
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: [Colors.orange[900], Colors.orange[600]]),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 30, top: 50),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: size.height * 0.1,
+                  width: size.width * 0.2,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(width: size.width * 0.05),
+                Column(
+                  children: [
+                    Text('Medication Name',
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          color: Colors.white,
+                          fontFamily: fontBold,
+                        )),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: size.height * 0.02),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      "43",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "in stock",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "0",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "active reminders",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      final actionsheet = addOptionsActionSheet(context);
+                      showCupertinoModalPopup(
+                          context: context, builder: (context) => actionsheet);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white60),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 15.0, right: 15, top: 5, bottom: 5),
+                        child: Text(
+                          "Add",
+                          style: TextStyle(color: Colors.white, fontSize: 18.0),
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                  CircleAvatar(
-                    backgroundColor: Colors.indigo,
-                    radius: 50,
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
@@ -70,49 +204,31 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     );
   }
 
-  Container _buildHeader(Size size, BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 25),
-      alignment: Alignment.topCenter,
-      height: size.height * 0.15,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              colors: [Colors.orange[900], Colors.orange[600]])),
-      child: Container(
-        alignment: Alignment.center,
-        height: size.height * 0.07,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.keyboard_arrow_left,
-                size: 40,
-                color: Colors.white,
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-            text("Therapy Profile",
-                textColor: Colors.white,
-                fontSize: textSizeNormal,
-                fontFamily: fontMedium),
-            GestureDetector(
-              onTap: () => print('yeyye'),
-                          child: IconButton(
-                onPressed: () {
-                  print('heheh');
-                },
-                icon: Icon(
-                  Icons.more_horiz,
-                  size: 25,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
+  CupertinoActionSheet addOptionsActionSheet(BuildContext context) {
+    return CupertinoActionSheet(
+      actions: [
+        CupertinoActionSheetAction(
+          child: text("Add Stock", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
         ),
+        CupertinoActionSheetAction(
+          child: text("Add Reminder", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Container(color: Colors.white, child: Text('Cancel')),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
+    );
+  }
+
+  Future showEditModal(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => EditModal(),
     );
   }
 }

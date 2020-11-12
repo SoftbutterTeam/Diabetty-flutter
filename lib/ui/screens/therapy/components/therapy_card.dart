@@ -41,11 +41,11 @@ class _TherapyCardState extends State<TherapyCard>
               fontFamily: fontMedium,
               fontSize: 18.0,
               overflow: TextOverflow.ellipsis),
-          subtitle: text((widget.therapyData.stock?.currentLevel ?? ''),
-              fontFamily: fontMedium,
-              textColor: Colors.black26,
-              fontSize: 12.0,
-              overflow: TextOverflow.ellipsis),
+          // subtitle: text((widget.therapyData.stock?.currentLevel ?? ''),
+          //     fontFamily: fontMedium,
+          //     textColor: Colors.black26,
+          //     fontSize: 12.0,
+          //     overflow: TextOverflow.ellipsis),
           leading: CircleAvatar(
             backgroundColor: Colors.white,
             child: SvgPicture.asset(

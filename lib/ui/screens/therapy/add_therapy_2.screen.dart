@@ -102,7 +102,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return showDialog(
       context: context,
       builder: (context) => NoResponseErrorModal(
-        errorDescription: 'Please add at least one tomorrow',
+        errorDescription: 'Please add at least one reminder',
       ),
     );
   }

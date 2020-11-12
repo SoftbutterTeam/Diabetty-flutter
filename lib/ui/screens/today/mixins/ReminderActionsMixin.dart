@@ -1,15 +1,17 @@
 import 'dart:ui';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_info.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 @optionalTypeArgs
 mixin ReminderActionsMixin<T extends Widget> {
   @protected
   Reminder get reminder => reminder;
+
+  void navigateTherapyProfile(context) => null;
 
   void showSnoozeActionSheet(context) => showCupertinoModalPopup(
       context: context,
