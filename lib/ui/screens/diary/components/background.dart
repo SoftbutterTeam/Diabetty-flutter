@@ -2,12 +2,12 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/components/header.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetty/ui/screens/today/components/header.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
-
-  const Background({Key key, @required this.child}) : super(key: key);
+  final Widget header;
+  const Background({Key key, @required this.child, this.header})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,8 @@ class Background extends StatelessWidget {
         child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(
-                child: DiaryHeader(), preferredSize: Size.fromHeight(50)),
+                child: header ?? DiaryHeader(),
+                preferredSize: Size.fromHeight(50)),
             body: Container(
               decoration: BoxDecoration(
                 color: appWhite, //Colors.grey[50], appWhite,

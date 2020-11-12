@@ -87,64 +87,49 @@ class _DropModalState extends State<DropModal>
         Provider.of<DayPlanManager>(context, listen: false);
 
     var container = Container(
-      width: size.width,
-      height: size.height * 0.29,
+      padding: EdgeInsets.only(top: 12),
+      alignment: Alignment.bottomCenter,
+      decoration: BoxDecoration(
+        color: appWhite,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: size.height * 0.18,
-              alignment: Alignment.bottomCenter,
-              decoration: BoxDecoration(
-                color: appWhite,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  DatePicker(DateTime.now().subtract(Duration(days: 7)),
-                      daysCount: 14,
-                      initialSelectedDate: DateTime.now(),
-                      selectionColor: Colors.deepOrange,
-                      selectedTextColor: Colors.white,
-                      controller: _controller,
-                      locale: 'en_gb',
-                      dateTextStyle: TextStyle(
-                        fontFamily: 'Regular',
-                        color: Colors.black87,
-                        fontSize: 17,
-                      ), onDateChange: (date) {
-                    // New date selected
-
-                    dayManager.currentDateStamp = date;
-                    print(date);
-                  }),
-                  FlatButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        dayManager.currentDateStamp = DateTime.now();
-                        _controller.animateToDate(dayManager.currentDateStamp
-                            .subtract(Duration(days: 2)));
-                        print(_selectedValue);
-                        setState(() {});
-                      },
-                      child: Text('Today'))
-                ],
-              ),
-            ),
-          )
+          DatePicker(DateTime.now().subtract(Duration(days: 7)),
+              daysCount: 14,
+              initialSelectedDate: DateTime.now(),
+              selectionColor: Colors.deepOrange,
+              selectedTextColor: Colors.white,
+              controller: _controller,
+              locale: 'en_gb',
+              dateTextStyle: TextStyle(
+                fontFamily: 'Regular',
+                color: Colors.black87,
+                fontSize: 17,
+              ), onDateChange: (date) {
+            dayManager.currentDateStamp = date;
+          }),
+          FlatButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                dayManager.currentDateStamp = DateTime.now();
+                _controller.animateToDate(
+                    dayManager.currentDateStamp.subtract(Duration(days: 2)));
+                print(_selectedValue);
+                setState(() {});
+              },
+              child: Text('Today'))
         ],
       ),
     );

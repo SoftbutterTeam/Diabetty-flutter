@@ -19,7 +19,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
-import 'package:diabetty/extensions/string_extension.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'components/icon_widget.dart';
 
 class DayPlanScreenBuilder extends StatelessWidget {
@@ -141,17 +141,13 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                     },
                     onDoubleTap: () {
                       if (circleMinimized) {
-                        // circleMinimized = false;
                         setState(() {
                           _minController.reverse();
-
                           circleMinimized = false;
                         });
                       } else {
-                        //  circleMinimized = true;
                         setState(() {
                           _minController.forward();
-
                           circleMinimized = true;
                         });
                       }
@@ -212,17 +208,16 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
     if (timeSlots.length == 0) return SizedBox();
 
-    return Container(
-      child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: timeSlots.length,
-          shrinkWrap: true, //recently changed to true
-          padding: EdgeInsets.symmetric(vertical: 10), //was 20
-          itemBuilder: (context, index) {
-            return Container(
-                margin: EdgeInsets.only(top: 10),
-                child: SlotWidget.TimeSlot(timeSlot: timeSlots[index]));
-          }),
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: ColumnBuilder(
+        itemCount: timeSlots.length,
+        itemBuilder: (context, index) {
+          return Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: SlotWidget.TimeSlot(timeSlot: timeSlots[index]));
+        },
+      ),
     );
   }
 

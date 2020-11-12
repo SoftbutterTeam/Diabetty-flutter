@@ -1,3 +1,4 @@
+import 'package:diabetty/ui/screens/diary/add_journal/add_journal.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
 import 'package:diabetty/ui/layouts/dashboard.layout.dart';
@@ -28,6 +29,9 @@ class Router {
       case appsettings:
         return MaterialPageRoute(
             builder: (BuildContext context) => SettingsScreen());
+      case addJournal:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => AddJournalScreen());
       case diary:
         return PageRouteBuilder(
             pageBuilder: (_, a1, a2) => DashBoard(initIndex: 0),
@@ -60,3 +64,4 @@ const String addmedication = '/therapy/addmedication';
 const String therapyprofile = '/therapy/therapyprofile';
 const String appsettings = '/settings';
 const String appearanceSettings = '/appearanceSettings';
+const String addJournal = '/diary/addjournal';
