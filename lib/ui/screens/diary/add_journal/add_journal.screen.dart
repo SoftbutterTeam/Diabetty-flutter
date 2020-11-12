@@ -46,8 +46,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
           alignment: Alignment.center,
           child: IntrinsicHeight(child: JournalCard()),
         ),
-        _buildMe
-        
+        _buildJournalNameField(),
         Container(
           width: size.width,
           margin: EdgeInsets.only(top: 5, left: 5, right: 5),
@@ -64,12 +63,12 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
 
   InputTextField _buildJournalNameField() {
     return InputTextField(
-      stackIcons: _stackedHeartIcons(therapyForm.isNameValid()),
+      stackIcons: _stackedHeartIcons(true),
       controller: new TextEditingController(),
       placeholder: "Journal's Name...",
-      initalName: therapyForm.name,
+      initalName: '',
       onChanged: (val) {
-        therapyForm.name = val;
+        val = val;
         setState(() {});
       },
     );

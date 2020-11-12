@@ -21,7 +21,11 @@ class Router {
             builder: (BuildContext context) => AddMedicationScreenBuilder());
       case therapyprofile:
         return MaterialPageRoute(
-            builder: (BuildContext context) => TherapyProfileScreen());
+          settings: settings,
+            builder: (BuildContext context) { 
+                print((settings.arguments as Map)['reminder'].toString());
+                print((ModalRoute.of(context).settings.arguments as Map)['reminder'].toString());
+              return TherapyProfileScreen()});
       case appsettings:
         return MaterialPageRoute(
             builder: (BuildContext context) => SettingsScreen());
