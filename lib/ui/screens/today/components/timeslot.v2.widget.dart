@@ -146,6 +146,7 @@ class TimeSlotDecor extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
+        alignment: Alignment.bottomCenter,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(

@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class DashBoard extends StatefulWidget {
   @override
   DashBoard({Key key, this.initIndex = 0}) : super(key: key);
+  //! default index should be 1, only changed for testings
   final int initIndex;
 
   @override

@@ -47,7 +47,7 @@ class AuthWidget extends StatelessWidget {
               if (snapshot.connectionState != ConnectionState.done)
                 return LoadingScreen();
               return snapshot.hasData
-                  ? DashBoard(initIndex: 1) // todo here put home screen
+                  ? DashBoard() // todo here put home screen
                   : LinkAccountBuilder(); // todo here but link or create new
             });
       }

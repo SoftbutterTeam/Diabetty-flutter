@@ -10,8 +10,8 @@ class ColumnBuilder extends StatelessWidget {
 
   const ColumnBuilder({
     Key key,
-    @required this.itemBuilder,
     @required this.itemCount,
+    @required this.itemBuilder,
     this.mainAxisAlignment: MainAxisAlignment.start,
     this.mainAxisSize: MainAxisSize.max,
     this.crossAxisAlignment: CrossAxisAlignment.center,

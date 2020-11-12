@@ -6,7 +6,10 @@ Text subHeadingText(var text, Color color) {
   return Text(
     text,
     style: TextStyle(
-        fontFamily: fontBold, fontSize: 18.5, color: color),
+        fontFamily: fontBold,
+        fontSize: 18.5,
+        color: color,
+        fontWeight: FontWeight.bold),
   );
 }
 
