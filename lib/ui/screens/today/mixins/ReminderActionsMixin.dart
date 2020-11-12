@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 @optionalTypeArgs
 mixin ReminderActionsMixin<T extends Widget> {
   @protected
-  Reminder get reminder => reminder;
+  Reminder get reminder;
 
-  void navigateTherapyProfile(context) => null;
+  void navigateTherapyProfile(context) {
+     Navigator.pushNamed(context, therapyprofile, arguments: {'reminder' : reminder});
+  }
 
   void showSnoozeActionSheet(context) => showCupertinoModalPopup(
       context: context,

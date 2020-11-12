@@ -21,18 +21,22 @@ class _EditModalState extends State<EditModal> with AddTherapyModalsMixin {
       title: Center(child: Text('Edit Medication')),
       contentPadding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      content: Container(
-        height: size.height * 0.35,
-        width: size.width * 0.8,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildMedicationNameField(),
-            _buildAppearanceField(context),
-            _buildUnitField(context),
-            Text('Save', style: TextStyle(color: Colors.indigo)),
-          ],
+      content: IntrinsicHeight(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: size.height * 0.35),
+          child: Container(
+            width: size.width * 0.8,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildMedicationNameField(),
+                _buildAppearanceField(context),
+                _buildUnitField(context),
+                Text('Save', style: TextStyle(color: Colors.indigo)),
+              ],
+            ),
+          ),
         ),
       ),
     );

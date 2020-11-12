@@ -33,9 +33,13 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   double opacity;
 
   @override
+  
+  Reminder get reminder => widget.reminder;
+
+  @override
   void initState() {
-    colorToFade = widget.reminder.isComplete ? Colors.green : Colors.grey;
-    opacity = widget.reminder.isComplete ? .3 : .3;
+    colorToFade = reminder.isComplete ? Colors.green : Colors.grey;
+    opacity = reminder.isComplete ? .3 : .3;
     super.initState();
   }
 
@@ -93,11 +97,11 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SvgPicture.asset(
-            appearance_iconss[widget.reminder.apperance],
+            appearance_iconss[reminder.apperance],
             width: 30,
             height: 30,
           ),
-          text(widget.reminder.name),
+          text(reminder.name),
           Row(
             children: [
               SizedBox(width: 10),
@@ -105,7 +109,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               SizedBox(width: 10),
               text(
                   'Scheduled for ' +
-                      DateFormat('dd/MM/yy').format(widget.reminder.time),
+                      DateFormat('dd/MM/yy').format(reminder.time),
                   fontSize: 12.0),
             ],
           ),
@@ -114,7 +118,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               SizedBox(width: 10),
               Icon(Icons.filter_center_focus, size: 20),
               SizedBox(width: 10),
-              text('Take ' + 'widget.reminder.dose.toString()' + ' pill(s)',
+              text('Take ' + 'reminder.dose.toString()' + ' pill(s)',
                   fontSize: 12.0),
             ],
           ),
@@ -134,9 +138,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 child: Column(
                   children: [
                     SvgPicture.asset(
-                      appearance_iconss[(widget.reminder.apperance == null)
+                      appearance_iconss[(reminder.apperance == null)
                           ? 0
-                          : widget.reminder.apperance],
+                          : reminder.apperance],
                       width: 30,
                       height: 30,
                     ),
@@ -148,7 +152,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 5, top: 5),
-                    child: text(widget.reminder.name,
+                    child: text(reminder.name,
                         fontSize: 18.0,
                         textColor: Colors.black,
                         fontFamily: fontBold,
@@ -157,9 +161,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   Padding(
                     padding: EdgeInsets.only(left: 5, bottom: 10),
                     child: text(
-                        intakeAdvice[(widget.reminder.adviceIndex == null)
+                        intakeAdvice[(reminder.adviceIndex == null)
                             ? 0
-                            : widget.reminder.adviceIndex],
+                            : reminder.adviceIndex],
                         fontSize: 15.0,
                         textColor: Colors.black87,
                         fontFamily: fontSemibold,
@@ -182,9 +186,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               SizedBox(width: 20),
               text(
                   'Scheduled for ' +
-                      DateFormat('dd/MM/yy').format(widget.reminder.time) +
+                      DateFormat('dd/MM/yy').format(reminder.time) +
                       ' at ' +
-                      widget.reminder.time.formatTime(),
+                      reminder.time.formatTime(),
                   fontSize: 12.0),
             ],
           ),
@@ -196,9 +200,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               SizedBox(width: 20),
               text(
                   'Take ' +
-                      widget.reminder.dose.toString() +
+                      reminder.dose.toString() +
                       ' ' +
-                      unitTypes[widget.reminder.doseUnitIndex],
+                      unitTypes[reminder.doseUnitIndex],
                   fontSize: 12.0),
             ],
           ),
@@ -212,7 +216,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
       color: Colors.white,
       child: Container(
           decoration: BoxDecoration(
-              color: widget.reminder.isComplete ? Colors.greenAccent : null,
+              color: reminder.isComplete ? Colors.greenAccent : null,
               gradient: RadialGradient(
                 radius: 5,
                 tileMode: TileMode.mirror,
@@ -249,7 +253,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   Widget _buildFooter(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: widget.reminder.isComplete ? Colors.greenAccent : null,
+            color: reminder.isComplete ? Colors.greenAccent : null,
             gradient: RadialGradient(
               radius: 5,
               tileMode: TileMode.mirror,
@@ -294,6 +298,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   void _takenActionSheet(BuildContext context) {
     showTakenActionSheet(context);
   }
+
+  
 }
 
 class ReminderModalFooterButton extends StatelessWidget {

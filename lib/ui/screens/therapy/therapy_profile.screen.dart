@@ -20,8 +20,15 @@ class TherapyProfileScreen extends StatefulWidget {
 class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     with ReminderActionsMixin {
   final int count = 0;
+
+  @override
+  // TODO: implement reminder
+  Reminder get reminder => widget.reminder;
+
   @override
   Widget build(BuildContext context) {
+    print('£4');
+    print((ModalRoute.of(context).settings.arguments as Map).toString());
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
@@ -123,7 +130,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                 SizedBox(width: size.width * 0.05),
                 Column(
                   children: [
-                    Text('Medication Name',
+                    Text(reminder.name,
                         style: TextStyle(
                           fontSize: 22.0,
                           color: Colors.white,

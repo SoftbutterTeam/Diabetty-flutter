@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    print('@@@@££££££££££££££££4927283');
+    final Map arguments = settings.arguments as Map;
     switch (settings.name) {
       case login:
         return MaterialPageRoute(
@@ -23,9 +25,10 @@ class Router {
         return MaterialPageRoute(
           settings: settings,
             builder: (BuildContext context) { 
-                print((settings.arguments as Map)['reminder'].toString());
-                print((ModalRoute.of(context).settings.arguments as Map)['reminder'].toString());
-              return TherapyProfileScreen()});
+              // print('@@@@££££££££££££££££4927283');
+                // print((settings.arguments).toString());
+                // print((ModalRoute.of(context).settings.arguments).toString());
+              return TherapyProfileScreen(reminder: arguments['reminder']);});
       case appsettings:
         return MaterialPageRoute(
             builder: (BuildContext context) => SettingsScreen());
