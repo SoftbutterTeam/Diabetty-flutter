@@ -36,8 +36,7 @@ class _JournalScreenState extends State<JournalScreen>
   Widget build(BuildContext context) {
     return JournalBackground(
       header: JournalHeader(journal: journal),
-      child: SingleChildScrollView(
-          scrollDirection: Axis.vertical, child: _body(context)),
+      child: _body(context),
     );
   }
 
@@ -47,24 +46,26 @@ class _JournalScreenState extends State<JournalScreen>
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           SizedBox(width: size.width, height: size.height * 0.25),
-          Container(
-            padding: EdgeInsets.only(top: 5),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: Offset(0, -1),
-                  ),
-                ],
-                border: Border(
-                    top: BorderSide(color: Colors.transparent, width: 1))),
+          Expanded(
             child: Container(
-              width: size.width,
-              margin: EdgeInsets.only(top: 5, left: 5, right: 5),
-              child: _buildJournalCards(context),
+              padding: EdgeInsets.only(top: 5),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: Offset(0, -1),
+                    ),
+                  ],
+                  border: Border(
+                      top: BorderSide(color: Colors.transparent, width: 1))),
+              child: Container(
+                width: size.width,
+                margin: EdgeInsets.only(top: 5, left: 5, right: 5),
+                child: _buildJournalCards(context),
+              ),
             ),
           ),
         ]);
