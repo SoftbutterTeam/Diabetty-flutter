@@ -35,7 +35,7 @@ class JournalHeader extends StatelessWidget {
                 child: Align(
                   child: Icon(
                     Icons.arrow_back_ios,
-                    size: 20,
+                    size: 18,
                   ),
                   alignment: Alignment.centerLeft,
                 ),

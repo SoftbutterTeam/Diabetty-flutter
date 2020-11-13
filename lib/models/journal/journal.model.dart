@@ -1,4 +1,4 @@
-import 'package:diabetty/models/journal/journal_entry.moel.dart';
+import 'package:diabetty/models/journal/journal_entry.model.dart';
 
 class Journal {
   String userId;
