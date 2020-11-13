@@ -34,14 +34,16 @@ class TherapyRepository {
     }
   }
 
-  Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(
-      String userId) async {
+  Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(String userId,
+      {bool local}) async {
     try {
+      Source source = local ? Source.cache : Source.server;
+
       var result = await _db
           .collection("users")
           .document(userId)
           .collection('therapies')
-          .getDocuments();
+          .getDocuments(source: source);
 
       var data = (result.documents.map((e) {
         var json = Map<String, dynamic>.from(e.data)..['id'] = e.documentID;

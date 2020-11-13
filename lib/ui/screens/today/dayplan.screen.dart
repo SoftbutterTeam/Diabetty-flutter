@@ -87,10 +87,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         duration: Duration(milliseconds: 200),
         reverseDuration: Duration(milliseconds: 200));
     _animation = Tween<double>(begin: 0, end: 0.173).animate(_dateController);
-
     manager.pushAnimation = _dateController;
     circleMinimized = false;
-
     _minController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 600));
     _minAnimationRotate =

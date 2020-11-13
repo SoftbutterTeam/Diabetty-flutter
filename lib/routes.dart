@@ -1,3 +1,4 @@
+import 'package:diabetty/ui/screens/diary/a_journal/journal.screen.dart';
 import 'package:diabetty/ui/screens/diary/add_journal/add_journal.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    print('@@@@££££££££££££££££4927283');
     final Map arguments = settings.arguments as Map;
     switch (settings.name) {
       case login:
@@ -23,18 +23,19 @@ class Router {
             builder: (BuildContext context) => AddMedicationScreenBuilder());
       case therapyprofile:
         return MaterialPageRoute(
-          settings: settings,
-            builder: (BuildContext context) { 
-              // print('@@@@££££££££££££££££4927283');
-                // print((settings.arguments).toString());
-                // print((ModalRoute.of(context).settings.arguments).toString());
-              return TherapyProfileScreen(reminder: arguments['reminder']);});
+            settings: settings,
+            builder: (BuildContext context) =>
+                TherapyProfileScreen(reminder: arguments['reminder']));
       case appsettings:
         return MaterialPageRoute(
             builder: (BuildContext context) => SettingsScreen());
       case addJournal:
         return MaterialPageRoute(
-            builder: (BuildContext context) => AddJournalScreen());
+            builder: (BuildContext context) => AddJournalScreenBuilder());
+      case aJournal:
+        return MaterialPageRoute(
+            builder: (BuildContext context) =>
+                JournalScreen(journal: arguments['journal']));
       case diary:
         return PageRouteBuilder(
             pageBuilder: (_, a1, a2) => DashBoard(initIndex: 0),
@@ -68,3 +69,4 @@ const String therapyprofile = '/therapy/therapyprofile';
 const String appsettings = '/settings';
 const String appearanceSettings = '/appearanceSettings';
 const String addJournal = '/diary/addjournal';
+const String aJournal = '/diary/journal';

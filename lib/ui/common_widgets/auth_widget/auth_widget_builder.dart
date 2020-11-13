@@ -1,3 +1,6 @@
+import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/diary.bloc.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:flutter/material.dart';
@@ -26,14 +29,7 @@ class AuthWidgetBuilder extends StatelessWidget {
               builder: (BuildContext context, asnapshot) {
                 print(asnapshot.data != null ? asnapshot.data.toJson() : null);
                 if (user != null) {
-                  return MultiProvider(
-                    providers: [
-                      Provider<User>.value(value: user),
-
-                      // NOTE: Any other user-bound providers here can be added here
-                    ],
-                    child: builder(context, snapshot, asnapshot),
-                  );
+                  return builder(context, snapshot, asnapshot);
                 }
                 return builder(context, snapshot, asnapshot);
               });

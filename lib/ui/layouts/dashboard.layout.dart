@@ -25,7 +25,7 @@ class _DashBoardState extends State<DashBoard> {
   int currentIndex = 0;
 
   var _pages = [
-    DiaryScreen(),
+    DiaryScreenBuilder(),
     DayPlanScreenBuilder(),
     DrafttScreen(),
     TherapyScreenBuilder()

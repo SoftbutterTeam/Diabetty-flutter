@@ -1,4 +1,5 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
@@ -50,7 +51,11 @@ class MyApp extends StatelessWidget {
       initialAuthServiceType: initialAuthServiceType,
     );
     AppContext appContext = new AppContext(authService)..init();
-
+    TherapyManager therapyManager = TherapyManager(appContext: appContext)
+      ..init();
+    DayPlanManager dayPlanManager = DayPlanManager(appContext: appContext)
+      ..init();
+    DiaryBloc diaryBloc = DiaryBloc(appContext: appContext)..init();
     return MultiProvider(
         providers: [
           // ignore: todo
@@ -69,12 +74,14 @@ class MyApp extends StatelessWidget {
                 appContext.dispose(),
           ),
           ChangeNotifierProvider<TherapyManager>(
-            create: (_) => TherapyManager(appContext: appContext)..init(),
+            create: (_) => therapyManager,
           ),
           ChangeNotifierProvider<DayPlanManager>(
-            create: (_) => DayPlanManager(appContext: appContext)..init(),
+            create: (_) => dayPlanManager,
           ),
-
+          ChangeNotifierProvider<DiaryBloc>(
+            create: (_) => diaryBloc,
+          ),
           Provider<EmailSecureStore>(
             create: (_) => EmailSecureStore(
               flutterSecureStorage: FlutterSecureStorage(),

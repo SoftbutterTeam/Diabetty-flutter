@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/repositories/therapy.repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class TherapyService {
   TherapyRepository therapyRepo = TherapyRepository();
@@ -16,8 +15,9 @@ class TherapyService {
     }
   }
 
-  Future<List<Therapy>> getTherapies(String uid) async {
-    final therapies = (await therapyRepo.getAllTherapies(uid)).data;
+  Future<List<Therapy>> getTherapies(String uid, {bool local: false}) async {
+    final therapies =
+        (await therapyRepo.getAllTherapies(uid, local: local)).data;
     if (therapies == null) {
       print('init null');
       return List();
@@ -44,9 +44,5 @@ class TherapyService {
 
       return therapy;
     }).toList();
-  }
-
-  void dispose() {
-    return null;
   }
 }

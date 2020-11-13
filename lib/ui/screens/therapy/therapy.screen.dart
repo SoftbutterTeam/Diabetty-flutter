@@ -73,31 +73,23 @@ class _TherapyScreenState extends State<TherapyScreen> {
   _buildTherapiesList(BuildContext context) {
     return StreamBuilder(
         stream: manager.therapyStream,
+        initialData: manager.usersTherapies,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.length == 0) {
+          if (snapshot.data.isEmpty) {
             print(snapshot.data.toString());
             return Container(
               child: null,
             );
-          } else if (snapshot.hasError) {
-            print(snapshot.error.toString());
-            return Column(
-              children: [
-                Center(
-                  child: text('Error'),
-                ),
-              ],
-            );
           }
-          List<Therapy> therapiesData = snapshot.data;
+          List<Therapy> therapies = snapshot.data;
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: therapiesData.length,
+                itemCount: therapies.length,
                 itemBuilder: (context, index) {
                   return TherapyCard(
-                    therapyData: therapiesData[index],
+                    therapyData: therapies[index],
                   );
                 }),
           );

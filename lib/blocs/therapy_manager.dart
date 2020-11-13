@@ -15,45 +15,40 @@ class TherapyManager extends Manager {
   final AppContext appContext;
   AuthService authService;
   List<Therapy> usersTherapies = List();
-  String uid;
-
-  StreamController<List<Therapy>> _dataController = StreamController();
+  String get uid => this.appContext.user?.uid;
 
   AddTherapyForm therapyForm;
 
-  Stream<List<Therapy>> _therapyStream() =>
-      therapyService.therapyStream(this.appContext.user.uid);
+  Stream<List<Therapy>> _therapyStream() => therapyService.therapyStream(uid);
 
   Stream<List<Therapy>> get therapyStream => this._therapyStream();
   void resetForm() => therapyForm = new AddTherapyForm();
 
   @override
   void dispose() {
-    _dataController.close();
     super.dispose();
   }
 
   void init() async {
     super.init();
-    print('Init is runnning');
+    print('Therapy Init is runnning');
     authService = appContext.authService;
-    this.uid = appContext.user?.uid;
-    //usertherapies = [therapyService.getTherapies(uid))
-    this._therapyStream().listen((event) async {
-      usersTherapies = event;
-      usersTherapies ??= List();
-      print('Listennn');
-    });
+    if (uid != null) {
+      usersTherapies = await therapyService.getTherapies(uid, local: true);
+      this._therapyStream().listen((event) async {
+        usersTherapies = event;
+        usersTherapies ??= List();
+      });
+    }
   }
 
   Future<void> submitAddTherapy(AddTherapyForm addForm) async {
     try {
       Therapy therapy = addForm.toTherapy();
-      therapy.userId = appContext.user.uid;
+      therapy.userId = uid;
       print(therapy.userId);
       await therapyService.addTherapy(therapy);
     } catch (e) {
-      print('herrrre');
       print(e.toString());
       rethrow;
     }

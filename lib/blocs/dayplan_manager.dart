@@ -20,6 +20,8 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   final AppContext appContext;
   TherapyManager therapyManager;
 
+  String get uid => this.appContext.user?.uid;
+
   AnimationController pushAnimation;
   DatePickerController dateController = DatePickerController();
   DateTime _currentDateStamp;
@@ -34,8 +36,10 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   Stream<List<Reminder>> get dataStream => _dataController.stream;
 
   set currentDateStamp(DateTime value) {
-    if (value.isSameDayAs(DateTime.now())) _currentDateStamp = null;
-    _currentDateStamp = value;
+    if (value.isSameDayAs(DateTime.now()))
+      _currentDateStamp = null;
+    else
+      _currentDateStamp = value;
     notifyListeners();
   }
 
