@@ -144,30 +144,30 @@ class _TherapyCardState extends State<TherapyCard>
                     fontFamily: fontMedium,
                     fontSize: 18.0,
                     overflow: TextOverflow.ellipsis),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              sound = !sound;
-                            });
-                          },
-                          child: SvgPicture.asset(
-                            (sound)
-                                ? 'assets/icons/navigation/essentials/alarm-bell.svg'
-                                : 'assets/icons/navigation/essentials/disable-alarm.svg',
-                            height: 25,
-                            width: 25,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // Expanded(
+                //   child: Padding(
+                //     padding: EdgeInsets.only(right: 15.0),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.end,
+                //       children: [
+                //         GestureDetector(
+                //           onTap: () {
+                //             setState(() {
+                //               sound = !sound;
+                //             });
+                //           },
+                //           child: SvgPicture.asset(
+                //             (sound)
+                //                 ? 'assets/icons/navigation/essentials/alarm-bell.svg'
+                //                 : 'assets/icons/navigation/essentials/disable-alarm.svg',
+                //             height: 25,
+                //             width: 25,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
