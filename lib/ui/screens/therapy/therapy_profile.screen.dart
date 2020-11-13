@@ -59,7 +59,11 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
   Column _buildNoActiveReminderBody(Size size) {
     return Column(
       children: [
-        Icon(Icons.error_outline, size: 50),
+        GestureDetector(
+          onDoubleTap: () => print('yeyeye'),
+          onTap: () => print('yeyeye'),
+          child: Icon(Icons.error_outline, size: 50),
+        ),
         SizedBox(height: size.height * 0.02),
         Text(
           'No Active Reminder',
@@ -114,11 +118,13 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
             colors: [Colors.orange[900], Colors.orange[600]]),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 30, top: 50),
+        padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
         child: Column(
           children: [
             Row(
               children: [
+                Icon(Icons.arrow_back_ios, color: Colors.white, size: 25),
+                SizedBox(width: size.width * 0.05),
                 Container(
                   height: size.height * 0.1,
                   width: size.width * 0.2,
@@ -180,25 +186,22 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      final actionsheet = addOptionsActionSheet(context);
-                      showCupertinoModalPopup(
-                          context: context, builder: (context) => actionsheet);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white60),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 15, top: 5, bottom: 5),
-                        child: Text(
-                          "Add",
-                          style: TextStyle(color: Colors.white, fontSize: 18.0),
-                        ),
+                GestureDetector(
+                  onTap: () {
+                    final actionsheet = addOptionsActionSheet(context);
+                    showCupertinoModalPopup(
+                        context: context, builder: (context) => actionsheet);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white60),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15.0, right: 15, top: 5, bottom: 5),
+                      child: Text(
+                        "Add",
+                        style: TextStyle(color: Colors.white, fontSize: 18.0),
                       ),
                     ),
                   ),

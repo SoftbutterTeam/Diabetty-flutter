@@ -111,3 +111,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
         });
   }
 }
+
+
+// Navigator.pushNamed(context, appsettings);

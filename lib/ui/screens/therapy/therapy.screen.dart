@@ -47,26 +47,24 @@ class _TherapyScreenState extends State<TherapyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _body(context),
+    return Background(
+      child: SingleChildScrollView(
+          scrollDirection: Axis.vertical, child: _body(context)),
     );
   }
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Background(
-      onPressed2: () {
-        Navigator.pushNamed(context, appsettings);
-      },
-      onPressed: () {
-        final actionsheet = addTherapyActionSheet(context);
-        showCupertinoModalPopup(
-            context: context, builder: (context) => actionsheet);
-      },
-      child: Container(
-        width: size.width,
-        child: _buildTherapiesList(context),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 10),
+          height: size.height,
+          width: size.width,
+          child: _buildTherapiesList(context),
+        ),
+      ],
     );
   }
 
@@ -83,7 +81,7 @@ class _TherapyScreenState extends State<TherapyScreen> {
           }
           List<Therapy> therapies = snapshot.data;
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 25),
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: therapies.length,
@@ -96,30 +94,4 @@ class _TherapyScreenState extends State<TherapyScreen> {
         });
   }
 
-  CupertinoActionSheet addTherapyActionSheet(BuildContext context) {
-    return CupertinoActionSheet(
-      actions: [
-        CupertinoActionSheetAction(
-          child: text("Medication", fontSize: 18.0, textColor: Colors.indigo),
-          onPressed: () {
-            final TherapyManager therapyManager =
-                Provider.of<TherapyManager>(context, listen: false);
-            therapyManager.resetForm();
-            print('this far');
-            Navigator.pushReplacementNamed(context, addmedication);
-          },
-        ),
-        CupertinoActionSheetAction(
-          child: text("Other Types", fontSize: 18.0, textColor: Colors.indigo),
-          onPressed: () {},
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: Container(color: Colors.white, child: Text('Cancel')),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-  }
 }

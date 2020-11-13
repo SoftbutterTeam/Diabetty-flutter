@@ -23,7 +23,7 @@ class _TherapyCardState extends State<TherapyCard>
   bool sound = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build2(BuildContext context) {
     super.build(context);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
@@ -99,6 +99,79 @@ class _TherapyCardState extends State<TherapyCard>
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+              minHeight: size.height * 0.07,
+              maxHeight: size.height * 0.12,
+              minWidth: size.width * 0.3,
+              maxWidth: size.width * 0.5),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 4,
+                  offset: Offset(0, -1),
+                ),
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(13)),
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 15, right: 20),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: SvgPicture.asset(
+                      appearance_iconss[
+                          widget.therapyData.medicationInfo.appearanceIndex],
+                      width: 30,
+                      height: 30,
+                    ),
+                  ),
+                ),
+                text(widget.therapyData.name,
+                    textColor: Colors.black,
+                    fontFamily: fontMedium,
+                    fontSize: 18.0,
+                    overflow: TextOverflow.ellipsis),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              sound = !sound;
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            (sound)
+                                ? 'assets/icons/navigation/essentials/alarm-bell.svg'
+                                : 'assets/icons/navigation/essentials/disable-alarm.svg',
+                            height: 25,
+                            width: 25,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   @override
