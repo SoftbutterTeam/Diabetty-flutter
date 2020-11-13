@@ -1,5 +1,6 @@
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/header.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/journal_action.mixin.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/journal_background.dart';
@@ -70,14 +71,23 @@ class _JournalScreenState extends State<JournalScreen>
   }
 
   Widget _buildJournalCards(BuildContext context) {
-    return ListView.builder(
-      itemCount: journal.journalEntries.length,
-      itemBuilder: (context, index) {
-        return JournalEntryCard(
-          journal: this.journal,
-          journalEntry: this.journal.journalEntries[index],
-        );
-      },
-    );
+    //TODO not needed
+    this.journal.dummyJournalData();
+    return (journal.journalEntries.isNotEmpty)
+        ? ListView.builder(
+            itemCount: journal.journalEntries.length,
+            itemBuilder: (context, index) {
+              return JournalEntryCard(
+                journal: this.journal,
+                journalEntry: this.journal.journalEntries[index],
+              );
+            },
+          )
+        : SizedBox(
+            height: 300,
+            child: Container(
+              child: text('Add one bruddah'),
+            ),
+          );
   }
 }
