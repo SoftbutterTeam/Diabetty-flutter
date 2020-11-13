@@ -1,3 +1,5 @@
+import 'package:random_string/random_string.dart' as random;
+
 class JournalEntry {
   String userId;
   String id;
@@ -6,6 +8,7 @@ class JournalEntry {
   double recordEntry;
   String notes;
   DateTime createdAt;
+  int reportUnitsIndex;
 
   JournalEntry(
       {this.userId,
@@ -14,7 +17,15 @@ class JournalEntry {
       this.type,
       this.createdAt,
       this.recordEntry,
-      this.notes});
+      this.notes,
+      this.reportUnitsIndex}) {
+    this.id = this.id ?? generateUID();
+  }
+
+  String generateUID() {
+    return random.randomAlphaNumeric(6) +
+        DateTime.now().microsecondsSinceEpoch.toString();
+  }
 
   loadFromJson(Map<String, dynamic> json) {
     this.id = json['id'];
@@ -24,6 +35,7 @@ class JournalEntry {
     this.createdAt = json['createdAt'];
     this.recordEntry = json['recordEntry'];
     this.notes = json['notes'];
+    this.reportUnitsIndex = json['reportUnitsIndex'];
   }
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +45,7 @@ class JournalEntry {
         'type': this.type,
         'recordEntry': this.recordEntry,
         'notes': this.notes,
-        'createdAt': this.createdAt
+        'createdAt': this.createdAt,
+        'reportUnitsIndex': this.reportUnitsIndex
       };
 }

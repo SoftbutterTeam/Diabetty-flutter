@@ -47,4 +47,35 @@ class Journal {
     jsonList.toList();
     return jsonList;
   }
+
+  dummyJournalData() {
+    JournalEntry journalEntry1 = new JournalEntry(
+        userId: this.userId,
+        journalId: this.id,
+        type: 'record',
+        recordEntry: 1,
+        reportUnitsIndex: this.reportUnitsIndex,
+        createdAt: DateTime.now());
+
+    JournalEntry journalEntry2 = new JournalEntry(
+        userId: this.userId,
+        journalId: this.id,
+        type: 'record',
+        recordEntry: 4,
+        reportUnitsIndex: this.reportUnitsIndex,
+        createdAt: DateTime.now());
+
+    JournalEntry journalEntry3 = new JournalEntry(
+        userId: this.userId,
+        journalId: this.id,
+        type: 'record',
+        recordEntry: 69,
+        reportUnitsIndex: this.reportUnitsIndex,
+        createdAt: DateTime.now());
+
+    this.journalEntries = List()
+      ..add(journalEntry1)
+      ..add(journalEntry2)
+      ..add(journalEntry3);
+  }
 }
