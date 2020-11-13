@@ -38,7 +38,7 @@ class JournalEntryCard extends StatelessWidget with JournalActionsMixin {
               ),
               child: Container(
                 alignment: Alignment.centerLeft,
-                child: Text(journalEntry?.recordEntry ?? ''),
+                child: Text(journalEntry?.recordEntry.toString() ?? ''),
               ),
             ),
           ),
