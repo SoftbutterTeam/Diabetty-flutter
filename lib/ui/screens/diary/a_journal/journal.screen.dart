@@ -70,10 +70,13 @@ class _JournalScreenState extends State<JournalScreen>
   }
 
   Widget _buildJournalCards(BuildContext context) {
-    return ColumnBuilder(
-      itemCount: 10,
+    return ListView.builder(
+      itemCount: journal.journalEntries.length,
       itemBuilder: (context, index) {
-        return JournalEntryCard();
+        return JournalEntryCard(
+          journal: this.journal,
+          journalEntry: this.journal.journalEntries[index],
+        );
       },
     );
   }

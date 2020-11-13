@@ -94,7 +94,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
         initialData: manager.usersJournals,
         builder: (context, snapshot) {
           if (manager.usersJournals.isEmpty) {
-            print('nulla');
             return Container(
               child: null,
             );
@@ -111,6 +110,5 @@ class _DiaryScreenState extends State<DiaryScreen> {
         });
   }
 }
-
 
 // Navigator.pushNamed(context, appsettings);
