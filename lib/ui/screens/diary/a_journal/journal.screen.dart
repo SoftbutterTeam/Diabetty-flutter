@@ -45,7 +45,7 @@ class _JournalScreenState extends State<JournalScreen>
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          SizedBox(width: size.width, height: size.height * 0.25),
+          SizedBox(width: size.width, height: size.height * 0.25, child: null),
           Expanded(
             child: Container(
               padding: EdgeInsets.only(top: 5),

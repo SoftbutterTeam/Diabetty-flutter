@@ -93,7 +93,7 @@ class AddTherapyForm {
                   silent: settings.silent,
                   enableCriticalAlerts: settings.enableCriticalAlerts,
                 ),
-                reminders: this.reminderRules,
+                reminderRules: this.reminderRules,
                 startDate: this.startDate ?? DateTime.now(),
                 endDate: (this.endDate == null ||
                         DateTime(this.endDate.year, this.endDate.month,

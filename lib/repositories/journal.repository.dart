@@ -33,7 +33,7 @@ class JournalRepository {
       journal.userId = (await _firebaseAuth.currentUser()).uid;
     Map<String, dynamic> journalData = journal.toJson();
     var timeNow = DateTime.now().toString();
-    journalData['lastUpdated'] = timeNow;
+    journalData['updatedAt'] = timeNow;
 
     await _db
         .collection('users')

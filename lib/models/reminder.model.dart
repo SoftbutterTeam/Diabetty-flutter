@@ -42,10 +42,10 @@ class Reminder with DateMixin {
   }
 
   bool get isComplete => takenAt != null;
-  // bool get isSnoozed => rescheduled != null && !rescheduled;
+  bool get isSnoozed => rescheduledTime != null;
   /*bool get isMissed =>
       takenAt == null &&
-      DateTime.now().compareTo(time.add(schedule.window)) > 0;
+      DateTime.now().compareTo(time.add(this.window)) > 0;
 */
   bool get isActive => takenAt != null && DateTime.now().compareTo(time) > 0;
 
