@@ -75,11 +75,10 @@ class _IconWidgetState extends State<IconWidget> {
           color: Colors.amber,
           border: Border.all(color: Colors.transparent, width: 0.5)),
       child: Center(
-        child: Icon(
-          Icons.check,
-          color: Colors.white,
-          size: 12,
-        ),
+        child: SvgPicture.asset(
+              'assets/icons/navigation/checkbox/tick.svg',
+              color: Colors.white, //Colors.white
+            ),
       ),
     );
   }
@@ -111,11 +110,10 @@ class _IconWidgetState extends State<IconWidget> {
           color: Colors.amber,
           border: Border.all(color: Colors.transparent, width: 0.5)),
       child: Center(
-        child: Icon(
-          Icons.check,
-          color: Colors.white,
-          size: 12,
-        ),
+        child: SvgPicture.asset(
+              'assets/icons/navigation/checkbox/tick.svg',
+              color: Colors.greenAccent[700], //Colors.white
+            ),
       ),
     );
   }
