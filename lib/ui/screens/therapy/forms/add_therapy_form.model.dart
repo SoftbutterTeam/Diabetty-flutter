@@ -30,13 +30,13 @@ class AddTherapyForm {
   }
 
   set setMinRest(Duration x) {
-    print(x.toString());
+    //print(x.toString());
 
     if ((x == null) || (Duration(hours: 0, minutes: 5).compareTo(x) > 0))
       window = null;
     else
       minRest = x;
-    print(minRest.toString());
+    //print(minRest.toString());
   }
 
   AddTherapyForm(
@@ -74,7 +74,7 @@ class AddTherapyForm {
         name: this.name,
         medicationInfo: MedicationInfo(
           appearanceIndex: this.apperanceIndex,
-          intakeAdvice: List<String>()..add(intakeAdvice[intakeAdviceIndex]),
+          intakeAdvices: List<int>()..add(intakeAdviceIndex),
           name: this.name,
           strength: this.strength,
           unitIndex: this.unitsIndex,
@@ -146,7 +146,6 @@ class AddTherapyForm {
     if (toThrow) throw Exception("Must have at least 1 Reminder");
     return false;
   }
-
 
   bool isPlannedMode() => this.mode == 'planned';
 

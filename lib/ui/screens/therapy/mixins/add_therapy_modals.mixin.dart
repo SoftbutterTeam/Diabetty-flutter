@@ -241,7 +241,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       if (picked.length > 1 && isSameDayAs(picked[0], picked[1]))
         picked.removeAt(1);
       else if (picked.length > 1) {
-        print(picked);
+        //print(picked);
         therapyForm.startDate = picked[0];
         therapyForm.endDate = picked[1];
         setState(() {});
@@ -283,6 +283,6 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   }
 
   saveAsNeededData() {
-    print('hey');
+    //print('hey');
   }
 }

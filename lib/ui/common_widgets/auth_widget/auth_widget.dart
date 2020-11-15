@@ -33,17 +33,17 @@ class AuthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appContext = Provider.of<AppContext>(context, listen: false);
-    print(1);
+    //print(1);
     if (userSnapshot.connectionState == ConnectionState.active &&
         aUserSnapshot.connectionState == ConnectionState.active) {
-      print(3);
+      //print(3);
       if (userSnapshot.hasData) {
-        print(4);
+        //print(4);
 
         return FutureBuilder<UserModel.User>(
             future: appContext.lazyFetchUser(),
             builder: (context, snapshot) {
-              print('snappshot ' + snapshot.data.toString());
+              //print('snappshot ' + snapshot.data.toString());
               if (snapshot.connectionState != ConnectionState.done)
                 return LoadingScreen();
               return snapshot.hasData
@@ -51,7 +51,7 @@ class AuthWidget extends StatelessWidget {
                   : LinkAccountBuilder(); // todo here but link or create new
             });
       }
-      print(2);
+      //print(2);
       return LoginScreenBuilder(); //unauthorisedNavigateTo;
 
     } else {

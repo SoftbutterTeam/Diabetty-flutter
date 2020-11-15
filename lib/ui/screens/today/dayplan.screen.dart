@@ -102,7 +102,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   Widget _body(BuildContext context) {
-    print(_minAnimationRotate.value.toString() + "ds");
+    //print(_minAnimationRotate.value.toString() + "ds");
     Size size = MediaQuery.of(context).size;
     double heightOfCircleSpace = size.height * 0.35;
     return Background(
@@ -204,7 +204,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
     List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
 
-    if (timeSlots.length == 0) return SizedBox();
+    if (timeSlots.length == 0) return Container();
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -222,7 +222,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   Widget _buildCirclePlan(BuildContext context, AsyncSnapshot snapshot) {
     var size = MediaQuery.of(context).size;
     List<Reminder> reminders = List.from(manager.getFinalRemindersList());
-    print('remidners length ' + reminders.length.toString());
+    //print('remidners length ' + reminders.length.toString());
     calcTimeFrames();
     return Container(
         // padding: EdgeInsets.only(bottom: 10),
@@ -278,12 +278,12 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   List<Reminder> getReminderOnIndex(int index, List<Reminder> reminders) {
     DateTime indexTime = initalDateTime.add(Duration(minutes: index * 15));
     List<Reminder> results = [];
-    print(indexTime);
+    //print(indexTime);
     reminders.forEach((reminder) {
       if (reminder.time.roundToNearest(15).compareTo(indexTime) == 0)
         results.add(reminder);
     });
-    print(results);
+    //print(results);
     return results;
   }
 
@@ -343,7 +343,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
             manager.getFinalRemindersList())) {
-      print("0yyy");
+      //print("0yyy");
       _initialTime = TimeOfDay(hour: 0, minute: 0);
       initialAngle = -(pi / 2);
       progressAngle = (0);
@@ -356,7 +356,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
             manager.getFinalRemindersList())) {
-      print("12aaa");
+      //print("12aaa");
       _initialTime = TimeOfDay(hour: 6, minute: 0);
       initialAngle = (pi / 2);
       progressAngle = (pi);
@@ -375,19 +375,19 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
             manager.getFinalRemindersList())) {
-      print("18aaa0");
+      //print("18aaa0");
       _initialTime = TimeOfDay(hour: 6, minute: 0);
       initialAngle = (pi / 2);
       progressAngle = (pi);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
         0) {
-      print("18aaa");
+      //print("18aaa");
       _initialTime = TimeOfDay(hour: 12, minute: 0);
       initialAngle = -(pi / 2);
       progressAngle = 0;
     } else {
-      print("18aaa2");
+      //print("18aaa2");
       _initialTime = TimeOfDay(hour: 12, minute: 0);
       initialAngle = -(pi / 2);
       progressAngle = 0;
@@ -396,8 +396,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   double calcProgressTime([TimeOfDay timeOfDay, TimeOfDay limit]) {
     if (DateTime.now().compareTo(initalDateTime) <= 0) return 0;
-    print(timeOfDay);
-    print(limit);
+    //print(timeOfDay);
+    //print(limit);
     DateTime firstTime = timeOfDay == null
         ? initalDateTime
         : DateTime.now().applyTimeOfDay(timeOfDay);
@@ -409,21 +409,21 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     }
     DateTime percTimeLimit = DateTime.now();
     if (limit != null) {
-      print('yooo');
+      //print('yooo');
       if (DateTime.now()
               .compareTo(manager.currentDateStamp.applyTimeOfDay(limit)) >
           0) {
         percTimeLimit = DateTime.now().applyTimeOfDay(limit);
       }
-      print("perclimit");
-      print(percTimeLimit.toIso8601String());
+      //print("perclimit");
+      //print(percTimeLimit.toIso8601String());
     }
-    print(firstTime.toIso8601String());
+    //print(firstTime.toIso8601String());
     final double perc = (percTimeLimit.difference(firstTime).inMinutes /
             Duration(hours: 12).inMinutes) *
         100;
-    print("hella");
-    print(perc);
+    //print("hella");
+    //print(perc);
     return perc <= 100 ? perc : 100;
   }
 }

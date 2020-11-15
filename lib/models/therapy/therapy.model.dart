@@ -33,7 +33,7 @@ class Therapy {
     this.userId ??= json['userId'];
     this.name = json['name'];
     this.mode = json['mode'];
-    print(json.toString());
+    //print(json.toString());
     Schedule schedule = Schedule();
     if (json['schedule'] != null) {
       Map<String, dynamic> sheduledata =
@@ -62,17 +62,4 @@ class Therapy {
         'stock': this.stock.toJson(),
         'mode': this.mode,
       };
-
-  dummyData() {
-    MedicationInfo medicationinfo = MedicationInfo();
-    medicationinfo.dummyData();
-    this.medicationInfo = medicationinfo;
-    Schedule schedule = Schedule();
-    schedule.dummyData();
-    this.schedule = schedule;
-    this.id = "YDpBWyABH3ZluJ9sDKTCTGXCqzz1";
-    this.name = "cancer cure pls";
-    this.schedule = schedule;
-    this.medicationInfo = medicationInfo;
-  }
 }

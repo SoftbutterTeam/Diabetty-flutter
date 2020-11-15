@@ -33,7 +33,7 @@ class UserRepository {
         return false;
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 
@@ -46,7 +46,7 @@ class UserRepository {
         .document(documentId)
         .updateData(userData)
         .catchError((e) {
-      print(e);
+      //print(e);
     });
     return true;
   }
@@ -54,16 +54,16 @@ class UserRepository {
   Future<void> createUser(User user) async {
     Map<String, dynamic> userData = user.toJson();
     if (user.uid == null) {
-      print('no user id given in repo');
+      //print('no user id given in repo');
       return false;
     }
-    print(userData.toString());
+    //print(userData.toString());
     await _db
         .collection('users')
         .document(user.uid)
         .setData(userData)
         .catchError((e) {
-      print(e);
+      //print(e);
     });
     return true;
   }

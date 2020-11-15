@@ -38,7 +38,7 @@ class LinkAccountBuilder extends StatelessWidget {
                   future: auth.isAccountLinkable(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState != ConnectionState.done) {
-                      print('loading screen');
+                      //print('loading screen');
                       return LoadingScreen();
                     }
                     bool linkable = snapshot.data ?? false;
@@ -49,7 +49,7 @@ class LinkAccountBuilder extends StatelessWidget {
                             if (snapshot.hasError) {
                               return ErrorScreen();
                             }
-                            print('loading screen');
+                            //print('loading screen');
                             return LoadingScreen();
                           });
                     }

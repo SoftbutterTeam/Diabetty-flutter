@@ -6,34 +6,29 @@ class MedicationInfo {
   int appearanceIndex = 0;
   int typeIndex;
   int unitIndex;
-  int intakeIndex;
-  List<String> intakeAdvice;
-  //! intake advice index too? so list<int>
-  //! maybe not even  a list anymore too
-  //Turned into a list -- CAMEROWN!!!!@@@@@@@@@
+  List<int> intakeAdvices;
   Duration restDuration;
 
   MedicationInfo({
     this.name,
     this.strength,
     this.appearanceIndex = 0,
-    this.intakeAdvice,
+    this.intakeAdvices,
     this.restDuration,
     this.unitIndex,
     this.typeIndex,
-    this.intakeIndex,
   });
 
   MedicationInfo.fromJson(Map<String, dynamic> json) {
     loadFromJson(json);
   }
   Map<String, dynamic> toJson() => {
-        'appearance' : this.appearanceIndex,
+        'appearance': this.appearanceIndex,
         'restDuration':
             this.restDuration == null ? null : this.restDuration.inSeconds,
         'name': this.name,
         'strength': this.strength,
-        'intakeAdvice': this.intakeAdvice,
+        'intakeAdvices': this.intakeAdvices,
         'unit': this.unitIndex,
       };
 
@@ -46,60 +41,14 @@ class MedicationInfo {
       if (json.containsKey('name')) this.name = json['name'];
       if (json.containsKey('unit')) this.unitIndex = json['unit'];
       if (json.containsKey('strength')) this.strength = json['strength'];
-      if (json.containsKey('intakeAdvice'))
-        this.intakeAdvice = new List<String>.from(json['intakeAdvice']);
+      if (json.containsKey('intakeAdvices'))
+        this.intakeAdvices = new List<int>.from(json['intakeAdvices']);
       if (json.containsKey('appearance'))
         this.appearanceIndex = json['appearance'];
       return true;
     } catch (e) {
-      print(e);
+      //print(e);
       return false;
     }
-  }
-
-  void editAttributes({
-    String name,
-    String strength,
-    int appearance,
-    String unit,
-    List<String> intakeAdvice,
-    String restDuration,
-  }) {
-    setAllAttributes(
-        restDuration: (restDuration != null ? restDuration : this.restDuration),
-        name: (name != null ? name : this.name),
-        strength: (strength != null ? strength : this.strength),
-        intakeAdvice: (intakeAdvice != null ? intakeAdvice : this.intakeAdvice),
-        unit: (unit != null ? unit : this.unitIndex),
-        appearance: (appearance != null ? appearance : this.appearanceIndex));
-  }
-
-  void setAllAttributes({
-    Duration restDuration,
-    String name,
-    int strength,
-    List<String> intakeAdvice,
-    int unit,
-    int appearance,
-  }) {
-    this.restDuration = restDuration;
-    this.name = name;
-    this.strength = strength;
-    this.intakeAdvice = intakeAdvice;
-    this.unitIndex = unit;
-    this.appearanceIndex = appearance;
-  }
-
-  dummyData() {
-    this.appearanceIndex = 0;
-    this.intakeAdvice = [
-      "take it as much as possible",
-      "take it as much as possible"
-    ];
-    this.name = "literal poison";
-    Duration duration = new Duration(seconds: 1000);
-    this.restDuration = duration;
-    this.strength = 200;
-    this.unitIndex = 0;
   }
 }

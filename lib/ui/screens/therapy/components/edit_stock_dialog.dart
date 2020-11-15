@@ -263,12 +263,12 @@ class _EditStockDialogState extends State<EditStockDialog>
       widget.therapyForm.stock.refillAdd(currentLevelControllerToInt);
       widget.therapyForm.stock.flagLimit = flagLimitControllerToInt;
     } else {
-      print('itsnull');
+      //print('itsnull');
     }
 
     setState(() {});
     widget.manager.updateListeners();
     Navigator.pop(context);
-    print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
+    //print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
   }
 }

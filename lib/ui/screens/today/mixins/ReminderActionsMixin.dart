@@ -142,7 +142,7 @@ mixin ReminderActionsMixin<T extends Widget> {
               minuteInterval: 1,
               initialDateTime: DateTime.now(),
               onDateTimeChanged: (dateTimeChange) {
-                print(dateTimeChange);
+                //print(dateTimeChange);
               },
             ),
           );
@@ -164,7 +164,7 @@ mixin ReminderActionsMixin<T extends Widget> {
             minuteInterval: 1,
             initialDateTime: DateTime.now(),
             onDateTimeChanged: (dateTimeChange) {
-              print(dateTimeChange);
+              //print(dateTimeChange);
             },
           ),
         );

@@ -71,7 +71,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   List<Reminder> getProjectedReminders({DateTime date}) {
     date ??= currentDateStamp;
     List<Therapy> therapies = List.of(therapyManager.usersTherapies);
-    print(therapies.length);
+    //print(therapies.length);
     List<Reminder> projectedReminders = List();
     therapies
         .where(
@@ -82,7 +82,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
           projectedReminders.add(Reminder.generated(therapy, rule, date));
       });
     });
-    print(projectedReminders);
+    //print(projectedReminders);
     return projectedReminders;
   }
 

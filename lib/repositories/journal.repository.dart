@@ -14,7 +14,7 @@ class JournalRepository {
     Map<String, dynamic> journalData = journal.toJson();
     var timeNow = DateTime.now().toString();
     journalData['createdAt'] ??= timeNow;
-    journalData['lastUpdated'] = timeNow;
+    journalData['updatedAt'] = timeNow;
 
     await _db
         .collection('users')
@@ -22,6 +22,25 @@ class JournalRepository {
         .collection('journals')
         .document()
         .setData(journalData)
+        .catchError((e) {
+      //print(e);
+    });
+    return;
+  }
+
+  Future<void> updateJournal(Journal journal) async {
+    if (journal.userId == null)
+      journal.userId = (await _firebaseAuth.currentUser()).uid;
+    Map<String, dynamic> journalData = journal.toJson();
+    var timeNow = DateTime.now().toString();
+    journalData['lastUpdated'] = timeNow;
+
+    await _db
+        .collection('users')
+        .document(journal.userId)
+        .collection('journals')
+        .document()
+        .updateData(journalData)
         .catchError((e) {
       print(e);
     });
@@ -41,7 +60,7 @@ class JournalRepository {
         var json = Map<String, dynamic>.from(e.data)..['id'] = e.documentID;
         return json;
       }).toList());
-      print(data.map((e) => e.toString()));
+      //print(data.map((e) => e.toString()));
       return DataResult<List<Map<String, dynamic>>>(data: data);
     } catch (exception, stackTrace) {
       return DataResult(exception: exception, stackTrace: stackTrace);

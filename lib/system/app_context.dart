@@ -34,19 +34,19 @@ class AppContext {
 
   Future<void> init() async {
     authService.onAuthStateChanged.listen((firebaseUser) async {
-      print(' - onAuthStateChange: $firebaseUser');
+      //print(' - onAuthStateChange: $firebaseUser');
 
       _firebaseUser = firebaseUser;
       if (firebaseUser != null) {
         //await Future.delayed(Duration(seconds: 10), null);
-        print(' - got user: ${firebaseUser.uid}');
+        //print(' - got user: ${firebaseUser.uid}');
         await fetchUser(toSinkUserChange: true);
       } else {
-        print(" -- no user");
+        //print(" -- no user");
         _user = null;
         _onUserChanged.sink.add(_user);
       }
-      print(systemManagerBlocs);
+      //print(systemManagerBlocs);
       systemManagerBlocs.forEach((element) async {
         await element.init();
       });
@@ -55,7 +55,7 @@ class AppContext {
 
   Future<UserModel.User> fetchUser({bool toSinkUserChange = false}) async {
     isFetching = true;
-    print("isFetching: turned on");
+    //print("isFetching: turned on");
     _firebaseUser = (await authService.currentUser());
 
     if (_firebaseUser != null) {
@@ -65,21 +65,21 @@ class AppContext {
         _user.uid = _firebaseUser.uid;
         if (toSinkUserChange) _onUserChanged.sink.add(_user);
         isFetching = false;
-        print("isFetching: turned off");
+        //print("isFetching: turned off");
         return _user;
       } catch (exception, stackTrace) {
-        print("problem: $exception");
+        //print("problem: $exception");
         _user = null;
         if (toSinkUserChange) _onUserChanged.addError(exception, stackTrace);
         isFetching = false;
 
-        print("isFetching: turned off");
+        //print("isFetching: turned off");
 
         return _user;
       }
     } else {
       isFetching = false;
-      print("isFetching: turned off");
+      //print("isFetching: turned off");
       return null;
     }
   }

@@ -7,7 +7,7 @@ class TherapyService {
 
   Future<bool> addTherapy(Therapy therapy) async {
     try {
-      print(therapy.name);
+      //print(therapy.name);
       await therapyRepo.createTherapy(therapy);
       return true;
     } catch (e) {
@@ -19,15 +19,15 @@ class TherapyService {
     final therapies =
         (await therapyRepo.getAllTherapies(uid, local: local)).data;
     if (therapies == null) {
-      print('init null');
+      //print('init null');
       return List();
     }
-    print('init here');
+    //print('init here');
     return therapies.map<Therapy>((json) {
-      print('init map');
+      //print('init map');
       Therapy therapy = Therapy();
       therapy.id = json['id'];
-      print(therapy.id);
+      //print(therapy.id);
       return therapy..loadFromJson(json);
     }).toList();
   }

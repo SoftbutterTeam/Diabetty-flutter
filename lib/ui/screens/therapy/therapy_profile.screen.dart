@@ -30,8 +30,8 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    // print('£4');
-    // print((ModalRoute.of(context).settings.arguments as Map).toString());
+    // //print('£4');
+    // //print((ModalRoute.of(context).settings.arguments as Map).toString());
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
@@ -73,8 +73,8 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     return Column(
       children: [
         GestureDetector(
-          onDoubleTap: () => print('yeyeye'),
-          onTap: () => print('yeyeye'),
+          onDoubleTap: () => null, //print('yeyeye'),
+          onTap: () => null, //print('yeyeye'),
           child: Icon(Icons.error_outline, size: 50),
         ),
         SizedBox(height: size.height * 0.02),

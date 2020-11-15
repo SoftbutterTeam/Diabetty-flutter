@@ -91,7 +91,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
                       SizedBox(width: 15),
                       IconButton(
                         onPressed: () {
-                          print("clucked");
+                          //print("clucked");
                         },
                         padding: EdgeInsets.all(3),
                         icon: SvgPicture.asset(
@@ -192,7 +192,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
                                             child: IconButton(
                                                 onPressed: () {
                                                   // _onAlert(context, index);
-                                                  print("clucked");
+                                                  //print("clucked");
                                                 },
                                                 padding: EdgeInsets.all(3),
                                                 icon: SvgPicture.asset(
@@ -266,7 +266,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
                                       alignment: Alignment.center,
                                       child: IconButton(
                                         onPressed: () {
-                                          print("clucked");
+                                          //print("clucked");
                                           // _onAlert(context, index);
                                         },
                                         padding: EdgeInsets.all(3),
@@ -369,7 +369,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
                       (postToggle == 'list')
                           ? setPostOrientation('grid')
                           : setPostOrientation('list');
-                      print(postToggle);
+                      //print(postToggle);
                     },
                   ),
                 ),
@@ -424,7 +424,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
                       children: <Widget>[
                         IconButton(
                           onPressed: () {
-                            print('Skipped');
+                            //print('Skipped');
                           },
                           padding: EdgeInsets.all(3),
                           icon: SvgPicture.asset(
@@ -451,7 +451,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
                       children: <Widget>[
                         IconButton(
                           onPressed: () {
-                            print('Skipped');
+                            //print('Skipped');
                           },
                           padding: EdgeInsets.all(3),
                           icon: SvgPicture.asset(

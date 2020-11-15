@@ -40,7 +40,7 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: FlatButton(
-                    onPressed: () => print('yeye'),
+                    onPressed: () => null, //print('yeye'),
                     color: Colors.transparent,
                     disabledTextColor: Colors.grey,
                     disabledColor: Colors.transparent,
@@ -52,7 +52,7 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => print('yeye'),
+                  onTap: () => null ,//print('yeye'),
                   child: Container(
                     alignment: Alignment.center,
                     child: subHeadingText("Therapy", Colors.white),
@@ -87,7 +87,7 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
             final TherapyManager therapyManager =
                 Provider.of<TherapyManager>(context, listen: false);
             therapyManager.resetForm();
-            print('this far');
+            //print('this far');
             Navigator.pushReplacementNamed(context, addmedication);
           },
         ),
