@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/screens/therapy/components/custom_timer_picker.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/alarm_settings_dialog.dart';
@@ -16,6 +17,10 @@ import 'package:diabetty/extensions/string_extension.dart';
 @optionalTypeArgs
 mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   AddTherapyForm get therapyForm => therapyForm;
+
+   void navigateTherapyProfile(context) {
+     Navigator.pushNamed(context, therapyprofile, arguments: {'therapyForm' : therapyForm});
+  }
 
   void showUnitPopUp(BuildContext context) {
     var height = MediaQuery.of(context).size.height;

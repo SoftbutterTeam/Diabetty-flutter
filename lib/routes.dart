@@ -24,8 +24,7 @@ class Router {
       case therapyprofile:
         return MaterialPageRoute(
             settings: settings,
-            builder: (BuildContext context) =>
-                TherapyProfileScreen(reminder: arguments['reminder']));
+            builder: (BuildContext context) => TherapyProfileScreen());
       case appsettings:
         return MaterialPageRoute(
             builder: (BuildContext context) => SettingsScreen());

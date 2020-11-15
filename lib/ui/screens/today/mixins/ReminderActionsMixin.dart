@@ -11,9 +11,9 @@ mixin ReminderActionsMixin<T extends Widget> {
   @protected
   Reminder get reminder;
 
-  void navigateTherapyProfile(context) {
-     Navigator.pushNamed(context, therapyprofile, arguments: {'reminder' : reminder});
-  }
+  // void navigateTherapyProfile(context) {
+  //    Navigator.pushNamed(context, therapyprofile, arguments: {'reminder' : reminder});
+  // }
 
   void showSnoozeActionSheet(context) => showCupertinoModalPopup(
       context: context,

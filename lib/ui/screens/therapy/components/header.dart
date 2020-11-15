@@ -28,45 +28,51 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
 
     return Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 30),
+        margin: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           color: Colors.transparent,
         ),
         child: Stack(
           children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              child: FlatButton(
-                onPressed: () => {},
-                color: Colors.transparent,
-                disabledTextColor: Colors.grey,
-                disabledColor: Colors.transparent,
-                padding: EdgeInsets.zero,
-                child: Align(
-                  child: Icon(Icons.add, color: Colors.white),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
                   alignment: Alignment.centerLeft,
+                  child: FlatButton(
+                    onPressed: () => print('yeye'),
+                    color: Colors.transparent,
+                    disabledTextColor: Colors.grey,
+                    disabledColor: Colors.transparent,
+                    padding: EdgeInsets.zero,
+                    child: Align(
+                      child: Icon(Icons.add, color: Colors.white),
+                      alignment: Alignment.centerLeft,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: subHeadingText("Therapy", Colors.white),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              child: FlatButton(
-                onPressed: ()  {final actionsheet = addTherapyActionSheet(context);
-        showCupertinoModalPopup(
-            context: context, builder: (context) => actionsheet);},
-                color: Colors.transparent,
-                disabledTextColor: Colors.grey,
-                disabledColor: Colors.transparent,
-                padding: EdgeInsets.zero,
-                child: Align(
-                  child: Icon(Icons.add, color: Colors.white),
-                  alignment: Alignment.centerRight,
+                GestureDetector(
+                  onTap: () => print('yeye'),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: subHeadingText("Therapy", Colors.white),
+                  ),
                 ),
-              ),
+                Container(
+                  child: FlatButton(
+                    onPressed: () {
+                      final actionsheet = addTherapyActionSheet(context);
+                      showCupertinoModalPopup(
+                          context: context, builder: (context) => actionsheet);
+                    },
+                    color: Colors.transparent,
+                    disabledTextColor: Colors.grey,
+                    disabledColor: Colors.transparent,
+                    padding: EdgeInsets.zero,
+                    child: Icon(Icons.add, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ],
         ));

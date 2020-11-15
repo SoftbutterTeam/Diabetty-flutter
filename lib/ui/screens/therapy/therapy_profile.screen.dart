@@ -1,34 +1,36 @@
 import 'dart:ui';
 
-import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_modal.dart';
-import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
+import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
+import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TherapyProfileScreen extends StatefulWidget {
+  final Therapy therapy;
+  final TherapyManager manager;
   final BuildContext context;
-  final Reminder reminder;
-  TherapyProfileScreen({this.context, this.reminder});
+  TherapyProfileScreen({this.context, this.therapy, this.manager});
 
   @override
   _TherapyProfileScreenState createState() => _TherapyProfileScreenState();
 }
 
 class _TherapyProfileScreenState extends State<TherapyProfileScreen>
-    with ReminderActionsMixin {
+    with EditTherapyModalsMixin {
   final int count = 0;
 
   @override
-  // TODO: implement reminder
-  Reminder get reminder => widget.reminder;
-
-  @override
   Widget build(BuildContext context) {
-    print('£4');
-    print((ModalRoute.of(context).settings.arguments as Map).toString());
+    // print('£4');
+    // print((ModalRoute.of(context).settings.arguments as Map).toString());
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
@@ -50,9 +52,19 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
           color: Colors.transparent,
         ),
         child: SingleChildScrollView(
-          child: (count == 0) ? _buildNoActiveReminderBody(size) : Text('yeye'),
+          child: (widget.therapy.schedule.reminders.length == 0)
+              ? _buildNoActiveReminderBody(size)
+              : _buildActiveReminderBody(size),
         ),
       ),
+    );
+  }
+
+  Column _buildActiveReminderBody(Size size) {
+    return Column(
+      children: [
+        Text('yeye'),
+      ],
     );
   }
 
@@ -118,25 +130,34 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
             colors: [Colors.orange[900], Colors.orange[600]]),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, top: 50, right: 20),
+        padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
         child: Column(
           children: [
             Row(
               children: [
                 Icon(Icons.arrow_back_ios, color: Colors.white, size: 25),
-                SizedBox(width: size.width * 0.05),
+              ],
+            ),
+            SizedBox(height: size.height * 0.02),
+            Row(
+              children: [
                 Container(
-                  height: size.height * 0.1,
-                  width: size.width * 0.2,
+                  height: size.height * 0.05,
+                  width: size.width * 0.1,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                  ),
+                  child: SvgPicture.asset(
+                    appearance_iconss[
+                        widget.therapy.medicationInfo.appearanceIndex],
+                    width: 10,
+                    height: 10,
                   ),
                 ),
                 SizedBox(width: size.width * 0.05),
                 Column(
                   children: [
-                    Text(reminder.name,
+                    Text(widget.therapy.name,
                         style: TextStyle(
                           fontSize: 22.0,
                           color: Colors.white,
@@ -153,7 +174,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                 Column(
                   children: [
                     Text(
-                      "43",
+                      (widget.therapy.stock?.currentLevel ?? '0'),
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 22.0,
@@ -171,7 +192,8 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                 Column(
                   children: [
                     Text(
-                      "0",
+                      (widget.therapy.schedule?.reminders?.length.toString() ??
+                          '0'),
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 22.0,
@@ -219,7 +241,10 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
       actions: [
         CupertinoActionSheetAction(
           child: text("Add Stock", fontSize: 18.0, textColor: Colors.indigo),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+            showEditStockDialog2(context);
+          },
         ),
         CupertinoActionSheetAction(
           child: text("Add Reminder", fontSize: 18.0, textColor: Colors.indigo),
@@ -232,6 +257,13 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
           Navigator.pop(context);
         },
       ),
+    );
+  }
+
+  Future showEditStockDialog2(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => EditStockDialog(manager: widget.manager, therapyForm: widget.therapy)  //TODO complete this modal
     );
   }
 

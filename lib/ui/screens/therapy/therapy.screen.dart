@@ -7,6 +7,8 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_card.dart';
+import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
+import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +43,8 @@ class TherapyScreen extends StatefulWidget {
   _TherapyScreenState createState() => _TherapyScreenState(manager);
 }
 
-class _TherapyScreenState extends State<TherapyScreen> {
+class _TherapyScreenState extends State<TherapyScreen>
+    with AddTherapyModalsMixin {
   TherapyManager manager;
   _TherapyScreenState(this.manager);
 
@@ -86,12 +89,21 @@ class _TherapyScreenState extends State<TherapyScreen> {
                 scrollDirection: Axis.vertical,
                 itemCount: therapies.length,
                 itemBuilder: (context, index) {
-                  return TherapyCard(
-                    therapyData: therapies[index],
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TherapyProfileScreen(therapy: therapies[index], manager: manager)),
+                      );
+                    },
+                    child: TherapyCard(
+                      therapyData: therapies[index],
+                    ),
                   );
                 }),
           );
         });
   }
-
 }

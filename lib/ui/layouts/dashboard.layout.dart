@@ -23,6 +23,7 @@ class _DashBoardState extends State<DashBoard> {
   PageController pageController;
   int pageIndex = 0;
   int currentIndex = 0;
+  Color color = Colors.deepOrangeAccent[400];
 
   var _pages = [
     DiaryScreenBuilder(),
@@ -57,7 +58,7 @@ class _DashBoardState extends State<DashBoard> {
           d_5,
           height: 30,
           width: 30,
-          color: Colors.indigo,
+          color: color,
           fit: BoxFit.fitHeight,
         ),
         title: Text("diary"),
@@ -69,7 +70,7 @@ class _DashBoardState extends State<DashBoard> {
                 'assets/icons/navigation/checkbox/clock.svg',
                 height: 33,
                 width: 33,
-                color: Colors.indigo,
+                color: color,
                 fit: BoxFit.fitHeight,
               )),
           title: Text("today")),
@@ -78,7 +79,7 @@ class _DashBoardState extends State<DashBoard> {
             sos_icon,
             height: 32,
             width: 32,
-            color: Colors.indigo,
+            color: color,
             fit: BoxFit.fitHeight,
           ),
           title: Text("team")),
@@ -87,7 +88,7 @@ class _DashBoardState extends State<DashBoard> {
           t_2,
           height: 30,
           width: 30,
-          color: Colors.indigo,
+          color: color,
           fit: BoxFit.fitHeight,
         ),
         title: Text("therapy"),
@@ -102,6 +103,7 @@ class _DashBoardState extends State<DashBoard> {
           controller: pageController,
           onPageChanged: onPageChanged),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.orange[900],
         backgroundColor: Colors.white,
         currentIndex: pageIndex,
         onTap: onTap,

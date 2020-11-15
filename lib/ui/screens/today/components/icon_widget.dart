@@ -40,27 +40,119 @@ class _IconWidgetState extends State<IconWidget> {
                 color: widget.index.isOdd ? Colors.indigo[900] : null,
               ),
               Container(
-                alignment: Alignment.topRight, // center bottom right
-                child: Container(
-                  width: 15,
-                  height: 15,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey[850], width: 0.5)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: Center(
-                      child: Text(
-                        "",
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    ),
-                  ),
-                ),
+                alignment: Alignment.topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
+                child: _buildSkippedIcon(),
               ),
             ],
           )),
+    );
+  }
+
+  Container _buildCompletedIcon() {
+    return Container(
+      width: 15,
+      height: 15,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.greenAccent[700],
+          border: Border.all(color: Colors.transparent, width: 1)),
+      child: Center(
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+          size: 12,
+        ),
+      ),
+    );
+  }
+
+  Container _buildLateIcon() {
+    return Container(
+      width: 15,
+      height: 15,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.amber,
+          border: Border.all(color: Colors.transparent, width: 0.5)),
+      child: Center(
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+          size: 12,
+        ),
+      ),
+    );
+  }
+
+   Container _buildSkippedIcon() {
+    return Container(
+      width: 15,
+      height: 15,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.amber,
+          border: Border.all(color: Colors.transparent, width: 0.5)),
+      child: Center(
+        child: Container(
+          height: 1,
+          width: 10,
+          color: Colors.white,
+        )
+      ),
+    );
+  }
+
+  Container _buildActiveIcon() {
+    return Container(
+      width: 15,
+      height: 15,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.amber,
+          border: Border.all(color: Colors.transparent, width: 0.5)),
+      child: Center(
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+          size: 12,
+        ),
+      ),
+    );
+  }
+
+  Container _buildSnoozedIcon() {
+    return Container(
+      width: 15,
+      height: 15,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.amber,
+          border: Border.all(color: Colors.grey[850], width: 0.5)),
+      child: Center(
+        child: Icon(
+          Icons.access_time,
+          color: Colors.white,
+          size: 12,
+        ),
+      ),
+    );
+  }
+
+  Container _buildMissedIcon() {
+    return Container(
+      width: 15,
+      height: 15,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.red,
+          border: Border.all(color: Colors.grey[850], width: 0.5)),
+      child: Center(
+        child: Icon(
+          Icons.close,
+          color: Colors.white,
+          size: 12,
+        ),
+      ),
     );
   }
 
