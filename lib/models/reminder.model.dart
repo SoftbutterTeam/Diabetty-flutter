@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 
 class Reminder with DateMixin {
   String id;
-  int apperance;
+  String userId;
+  int appearance;
   String therapyId;
   String reminderRuleId;
   String name;
@@ -19,8 +20,7 @@ class Reminder with DateMixin {
   DateTime rescheduledTime;
   double editedDose;
   bool cancelled;
-  List<String> advice;
-  int adviceIndex;
+  List<int> advices;
 
   DateTime get getDateTimeAs12hr {
     if (time == null) return time;
@@ -42,70 +42,69 @@ class Reminder with DateMixin {
   }
 
   bool get isComplete => takenAt != null;
-  bool get isSnoozed => rescheduled != null && !rescheduled;
-  bool get isMissed =>
+  // bool get isSnoozed => rescheduled != null && !rescheduled;
+  /*bool get isMissed =>
       takenAt == null &&
       DateTime.now().compareTo(time.add(schedule.window)) > 0;
-
+*/
   bool get isActive => takenAt != null && DateTime.now().compareTo(time) > 0;
 
-  Reminder(
-      {this.id,
-      this.therapyId,
-      this.reminderRuleId,
-      this.name,
-      this.apperance,
-      this.time,
-      this.dose,
-      this.advice,
-      this.cancelled,
-      this.window,
-      this.editedDose,
-      this.rescheduledTime,
-      this.takenAt,
-      this.adviceIndex});
+  Reminder({
+    this.id,
+    this.therapyId,
+    this.reminderRuleId,
+    this.name,
+    this.appearance,
+    this.time,
+    this.dose,
+    this.advices,
+    this.cancelled,
+    this.window,
+    this.editedDose,
+    this.rescheduledTime,
+    this.takenAt,
+  });
 
   ///*  Used to Project Reminders from the Therapys
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
   Reminder.generated(Therapy therapy, ReminderRule rule, DateTime date)
       : this.therapyId = therapy.id,
+        this.userId = therapy.userId,
         this.reminderRuleId = rule.id,
         this.name = therapy.medicationInfo.name,
-        this.apperance = therapy.medicationInfo.appearanceIndex,
+        this.appearance = therapy.medicationInfo.appearanceIndex,
         this.time = DateTime(
             date.year, date.month, date.day, rule.time.hour, rule.time.minute),
         this.dose = rule.dose,
         this.window = therapy.schedule.window,
         this.doseUnitIndex = therapy.medicationInfo.unitIndex,
-        this.advice = therapy.medicationInfo.intakeAdvice,
-        this.adviceIndex = therapy.medicationInfo.intakeIndex;
+        this.advices = therapy.medicationInfo.intakeAdvices;
 
   Reminder.formJson(Map<String, dynamic> json) {
     loadFromJson(json);
   }
 
-  Reminder.fromJson(Map<String, dynamic> json) :
-    this.id = json['id'],
-    this.therapyId = json['therapyId'],
-    this.reminderRuleId = json['reminderRuleId'],
-    this.name = json['name'],
-    this.apperance = json['apperance'],
-    this.time = json['time'],
-    this.dose = json['dose'],
-    this.doseUnitIndex = json['doseUnitIndex'],
-    this.advice = json['advice'],
-    this.window = json['window'],
-    this.takenAt = json['takenAt'],
-    this.
-    this.reportUnitsIndex = json['reportUnitsIndex'];
-    this.journalEntries = journalEntriesFromJson(json['journalEntries']);
+  loadFromJson(Map<String, dynamic> json) {
+    this.id = json['id'];
+    this.userId = json['userId'];
+    this.therapyId = json['therapyId'];
+    this.reminderRuleId = json['reminderRuleId'];
+    this.name = json['name'];
+    this.appearance = json['appearance'];
+    this.time = json['time'];
+    this.dose = json['dose'];
+    this.doseUnitIndex = json['doseUnitIndex'];
+    this.advices = json['advices'];
+    this.window = json['window'];
+    this.takenAt = json['takenAt'];
+    this.cancelled = json['cancelled'];
   }
 
   Map<String, dynamic> toJson() => {
         'id': this.id,
         'userId': this.userId,
+        'therapy': this.therapyId,
+        'reminderRuleId': this.reminderRuleId,
         'name': this.name,
-        'reportUnitsIndex': this.reportUnitsIndex,
-        'journalEntries': mapJson(this.journalEntries),
       };
 }

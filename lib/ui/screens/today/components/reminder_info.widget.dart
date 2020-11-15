@@ -96,7 +96,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SvgPicture.asset(
-            appearance_iconss[reminder.apperance],
+            appearance_iconss[reminder.appearance],
             width: 30,
             height: 30,
           ),
@@ -140,9 +140,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   child: Column(
                     children: [
                       SvgPicture.asset(
-                        appearance_iconss[(reminder.apperance == null)
-                            ? 0
-                            : reminder.apperance],
+                        appearance_iconss[reminder.appearance],
                         width: 30,
                         height: 30,
                       ),
@@ -163,9 +161,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                     Padding(
                       padding: EdgeInsets.only(left: 5, bottom: 10),
                       child: text(
-                          intakeAdvice[(reminder.adviceIndex == null)
-                              ? 0
-                              : reminder.adviceIndex],
+                          reminder.advices.isNotEmpty
+                              ? intakeAdvice[reminder.advices[0]]
+                              : '',
                           fontSize: 15.0,
                           textColor: Colors.black87,
                           fontFamily: fontSemibold,
@@ -244,7 +242,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: GestureDetector(
-                    onTap: () {},
+                      onTap: () {},
                       // onTap: () => navigateTherapyProfile(context),
                       child: Icon(Icons.more_horiz)),
                 ),

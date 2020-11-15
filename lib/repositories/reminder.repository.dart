@@ -1,18 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/reminder.model.dart';
-import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ReminderRepository {
-  ReminderRepository() {
-    //AuthService authService;
-    //authService.currentUser();
-  }
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   final Firestore _db = Firestore.instance;
@@ -25,7 +16,7 @@ class ReminderRepository {
         .collection('users')
         .document(reminder.therapyId)
         .collection('therapies')
-        .document(reminder.uid)
+        .document(reminder.id)
         .updateData(reminderData)
         .catchError((e) {
       print(e);

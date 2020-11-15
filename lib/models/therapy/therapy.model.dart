@@ -62,17 +62,4 @@ class Therapy {
         'stock': this.stock.toJson(),
         'mode': this.mode,
       };
-
-  dummyData() {
-    MedicationInfo medicationinfo = MedicationInfo();
-    medicationinfo.dummyData();
-    this.medicationInfo = medicationinfo;
-    Schedule schedule = Schedule();
-    schedule.dummyData();
-    this.schedule = schedule;
-    this.id = "YDpBWyABH3ZluJ9sDKTCTGXCqzz1";
-    this.name = "cancer cure pls";
-    this.schedule = schedule;
-    this.medicationInfo = medicationInfo;
-  }
 }

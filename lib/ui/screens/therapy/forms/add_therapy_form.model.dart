@@ -74,7 +74,7 @@ class AddTherapyForm {
         name: this.name,
         medicationInfo: MedicationInfo(
           appearanceIndex: this.apperanceIndex,
-          intakeAdvice: List<String>()..add(intakeAdvice[intakeAdviceIndex]),
+          intakeAdvices: List<int>()..add(intakeAdviceIndex),
           name: this.name,
           strength: this.strength,
           unitIndex: this.unitsIndex,
@@ -146,7 +146,6 @@ class AddTherapyForm {
     if (toThrow) throw Exception("Must have at least 1 Reminder");
     return false;
   }
-
 
   bool isPlannedMode() => this.mode == 'planned';
 
