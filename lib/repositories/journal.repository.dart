@@ -28,6 +28,25 @@ class JournalRepository {
     return;
   }
 
+  Future<void> updateJournal(Journal journal) async {
+    if (journal.userId == null)
+      journal.userId = (await _firebaseAuth.currentUser()).uid;
+    Map<String, dynamic> journalData = journal.toJson();
+    var timeNow = DateTime.now().toString();
+    journalData['lastUpdated'] = timeNow;
+
+    await _db
+        .collection('users')
+        .document(journal.userId)
+        .collection('journals')
+        .document()
+        .updateData(journalData)
+        .catchError((e) {
+      print(e);
+    });
+    return;
+  }
+
   Future<DataResult<List<Map<String, dynamic>>>> getAllJournals(String userId,
       {bool local = false}) async {
     Source source = local ? Source.cache : Source.server;
