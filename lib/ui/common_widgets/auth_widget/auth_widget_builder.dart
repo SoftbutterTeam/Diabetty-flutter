@@ -27,7 +27,7 @@ class AuthWidgetBuilder extends StatelessWidget {
           return StreamBuilder<UserModel.User>(
               stream: appContext.onUserChanged,
               builder: (BuildContext context, asnapshot) {
-                print(asnapshot.data != null ? asnapshot.data.toJson() : null);
+                //print(asnapshot.data != null ? asnapshot.data.toJson() : null);
                 if (user != null) {
                   return builder(context, snapshot, asnapshot);
                 }

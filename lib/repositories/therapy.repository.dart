@@ -49,20 +49,20 @@ class TherapyRepository {
         var json = Map<String, dynamic>.from(e.data)..['id'] = e.documentID;
         return json;
       }).toList());
-      print(data.map((e) => e.toString()));
+      //print(data.map((e) => e.toString()));
       return DataResult<List<Map<String, dynamic>>>(data: data);
     } catch (exception, stackTrace) {
-      print('HELLLO');
+      //print('HELLLO');
       return DataResult(exception: exception, stackTrace: stackTrace);
     }
   }
 
   Future<void> updateTherapy(Therapy therapy) async {
-    print(therapy.name);
+    //print(therapy.name);
     Map<String, dynamic> therapyData = Map();
     therapyData = therapy.toJson();
     var timeNow = DateTime.now().toString();
-    therapyData['lastUpdated'] = timeNow;
+    therapyData['updatedAt'] = timeNow;
     await _db
         .collection('users')
         .document(therapy.userId)
@@ -70,20 +70,20 @@ class TherapyRepository {
         .document(therapy.id)
         .updateData(therapyData)
         .catchError((e) {
-      print(e);
+      //print(e);
     });
     return true;
   }
 
   Future<void> createTherapy(Therapy therapy) async {
-    print(therapy.userId);
+    //print(therapy.userId);
     if (therapy.userId == null)
       therapy.userId = (await _firebaseAuth.currentUser()).uid;
     Map<String, dynamic> therapyData = therapy.toJson();
     var timeNow = DateTime.now().toString();
     therapyData['createdAt'] = timeNow;
-    therapyData['lastUpdated'] = timeNow;
-    print(therapy.name);
+    therapyData['updatedAt'] = timeNow;
+    //print(therapy.name);
     await _db
         .collection('users')
         .document(therapy.userId)
@@ -91,15 +91,15 @@ class TherapyRepository {
         .document()
         .setData(therapyData)
         .catchError((e) {
-      print('ahhhhhhaaaa');
+      //print('ahhhhhhaaaa');
 
-      print(e);
+      //print(e);
     });
     return;
   }
 
   Stream<QuerySnapshot> onStateChanged(String uid) {
-    print('hererehere' + uid);
+    //print('hererehere' + uid);
 
     return _db
         .collection('users')

@@ -80,7 +80,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
           widget.pageController.jumpToPage(0);
         },
         onRightTap: () async {
-          print(therapyForm.name);
+          //print(therapyForm.name);
 
           try {
             if (therapyForm.isNeededMode())
@@ -90,8 +90,8 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
             await widget.manager.submitAddTherapy(therapyForm);
             Navigator.pushNamed(context, therapy);
           } catch (e) {
-            print(e.message);
-            print('this shows up');
+            //print(e.message);
+            //print('this shows up');
             showErrorModal(context);
             // TODO Display Model with describing the error
           }
@@ -220,7 +220,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   }
 
   Widget _buildStartEndDateField() {
-    print(therapyForm.endDate);
+    //print(therapyForm.endDate);
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showStartEndDate(context),

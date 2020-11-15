@@ -47,7 +47,7 @@ class MedicationInfo {
         this.appearanceIndex = json['appearance'];
       return true;
     } catch (e) {
-      print(e);
+      //print(e);
       return false;
     }
   }

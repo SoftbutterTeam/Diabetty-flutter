@@ -33,7 +33,7 @@ class Therapy {
     this.userId ??= json['userId'];
     this.name = json['name'];
     this.mode = json['mode'];
-    print(json.toString());
+    //print(json.toString());
     Schedule schedule = Schedule();
     if (json['schedule'] != null) {
       Map<String, dynamic> sheduledata =

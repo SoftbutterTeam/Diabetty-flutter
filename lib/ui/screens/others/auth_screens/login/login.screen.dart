@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final AppContext appContext =
         Provider.of<AppContext>(context, listen: false);
 
-    print(appContext.user == null ? null : appContext.user.toJson());
+    //print(appContext.user == null ? null : appContext.user.toJson());
     /* todo DO NOT DELETE, THIS IS THE REAL CODE
     try {
       await widget.manager.signInWithGoogle();

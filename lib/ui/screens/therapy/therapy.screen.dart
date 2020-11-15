@@ -77,7 +77,7 @@ class _TherapyScreenState extends State<TherapyScreen>
         initialData: manager.usersTherapies,
         builder: (context, snapshot) {
           if (snapshot.data.isEmpty) {
-            print(snapshot.data.toString());
+            //print(snapshot.data.toString());
             return Container(
               child: null,
             );

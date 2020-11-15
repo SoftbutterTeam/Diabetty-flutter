@@ -10,8 +10,8 @@ class UserService {
       _userRepository.createUser(user);
       return true;
     } catch (e) {
-      print('here x 3');
-      print(e);
+      //print('here x 3');
+      //print(e);
       rethrow;
     }
   }
@@ -26,7 +26,7 @@ class UserService {
 
       return user;
     } catch (exception) {
-      print(exception);
+      //print(exception);
       throw exception;
     }
   }

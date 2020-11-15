@@ -30,13 +30,13 @@ class AddTherapyForm {
   }
 
   set setMinRest(Duration x) {
-    print(x.toString());
+    //print(x.toString());
 
     if ((x == null) || (Duration(hours: 0, minutes: 5).compareTo(x) > 0))
       window = null;
     else
       minRest = x;
-    print(minRest.toString());
+    //print(minRest.toString());
   }
 
   AddTherapyForm(
