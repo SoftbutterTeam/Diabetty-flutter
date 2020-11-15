@@ -7,6 +7,7 @@ import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_modal.dart';
+import 'package:diabetty/ui/screens/therapy/components/edit_reminder_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:flutter/cupertino.dart';
@@ -248,7 +249,10 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
         ),
         CupertinoActionSheetAction(
           child: text("Add Reminder", fontSize: 18.0, textColor: Colors.indigo),
-          onPressed: () {},
+          onPressed: () {
+             Navigator.pop(context);
+            showEditReminderDialog2(context);
+          },
         ),
       ],
       cancelButton: CupertinoActionSheetAction(
@@ -264,6 +268,13 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     return showDialog(
       context: context,
       builder: (context) => EditStockDialog(manager: widget.manager, therapyForm: widget.therapy)  //TODO complete this modal
+    );
+  }
+
+    Future showEditReminderDialog2(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => EditReminderModal2(manager: widget.manager, therapyForm: widget.therapy)  //TODO complete this modal
     );
   }
 
