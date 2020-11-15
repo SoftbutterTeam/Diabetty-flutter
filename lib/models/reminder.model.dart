@@ -42,28 +42,27 @@ class Reminder with DateMixin {
   }
 
   bool get isComplete => takenAt != null;
-  // bool get isSnoozed => rescheduled != null && !rescheduled;
-  /*bool get isMissed =>
-      takenAt == null &&
-      DateTime.now().compareTo(time.add(schedule.window)) > 0;
-*/
+  bool get isSnoozed => rescheduledTime != null;
+  bool get isMissed =>
+      takenAt == null && DateTime.now().compareTo(time.add(this.window)) > 0;
   bool get isActive => takenAt != null && DateTime.now().compareTo(time) > 0;
+  bool get isLate => takenAt != null && takenAt.compareTo(time) > 0;
+  bool get isSkipped => takenAt == null && cancelled == true;
 
-  Reminder({
-    this.id,
-    this.therapyId,
-    this.reminderRuleId,
-    this.name,
-    this.appearance,
-    this.time,
-    this.dose,
-    this.advices,
-    this.cancelled,
-    this.window,
-    this.editedDose,
-    this.rescheduledTime,
-    this.takenAt,
-  });
+  Reminder(
+      {this.id,
+      this.therapyId,
+      this.reminderRuleId,
+      this.name,
+      this.appearance,
+      this.time,
+      this.dose,
+      this.advices,
+      this.cancelled,
+      this.window,
+      this.editedDose,
+      this.rescheduledTime,
+      this.takenAt});
 
   ///*  Used to Project Reminders from the Therapys
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
