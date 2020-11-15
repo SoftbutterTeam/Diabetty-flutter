@@ -31,7 +31,7 @@ class TherapyManager extends Manager {
 
   void init() async {
     super.init();
-    print('Therapy Init is runnning');
+    //print('Therapy Init is runnning');
     authService = appContext.authService;
     if (uid != null) {
       usersTherapies = await therapyService.getTherapies(uid, local: true);
@@ -46,10 +46,10 @@ class TherapyManager extends Manager {
     try {
       Therapy therapy = addForm.toTherapy();
       therapy.userId = uid;
-      print(therapy.userId);
+      //print(therapy.userId);
       await therapyService.addTherapy(therapy);
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       rethrow;
     }
   }

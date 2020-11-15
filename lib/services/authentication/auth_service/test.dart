@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       await _googleSignIn.signIn();
     } catch (error) {
-      print(error);
+      //print(error);
     }
   }
 }

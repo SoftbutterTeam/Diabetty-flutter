@@ -174,12 +174,12 @@ class FirebaseAuthService implements AuthService {
 
   Future<void> startAsNewUser(AppContext appContext) async {
     User firebaseUser = await currentUser();
-    print(firebaseUser.email);
-    print(firebaseUser.displayName);
-    print(firebaseUser.uid);
+    //print(firebaseUser.email);
+    //print(firebaseUser.displayName);
+    //print(firebaseUser.uid);
 
     if (firebaseUser == null) {
-      print('no user');
+      //print('no user');
       return;
     }
     UserModel.User user = UserModel.User(
@@ -187,7 +187,7 @@ class FirebaseAuthService implements AuthService {
         displayName: firebaseUser.displayName,
         name: firebaseUser.displayName,
         email: firebaseUser.email);
-    print('User idddd  ' + user.uid.toString());
+    //print('User idddd  ' + user.uid.toString());
     await _userService.createUser(user);
     await appContext.fetchUser(toSinkUserChange: true);
   }

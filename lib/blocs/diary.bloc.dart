@@ -29,7 +29,7 @@ class DiaryBloc extends Manager {
 
   void init() async {
     super.init();
-    print('Diary Init is runnning');
+    //print('Diary Init is runnning');
     authService = appContext.authService;
     if (uid != null) {
       usersJournals = await journalService.getJournals(uid, local: true);
@@ -45,7 +45,7 @@ class DiaryBloc extends Manager {
       newJournal.userId = uid;
       await journalService.addJournal(newJournal);
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       //rethrow;
     }
   }

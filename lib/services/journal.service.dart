@@ -31,8 +31,8 @@ class JournalService {
   }
 
   List<Journal> _journalListFromSnapshop(QuerySnapshot snapshot) {
-    print('hera');
-    print(snapshot.documents.length);
+    //print('hera');
+    //print(snapshot.documents.length);
     return snapshot.documents.map<Journal>((doc) {
       Journal journal = Journal();
       journal.id = doc.documentID;

@@ -28,7 +28,7 @@ class _DropModalState extends State<DropModal>
   void initState() {
     final manager = Provider.of<DayPlanManager>(context, listen: false);
     _selectedValue = manager.currentDateStamp;
-    print('newState');
+    //print('newState');
 
     super.initState();
   }
@@ -126,7 +126,7 @@ class _DropModalState extends State<DropModal>
                 dayManager.currentDateStamp = DateTime.now();
                 _controller.animateToDate(
                     dayManager.currentDateStamp.subtract(Duration(days: 2)));
-                print(_selectedValue);
+                //print(_selectedValue);
                 setState(() {});
               },
               child: Text('Today'))

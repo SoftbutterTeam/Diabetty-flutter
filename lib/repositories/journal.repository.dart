@@ -14,7 +14,7 @@ class JournalRepository {
     Map<String, dynamic> journalData = journal.toJson();
     var timeNow = DateTime.now().toString();
     journalData['createdAt'] ??= timeNow;
-    journalData['lastUpdated'] = timeNow;
+    journalData['updatedAt'] = timeNow;
 
     await _db
         .collection('users')
@@ -23,7 +23,7 @@ class JournalRepository {
         .document()
         .setData(journalData)
         .catchError((e) {
-      print(e);
+      //print(e);
     });
     return;
   }
@@ -41,7 +41,7 @@ class JournalRepository {
         var json = Map<String, dynamic>.from(e.data)..['id'] = e.documentID;
         return json;
       }).toList());
-      print(data.map((e) => e.toString()));
+      //print(data.map((e) => e.toString()));
       return DataResult<List<Map<String, dynamic>>>(data: data);
     } catch (exception, stackTrace) {
       return DataResult(exception: exception, stackTrace: stackTrace);

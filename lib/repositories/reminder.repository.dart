@@ -19,7 +19,7 @@ class ReminderRepository {
         .document(reminder.id)
         .updateData(reminderData)
         .catchError((e) {
-      print(e);
+      //print(e);
     });
     return true;
   }

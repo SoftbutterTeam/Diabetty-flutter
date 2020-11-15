@@ -49,7 +49,7 @@ class _EditModalState extends State<EditModal> with AddTherapyModalsMixin {
       placeholder: 'Medication Name..',
       initalName: null,
       onChanged: (val) {
-        print(val);
+        //print(val);
         // or widget.manager.updateListeners();
       },
     );
@@ -58,7 +58,7 @@ class _EditModalState extends State<EditModal> with AddTherapyModalsMixin {
   Widget _buildAppearanceField(BuildContext context) {
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
-      onTap: () => print('yeye'),
+      onTap: () => null, //print('yeye'),
       placeholder: SvgPicture.asset(
         appearance_iconss[0],
         width: 25,

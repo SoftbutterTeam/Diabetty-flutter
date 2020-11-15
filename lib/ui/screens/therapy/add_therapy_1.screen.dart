@@ -162,7 +162,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
   Widget _buildStrengthField() {
     Function onTap = () {
       showStrengthUnitPopUp(context, strengthController);
-      print(therapyForm.strength);
+      //print(therapyForm.strength);
     };
     return Container(
         child: StrengthTextField(
