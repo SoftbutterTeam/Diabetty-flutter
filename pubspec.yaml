@@ -42,7 +42,6 @@ dependencies:
   validators: ^2.0.1
   focused_menu: ^1.0.0
   nb_utils: ^3.1.6+11
-  fl_chart: ^0.12.0
   flutter_statusbarcolor: 0.2.3
   flutter_slidable:
   flutter_staggered_grid_view:
@@ -57,6 +56,9 @@ dependencies:
   marquee: ^1.6.1
   fcharts: ^0.0.11
   fl_chart: ^0.12.0
+  modern_charts: ^0.1.19
+  syncfusion_flutter_charts: ^18.3.48+1
+
 
 dev_dependencies:
   flutter_test:
