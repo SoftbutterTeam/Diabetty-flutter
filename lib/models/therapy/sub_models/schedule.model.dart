@@ -19,14 +19,14 @@ class Schedule {
   });
 
   loadFromJson(Map<String, dynamic> json) {
-    List<dynamic> remindersJson = json['reminders'];
+    List<dynamic> remindersJson = json['reminderRules'];
     List<ReminderRule> reminders = createReminders(remindersJson);
     AlarmSettings setting = AlarmSettings();
     this.reminderRules = reminders;
   }
 
   Map<String, dynamic> toJson() => {
-        'reminders': mapJson(this.reminderRules),
+        'reminderRules': mapJson(this.reminderRules),
       };
 
   mapJson(list) {
