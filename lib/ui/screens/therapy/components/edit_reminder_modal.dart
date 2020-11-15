@@ -34,7 +34,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
   @override
   void initState() {
     super.initState();
-    final rules = widget.therapyForm.schedule.reminders;
+    final rules = widget.therapyForm.schedule.reminderRules;
     days = Days.fromDays(rules.isNotEmpty ? rules.last.days : Days());
     dosageController = TextEditingController(
         text: (rules.length == 0) ? '' : rules.last.dose.toString());
@@ -48,11 +48,11 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
   }
 
   DateTime getInitialTime() {
-    if (widget.therapyForm.schedule.reminders.isEmpty)
+    if (widget.therapyForm.schedule.reminderRules.isEmpty)
       return DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 8, 00);
     else
-      return widget.therapyForm.schedule.reminders.last.time
+      return widget.therapyForm.schedule.reminderRules.last.time
           .applyTimeOfDay()
           .add(widget.therapyForm.medicationInfo.restDuration ?? Duration(hours: 4));
   }
