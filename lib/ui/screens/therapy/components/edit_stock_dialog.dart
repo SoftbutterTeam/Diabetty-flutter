@@ -269,6 +269,6 @@ class _EditStockDialogState extends State<EditStockDialog>
     setState(() {});
     widget.manager.updateListeners();
     Navigator.pop(context);
-    //print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
+    print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
   }
 }

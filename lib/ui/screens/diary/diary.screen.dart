@@ -10,6 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:fcharts/fcharts.dart';
+import 'package:fl_chart/fl_chart.dart' as charts;
 
 class DiaryScreenBuilder extends StatelessWidget {
   @override
@@ -34,6 +36,7 @@ class DiaryScreen extends StatefulWidget {
 
 class _DiaryScreenState extends State<DiaryScreen> {
   DiaryBloc manager;
+
   @override
   void initState() {
     manager = widget.manager;
@@ -44,6 +47,16 @@ class _DiaryScreenState extends State<DiaryScreen> {
   void dispose() {
     super.dispose();
   }
+
+  static const myData = [
+    ["A", "✔"],
+    ["B", "❓"],
+    ["C", "✖"],
+    ["D", "❓"],
+    ["E", "✖"],
+    ["F", "✖"],
+    ["G", "✔"],
+  ];
 
   Widget build(BuildContext context) {
     return Background(
@@ -59,7 +72,31 @@ class _DiaryScreenState extends State<DiaryScreen> {
       color: appWhite,
       child:
           Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-        SizedBox(width: size.width, height: size.height * firstSectionHeight),
+        Padding(
+          padding:  EdgeInsets.only(top: 8.0),
+          child: SizedBox(
+              width: size.width,
+              height: size.height * firstSectionHeight,
+              child: Center(
+                child: charts.BarChart(
+                    charts.BarChartData(maxY: 10.0, minY: 0.0, barGroups: [
+                  charts.BarChartGroupData(x: 1, barRods: [
+                    charts.BarChartRodData(
+                      y: 3,
+                      colors: [Colors.indigo],
+                      width: 20,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    charts.BarChartRodData(
+                      y: 5,
+                      colors: [Colors.blue],
+                      width: 10,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ])
+                ])),
+              )),
+        ),
         Container(
           padding: EdgeInsets.only(top: 5),
           decoration: BoxDecoration(

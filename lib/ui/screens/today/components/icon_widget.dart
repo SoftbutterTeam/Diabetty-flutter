@@ -68,16 +68,18 @@ class _IconWidgetState extends State<IconWidget> {
 
   Container _buildLateIcon() {
     return Container(
-      width: 15,
-      height: 15,
+      width: 18,
+      height: 18,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.amber,
-          border: Border.all(color: Colors.transparent, width: 0.5)),
+          color: Colors.white,
+          border: Border.all(color: Colors.white, width: 2)),
       child: Center(
         child: SvgPicture.asset(
               'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.white, //Colors.white
+              color: Colors.red, //Colors.white
+              height: 15,
+              width: 15,
             ),
       ),
     );
@@ -103,16 +105,18 @@ class _IconWidgetState extends State<IconWidget> {
 
   Container _buildActiveIcon() {
     return Container(
-      width: 15,
-      height: 15,
+      width: 18,
+      height: 18,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.amber,
-          border: Border.all(color: Colors.transparent, width: 0.5)),
+          color: Colors.white,
+          border: Border.all(color: Colors.white, width: 2)),
       child: Center(
         child: SvgPicture.asset(
               'assets/icons/navigation/checkbox/tick.svg',
               color: Colors.greenAccent[700], //Colors.white
+              height: 15,
+              width: 15,
             ),
       ),
     );
