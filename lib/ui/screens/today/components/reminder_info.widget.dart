@@ -161,7 +161,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                     Padding(
                       padding: EdgeInsets.only(left: 5, bottom: 10),
                       child: text(
-                          reminder.advices.isNotEmpty
+                          reminder.advices?.isNotEmpty
                               ? intakeAdvice[reminder.advices[0]]
                               : '',
                           fontSize: 15.0,
