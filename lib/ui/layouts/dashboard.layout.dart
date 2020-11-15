@@ -29,7 +29,7 @@ class _DashBoardState extends State<DashBoard> {
     DiaryScreenBuilder(),
     DayPlanScreenBuilder(),
     DrafttScreen(),
-    TherapyScreenBuilder()
+    TherapyScreenBuilder(),
   ];
 
   @override

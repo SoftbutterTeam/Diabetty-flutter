@@ -41,7 +41,7 @@ class _IconWidgetState extends State<IconWidget> {
               ),
               Container(
                 alignment: Alignment.topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
-                child: _buildSkippedIcon(),
+                child: _buildActiveIcon(),
               ),
             ],
           )),
@@ -75,11 +75,10 @@ class _IconWidgetState extends State<IconWidget> {
           color: Colors.amber,
           border: Border.all(color: Colors.transparent, width: 0.5)),
       child: Center(
-        child: Icon(
-          Icons.check,
-          color: Colors.white,
-          size: 12,
-        ),
+        child: SvgPicture.asset(
+              'assets/icons/navigation/checkbox/tick.svg',
+              color: Colors.white, //Colors.white
+            ),
       ),
     );
   }
@@ -111,11 +110,10 @@ class _IconWidgetState extends State<IconWidget> {
           color: Colors.amber,
           border: Border.all(color: Colors.transparent, width: 0.5)),
       child: Center(
-        child: Icon(
-          Icons.check,
-          color: Colors.white,
-          size: 12,
-        ),
+        child: SvgPicture.asset(
+              'assets/icons/navigation/checkbox/tick.svg',
+              color: Colors.greenAccent[700], //Colors.white
+            ),
       ),
     );
   }
@@ -127,7 +125,7 @@ class _IconWidgetState extends State<IconWidget> {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.amber,
-          border: Border.all(color: Colors.grey[850], width: 0.5)),
+          border: Border.all(color: Colors.white, width: 1)),
       child: Center(
         child: Icon(
           Icons.access_time,
@@ -145,7 +143,7 @@ class _IconWidgetState extends State<IconWidget> {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.red,
-          border: Border.all(color: Colors.grey[850], width: 0.5)),
+          border: Border.all(color: Colors.white, width: 1)),
       child: Center(
         child: Icon(
           Icons.close,
