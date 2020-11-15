@@ -53,7 +53,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
           color: Colors.transparent,
         ),
         child: SingleChildScrollView(
-          child: (widget.therapy.schedule.reminders.length == 0)
+          child: (widget.therapy.schedule.reminderRules.length == 0)
               ? _buildNoActiveReminderBody(size)
               : _buildActiveReminderBody(size),
         ),
@@ -193,7 +193,8 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                 Column(
                   children: [
                     Text(
-                      (widget.therapy.schedule?.reminders?.length.toString() ??
+                      (widget.therapy.schedule?.reminderRules?.length
+                              .toString() ??
                           '0'),
                       style: TextStyle(
                           color: Colors.white,
@@ -266,9 +267,11 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
 
   Future showEditStockDialog2(BuildContext context) {
     return showDialog(
-      context: context,
-      builder: (context) => EditStockDialog(manager: widget.manager, therapyForm: widget.therapy)  //TODO complete this modal
-    );
+        context: context,
+        builder: (context) => EditStockDialog(
+            manager: widget.manager,
+            therapyForm: widget.therapy) //TODO complete this modal
+        );
   }
 
     Future showEditReminderDialog2(BuildContext context) {

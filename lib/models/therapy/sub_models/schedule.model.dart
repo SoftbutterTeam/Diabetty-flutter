@@ -3,14 +3,15 @@ import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 
 class Schedule {
-  List<ReminderRule> reminders;
+  List<ReminderRule> reminderRules;
   Duration window;
   DateTime startDate;
   DateTime endDate;
   AlarmSettings alarmSettings;
 
+//!! TODO IT ISNT COMPLETE
   Schedule({
-    this.reminders,
+    this.reminderRules,
     this.window,
     this.startDate,
     this.endDate,
@@ -18,14 +19,14 @@ class Schedule {
   });
 
   loadFromJson(Map<String, dynamic> json) {
-    List<dynamic> remindersJson = json['reminders'];
+    List<dynamic> remindersJson = json['reminderRules'];
     List<ReminderRule> reminders = createReminders(remindersJson);
     AlarmSettings setting = AlarmSettings();
-    this.reminders = reminders;
+    this.reminderRules = reminders;
   }
 
   Map<String, dynamic> toJson() => {
-        'reminders': mapJson(this.reminders),
+        'reminderRules': mapJson(this.reminderRules),
       };
 
   mapJson(list) {
@@ -59,6 +60,6 @@ class Schedule {
     //settings.setSettings(true);
 
     // this.settings = settings;
-    this.reminders = listoreminders;
+    this.reminderRules = listoreminders;
   }
 }

@@ -42,28 +42,30 @@ class Reminder with DateMixin {
   }
 
   bool get isComplete => takenAt != null;
-  // bool get isSnoozed => rescheduled != null && !rescheduled;
-  /*bool get isMissed =>
-      takenAt == null &&
-      DateTime.now().compareTo(time.add(schedule.window)) > 0;
-*/
+  bool get isSnoozed => rescheduledTime != null;
+  bool get isMissed =>
+      takenAt == null && DateTime.now().compareTo(time.add(this.window)) > 0;
   bool get isActive => takenAt != null && DateTime.now().compareTo(time) > 0;
+  //TODO late means that it is past its window
+  /// well isMissed should mean, when it is late and u cant take it because it collides with your minRest
+  /// and isLate meaning it is late and can still be taken without health risk
+  //bool get isLate => takenAt != null && takenAt.compareTo(time) > 0;
+  bool get isSkipped => takenAt == null && cancelled == true;
 
-  Reminder({
-    this.id,
-    this.therapyId,
-    this.reminderRuleId,
-    this.name,
-    this.appearance,
-    this.time,
-    this.dose,
-    this.advices,
-    this.cancelled,
-    this.window,
-    this.editedDose,
-    this.rescheduledTime,
-    this.takenAt,
-  });
+  Reminder(
+      {this.id,
+      this.therapyId,
+      this.reminderRuleId,
+      this.name,
+      this.appearance,
+      this.time,
+      this.dose,
+      this.advices,
+      this.cancelled,
+      this.window,
+      this.editedDose,
+      this.rescheduledTime,
+      this.takenAt});
 
   ///*  Used to Project Reminders from the Therapys
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object

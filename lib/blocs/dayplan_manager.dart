@@ -77,7 +77,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         .where(
             (therapy) => therapy.mode == "planned" && therapy.schedule != null)
         .forEach((therapy) {
-      therapy.schedule.reminders.forEach((rule) {
+      therapy.schedule.reminderRules.forEach((rule) {
         if (rule.isActiveOn(date))
           projectedReminders.add(Reminder.generated(therapy, rule, date));
       });
