@@ -258,6 +258,7 @@ class _EditStockDialogState extends State<EditStockDialog>
     widget.therapyForm.stock = Stock();
     int currentLevelControllerToInt = int.parse(currentLevelController.text);
     int flagLimitControllerToInt = int.parse(flagLimitController.text);
+    
     if (widget.therapyForm.stock != null) {
       widget.therapyForm.stock.refillAdd(currentLevelControllerToInt);
       widget.therapyForm.stock.flagLimit = flagLimitControllerToInt;

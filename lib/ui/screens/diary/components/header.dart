@@ -26,29 +26,48 @@ class _DiaryHeaderState extends State<DiaryHeader> with DateMixin {
 
     return Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 30),
+        margin: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           color: Colors.transparent,
         ),
         child: Stack(
           children: [
-            Container(
-              alignment: Alignment.center,
-              child: subHeadingText("Diary", Colors.white),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              child: FlatButton(
-                onPressed: () => Navigator.pushNamed(context, addJournal),
-                color: Colors.transparent,
-                disabledTextColor: Colors.grey,
-                disabledColor: Colors.transparent,
-                padding: EdgeInsets.zero,
-                child: Align(
-                  child: Icon(Icons.add, color: Colors.white),
-                  alignment: Alignment.centerRight,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: FlatButton(
+                    onPressed: () {},
+                    color: Colors.transparent,
+                    disabledTextColor: Colors.grey,
+                    disabledColor: Colors.transparent,
+                    padding: EdgeInsets.zero,
+                    child: Align(
+                      child: Icon(Icons.add, color: Colors.transparent),
+                      alignment: Alignment.centerLeft,
+                    ),
+                  ),
                 ),
-              ),
+                Container(
+                  alignment: Alignment.center,
+                  child: subHeadingText("Diary", Colors.white),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: FlatButton(
+                    onPressed: () => Navigator.pushNamed(context, addJournal),
+                    color: Colors.transparent,
+                    disabledTextColor: Colors.grey,
+                    disabledColor: Colors.transparent,
+                    padding: EdgeInsets.zero,
+                    child: Align(
+                      child: Icon(Icons.add, color: Colors.white),
+                      alignment: Alignment.centerRight,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ));
