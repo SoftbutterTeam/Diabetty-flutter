@@ -1,6 +1,6 @@
 class Stock {
-  int currentLevel = 0 ;
-  int flagLimit = 0;
+  int currentLevel ;
+  int flagLimit;
   bool remind;
   Stock({this.currentLevel, this.flagLimit, this.remind = true});
 

@@ -88,7 +88,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 
   Widget _buildJournalCards(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return StreamBuilder(
         stream: manager.journalStream,
         initialData: manager.usersJournals,

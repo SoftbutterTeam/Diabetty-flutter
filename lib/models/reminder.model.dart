@@ -6,19 +6,19 @@ import 'package:diabetty/routes.dart';
 import 'package:intl/intl.dart';
 
 class Reminder with DateMixin {
-  String uid;
+  String id;
   int apperance;
-  String therapyId; //*therapy could have been deleted
+  String therapyId;
   String reminderRuleId;
   String name;
-  DateTime time; //*scheduled time
+  DateTime time;
   int dose;
   int doseUnitIndex;
   Duration window;
   DateTime takenAt;
-  bool rescheduled;
+  DateTime rescheduledTime;
+  double editedDose;
   bool cancelled;
-  bool doseEdited;
   List<String> advice;
   int adviceIndex;
 
@@ -42,9 +42,15 @@ class Reminder with DateMixin {
   }
 
   bool get isComplete => takenAt != null;
+  bool get isSnoozed => rescheduled != null && !rescheduled;
+  bool get isMissed =>
+      takenAt == null &&
+      DateTime.now().compareTo(time.add(schedule.window)) > 0;
+
+  bool get isActive => takenAt != null && DateTime.now().compareTo(time) > 0;
 
   Reminder(
-      {this.uid,
+      {this.id,
       this.therapyId,
       this.reminderRuleId,
       this.name,
@@ -54,24 +60,52 @@ class Reminder with DateMixin {
       this.advice,
       this.cancelled,
       this.window,
-      this.doseEdited,
-      this.rescheduled,
+      this.editedDose,
+      this.rescheduledTime,
       this.takenAt,
       this.adviceIndex});
 
   ///*  Used to Project Reminders from the Therapys
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
-  Reminder.generated(Therapy therapy, ReminderRule rule, DateTime date) {
-    this.therapyId = therapy.id;
-    this.reminderRuleId = rule.id;
-    this.name = therapy.medicationInfo.name;
-    this.apperance = therapy.medicationInfo.appearanceIndex;
-    this.time = DateTime(
-        date.year, date.month, date.day, rule.time.hour, rule.time.minute);
-    this.dose = rule.dose;
-    this.window = therapy.schedule.window;
-    this.doseUnitIndex = therapy.medicationInfo.unitIndex;
-    this.advice = therapy.medicationInfo.intakeAdvice;
-    this.adviceIndex = therapy.medicationInfo.intakeIndex;
+  Reminder.generated(Therapy therapy, ReminderRule rule, DateTime date)
+      : this.therapyId = therapy.id,
+        this.reminderRuleId = rule.id,
+        this.name = therapy.medicationInfo.name,
+        this.apperance = therapy.medicationInfo.appearanceIndex,
+        this.time = DateTime(
+            date.year, date.month, date.day, rule.time.hour, rule.time.minute),
+        this.dose = rule.dose,
+        this.window = therapy.schedule.window,
+        this.doseUnitIndex = therapy.medicationInfo.unitIndex,
+        this.advice = therapy.medicationInfo.intakeAdvice,
+        this.adviceIndex = therapy.medicationInfo.intakeIndex;
+
+  Reminder.formJson(Map<String, dynamic> json) {
+    loadFromJson(json);
   }
+
+  Reminder.fromJson(Map<String, dynamic> json) :
+    this.id = json['id'],
+    this.therapyId = json['therapyId'],
+    this.reminderRuleId = json['reminderRuleId'],
+    this.name = json['name'],
+    this.apperance = json['apperance'],
+    this.time = json['time'],
+    this.dose = json['dose'],
+    this.doseUnitIndex = json['doseUnitIndex'],
+    this.advice = json['advice'],
+    this.window = json['window'],
+    this.takenAt = json['takenAt'],
+    this.
+    this.reportUnitsIndex = json['reportUnitsIndex'];
+    this.journalEntries = journalEntriesFromJson(json['journalEntries']);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': this.id,
+        'userId': this.userId,
+        'name': this.name,
+        'reportUnitsIndex': this.reportUnitsIndex,
+        'journalEntries': mapJson(this.journalEntries),
+      };
 }
