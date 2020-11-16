@@ -80,6 +80,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       },
       onRightTap: () {
         widget.manager.updateListeners();
+        FocusScope.of(context).unfocus();
         widget.pageController.jumpToPage(1);
       },
     );

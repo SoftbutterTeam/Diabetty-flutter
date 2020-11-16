@@ -11,6 +11,5 @@ abstract class Manager extends ChangeNotifier {
       this.appContext.systemManagerBlocs.add(this);
   }
 
-  @protected
   void updateListeners() => notifyListeners();
 }
