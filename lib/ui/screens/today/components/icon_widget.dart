@@ -40,7 +40,8 @@ class _IconWidgetState extends State<IconWidget> {
                 color: widget.index.isOdd ? Colors.indigo[900] : null,
               ),
               Container(
-                alignment: Alignment.topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
+                alignment: Alignment
+                    .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
                 child: _buildActiveIcon(),
               ),
             ],
@@ -76,16 +77,16 @@ class _IconWidgetState extends State<IconWidget> {
           border: Border.all(color: Colors.white, width: 2)),
       child: Center(
         child: SvgPicture.asset(
-              'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.red, //Colors.white
-              height: 15,
-              width: 15,
-            ),
+          'assets/icons/navigation/checkbox/tick.svg',
+          color: Colors.red, //Colors.white
+          height: 15,
+          width: 15,
+        ),
       ),
     );
   }
 
-   Container _buildSkippedIcon() {
+  Container _buildSkippedIcon() {
     return Container(
       width: 15,
       height: 15,
@@ -94,30 +95,32 @@ class _IconWidgetState extends State<IconWidget> {
           color: Colors.amber,
           border: Border.all(color: Colors.transparent, width: 0.5)),
       child: Center(
-        child: Container(
-          height: 1,
-          width: 10,
-          color: Colors.white,
-        )
-      ),
+          child: Container(
+        height: 1,
+        width: 10,
+        color: Colors.white,
+      )),
     );
   }
 
-  Container _buildActiveIcon() {
-    return Container(
-      width: 18,
-      height: 18,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          border: Border.all(color: Colors.white, width: 2)),
-      child: Center(
-        child: SvgPicture.asset(
-              'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.greenAccent[700], //Colors.white
-              height: 15,
-              width: 15,
-            ),
+  Tooltip _buildActiveIcon() {
+    return Tooltip(
+      message: 'This means its active',
+      child: Container(
+        width: 18,
+        height: 18,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            border: Border.all(color: Colors.white, width: 2)),
+        child: Center(
+          child: SvgPicture.asset(
+            'assets/icons/navigation/checkbox/tick.svg',
+            color: Colors.greenAccent[700], //Colors.white
+            height: 15,
+            width: 15,   
+          ),
+        ),
       ),
     );
   }

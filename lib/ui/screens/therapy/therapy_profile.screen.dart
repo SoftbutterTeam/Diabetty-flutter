@@ -32,6 +32,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
   Widget build(BuildContext context) {
     // //print('£4');
     // //print((ModalRoute.of(context).settings.arguments as Map).toString());
+    //TODO check condition for schedule / mode
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
@@ -53,7 +54,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
           color: Colors.transparent,
         ),
         child: SingleChildScrollView(
-          child: (widget.therapy.schedule.reminderRules.length == 0)
+          child: (widget.therapy?.schedule?.reminderRules?.length == 0)
               ? _buildNoActiveReminderBody(size)
               : _buildActiveReminderBody(size),
         ),

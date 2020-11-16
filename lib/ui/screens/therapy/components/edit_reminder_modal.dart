@@ -34,27 +34,40 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
   @override
   void initState() {
     super.initState();
-    final rules = widget.therapyForm.schedule.reminderRules;
-    days = Days.fromDays(rules.isNotEmpty ? rules.last.days : Days());
-    dosageController = TextEditingController(
-        text: (rules.length == 0) ? '' : rules.last.dose.toString());
-    timeSelected = getInitialTime();
+    final rules = widget.therapyForm?.schedule?.reminderRules;
+    if (rules != null) {
+      days = Days.fromDays(rules.isNotEmpty ? rules.last.days : Days());
+      dosageController = TextEditingController(
+          text: (rules.length == 0) ? '' : rules.last.dose.toString());
+      timeSelected = getInitialTime();
 
-    initialDate = timeSelected;
-    reminder = ReminderRule();
-    reminder.days = Days();
-    _isFilled = false;
-    timeString = timeSelected.formatTime();
+      initialDate = timeSelected;
+      reminder = ReminderRule();
+      reminder.days = Days();
+      _isFilled = false;
+      timeString = timeSelected.formatTime();
+    } else {
+      days = Days.fromDays(Days());
+      dosageController = TextEditingController();
+      timeSelected = getInitialTime();
+
+      initialDate = timeSelected;
+      reminder = ReminderRule();
+      reminder.days = Days();
+      _isFilled = false;
+      timeString = timeSelected.formatTime();
+    }
   }
 
   DateTime getInitialTime() {
-    if (widget.therapyForm.schedule.reminderRules.isEmpty)
+    if (widget.therapyForm.schedule == null ||widget.therapyForm.schedule.reminderRules == null)
       return DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 8, 00);
     else
       return widget.therapyForm.schedule.reminderRules.last.time
           .applyTimeOfDay()
-          .add(widget.therapyForm.medicationInfo.restDuration ?? Duration(hours: 4));
+          .add(widget.therapyForm.medicationInfo.restDuration ??
+              Duration(hours: 4));
   }
 
   @override
