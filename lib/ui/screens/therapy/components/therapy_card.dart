@@ -109,7 +109,7 @@ class _TherapyCardState extends State<TherapyCard>
         child: ConstrainedBox(
           constraints: BoxConstraints(
               minHeight: size.height * 0.07,
-              maxHeight: size.height * 0.12,
+              maxHeight: size.height * 0.08,
               minWidth: size.width * 0.3,
               maxWidth: size.width * 0.5),
           child: Container(
@@ -139,35 +139,52 @@ class _TherapyCardState extends State<TherapyCard>
                     ),
                   ),
                 ),
-                text(widget.therapyData.name,
-                    textColor: Colors.black,
-                    fontFamily: fontMedium,
-                    fontSize: 18.0,
-                    overflow: TextOverflow.ellipsis),
-                // Expanded(
-                //   child: Padding(
-                //     padding: EdgeInsets.only(right: 15.0),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.end,
-                //       children: [
-                //         GestureDetector(
-                //           onTap: () {
-                //             setState(() {
-                //               sound = !sound;
-                //             });
-                //           },
-                //           child: SvgPicture.asset(
-                //             (sound)
-                //                 ? 'assets/icons/navigation/essentials/alarm-bell.svg'
-                //                 : 'assets/icons/navigation/essentials/disable-alarm.svg',
-                //             height: 25,
-                //             width: 25,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: Container(
+                    height: size.height * 0.05,
+                    width: 2,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.orange[800],
+                    ),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    text(widget.therapyData.name,
+                        textColor: Colors.black,
+                        fontFamily: fontMedium,
+                        fontSize: 16.0,
+                        overflow: TextOverflow.ellipsis),
+                    text('Expires on 22/09/2020',
+                        textColor: Colors.black87,
+                        fontFamily: fontMedium,
+                        fontSize: 12.0,
+                        overflow: TextOverflow.ellipsis),
+                  ],
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: SvgPicture.asset(
+                            'assets/icons/navigation/essentials/compass.svg',
+                            height: 25,
+                            width: 25,
+                            color: Colors.orange[800],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

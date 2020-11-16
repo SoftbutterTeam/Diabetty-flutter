@@ -74,9 +74,20 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
           )
         ],
       ),
-      suffix: Container(
-          padding: EdgeInsets.only(right: 15),
-          child: Text(_getTime(), style: textstyle)),
+      suffix: Stack(
+        alignment: Alignment.centerRight,
+        children: [
+          Opacity(
+            opacity: 0,
+            child: Container(
+                padding: EdgeInsets.only(right: 15),
+                child: Text('00:00 AM', style: textstyle)),
+          ),
+          Container(
+              padding: EdgeInsets.only(right: 15),
+              child: Text(_getTime(), style: textstyle)),
+        ],
+      ),
       placeholder: widget.rule.dose.toString() +
           ' ' +
           unitTypes[manager.therapyForm.unitsIndex]

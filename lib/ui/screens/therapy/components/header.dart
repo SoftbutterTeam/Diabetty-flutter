@@ -52,7 +52,7 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => null ,//print('yeye'),
+                  onTap: () => null, //print('yeye'),
                   child: Container(
                     alignment: Alignment.center,
                     child: subHeadingText("Therapy", Colors.white),
@@ -61,9 +61,14 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
                 Container(
                   child: FlatButton(
                     onPressed: () {
-                      final actionsheet = addTherapyActionSheet(context);
-                      showCupertinoModalPopup(
-                          context: context, builder: (context) => actionsheet);
+                      final TherapyManager therapyManager =
+                          Provider.of<TherapyManager>(context, listen: false);
+                      therapyManager.resetForm();
+                      //print('this far');
+                      Navigator.pushNamed(context, addmedication);
+                      // final actionsheet = addTherapyActionSheet(context);
+                      // showCupertinoModalPopup(
+                      //     context: context, builder: (context) => actionsheet);
                     },
                     color: Colors.transparent,
                     disabledTextColor: Colors.grey,
