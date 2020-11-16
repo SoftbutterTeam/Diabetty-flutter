@@ -6,6 +6,8 @@ import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/cupertino_text_field.dart'
+    as custom;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +46,8 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
     TherapyManager manager = Provider.of<TherapyManager>(context);
     var size = MediaQuery.of(context).size;
     List<Widget> weekDays = buildWeekWidgets(context);
-    return CupertinoTextField(
+    return custom.CupertinoTextField(
+      overflow: TextOverflow.fade,
       decoration: BoxDecoration(
         color: appWhite,
         border: Border.all(
@@ -74,9 +77,20 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
           )
         ],
       ),
-      suffix: Container(
-          padding: EdgeInsets.only(right: 15),
-          child: Text(_getTime(), style: textstyle)),
+      suffix: Stack(
+        alignment: Alignment.centerRight,
+        children: [
+          Opacity(
+            opacity: 0,
+            child: Container(
+                padding: EdgeInsets.only(right: 15),
+                child: Text('00:00 AM', style: textstyle)),
+          ),
+          Container(
+              padding: EdgeInsets.only(right: 15),
+              child: Text(_getTime(), style: textstyle)),
+        ],
+      ),
       placeholder: widget.rule.dose.toString() +
           ' ' +
           unitTypes[manager.therapyForm.unitsIndex]
