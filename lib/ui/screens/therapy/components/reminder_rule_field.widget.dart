@@ -47,7 +47,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField> {
     var size = MediaQuery.of(context).size;
     List<Widget> weekDays = buildWeekWidgets(context);
     return custom.CupertinoTextField(
-      overflow: TextOverflow.fade,
+      overflow: TextOverflow.clip, 
       decoration: BoxDecoration(
         color: appWhite,
         border: Border.all(
