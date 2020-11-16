@@ -48,16 +48,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
     super.dispose();
   }
 
-  static const myData = [
-    ["A", "✔"],
-    ["B", "❓"],
-    ["C", "✖"],
-    ["D", "❓"],
-    ["E", "✖"],
-    ["F", "✖"],
-    ["G", "✔"],
-  ];
-
   Widget build(BuildContext context) {
     return Background(
       child: SingleChildScrollView(
@@ -73,29 +63,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
       child:
           Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
         Padding(
-          padding:  EdgeInsets.only(top: 8.0),
+          padding: EdgeInsets.only(top: 8.0),
           child: SizedBox(
               width: size.width,
               height: size.height * firstSectionHeight,
-              child: Center(
-                child: charts.BarChart(
-                    charts.BarChartData(maxY: 10.0, minY: 0.0, barGroups: [
-                  charts.BarChartGroupData(x: 1, barRods: [
-                    charts.BarChartRodData(
-                      y: 3,
-                      colors: [Colors.indigo],
-                      width: 20,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    charts.BarChartRodData(
-                      y: 5,
-                      colors: [Colors.blue],
-                      width: 10,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ])
-                ])),
-              )),
+              child: Center(child: null)),
         ),
         Container(
           padding: EdgeInsets.only(top: 5),

@@ -878,6 +878,7 @@ class _CupertinoTextFieldState extends State<CupertinoTextField>
                       padding: widget.padding,
                       child: Text(
                         widget.placeholder,
+                        softWrap: false,
                         maxLines: widget.maxLines,
                         overflow: widget.overflow ?? TextOverflow.ellipsis,
                         style: placeholderStyle,
