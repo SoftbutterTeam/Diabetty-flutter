@@ -52,16 +52,15 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
               color: appWhite,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withOpacity(0),
                   spreadRadius: 0.5,
-                  blurRadius: 3,
-                  offset: Offset(0, -2),
+                  blurRadius: 1.5,
+                  offset: Offset(0, -1),
                 ),
               ],
               border: Border(
                 top: BorderSide(
-                  color:
-                      Colors.transparent, //Color.fromRGBO(200, 100, 100, 0.4),
+                  color: Color.fromRGBO(200, 100, 100, 0.2),
                   width: 0.7,
                 ),
               )),
@@ -107,10 +106,10 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
           color: appWhite,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: Offset(0, 0.5),
+              color: Colors.grey.withOpacity(0.15),
+              spreadRadius: 0.5,
+              blurRadius: 1.2,
+              offset: Offset(0, 2),
             ),
           ],
           border: Border(
