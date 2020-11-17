@@ -14,7 +14,9 @@ class Reminder with DateMixin {
   String name;
   DateTime time;
   int dose;
-  int doseUnitIndex;
+  int doseTypeIndex;
+  int strength;
+  int strengthUnitindex;
   Duration window;
   DateTime takenAt;
   DateTime rescheduledTime;
@@ -79,7 +81,9 @@ class Reminder with DateMixin {
             date.year, date.month, date.day, rule.time.hour, rule.time.minute),
         this.dose = rule.dose,
         this.window = therapy.schedule.window,
-        this.doseUnitIndex = therapy.medicationInfo.unitIndex,
+        this.doseTypeIndex = therapy.medicationInfo.typeIndex,
+        this.strength = therapy.medicationInfo.strength,
+        this.strengthUnitindex = therapy.medicationInfo.unitIndex,
         this.advices = therapy.medicationInfo.intakeAdvices;
 
   Reminder.formJson(Map<String, dynamic> json) {
@@ -95,7 +99,9 @@ class Reminder with DateMixin {
     this.appearance = json['appearance'];
     this.time = json['time'];
     this.dose = json['dose'];
-    this.doseUnitIndex = json['doseUnitIndex'];
+    this.doseTypeIndex = json['doseTypeIndex'];
+    this.strength = json['strength'];
+    this.strengthUnitindex = json['strengthUnitIndex'];
     this.advices = json['advices'];
     this.window = json['window'];
     this.takenAt = json['takenAt'];
