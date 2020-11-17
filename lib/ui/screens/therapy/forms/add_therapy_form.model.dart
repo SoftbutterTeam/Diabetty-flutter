@@ -11,7 +11,7 @@ class AddTherapyForm {
   String name;
   int strength;
   int strengthUnitsIndex;
-  int unitsIndex;
+  int typeIndex;
   int intakeAdviceIndex;
   int apperanceIndex;
   Duration minRest;
@@ -42,7 +42,7 @@ class AddTherapyForm {
   AddTherapyForm(
       {this.name,
       this.strength,
-      this.unitsIndex,
+      this.typeIndex,
       this.strengthUnitsIndex,
       this.intakeAdviceIndex,
       this.apperanceIndex,
@@ -62,7 +62,7 @@ class AddTherapyForm {
     this.intakeAdviceIndex ??= 0;
     this.startDate ??= DateTime.now();
     this.endDate ??= null;
-    this.unitsIndex ??= 0;
+    this.typeIndex ??= 0;
     this.strengthUnitsIndex ??= 0;
     this.mode ??= modeOptions[0];
     this.apperanceIndex ??= 0;
@@ -73,13 +73,13 @@ class AddTherapyForm {
         mode: this.mode,
         name: this.name,
         medicationInfo: MedicationInfo(
-          appearanceIndex: this.apperanceIndex,
-          intakeAdvices: List<int>()..add(intakeAdviceIndex),
-          name: this.name,
-          strength: this.strength,
-          unitIndex: this.unitsIndex,
-          restDuration: this.minRest,
-        ),
+            appearanceIndex: this.apperanceIndex,
+            intakeAdvices: List<int>()..add(intakeAdviceIndex),
+            name: this.name,
+            strength: this.strength,
+            unitIndex: this.typeIndex,
+            restDuration: this.minRest,
+            typeIndex: this.typeIndex),
         stock: Stock(
           currentLevel: stock.currentLevel,
           flagLimit: stock.flagLimit,
