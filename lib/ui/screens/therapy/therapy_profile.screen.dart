@@ -74,7 +74,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
   }
 
   final style = TextStyle(
-      color: Colors.orange[800], fontSize: 18.0, fontWeight: FontWeight.w500);
+      color: Colors.deepOrange[900], fontSize: 14.0, fontWeight: FontWeight.w500); 
 
   final boxdecorations = BoxDecoration(
       shape: BoxShape.circle,
@@ -88,6 +88,14 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
         width: size.width,
         height: size.height * 0.16,
         decoration: BoxDecoration(
+           boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: Offset(0, 1), // changes position of shadow
+            ),
+          ],
           color: Colors.white,
           border: Border.all(
             color: Colors.orange[800],
@@ -106,15 +114,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                   Container(
                     height: size.height * 0.075,
                     width: size.width * 0.15,
-                    // decoration: boxdecorations,
-                    child: Center(
-                      child: SvgPicture.asset(
-                            'assets/icons/navigation/essentials/reminder.svg',
-                            height: 50,
-                            width: 50,
-                            color: textColor,
-                          ),
-                    ),
+                    decoration: boxdecorations,
                   ),
                   // SizedBox(
                   //   height: size.height * 0.01,
@@ -130,15 +130,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                   Container(
                     height: size.height * 0.075,
                     width: size.width * 0.15,
-                    // decoration: boxdecorations,
-                    child: Center(
-                      child: SvgPicture.asset(
-                            'assets/icons/navigation/essentials/pills (1).svg',
-                            height: 50,
-                            width: 50,
-                            color: textColor,
-                          ),
-                    ),
+                    decoration: boxdecorations,
                   ),
                   // SizedBox(
                   //   height: size.height * 0.01,
@@ -154,17 +146,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                   Container(
                     height: size.height * 0.075,
                     width: size.width * 0.15,
-                    // decoration: boxdecorations,
-                    child: Center(
-                      child: SvgPicture.asset(
-                        // appearance_iconss[
-                        //     widget.therapy.medicationInfo.appearanceIndex],
-                        'assets/icons/navigation/essentials/vitamins.svg',
-                        width: 50,
-                        height: 50,
-                        color: textColor,
-                      ),
-                    ),
+                    decoration: boxdecorations,
                   ),
                   // SizedBox(
                   //   height: size.height * 0.01,
