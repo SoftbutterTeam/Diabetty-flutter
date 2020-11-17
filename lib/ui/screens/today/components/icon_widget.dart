@@ -42,7 +42,7 @@ class _IconWidgetState extends State<IconWidget> {
               Container(
                 alignment: Alignment
                     .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
-                child: _buildActiveIcon(),
+                child: _buildRelevantIcon(),
               ),
             ],
           )),
@@ -118,7 +118,7 @@ class _IconWidgetState extends State<IconWidget> {
             'assets/icons/navigation/checkbox/tick.svg',
             color: Colors.greenAccent[700], //Colors.white
             height: 15,
-            width: 15,   
+            width: 15,
           ),
         ),
       ),
@@ -159,6 +159,34 @@ class _IconWidgetState extends State<IconWidget> {
         ),
       ),
     );
+  }
+
+  Widget _buildRelevantIcon() {
+    final reminder = widget.reminder;
+    final complete = reminder.isComplete;
+    final snoozed = reminder.isSnoozed;
+    final missed = reminder.isMissed;
+    final active = reminder.isActive;
+    final skipped = reminder.isSkipped;
+    final late = reminder.isLate;
+    String error = "Reminder has encountered an error";
+    print(reminder.window);
+
+    if (complete) {
+      return _buildCompletedIcon();
+    } else if (skipped) {
+      return _buildSkippedIcon();
+    } else if (false) {
+      return _buildMissedIcon();
+    } else if (late) {
+      return _buildLateIcon();
+    } else if (snoozed) {
+      return _buildSnoozedIcon();
+    } else if (active) {
+      return _buildActiveIcon();
+    } else {
+      return Tooltip(message: "Reminder has encountered an error");
+    }
   }
 
   void getIconSizes() {
