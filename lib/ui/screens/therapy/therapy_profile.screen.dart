@@ -27,6 +27,7 @@ class TherapyProfileScreen extends StatefulWidget {
 class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     with EditTherapyModalsMixin {
   final int count = 0;
+  final Color textColor = Colors.black;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +48,14 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
 
   Padding _buildBody(Size size) {
     return Padding(
-      padding: EdgeInsets.only(top: size.height * 0.4),
+      padding: EdgeInsets.only(top: size.height * 0.3),
       child: Container(
         width: size.width,
         decoration: BoxDecoration(
           color: Colors.transparent,
         ),
         child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           child: (widget.therapy?.schedule?.reminderRules?.length == 0)
               ? _buildNoActiveReminderBody(size)
               : _buildActiveReminderBody(size),
@@ -66,7 +68,117 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     return Column(
       children: [
         Text('yeye'),
+        _buildFooter(size),
       ],
+    );
+  }
+
+  final style = TextStyle(
+      color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w500);
+
+  final boxdecorations = BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.white,
+      border: Border.all(color: Colors.black87));
+
+  Padding _buildFooter(Size size) {
+    return Padding(
+      padding: EdgeInsets.only(top: size.height * 0.53),
+      child: Container(
+        width: size.width,
+        height: size.height * 0.16,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.black,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(top: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  Container(
+                    height: size.height * 0.075,
+                    width: size.width * 0.15,
+                    // decoration: boxdecorations,
+                    child: Center(
+                      child: SvgPicture.asset(
+                            'assets/icons/navigation/essentials/reminder.svg',
+                            height: 50,
+                            width: 50,
+                            color: Colors.black,
+                          ),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   height: size.height * 0.01,
+                  // ),
+                  Text(
+                    'alarm',
+                    style: style,
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Container(
+                    height: size.height * 0.075,
+                    width: size.width * 0.15,
+                    // decoration: boxdecorations,
+                    child: Center(
+                      child: SvgPicture.asset(
+                            'assets/icons/navigation/essentials/pills (1).svg',
+                            height: 50,
+                            width: 50,
+                            color: Colors.black,
+                          ),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   height: size.height * 0.01,
+                  // ),
+                  Text(
+                    'refill',
+                    style: style,
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Container(
+                    height: size.height * 0.075,
+                    width: size.width * 0.15,
+                    // decoration: boxdecorations,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        // appearance_iconss[
+                        //     widget.therapy.medicationInfo.appearanceIndex],
+                        'assets/icons/navigation/essentials/vitamins.svg',
+                        width: 50,
+                        height: 50,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   height: size.height * 0.01,
+                  // ),
+                  Text(
+                    'take',
+                    style: style,
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -83,7 +195,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
           'No Active Reminder',
           style: TextStyle(
             fontSize: 22.0,
-            color: Colors.black,
+            color: textColor,
             fontFamily: fontBold,
           ),
         ),
@@ -103,7 +215,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
               child: Center(
                   child: Text('Edit Profile',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: textColor,
                           fontSize: 20.0,
                           fontWeight: FontWeight.w400))),
             ),
@@ -118,99 +230,29 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
       height: size.height * 0.25,
       width: size.width,
       decoration: BoxDecoration(
-        // color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: Offset(0, 1), // changes position of shadow
-          ),
-        ],
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [Colors.orange[900], Colors.orange[600]]),
-      ),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: Offset(0, 1), // changes position of shadow
+            ),
+          ],
+          border: Border(
+            bottom: BorderSide(
+              color: textColor,
+              width: 1.0,
+            ),
+          )),
       child: Padding(
         padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
         child: Column(
           children: [
             Row(
-              children: [
-                Icon(Icons.arrow_back_ios, color: Colors.white, size: 25),
-              ],
-            ),
-            SizedBox(height: size.height * 0.02),
-            Row(
-              children: [
-                Container(
-                  height: size.height * 0.05,
-                  width: size.width * 0.1,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    appearance_iconss[
-                        widget.therapy.medicationInfo.appearanceIndex],
-                    width: 10,
-                    height: 10,
-                  ),
-                ),
-                SizedBox(width: size.width * 0.05),
-                Column(
-                  children: [
-                    Text(widget.therapy.name,
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.white,
-                          fontFamily: fontBold,
-                        )),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: size.height * 0.02),
-            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    Text(
-                      (widget.therapy.stock?.currentLevel ?? '0'),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "in stock",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      (widget.therapy.schedule?.reminderRules?.length
-                              .toString() ??
-                          '0'),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "active reminders",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300),
-                    ),
-                  ],
-                ),
+                Icon(Icons.arrow_back_ios, color: textColor, size: 25),
                 GestureDetector(
                   onTap: () {
                     final actionsheet = addOptionsActionSheet(context);
@@ -219,19 +261,96 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white60),
+                        border: Border.all(color: textColor, width: 1),
                         borderRadius: BorderRadius.circular(5)),
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 15.0, right: 15, top: 5, bottom: 5),
                       child: Text(
-                        "Add",
-                        style: TextStyle(color: Colors.white, fontSize: 18.0),
+                        "edit",
+                        style: TextStyle(color: textColor, fontSize: 18.0),
                       ),
                     ),
                   ),
                 ),
               ],
+            ),
+            SizedBox(height: size.height * 0.02),
+            Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: Row(
+                children: [
+                  Container(
+                    height: size.height * 0.05,
+                    width: size.width * 0.1,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: SvgPicture.asset(
+                      appearance_iconss[
+                          widget.therapy.medicationInfo.appearanceIndex],
+                      width: 10,
+                      height: 10,
+                    ),
+                  ),
+                  SizedBox(width: size.width * 0.05),
+                  Column(
+                    children: [
+                      Text(widget.therapy.name,
+                          style: TextStyle(
+                              fontSize: 22.0,
+                              color: textColor,
+                              fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: size.height * 0.02),
+            Padding(
+              padding: EdgeInsets.only(left: 25, right: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        // (widget.therapy.stock?.currentLevel ?? '0'),
+                        'Last Taken',
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        "3 hours ago",
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "Next Dose",
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        "in 6 hours",
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -252,7 +371,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
         CupertinoActionSheetAction(
           child: text("Add Reminder", fontSize: 18.0, textColor: Colors.indigo),
           onPressed: () {
-             Navigator.pop(context);
+            Navigator.pop(context);
             showEditReminderDialog2(context);
           },
         ),
@@ -275,11 +394,13 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
         );
   }
 
-    Future showEditReminderDialog2(BuildContext context) {
+  Future showEditReminderDialog2(BuildContext context) {
     return showDialog(
-      context: context,
-      builder: (context) => EditReminderModal2(manager: widget.manager, therapyForm: widget.therapy)  //TODO complete this modal
-    );
+        context: context,
+        builder: (context) => EditReminderModal2(
+            manager: widget.manager,
+            therapyForm: widget.therapy) //TODO complete this modal
+        );
   }
 
   Future showEditModal(BuildContext context) {

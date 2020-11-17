@@ -143,7 +143,7 @@ class _TherapyCardState extends State<TherapyCard>
                   padding: const EdgeInsets.only(right: 20.0),
                   child: Container(
                     height: size.height * 0.05,
-                    width: 2,
+                    width: 1.5,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.orange[800],
@@ -175,9 +175,9 @@ class _TherapyCardState extends State<TherapyCard>
                         GestureDetector(
                           onTap: () {},
                           child: SvgPicture.asset(
-                            'assets/icons/navigation/essentials/compass.svg',
-                            height: 25,
-                            width: 25,
+                            'assets/icons/navigation/essentials/next.svg',
+                            height: 20,
+                            width: 20,
                             color: Colors.orange[800],
                           ),
                         ),
