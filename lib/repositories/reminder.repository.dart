@@ -14,9 +14,9 @@ class ReminderRepository {
 
     await _db
         .collection('users')
-        .document(reminder.therapyId)
+        .document(reminder.userId)
         .collection('therapies')
-        .document(reminder.id)
+        .document(reminder.therapyId)
         .updateData(reminderData)
         .catchError((e) {
       //print(e);

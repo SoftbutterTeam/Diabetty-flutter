@@ -19,8 +19,11 @@ class Schedule {
   });
 
   loadFromJson(Map<String, dynamic> json) {
-    List<dynamic> remindersJson = json['reminderRules'];
-    List<ReminderRule> reminders = createReminders(remindersJson);
+    if (json.containsKey('reminderRules')) {
+      List<dynamic> remindersJson = json['reminderRules'];
+      List<ReminderRule> reminders = createReminders(remindersJson);
+      this.reminderRules = reminders;
+    }
     if (json.containsKey('alarmSettings')) {
       Map<String, dynamic> settingsJSON =
           new Map<String, dynamic>.from(json['alarmSettings']);
@@ -28,8 +31,6 @@ class Schedule {
       setting.loadFromJson(settingsJSON);
       this.alarmSettings = setting;
     }
-
-    this.reminderRules = reminders;
     if (json.containsKey('window'))
       this.window = new Duration(seconds: json['window']);
     if (json.containsKey('startDate'))
@@ -38,13 +39,17 @@ class Schedule {
       this.endDate = DateTime.parse(json['endDate']);
   }
 
-  Map<String, dynamic> toJson() => {
-        'reminderRules': mapJson(this.reminderRules),
-        'window': this.window.inSeconds,
-        'startDate': this.startDate.toString(),
-        'endDate': this.endDate != null ? this.endDate.toString() : null,
-        'alarmSettings': this.alarmSettings.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> output = {};
+    if (this.reminderRules != null)
+      output['reminderRules'] = this.reminderRules;
+    if (this.window != null) output['window'] = this.window.inSeconds;
+    if (this.startDate != null) output['startDate'] = this.startDate.toString();
+    if (this.endDate != null) output['endDate'] = this.endDate.toString();
+    if (this.alarmSettings != null)
+      output['alarmSettings'] = this.alarmSettings.toJson();
+    return output;
+  }
 
   mapJson(list) {
     List jsonList = List();
