@@ -25,7 +25,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
     return TherapyProfileBackground(
         header: TherapyProfileHeader(),
         child: SingleChildScrollView(
-            scrollDirection: Axis.vertical, child: _body(context)));
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            child: _body(context)));
   }
 
   Widget _body(BuildContext context) {
@@ -34,50 +36,54 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
       children: <Widget>[
         _buildHeader(size),
         SizedBox(height: size.height * 0.6),
-        Container(
-          padding: EdgeInsets.only(top: 10),
-          height: size.height * 0.2,
-          width: size.width,
-          decoration: BoxDecoration(
-              color: appWhite,
-              border: Border(
-                top: BorderSide(
-                  color: textColor,
-                  width: 1.0,
-                ),
-              )),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: size.height * 0.08,
-                width: size.width * 0.16,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: textColor,
-                ),
-              ),
-              Container(
-                height: size.height * 0.08,
-                width: size.width * 0.16,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: textColor,
-                ),
-              ),
-              Container(
-                height: size.height * 0.08,
-                width: size.width * 0.16,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: textColor,
-                ),
-              ),
-            ],
-          ),
-        ),
+        _buildFooter(size),
       ],
+    );
+  }
+
+  Container _buildFooter(Size size) {
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      height: size.height * 0.2,
+      width: size.width,
+      decoration: BoxDecoration(
+          color: appWhite,
+          border: Border(
+            top: BorderSide(
+              color: textColor,
+              width: 1.0,
+            ),
+          )),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: size.height * 0.08,
+            width: size.width * 0.16,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: textColor,
+            ),
+          ),
+          Container(
+            height: size.height * 0.08,
+            width: size.width * 0.16,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: textColor,
+            ),
+          ),
+          Container(
+            height: size.height * 0.08,
+            width: size.width * 0.16,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: textColor,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
