@@ -155,7 +155,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     return CustomTextField(
       stackIcons: _stackedHeartIcons(true),
       onTap: () => showUnitPopUp(context),
-      placeholder: unitTypes[therapyForm.unitsIndex],
+      placeholder: unitTypes[therapyForm.typeIndex],
       placeholderText: 'Type',
     );
   }
