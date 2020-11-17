@@ -18,16 +18,12 @@ class TherapyProfileScreen2 extends StatefulWidget {
 }
 
 class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
-  final Color textColor = Colors.orange[800];
+  Color textColor = Colors.orange[800];
 
   @override
   Widget build(BuildContext context) {
     return TherapyProfileBackground(
-        header: TherapyProfileHeader(),
-        child: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            child: _body(context)));
+        header: TherapyProfileHeader(), child: _body(context));
   }
 
   Widget _body(BuildContext context) {
@@ -35,69 +31,92 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
     return Column(
       children: <Widget>[
         _buildHeader(size),
-        SizedBox(height: size.height * 0.6),
+        Expanded(
+            child: SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                child: IntrinsicHeight(child: Container()))),
         _buildFooter(size),
       ],
     );
   }
 
-  Container _buildFooter(Size size) {
-    return Container(
-      padding: EdgeInsets.only(top: 10),
-      height: size.height * 0.2,
-      width: size.width,
-      decoration: BoxDecoration(
-          color: appWhite,
-          border: Border(
-            top: BorderSide(
-              color: textColor,
-              width: 1.0,
-            ),
-          )),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: size.height * 0.08,
-            width: size.width * 0.16,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: textColor,
-            ),
+  Widget _buildFooter(Size size) {
+    return ConstrainedBox(
+        constraints: BoxConstraints(minHeight: size.height * 0.15),
+        child: IntrinsicHeight(
+            child: Container(
+          padding: EdgeInsets.only(top: 15),
+          width: size.width,
+          decoration: BoxDecoration(
+              color: appWhite,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 0.5,
+                  blurRadius: 3,
+                  offset: Offset(0, -2),
+                ),
+              ],
+              border: Border(
+                top: BorderSide(
+                  color:
+                      Colors.transparent, //Color.fromRGBO(200, 100, 100, 0.4),
+                  width: 0.7,
+                ),
+              )),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: size.height * 0.08,
+                width: size.width * 0.16,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.transparent,
+                    border: Border.all(color: textColor, width: 1)),
+              ),
+              Container(
+                height: size.height * 0.08,
+                width: size.width * 0.16,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.transparent,
+                    border: Border.all(color: textColor, width: 1)),
+              ),
+              Container(
+                height: size.height * 0.08,
+                width: size.width * 0.16,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.transparent,
+                    border: Border.all(color: textColor, width: 1)),
+              ),
+            ],
           ),
-          Container(
-            height: size.height * 0.08,
-            width: size.width * 0.16,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: textColor,
-            ),
-          ),
-          Container(
-            height: size.height * 0.08,
-            width: size.width * 0.16,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: textColor,
-            ),
-          ),
-        ],
-      ),
-    );
+        )));
   }
 
   Container _buildHeader(Size size) {
     return Container(
       width: size.width,
-      height: size.height * 0.15,
+      height: size.height * 0.25,
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(
           color: appWhite,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: Offset(0, 0.5),
+            ),
+          ],
           border: Border(
             bottom: BorderSide(
-              color: textColor,
-              width: 1.0,
+              color: Colors.transparent, // Color.fromRGBO(200, 100, 100, 0.4),
+              width: 0.7,
             ),
           )),
       child: Column(
