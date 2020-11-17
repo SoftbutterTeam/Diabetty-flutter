@@ -1,4 +1,3 @@
-import 'package:date_picker_timeline/date_widget.dart';
 import 'package:date_picker_timeline/extra/color.dart';
 import 'package:date_picker_timeline/extra/style.dart';
 import 'package:date_picker_timeline/gestures/tap.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/ui/screens/today/components/date_widget.dart';
 
 class DatePicker extends StatefulWidget {
   /// Start Date in case user wants to show past dates

@@ -9,6 +9,7 @@ import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
 import 'package:diabetty/ui/screens/today/components/circle_list.dart';
+import 'package:diabetty/ui/screens/today/components/circle_plan.dart';
 import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 //*swtich versions. animation differences*/
@@ -114,56 +115,13 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               children: <Widget>[
                 AnimatedBox(
                     animation: _animation, shouldAnim: !circleMinimized),
-                AnimatedSize(
-                  duration: Duration(milliseconds: 600),
-                  vsync: this,
-                  curve: Curves.easeInOut,
-                  alignment: Alignment.topCenter,
-                  child: GestureDetector(
-                    onVerticalDragUpdate: (details) {
-                      if (details.delta.dy > dragSensitivity) {
-                        if (circleMinimized) {
-                          setState(() {
-                            _minController.reverse();
-                            circleMinimized = false;
-                          });
-                        }
-                      } else if (details.delta.dy < -dragSensitivity) {
-                        if (!circleMinimized) {
-                          setState(() {
-                            _minController.forward();
-                            circleMinimized = true;
-                          });
-                        }
-                      }
-                    },
-                    onDoubleTap: () {
-                      if (circleMinimized) {
-                        setState(() {
-                          _minController.reverse();
-                          circleMinimized = false;
-                        });
-                      } else {
-                        setState(() {
-                          _minController.forward();
-                          circleMinimized = true;
-                        });
-                      }
-                    },
-                    child: SizedBox(
-                        width: size.width,
-                        height:
-                            heightOfCircleSpace / (circleMinimized ? 2.8 : 1),
-                        // 2.8
-                        child: FittedBox(
-                          alignment: circleMinimized
-                              ? Alignment.topCenter
-                              : Alignment.center,
-                          fit: circleMinimized ? BoxFit.none : BoxFit.contain,
-                          child: Container(
-                              alignment: Alignment.center,
-                              child: _buildCirclePlan(context, snapshot)),
-                        )),
+                _buildCirclePlanOverlay(
+                  size,
+                  heightOfCircleSpace,
+                  child: CirclePlan(
+                    manager: manager,
+                    circleMinimized: circleMinimized,
+                    minAnimationRotate: _minAnimationRotate,
                   ),
                 ),
                 Expanded(
@@ -196,6 +154,57 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     );
   }
 
+  AnimatedSize _buildCirclePlanOverlay(Size size, double heightOfCircleSpace,
+      {CirclePlan child}) {
+    return AnimatedSize(
+      duration: Duration(milliseconds: 600),
+      vsync: this,
+      curve: Curves.easeInOut,
+      alignment: Alignment.topCenter,
+      child: GestureDetector(
+        onVerticalDragUpdate: (details) {
+          if (details.delta.dy > dragSensitivity) {
+            if (circleMinimized) {
+              setState(() {
+                _minController.reverse();
+                circleMinimized = false;
+              });
+            }
+          } else if (details.delta.dy < -dragSensitivity) {
+            if (!circleMinimized) {
+              setState(() {
+                _minController.forward();
+                circleMinimized = true;
+              });
+            }
+          }
+        },
+        onDoubleTap: () {
+          if (circleMinimized) {
+            setState(() {
+              _minController.reverse();
+              circleMinimized = false;
+            });
+          } else {
+            setState(() {
+              _minController.forward();
+              circleMinimized = true;
+            });
+          }
+        },
+        child: SizedBox(
+            width: size.width,
+            height: heightOfCircleSpace / (circleMinimized ? 2.8 : 1),
+            // 2.8
+            child: FittedBox(
+                alignment:
+                    circleMinimized ? Alignment.topCenter : Alignment.center,
+                fit: circleMinimized ? BoxFit.none : BoxFit.contain,
+                child: child)),
+      ),
+    );
+  }
+
   Widget _buildRemindersList(
       BuildContext context, AsyncSnapshot<dynamic> snapshot) {
     if (widget.isLoading)
@@ -219,226 +228,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     );
   }
 
-  Widget _buildCirclePlan(BuildContext context, AsyncSnapshot snapshot) {
-    var size = MediaQuery.of(context).size;
-    List<Reminder> reminders = List.from(manager.getFinalRemindersList());
-    //print('remidners length ' + reminders.length.toString());
-    calcTimeFrames();
-    return Container(
-        // padding: EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        alignment: Alignment.center,
-        width: size.width,
-        child: CircleList(
-          origin: Offset(0, 0),
-          innerRadius: 100,
-          outerRadius: 130,
-          spinFactor: _minAnimationRotate,
-          initialAngle: initialAngle,
-          progressAngle: progressAngle,
-          showInitialAnimation: true,
-          innerCircleRotateWithChildren: true,
-          rotateMode: RotateMode.stopRotate,
-          progressColor: Colors.orangeAccent,
-          progressCompletion: calcProgressTime(),
-          centerWidget: new Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(12),
-              height: double.maxFinite,
-              width: double.maxFinite,
-              child: new CustomPaint(
-                  foregroundPainter: new MyPainter(
-                      completeColor: Colors.orangeAccent,
-                      completePercent: calcProgressTime(
-                        TimeOfDay(hour: 0, minute: 0),
-                        _initialTime,
-                      ),
-                      //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
-                      width: 1.0),
-                  child: Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(0),
-                      height: double.maxFinite,
-                      width: double.maxFinite))),
-          children: List.generate(12 * 4, (index) {
-            final rems = getReminderOnIndex(index, reminders);
-            return rems.isNotEmpty
-                ? IconWidget(
-                    index: index,
-                    iconURL: appearance_icon_0,
-                    reminder: rems[0],
-                  )
-                : SizedBox.shrink();
-          }),
-        ));
-  }
-
-  List<Reminder> getReminderOnIndex(int index, List<Reminder> reminders) {
-    DateTime indexTime = initalDateTime.add(Duration(minutes: index * 15));
-    List<Reminder> results = [];
-    //print(indexTime);
-    reminders.forEach((reminder) {
-      if (reminder.time.roundToNearest(15).compareTo(indexTime) == 0)
-        results.add(reminder);
-    });
-    //print(results);
-    return results;
-  }
-
   Widget build(BuildContext context) {
     return _body(context);
   }
-
-  void calcTimeFrames() {
-    if (hasReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
-            manager.getFinalRemindersList()) &&
-        !hasReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
-            manager.getFinalRemindersList())) {
-      _initialTime = TimeOfDay(hour: 0, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
-    } else if (!hasReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
-            manager.getFinalRemindersList()) &&
-        hasReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
-            manager.getFinalRemindersList())) {
-      _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
-    } else if (DateTime.now().compareTo(manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
-            0 &&
-        hasReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
-            manager.getFinalRemindersList())) {
-      _initialTime = TimeOfDay(hour: 0, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
-    } else if (DateTime.now().compareTo(manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
-            0 &&
-        hasNotTakenReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
-            manager.getFinalRemindersList())) {
-      //print("0yyy");
-      _initialTime = TimeOfDay(hour: 0, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = (0);
-    } else if (DateTime.now().compareTo(manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
-            0 &&
-        hasReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
-            manager.getFinalRemindersList())) {
-      //print("12aaa");
-      _initialTime = TimeOfDay(hour: 6, minute: 0);
-      initialAngle = (pi / 2);
-      progressAngle = (pi);
-    } else if (DateTime.now().compareTo(manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
-            0 &&
-        hasReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0)),
-            manager.getFinalRemindersList()) &&
-        !hasReminderBetween(
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0)),
-            manager.currentDateStamp
-                .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
-            manager.getFinalRemindersList())) {
-      //print("18aaa0");
-      _initialTime = TimeOfDay(hour: 6, minute: 0);
-      initialAngle = (pi / 2);
-      progressAngle = (pi);
-    } else if (DateTime.now().compareTo(manager.currentDateStamp
-            .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
-        0) {
-      //print("18aaa");
-      _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
-    } else {
-      //print("18aaa2");
-      _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
-    }
-  }
-
-  double calcProgressTime([TimeOfDay timeOfDay, TimeOfDay limit]) {
-    if (DateTime.now().compareTo(initalDateTime) <= 0) return 0;
-    //print(timeOfDay);
-    //print(limit);
-    DateTime firstTime = timeOfDay == null
-        ? initalDateTime
-        : DateTime.now().applyTimeOfDay(timeOfDay);
-    if (limit != null &&
-        DateTime.now().applyTimeOfDay(limit).compareTo(
-                manager.currentDateStamp.applyTimeOfDay(timeOfDay)) <=
-            0) {
-      return 0;
-    }
-    DateTime percTimeLimit = DateTime.now();
-    if (limit != null) {
-      //print('yooo');
-      if (DateTime.now()
-              .compareTo(manager.currentDateStamp.applyTimeOfDay(limit)) >
-          0) {
-        percTimeLimit = DateTime.now().applyTimeOfDay(limit);
-      }
-      //print("perclimit");
-      //print(percTimeLimit.toIso8601String());
-    }
-    //print(firstTime.toIso8601String());
-    final double perc = (percTimeLimit.difference(firstTime).inMinutes /
-            Duration(hours: 12).inMinutes) *
-        100;
-    //print("hella");
-    //print(perc);
-    return perc <= 100 ? perc : 100;
-  }
-}
-
-bool hasNotTakenReminderBetween(
-    DateTime firstTime, DateTime lastTime, List<Reminder> reminders) {
-  return (reminders.any((element) =>
-      element.time.compareTo(firstTime) >= 0 &&
-      element.time.compareTo(lastTime) < 0 &&
-      element.takenAt == null));
-}
-
-bool hasReminderBetween(
-    DateTime firstTime, lastTime, List<Reminder> reminders) {
-  return (reminders.any((element) =>
-      element.time.compareTo(firstTime) >= 0 &&
-      element.time.compareTo(lastTime) < 0));
 }
