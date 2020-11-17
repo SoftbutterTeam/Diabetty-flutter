@@ -23,7 +23,6 @@ class Reminder with DateMixin {
   double editedDose;
   bool cancelled;
   List<int> advices;
-  int strength;
 
   DateTime get getDateTimeAs12hr {
     if (time == null) return time;
@@ -114,6 +113,7 @@ class Reminder with DateMixin {
     this.cancelled = json['cancelled'];
   }
 
+  //TODO
   Map<String, dynamic> toJson() => {
         'id': this.id,
         'userId': this.userId,

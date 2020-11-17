@@ -125,7 +125,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   Widget _buildReportSection(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.only(left: 0, right: 10, bottom: 5),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Container(
@@ -138,21 +138,32 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
 Widget _buildReportPercCircle(BuildContext context) {
   var size = MediaQuery.of(context).size;
-  return Container(
-    width: size.width * 0.42,
-    padding: EdgeInsets.all(size.width * 0.04),
-    alignment: Alignment.centerLeft,
+  return SizedBox(
+    width: size.width * 0.6,
     child: Container(
-        height: double.maxFinite,
-        width: double.maxFinite,
+        margin: EdgeInsets.all(size.width * 0.04),
+        padding: EdgeInsets.all(size.width * 0.02),
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: appWhite,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2), // a 0.2 is dope
+              spreadRadius: 2,
+              blurRadius: 3,
+
+              offset: Offset(0, 0), // a 1 is dope
+            ),
+          ],
+        ),
         child: new CustomPaint(
             foregroundPainter: new MyPainter(
                 completeColor: Colors.deepOrange,
                 completePercent: 78,
                 lineColor: Colors.red.withOpacity(0.2),
-                width: 1.5),
+                width: 2),
             child: Container(
-              color: Colors.white,
               alignment: Alignment.center,
               child: Text(
                 '78%',
@@ -165,7 +176,7 @@ Widget _buildReportPercCircle(BuildContext context) {
 Widget _buildReportText(BuildContext context) {
   return Expanded(
     child: Container(
-        alignment: Alignment.center,
+        alignment: Alignment.centerRight,
         child: Column(
           children: [Text('last 4 weeks'), Text('3 late'), Text('3 missed')],
         )),

@@ -30,6 +30,7 @@ class MedicationInfo {
         'strength': this.strength,
         'intakeAdvices': this.intakeAdvices,
         'unit': this.unitIndex,
+        'type': this.typeIndex,
       };
 
   bool loadFromJson(Map<String, dynamic> json) {
@@ -40,6 +41,7 @@ class MedicationInfo {
       }
       if (json.containsKey('name')) this.name = json['name'];
       if (json.containsKey('unit')) this.unitIndex = json['unit'];
+      if (json.containsKey('type')) this.typeIndex = json['type'];
       if (json.containsKey('strength')) this.strength = json['strength'];
       if (json.containsKey('intakeAdvices'))
         this.intakeAdvices = new List<int>.from(json['intakeAdvices']);

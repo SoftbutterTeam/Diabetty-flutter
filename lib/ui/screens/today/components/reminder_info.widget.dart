@@ -202,7 +202,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                     'Take ' +
                         reminder.dose.toString() +
                         ' ' +
-                        unitTypes[reminder.doseUnitIndex],
+                        unitTypes[reminder.doseTypeIndex],
                     fontSize: 12.0),
               ],
             ),
