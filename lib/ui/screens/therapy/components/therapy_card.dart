@@ -176,8 +176,8 @@ class _TherapyCardState extends State<TherapyCard>
                           onTap: () {},
                           child: SvgPicture.asset(
                             'assets/icons/navigation/essentials/next.svg',
-                            height: 20,
-                            width: 20,
+                            height: 15,
+                            width: 15,
                             color: Colors.orange[800],
                           ),
                         ),

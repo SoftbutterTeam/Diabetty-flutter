@@ -27,7 +27,7 @@ class TherapyProfileScreen extends StatefulWidget {
 class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     with EditTherapyModalsMixin {
   final int count = 0;
-  final Color textColor = Colors.black;
+  final Color textColor = Colors.orange[800];
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
   }
 
   final style = TextStyle(
-      color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w500);
+      color: Colors.orange[800], fontSize: 18.0, fontWeight: FontWeight.w500);
 
   final boxdecorations = BoxDecoration(
       shape: BoxShape.circle,
@@ -90,7 +90,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-            color: Colors.black,
+            color: Colors.orange[800],
             width: 1,
           ),
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -112,7 +112,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                             'assets/icons/navigation/essentials/reminder.svg',
                             height: 50,
                             width: 50,
-                            color: Colors.black,
+                            color: textColor,
                           ),
                     ),
                   ),
@@ -136,7 +136,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                             'assets/icons/navigation/essentials/pills (1).svg',
                             height: 50,
                             width: 50,
-                            color: Colors.black,
+                            color: textColor,
                           ),
                     ),
                   ),
@@ -162,7 +162,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
                         'assets/icons/navigation/essentials/vitamins.svg',
                         width: 50,
                         height: 50,
-                        color: Colors.black,
+                        color: textColor,
                       ),
                     ),
                   ),
