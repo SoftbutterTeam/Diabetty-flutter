@@ -121,31 +121,29 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
           )),
       child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 50),
-            child: Row(
-              children: [
-                Container(
-                  height: size.height * 0.05,
-                  width: size.width * 0.1,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    appearance_iconss[
-                        widget.therapy.medicationInfo.appearanceIndex],
-                    width: 10,
-                    height: 10,
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: size.height * 0.05,
+                width: size.width * 0.1,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
                 ),
-                SizedBox(width: size.width * 0.05),
-                Text(widget.therapy.name,
-                    style: TextStyle(
-                        fontSize: 22.0,
-                        color: textColor,
-                        fontWeight: FontWeight.w600)),
-              ],
-            ),
+                child: SvgPicture.asset(
+                  appearance_iconss[
+                      widget.therapy.medicationInfo.appearanceIndex],
+                  width: 10,
+                  height: 10,
+                ),
+              ),
+              SizedBox(width: size.width * 0.05),
+              Text(widget.therapy.name,
+                  style: TextStyle(
+                      fontSize: 22.0,
+                      color: textColor,
+                      fontWeight: FontWeight.w600)),
+            ],
           ),
           SizedBox(height: size.height * 0.02),
           Padding(
