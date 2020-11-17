@@ -42,7 +42,7 @@ class Schedule {
         'reminderRules': mapJson(this.reminderRules),
         'window': this.window.inSeconds,
         'startDate': this.startDate.toString(),
-        'endDate': this.endDate.toString(),
+        'endDate': this.endDate != null ? this.endDate.toString() : null,
         'alarmSettings': this.alarmSettings.toJson(),
       };
 

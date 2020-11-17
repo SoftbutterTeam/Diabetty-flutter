@@ -200,7 +200,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       BuildContext context, AsyncSnapshot<dynamic> snapshot) {
     if (widget.isLoading)
       return LoadingScreen();
-    else if (snapshot.hasError) return ErrorScreen();
+    else if (snapshot.hasError) return Container();
 
     List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
 

@@ -14,7 +14,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class TherapyScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -49,8 +48,6 @@ class _TherapyScreenState extends State<TherapyScreen>
   TherapyManager manager;
   _TherapyScreenState(this.manager);
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Background(
@@ -79,7 +76,7 @@ class _TherapyScreenState extends State<TherapyScreen>
         stream: manager.therapyStream,
         initialData: manager.usersTherapies,
         builder: (context, snapshot) {
-          if (snapshot.data.isEmpty) {
+          if (snapshot.data == null || snapshot.data.isEmpty) {
             //print(snapshot.data.toString());
             return Container(
               child: null,
@@ -97,8 +94,8 @@ class _TherapyScreenState extends State<TherapyScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                TherapyProfileScreen(therapy: therapies[index], manager: manager)),
+                            builder: (context) => TherapyProfileScreen(
+                                therapy: therapies[index], manager: manager)),
                       );
                     },
                     child: TherapyCard(
