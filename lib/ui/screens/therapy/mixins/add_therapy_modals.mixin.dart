@@ -37,12 +37,12 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             setState(() {});
           },
           intakePicker: CupertinoPicker(
-            scrollController: FixedExtentScrollController(
-                initialItem: therapyForm.unitsIndex),
+            scrollController:
+                FixedExtentScrollController(initialItem: therapyForm.typeIndex),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {
-              therapyForm.unitsIndex = x;
+              therapyForm.typeIndex = x;
             },
             children: new List<Widget>.generate(
               unitTypes.length,

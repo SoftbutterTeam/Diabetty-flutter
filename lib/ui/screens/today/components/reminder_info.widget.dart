@@ -16,12 +16,10 @@ import 'package:diabetty/extensions/datetime_extension.dart';
 class ReminderInfoModal extends StatefulWidget {
   const ReminderInfoModal({
     this.reminder,
-    this.manager,
     Key key,
   }) : super(key: key);
 
   final Reminder reminder;
-  final TherapyManager manager;
 
   @override
   _ReminderInfoModalState createState() => _ReminderInfoModalState();
@@ -161,7 +159,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                     Padding(
                       padding: EdgeInsets.only(left: 5, bottom: 10),
                       child: text(
-                          reminder.advices?.isNotEmpty
+                          reminder.advices != null &&
+                                  reminder.advices.isNotEmpty
                               ? intakeAdvice[reminder.advices[0]]
                               : '',
                           fontSize: 15.0,

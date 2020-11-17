@@ -164,7 +164,7 @@ class _StockDialogState extends State<StockDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              text(unitTypes[widget.therapyForm.unitsIndex] + " left",
+              text(unitTypes[widget.therapyForm.typeIndex] + " left",
                   fontSize: 12.0,
                   fontFamily: fontSemibold,
                   textColor: Colors.grey[700]),
