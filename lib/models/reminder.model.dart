@@ -21,6 +21,7 @@ class Reminder with DateMixin {
   double editedDose;
   bool cancelled;
   List<int> advices;
+  int strength;
 
   DateTime get getDateTimeAs12hr {
     if (time == null) return time;
@@ -44,12 +45,17 @@ class Reminder with DateMixin {
   bool get isComplete => takenAt != null;
   bool get isSnoozed => rescheduledTime != null;
   bool get isMissed =>
-      takenAt == null && DateTime.now().compareTo(time.add(this.window)) > 0;
-  bool get isActive => takenAt != null && DateTime.now().compareTo(time) > 0;
+      takenAt == null &&
+      DateTime.now().compareTo(time.add(this.window ?? Duration(minutes: 5))) >
+          0;
+  bool get isActive =>
+      takenAt == null &&
+      DateTime.now().compareTo(time) >=
+          0; // (>= - may cause occasional problem)
   //TODO late means that it is past its window
   /// well isMissed should mean, when it is late and u cant take it because it collides with your minRest
   /// and isLate meaning it is late and can still be taken without health risk
-  //bool get isLate => takenAt != null && takenAt.compareTo(time) > 0;
+  bool get isLate => takenAt != null && takenAt.compareTo(time) > 0;
   bool get isSkipped => takenAt == null && cancelled == true;
 
   Reminder(

@@ -34,7 +34,7 @@ class Schedule {
       this.window = new Duration(seconds: json['window']);
     if (json.containsKey('startDate'))
       this.startDate = DateTime.parse(json['startDate']);
-    if (json.containsKey('endDate'))
+    if (json.containsKey('endDate') && json['endDate'] != null)
       this.endDate = DateTime.parse(json['endDate']);
   }
 
