@@ -163,11 +163,13 @@ Widget _buildReportPercCircle(BuildContext context) {
 }
 
 Widget _buildReportText(BuildContext context) {
-  return Container(
-      alignment: Alignment.center,
-      child: Column(
-        children: [Text('last 4 weeks'), Text('3 late'), Text('3 missed')],
-      ));
+  return Expanded(
+    child: Container(
+        alignment: Alignment.center,
+        child: Column(
+          children: [Text('last 4 weeks'), Text('3 late'), Text('3 missed')],
+        )),
+  );
 }
 
 // Navigator.pushNamed(context, appsettings);
