@@ -18,8 +18,9 @@ import 'package:diabetty/extensions/string_extension.dart';
 mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   AddTherapyForm get therapyForm => therapyForm;
 
-   void navigateTherapyProfile(context) {
-     Navigator.pushNamed(context, therapyprofile, arguments: {'therapyForm' : therapyForm});
+  void navigateTherapyProfile(context) {
+    Navigator.pushNamed(context, therapyprofile,
+        arguments: {'therapyForm': therapyForm});
   }
 
   void showUnitPopUp(BuildContext context) {
@@ -206,6 +207,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   void showWindow(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    therapyForm.window = therapyForm.window ?? Duration(minutes: 20);
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
@@ -220,7 +222,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
             minuteInterval: 5,
-            initialTimerDuration: therapyForm.window,
+            initialTimerDuration: therapyForm.window ?? Duration(minutes: 20),
             onTimerDurationChanged: (Duration changedtimer) {
               therapyForm.setWindow = changedtimer;
             },

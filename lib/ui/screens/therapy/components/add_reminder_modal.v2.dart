@@ -39,10 +39,12 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     dosageController = TextEditingController(
         text: (rules.length == 0) ? '' : rules.last.dose.toString());
     timeSelected = getInitialTime();
-
     initialDate = timeSelected;
     reminder = ReminderRule();
     reminder.days = Days();
+    reminder.dose = dosageController.text != ''
+        ? int.parse(dosageController.text)
+        : reminder.dose;
     _isFilled = false;
     timeString = timeSelected.formatTime();
   }

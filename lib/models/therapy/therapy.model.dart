@@ -28,6 +28,9 @@ class Therapy {
     this.mode,
   });
 
+  bool get isPlanned => mode.toLowerCase() == "planned";
+  bool get isNeeded => !isPlanned;
+
   loadFromJson(Map<String, dynamic> json) {
     this.id ??= json['id'];
     this.userId ??= json['userId'];

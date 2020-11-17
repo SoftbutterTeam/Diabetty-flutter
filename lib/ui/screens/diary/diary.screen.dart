@@ -6,6 +6,8 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/components/background.dart';
 import 'package:diabetty/ui/screens/diary/components/journal_card.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
+import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
+import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -64,10 +66,13 @@ class _DiaryScreenState extends State<DiaryScreen> {
           Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 8.0),
-          child: SizedBox(
-              width: size.width,
-              height: size.height * firstSectionHeight,
-              child: Center(child: null)),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: SizedBox(
+                width: size.width,
+                height: size.height * firstSectionHeight,
+                child: _buildReportSection(context)),
+          ),
         ),
         Container(
           padding: EdgeInsets.only(top: 5),
@@ -101,7 +106,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
         stream: manager.journalStream,
         initialData: manager.usersJournals,
         builder: (context, snapshot) {
-          if (manager.usersJournals.isEmpty) {
+          if (manager.usersJournals == null || manager.usersJournals.isEmpty) {
             return Container(
               child: null,
             );
@@ -117,6 +122,65 @@ class _DiaryScreenState extends State<DiaryScreen> {
           );
         });
   }
+
+  Widget _buildReportSection(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.only(left: 0, right: 10, bottom: 5),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Container(
+              alignment: Alignment.centerLeft,
+              child: _buildReportPercCircle(context)),
+          Container(child: _buildReportText(context))
+        ]));
+  }
+}
+
+Widget _buildReportPercCircle(BuildContext context) {
+  var size = MediaQuery.of(context).size;
+  return SizedBox(
+    width: size.width * 0.6,
+    child: Container(
+        margin: EdgeInsets.all(size.width * 0.04),
+        padding: EdgeInsets.all(size.width * 0.02),
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: appWhite,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2), // a 0.2 is dope
+              spreadRadius: 2,
+              blurRadius: 3,
+
+              offset: Offset(0, 0), // a 1 is dope
+            ),
+          ],
+        ),
+        child: new CustomPaint(
+            foregroundPainter: new MyPainter(
+                completeColor: Colors.deepOrange,
+                completePercent: 78,
+                lineColor: Colors.red.withOpacity(0.2),
+                width: 2),
+            child: Container(
+              alignment: Alignment.center,
+              child: Text(
+                '78%',
+                style: TextStyle(fontSize: 25, color: Colors.deepOrange),
+              ),
+            ))),
+  );
+}
+
+Widget _buildReportText(BuildContext context) {
+  return Expanded(
+    child: Container(
+        alignment: Alignment.centerRight,
+        child: Column(
+          children: [Text('last 4 weeks'), Text('3 late'), Text('3 missed')],
+        )),
+  );
 }
 
 // Navigator.pushNamed(context, appsettings);

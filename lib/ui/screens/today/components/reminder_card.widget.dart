@@ -1,4 +1,5 @@
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
@@ -7,6 +8,7 @@ import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 
 class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   final Reminder reminder;
@@ -44,7 +46,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
             children: <Widget>[
               _buildReminderIcon(context),
               _buildReminderInfo(context),
-              _buidReminderTick(context),
+              _buildReminderTick(context),
             ],
           ),
         ),
@@ -75,7 +77,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
                 fontSize: 15.0,
                 overflow: TextOverflow.ellipsis),
             text(
-              'Reminder Description ',
+              _buildReminderDescription(),
               fontSize: textSizeSmall,
               maxLine: 2,
             ),
@@ -85,7 +87,29 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
     );
   }
 
-  Widget _buidReminderTick(BuildContext context) {
+  String _buildReminderDescription() {
+    int medicationStrength = reminder.strength;
+    int medicationQuantity = reminder.dose;
+    int medicationType = reminder.doseTypeIndex;
+    int strengthType = reminder.strengthUnitindex;
+
+    String reminderInfoData = "";
+    if (medicationStrength != null && strengthType != null) {
+      reminderInfoData +=
+          "${medicationStrength} ${strengthUnits[strengthType]}";
+    }
+    if (medicationQuantity != null) {
+      reminderInfoData += ", ${medicationQuantity} ";
+    }
+    if (medicationType != null) {
+      reminderInfoData += "${unitTypes[medicationType]}";
+    }
+    return reminderInfoData;
+  }
+
+  //TODO: Remove the 'none' type of StrengthType either from the constants or from being shown via the if statement.
+
+  Widget _buildReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
     return GestureDetector(
       onTap: () => showTakeModalPopup(context),
