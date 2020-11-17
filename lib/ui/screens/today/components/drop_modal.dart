@@ -106,8 +106,8 @@ class _DropModalState extends State<DropModal>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          DatePicker(DateTime.now().subtract(Duration(days: 7)),
-              daysCount: 14,
+          DatePicker(DateTime.now().subtract(Duration(days: 14)),
+              daysCount: 21,
               initialSelectedDate: DateTime.now(),
               selectionColor: Colors.deepOrange,
               selectedTextColor: Colors.white,
