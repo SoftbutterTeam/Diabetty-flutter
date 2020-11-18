@@ -80,6 +80,7 @@ class TherapyRepository {
     if (therapy.userId == null)
       therapy.userId = (await _firebaseAuth.currentUser()).uid;
     Map<String, dynamic> therapyData = therapy.toJson();
+    print(therapyData);
     var timeNow = DateTime.now().toString();
     therapyData['createdAt'] = timeNow;
     therapyData['updatedAt'] = timeNow;

@@ -42,7 +42,7 @@ class Schedule {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> output = {};
     if (this.reminderRules != null)
-      output['reminderRules'] = this.reminderRules;
+      output['reminderRules'] = mapJson(this.reminderRules);
     if (this.window != null) output['window'] = this.window.inSeconds;
     if (this.startDate != null) output['startDate'] = this.startDate.toString();
     if (this.endDate != null) output['endDate'] = this.endDate.toString();
