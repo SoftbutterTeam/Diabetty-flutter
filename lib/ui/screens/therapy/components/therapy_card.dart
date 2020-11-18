@@ -109,7 +109,6 @@ class _TherapyCardState extends State<TherapyCard>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    print(widget.therapy.stock);
     String nextMessage = getNextReminderMessage();
     var size = MediaQuery.of(context).size;
     return Container(
