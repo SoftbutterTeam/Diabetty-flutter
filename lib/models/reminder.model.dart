@@ -96,21 +96,24 @@ class Reminder with DateMixin {
   }
 
   loadFromJson(Map<String, dynamic> json) {
-    this.id = json['id'];
-    this.userId = json['userId'];
-    this.therapyId = json['therapyId'];
-    this.reminderRuleId = json['reminderRuleId'];
-    this.name = json['name'];
-    this.appearance = json['appearance'];
-    this.time = json['time'];
-    this.dose = json['dose'];
-    this.doseTypeIndex = json['doseTypeIndex'];
-    this.strength = json['strength'];
-    this.strengthUnitindex = json['strengthUnitIndex'];
-    this.advices = json['advices'];
-    this.window = json['window'];
-    this.takenAt = json['takenAt'];
-    this.cancelled = json['cancelled'];
+    if (json.containsKey('id')) this.id = json['id'];
+    if (json.containsKey('userId')) this.userId = json['userId'];
+    if (json.containsKey('therapyId')) this.therapyId = json['therapyId'];
+    if (json.containsKey('reminderRuleId'))
+      this.reminderRuleId = json['reminderRuleId'];
+    if (json.containsKey('name')) this.name = json['name'];
+    if (json.containsKey('appearance')) this.appearance = json['appearance'];
+    if (json.containsKey('time')) this.time = json['time'];
+    if (json.containsKey('dose')) this.dose = json['dose'];
+    if (json.containsKey('doseTypeIndex'))
+      this.doseTypeIndex = json['doseTypeIndex'];
+    if (json.containsKey('strength')) this.strength = json['strength'];
+    if (json.containsKey('strengthUnitIndex'))
+      this.strengthUnitindex = json['strengthUnitIndex'];
+    if (json.containsKey('advices')) this.advices = json['advices'];
+    if (json.containsKey('window')) this.window = json['window'];
+    if (json.containsKey('takenAt')) this.takenAt = json['takenAt'];
+    if (json.containsKey('cancelled')) this.cancelled = json['cancelled'];
   }
 
   //TODO
