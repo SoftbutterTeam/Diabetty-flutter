@@ -109,14 +109,15 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   Column _buildBody(
       BuildContext context, List<Widget> reminderRulesList, size) {
+    var size = MediaQuery.of(context).size;
     var formWidgets = <Widget>[
-      Center(
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: 20,
-          ),
-          child: _buildMedicationCard(),
+      Container(
+        width: size.width * 0.8,
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(
+          bottom: 20,
         ),
+        child: _buildMedicationCard(),
       ),
       _buildModeField(),
       Visibility(

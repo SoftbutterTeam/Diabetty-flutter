@@ -34,7 +34,6 @@ class _TherapyCardState extends State<TherapyCard>
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Container(
-      width: width * 0.95,
       child: Card(
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -117,8 +116,8 @@ class _TherapyCardState extends State<TherapyCard>
           constraints: BoxConstraints(
               minHeight: min(70, size.height * 0.07),
               maxHeight: max(70, size.height * 0.08),
-              minWidth: size.width * 0.3,
-              maxWidth: size.width * 0.5),
+              minWidth: size.width * 0.8,
+              maxWidth: size.width * 0.95),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
