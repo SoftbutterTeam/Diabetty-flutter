@@ -49,7 +49,7 @@ class TherapyManager extends Manager {
       //print(therapy.userId);
       await therapyService.addTherapy(therapy);
     } catch (e) {
-      //print(e.toString());
+      print(e.toString());
       rethrow;
     }
   }
