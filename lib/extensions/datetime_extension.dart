@@ -38,7 +38,7 @@ extension DateTimeExtension on DateTime {
     if (this.isSameDayAs(DateTime.now()))
       dayOfWeek = "Today, ";
     else if (this.isSameDayAs(DateTime.now().add(Duration(days: 1))))
-      dayOfWeek = "Tommorow, ";
+      dayOfWeek = "Tomorrow, ";
     else if (this.isSameDayAs(DateTime.now().subtract(Duration(days: 1))))
       dayOfWeek = "Yesterday, ";
     else
@@ -51,7 +51,7 @@ extension DateTimeExtension on DateTime {
     if (this.isSameDayAs(DateTime.now()))
       dayOfWeek = "Today";
     else if (this.isSameDayAs(DateTime.now().add(Duration(days: 1))))
-      dayOfWeek = "Tommorow";
+      dayOfWeek = "Tomorrow";
     else if (this.isSameDayAs(DateTime.now().subtract(Duration(days: 1))))
       dayOfWeek = "Yesterday";
     else
