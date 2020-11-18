@@ -108,7 +108,9 @@ class _CirclePlanState extends State<CirclePlan> {
                               semanticsLabel:
                                   'the time represented by the clock',
                             ),
-                            Text('reminders')
+                            Text('reminders',
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 12))
                           ],
                         ),
                       ))),
