@@ -32,6 +32,32 @@ extension DateTimeExtension on DateTime {
       return new DateTime(
           this.year, this.month, this.day, this.hour, minuteRoundUp);
   }
+
+  String shortenDateRepresent() {
+    String dayOfWeek;
+    if (this.isSameDayAs(DateTime.now()))
+      dayOfWeek = "Today, ";
+    else if (this.isSameDayAs(DateTime.now().add(Duration(days: 1))))
+      dayOfWeek = "Tommorow, ";
+    else if (this.isSameDayAs(DateTime.now().subtract(Duration(days: 1))))
+      dayOfWeek = "Yesterday, ";
+    else
+      dayOfWeek = DateFormat("EEEE, ").format(this);
+    return dayOfWeek + DateFormat("d MMM").format(this);
+  }
+
+  String shortenDayRepresent() {
+    String dayOfWeek;
+    if (this.isSameDayAs(DateTime.now()))
+      dayOfWeek = "Today";
+    else if (this.isSameDayAs(DateTime.now().add(Duration(days: 1))))
+      dayOfWeek = "Tommorow";
+    else if (this.isSameDayAs(DateTime.now().subtract(Duration(days: 1))))
+      dayOfWeek = "Yesterday";
+    else
+      dayOfWeek = DateFormat("EEEE").format(this);
+    return dayOfWeek;
+  }
 }
 
 int round(int numm, int roundTo) {

@@ -7,6 +7,7 @@ import 'sub_models/reminder_rule.model.dart';
 import 'sub_models/alarmsettings.model.dart';
 import 'sub_models/schedule.model.dart';
 import 'sub_models/stock.model.dart';
+import 'package:diabetty/extensions/timeofday_extension.dart';
 // import 'package:json_serializable';
 
 //btw Schedule.reminders should be called reminderRules for clarity
@@ -44,11 +45,13 @@ class Therapy {
       schedule.loadFromJson(sheduledata);
       this.schedule = schedule;
     }
+    Stock stock = new Stock();
+
     if (json['stock'] != null) {
       Map<String, dynamic> stockdata =
           new Map<String, dynamic>.from(json['stock']);
-      Stock stock = new Stock();
       stock.loadFromJson(stockdata);
+      this.stock = stock;
     }
     MedicationInfo medicationInfo = MedicationInfo();
     Map<String, dynamic> medicationinfodata =

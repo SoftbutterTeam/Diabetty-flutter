@@ -88,7 +88,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
 
   List<TimeSlot> sortRemindersByTimeSlots({DateTime date}) {
     date = date ?? currentDateStamp;
-    List<Reminder> tempReminders = List.from(getFinalRemindersList(date: date))
+    List<Reminder> tempReminders = List.of(getFinalRemindersList(date: date))
       ..retainWhere((element) => element.isToday(date: currentDateStamp));
     List<TimeSlot> timeSlots = new List();
 
@@ -122,7 +122,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   }
 
   List<TimeSlot> orderTimeSlots(List<TimeSlot> original) {
-    List<TimeSlot> timeSlots = List.from(original);
+    List<TimeSlot> timeSlots = List.of(original);
     //* no real need to make a copy in our situation
 
     timeSlots.sort((TimeSlot a, TimeSlot b) => a.time.compareTo(b.time));

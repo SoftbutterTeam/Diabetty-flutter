@@ -100,7 +100,7 @@ class _TherapyScreenState extends State<TherapyScreen>
                       );
                     },
                     child: TherapyCard(
-                      therapyData: therapies[index],
+                      therapy: therapies[index],
                     ),
                   );
                 }),

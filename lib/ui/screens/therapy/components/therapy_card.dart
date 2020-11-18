@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
@@ -8,12 +10,14 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:diabetty/extensions/datetime_extension.dart';
 
 class TherapyCard extends StatefulWidget {
-  final Therapy therapyData;
+  final Therapy therapy;
 
   TherapyCard({
-    this.therapyData,
+    this.therapy,
   });
 
   @override
@@ -38,7 +42,7 @@ class _TherapyCardState extends State<TherapyCard>
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: ExpansionTile(
-          title: text(widget.therapyData.name,
+          title: text(widget.therapy.name,
               textColor: Colors.black,
               fontFamily: fontMedium,
               fontSize: 18.0,
@@ -51,8 +55,7 @@ class _TherapyCardState extends State<TherapyCard>
           leading: CircleAvatar(
             backgroundColor: Colors.white,
             child: SvgPicture.asset(
-              appearance_iconss[
-                  widget.therapyData.medicationInfo.appearanceIndex],
+              appearance_iconss[widget.therapy.medicationInfo.appearanceIndex],
               width: 30,
               height: 30,
             ),
@@ -106,6 +109,8 @@ class _TherapyCardState extends State<TherapyCard>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    print(widget.therapy.stock);
+    String nextMessage = getNextReminderMessage();
     var size = MediaQuery.of(context).size;
     return Container(
         margin: EdgeInsets.symmetric(vertical: 8),
@@ -136,7 +141,7 @@ class _TherapyCardState extends State<TherapyCard>
                     backgroundColor: Colors.white,
                     child: SvgPicture.asset(
                       appearance_iconss[
-                          widget.therapyData.medicationInfo.appearanceIndex],
+                          widget.therapy.medicationInfo.appearanceIndex],
                       width: 30,
                       height: 30,
                     ),
@@ -157,25 +162,26 @@ class _TherapyCardState extends State<TherapyCard>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    text(widget.therapyData.name,
+                    text(widget.therapy.name,
                         textColor: Colors.black,
                         fontFamily: fontMedium,
                         fontSize: 17.0,
                         overflow: TextOverflow.ellipsis),
-                    text('next: Tomorrow 6.00am',
-                        textColor: Colors.black87,
-                        fontFamily: fontMedium,
-                        maxLine: 2,
-                        fontSize: 11.0,
-                        overflow: TextOverflow.ellipsis),
-                    if (widget.therapyData.stock.isLowOnStock)
+                    if (nextMessage != null)
+                      text(nextMessage,
+                          textColor: Colors.black87,
+                          fontFamily: fontMedium,
+                          maxLine: 2,
+                          fontSize: 11.0,
+                          overflow: TextOverflow.ellipsis),
+                    if (widget.therapy.stock.isLowOnStock)
                       text('Low on Stock',
                           textColor: Colors.black87,
                           fontFamily: fontMedium,
                           maxLine: 2,
                           fontSize: 11.0,
                           overflow: TextOverflow.ellipsis)
-                    else if (widget.therapyData.stock.isOutOfStock)
+                    else if (widget.therapy.stock.isOutOfStock)
                       text('Out of Stock',
                           textColor: Colors.red[900].withOpacity(87),
                           fontFamily: fontMedium,
@@ -207,6 +213,33 @@ class _TherapyCardState extends State<TherapyCard>
             ),
           ),
         ));
+  }
+
+  String getNextReminderMessage() {
+    final dayManager = Provider.of<DayPlanManager>(context, listen: false);
+    List userRemindersNext =
+        List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
+            .where((element) => element.therapyId == widget.therapy.id)
+            .toList();
+    for (int i = 1; i < 7 && userRemindersNext.isNotEmpty; i++) {
+      userRemindersNext.addAll(dayManager.getFinalRemindersList(
+          date: DateTime.now().add(Duration(days: i))));
+    }
+    userRemindersNext..sort((a, b) => a.time.compareTo(b.time));
+    print(userRemindersNext.length);
+
+    if (userRemindersNext.isEmpty) return null;
+    Reminder nextReminder = userRemindersNext.first;
+
+    return 'next: ${nextReminder.time.shortenDayRepresent().toLowerCase()} ${nextReminder.time.formatTime().toLowerCase()} ';
+
+    /***
+     *? So this is an Example. When we have proper ReminderState checks, we can 
+      always show the most important ones next or missed or 'now.
+      and if none found intoday, check next day. 
+    
+
+    */
   }
 
   @override

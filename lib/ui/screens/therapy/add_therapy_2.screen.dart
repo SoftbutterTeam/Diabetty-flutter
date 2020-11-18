@@ -187,7 +187,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
 
   Widget _buildMedicationCard() {
     return TherapyCard(
-      therapyData: therapyForm.toTherapy(),
+      therapy: therapyForm.toTherapy(),
     );
   }
 
@@ -306,7 +306,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     var size = MediaQuery.of(context).size;
     Widget addRem = widgets.cast().last as Widget;
 
-    List<Widget> mywidgets = List.from(widgets);
+    List<Widget> mywidgets = List.of(widgets);
     mywidgets.removeLast();
     return Container(
       child: Column(
