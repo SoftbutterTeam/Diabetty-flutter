@@ -116,8 +116,8 @@ class _TherapyCardState extends State<TherapyCard>
         margin: EdgeInsets.symmetric(vertical: 8),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-              minHeight: min(75, size.height * 0.07),
-              maxHeight: max(75, size.height * 0.08),
+              minHeight: min(70, size.height * 0.07),
+              maxHeight: max(70, size.height * 0.08),
               minWidth: size.width * 0.3,
               maxWidth: size.width * 0.5),
           child: Container(
@@ -126,9 +126,9 @@ class _TherapyCardState extends State<TherapyCard>
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: Offset(0, -1),
+                  spreadRadius: 1, // tried 1
+                  blurRadius: 4, // 2
+                  offset: Offset(0, -1), // 0,0, try again in the moring
                 ),
               ],
               borderRadius: BorderRadius.all(Radius.circular(13)),
@@ -150,7 +150,7 @@ class _TherapyCardState extends State<TherapyCard>
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: Container(
-                    height: max(5, size.height * 0.02),
+                    height: max(6, size.height * 0.02),
                     width: 1.5,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -221,12 +221,14 @@ class _TherapyCardState extends State<TherapyCard>
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
             .where((element) => element.therapyId == widget.therapy.id)
             .toList();
-    for (int i = 1; i < 7 && userRemindersNext.isNotEmpty; i++) {
-      userRemindersNext.addAll(dayManager.getFinalRemindersList(
-          date: DateTime.now().add(Duration(days: i))));
+    for (int i = 1; i < 7 && userRemindersNext.isEmpty; i++) {
+      userRemindersNext.addAll(dayManager
+          .getFinalRemindersList(date: DateTime.now().add(Duration(days: i)))
+          .where((element) => element.therapyId == widget.therapy.id)
+          .toList());
     }
-    userRemindersNext..sort((a, b) => a.time.compareTo(b.time));
-    print(userRemindersNext.length);
+
+    userRemindersNext.sort((a, b) => a.time.compareTo(b.time));
 
     if (userRemindersNext.isEmpty) return null;
     Reminder nextReminder = userRemindersNext.first;

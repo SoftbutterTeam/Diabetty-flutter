@@ -59,7 +59,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     date = date ?? currentDateStamp;
     List<Reminder> finalReminders = getProjectedReminders(date: date);
     List<Reminder> fetchedReminders = usersReminders
-        .where((reminder) => reminder.isToday(date: currentDateStamp))
+        .where((reminder) => reminder.isToday(date: date))
         .toList();
     finalReminders.removeWhere((element) => fetchedReminders.any((e) =>
         element.therapyId == e.therapyId &&
