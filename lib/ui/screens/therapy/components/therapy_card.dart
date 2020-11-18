@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:diabetty/extensions/datetime_extension.dart';
+import 'package:diabetty/extensions/index.dart';
 
 class TherapyCard extends StatefulWidget {
   final Therapy therapy;
@@ -42,7 +42,7 @@ class _TherapyCardState extends State<TherapyCard>
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: ExpansionTile(
-          title: text(widget.therapy.name,
+          title: text(widget.therapy.name.toLowerCase(),
               textColor: Colors.black,
               fontFamily: fontMedium,
               fontSize: 18.0,

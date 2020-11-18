@@ -84,6 +84,7 @@ class _TherapyScreenState extends State<TherapyScreen>
             );
           }
           List<Therapy> therapies = snapshot.data;
+          therapies.sort((a, b) => a.name.compareTo(b.name));
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: ListView.builder(
