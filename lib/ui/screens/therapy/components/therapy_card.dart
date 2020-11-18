@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:diabetty/extensions/datetime_extension.dart';
+import 'package:diabetty/extensions/index.dart';
 
 class TherapyCard extends StatefulWidget {
   final Therapy therapy;
@@ -34,7 +34,7 @@ class _TherapyCardState extends State<TherapyCard>
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Container(
-      width: width * 0.9,
+      width: width * 0.95,
       child: Card(
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -42,7 +42,7 @@ class _TherapyCardState extends State<TherapyCard>
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: ExpansionTile(
-          title: text(widget.therapy.name,
+          title: text(widget.therapy.name.toLowerCase(),
               textColor: Colors.black,
               fontFamily: fontMedium,
               fontSize: 18.0,
@@ -124,11 +124,17 @@ class _TherapyCardState extends State<TherapyCard>
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
+                /* BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1, 
+                  blurRadius: 4, 
+                  offset: Offset(0, -1), 
+                ),*/
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1, // tried 1
-                  blurRadius: 4, // 2
-                  offset: Offset(0, -1), // 0,0, try again in the moring
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: Offset(0, 0),
                 ),
               ],
               borderRadius: BorderRadius.all(Radius.circular(13)),
