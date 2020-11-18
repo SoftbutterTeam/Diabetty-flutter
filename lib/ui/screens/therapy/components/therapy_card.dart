@@ -223,6 +223,8 @@ class _TherapyCardState extends State<TherapyCard>
 
   String getNextReminderMessage() {
     final dayManager = Provider.of<DayPlanManager>(context, listen: false);
+    if (widget.therapy.schedule == null ||
+        widget.therapy.schedule.reminderRules.isEmpty) return null;
     List userRemindersNext =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
             .where((element) => element.therapyId == widget.therapy.id)

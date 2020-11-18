@@ -93,7 +93,7 @@ class TherapyRepository {
         .catchError((e) {
       //print('ahhhhhhaaaa');
 
-      //print(e);
+      print(e);
     });
     return;
   }
