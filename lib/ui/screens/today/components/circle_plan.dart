@@ -53,61 +53,78 @@ class _CirclePlanState extends State<CirclePlan> {
     List<Reminder> reminders = List.from(manager.getFinalRemindersList());
     //print('remidners length ' + reminders.length.toString());
     calcTimeFrames();
-    return Container(
-        // padding: EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        alignment: Alignment.center,
-        width: size.width,
-        child: CircleList(
-          origin: Offset(0, 0),
-          innerRadius: 100,
-          outerRadius: 130,
-          spinFactor: _minAnimationRotate,
-          initialAngle: initialAngle,
-          progressAngle: progressAngle,
-          showInitialAnimation: true,
-          innerCircleRotateWithChildren: true,
-          rotateMode: RotateMode.stopRotate,
-          progressColor: Colors.orangeAccent,
-          progressCompletion: calcProgressTime(),
-          centerWidget: new Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(12),
-              height: double.maxFinite,
-              width: double.maxFinite,
-              child: new CustomPaint(
-                  foregroundPainter: new MyPainter(
-                      completeColor: Colors.orangeAccent,
-                      completePercent: calcProgressTime(
-                        TimeOfDay(hour: 0, minute: 0),
-                        _initialTime,
-                      ),
-                      //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
-                      width: 1.0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(0),
-                    height: double.maxFinite,
-                    width: double.maxFinite,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text('6.00am - 6.00pm'), Text('reminders')],
-                    ),
-                  ))),
-          children: List.generate(12 * 4, (index) {
-            final rems = getReminderOnIndex(index, reminders);
-            return rems.isNotEmpty
-                ? IconWidget(
-                    index: index,
-                    iconURL: appearance_icon_0,
-                    reminder: rems[0],
-                  )
-                : SizedBox.shrink();
-          }),
-        ));
+    return Stack(
+      children: [
+        Container(alignment: Alignment.centerLeft, child: null),
+        Container(alignment: Alignment.centerRight, child: null),
+        Container(
+            // padding: EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            alignment: Alignment.center,
+            width: size.width,
+            child: CircleList(
+              origin: Offset(0, 0),
+              innerRadius: 100,
+              outerRadius: 130,
+              spinFactor: _minAnimationRotate,
+              initialAngle: initialAngle,
+              progressAngle: progressAngle,
+              showInitialAnimation: true,
+              innerCircleRotateWithChildren: true,
+              rotateMode: RotateMode.stopRotate,
+              progressColor: Colors.orangeAccent,
+              progressCompletion: calcProgressTime(),
+              centerWidget: new Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(12),
+                  height: double.maxFinite,
+                  width: double.maxFinite,
+                  child: new CustomPaint(
+                      foregroundPainter: new MyPainter(
+                          completeColor: Colors.orangeAccent,
+                          completePercent: calcProgressTime(
+                            TimeOfDay(hour: 0, minute: 0),
+                            _initialTime,
+                          ),
+                          //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
+                          width: 1.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(0),
+                        height: double.maxFinite,
+                        width: double.maxFinite,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '6.00am - 6.00pm',
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.deepOrange[900], fontSize: 14),
+                              semanticsLabel:
+                                  'the time represented by the clock',
+                            ),
+                            Text('reminders')
+                          ],
+                        ),
+                      ))),
+              children: List.generate(12 * 4, (index) {
+                final rems = getReminderOnIndex(index, reminders);
+                return rems.isNotEmpty
+                    ? IconWidget(
+                        index: index,
+                        iconURL: appearance_icon_0,
+                        reminder: rems[0],
+                      )
+                    : SizedBox.shrink();
+              }),
+            )),
+      ],
+    );
   }
 
   List<Reminder> getReminderOnIndex(int index, List<Reminder> reminders) {

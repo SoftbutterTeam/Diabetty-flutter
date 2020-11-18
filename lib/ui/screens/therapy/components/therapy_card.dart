@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
@@ -103,13 +105,14 @@ class _TherapyCardState extends State<TherapyCard>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var size = MediaQuery.of(context).size;
     return Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
+        margin: EdgeInsets.symmetric(vertical: 8),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-              minHeight: size.height * 0.07,
-              maxHeight: size.height * 0.08,
+              minHeight: min(75, size.height * 0.07),
+              maxHeight: max(75, size.height * 0.08),
               minWidth: size.width * 0.3,
               maxWidth: size.width * 0.5),
           child: Container(
@@ -142,7 +145,7 @@ class _TherapyCardState extends State<TherapyCard>
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: Container(
-                    height: size.height * 0.05,
+                    height: max(5, size.height * 0.02),
                     width: 1.5,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -157,13 +160,21 @@ class _TherapyCardState extends State<TherapyCard>
                     text(widget.therapyData.name,
                         textColor: Colors.black,
                         fontFamily: fontMedium,
-                        fontSize: 16.0,
+                        fontSize: 18.0,
                         overflow: TextOverflow.ellipsis),
-                    text('Expires on 22/09/2020',
+                    text('next: Tomorrow 6.00am',
                         textColor: Colors.black87,
                         fontFamily: fontMedium,
-                        fontSize: 12.0,
+                        maxLine: 2,
+                        fontSize: 11.0,
                         overflow: TextOverflow.ellipsis),
+                    if (widget.therapyData.stock.isOutOfStock)
+                      text('Out of Stock',
+                          textColor: Colors.black87,
+                          fontFamily: fontMedium,
+                          maxLine: 2,
+                          fontSize: 11.0,
+                          overflow: TextOverflow.ellipsis)
                   ],
                 ),
                 Expanded(
