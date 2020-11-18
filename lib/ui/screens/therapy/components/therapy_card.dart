@@ -180,7 +180,7 @@ class _TherapyCardState extends State<TherapyCard>
                           overflow: TextOverflow.ellipsis),
                     if (widget.therapy.stock.isOutOfStock)
                       text('Out of Stock',
-                          textColor: Colors.red[900].withOpacity(87),
+                          textColor: Colors.red[900],
                           fontFamily: fontMedium,
                           maxLine: 2,
                           fontSize: 11.0,
@@ -191,7 +191,7 @@ class _TherapyCardState extends State<TherapyCard>
                           fontFamily: fontMedium,
                           maxLine: 2,
                           fontSize: 11.0,
-                          overflow: TextOverflow.ellipsis)
+                          overflow: TextOverflow.ellipsis),
                   ],
                 ),
                 Expanded(
