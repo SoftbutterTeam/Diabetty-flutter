@@ -36,12 +36,8 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     //TODO check condition for schedule / mode
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(
-        overflow: Overflow.visible,
-        children: [
-          _buildHeader(size),
-          _buildBody(size),
-        ],
+      body: Column(
+        children: [_buildHeader(size), _buildBody(size), _buildFooter(size)],
       ),
     );
   }
@@ -68,13 +64,14 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     return Column(
       children: [
         Text('yeye'),
-        _buildFooter(size),
       ],
     );
   }
 
   final style = TextStyle(
-      color: Colors.deepOrange[900], fontSize: 14.0, fontWeight: FontWeight.w500); 
+      color: Colors.deepOrange[900],
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500);
 
   final boxdecorations = BoxDecoration(
       shape: BoxShape.circle,
@@ -88,7 +85,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
         width: size.width,
         height: size.height * 0.16,
         decoration: BoxDecoration(
-           boxShadow: [
+          boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
               spreadRadius: 1,
@@ -209,7 +206,6 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
 
   Container _buildHeader(Size size) {
     return Container(
-      height: size.height * 0.25,
       width: size.width,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -230,6 +226,8 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
       child: Padding(
         padding: const EdgeInsets.only(left: 20, top: 40, right: 20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

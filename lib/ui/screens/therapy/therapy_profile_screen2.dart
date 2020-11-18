@@ -125,6 +125,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
             ),
           )),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +152,6 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                       fontWeight: FontWeight.w600)),
             ],
           ),
-          SizedBox(height: size.height * 0.02),
           Padding(
             padding: EdgeInsets.only(left: 50, right: 50),
             child: Row(
