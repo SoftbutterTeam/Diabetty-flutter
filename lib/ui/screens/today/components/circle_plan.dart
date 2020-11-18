@@ -243,12 +243,13 @@ class _CirclePlanState extends State<CirclePlan> {
   }
 
   double calcProgressTime([TimeOfDay timeOfDay, TimeOfDay limit]) {
-    if (DateTime.now().compareTo(initalDateTime) <= 0) return 0;
-    //print(timeOfDay);
-    //print(limit);
     DateTime firstTime = timeOfDay == null
         ? initalDateTime
         : DateTime.now().applyTimeOfDay(timeOfDay);
+    if (DateTime.now().compareTo(firstTime) <= 0) return 0;
+    //print(timeOfDay);
+    //print(limit);
+
     if (limit != null &&
         DateTime.now().applyTimeOfDay(limit).compareTo(
                 manager.currentDateStamp.applyTimeOfDay(timeOfDay)) <=

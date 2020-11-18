@@ -61,7 +61,7 @@ class _TherapyCardState extends State<TherapyCard>
           ),
           children: [
             Container(
-              padding: EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.only(bottom: 12),
               width: width,
               height: height * 0.05,
               child: Row(
