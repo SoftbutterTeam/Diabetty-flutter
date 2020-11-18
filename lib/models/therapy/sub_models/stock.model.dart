@@ -1,5 +1,5 @@
 class Stock {
-  int currentLevel ;
+  int currentLevel;
   int flagLimit;
   bool remind;
   Stock({this.currentLevel, this.flagLimit, this.remind = true});
@@ -8,8 +8,14 @@ class Stock {
 
   bool get runningLow => (isActive) ? currentLevel <= flagLimit : false;
 
-  void isOutOfStock() {
-    if (currentLevel == null || currentLevel == 0) return;
+  bool get isLowOnStock {
+    if (currentLevel == null || flagLimit == null || !remind) return false;
+    return currentLevel <= flagLimit;
+  }
+
+  bool get isOutOfStock {
+    if (currentLevel == null || flagLimit == null || !remind) return false;
+    return currentLevel == 0;
   }
 
   void takenAmount(int amountTaken) {

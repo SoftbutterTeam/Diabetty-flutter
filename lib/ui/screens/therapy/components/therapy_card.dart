@@ -160,7 +160,7 @@ class _TherapyCardState extends State<TherapyCard>
                     text(widget.therapyData.name,
                         textColor: Colors.black,
                         fontFamily: fontMedium,
-                        fontSize: 18.0,
+                        fontSize: 17.0,
                         overflow: TextOverflow.ellipsis),
                     text('next: Tomorrow 6.00am',
                         textColor: Colors.black87,
@@ -168,9 +168,16 @@ class _TherapyCardState extends State<TherapyCard>
                         maxLine: 2,
                         fontSize: 11.0,
                         overflow: TextOverflow.ellipsis),
-                    if (widget.therapyData.stock.isOutOfStock)
-                      text('Out of Stock',
+                    if (widget.therapyData.stock.isLowOnStock)
+                      text('Low on Stock',
                           textColor: Colors.black87,
+                          fontFamily: fontMedium,
+                          maxLine: 2,
+                          fontSize: 11.0,
+                          overflow: TextOverflow.ellipsis)
+                    else if (widget.therapyData.stock.isOutOfStock)
+                      text('Out of Stock',
+                          textColor: Colors.red[900].withOpacity(87),
                           fontFamily: fontMedium,
                           maxLine: 2,
                           fontSize: 11.0,
