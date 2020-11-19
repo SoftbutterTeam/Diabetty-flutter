@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/extensions/index.dart';
 
 class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   final Reminder reminder;
@@ -88,23 +89,19 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   }
 
   String _buildReminderDescription() {
-    int medicationStrength = reminder.strength;
-    int medicationQuantity = reminder.dose;
-    int medicationType = reminder.doseTypeIndex;
-    int strengthType = reminder.strengthUnitindex;
+    int remStrength = reminder.strength;
+    int remQuantity = reminder.dose;
+    int remType = reminder.doseTypeIndex;
+    int remStrengthType = reminder.strengthUnitindex;
+    String remDescription = "";
+    if (remStrength != null && remStrengthType != null && remStrengthType != 0)
+      remDescription += "$remStrength ${strengthUnits[remStrengthType]}";
+    if (remDescription.isNotEmpty) remDescription += ', ';
+    if (remType != null && remQuantity != null)
+      remDescription +=
+          "${remQuantity ?? ''} ${unitTypes[remType].plurarlUnits(remQuantity ?? 1)}";
 
-    String reminderInfoData = "";
-    if (medicationStrength != null && strengthType != null) {
-      reminderInfoData +=
-          "${medicationStrength} ${strengthUnits[strengthType]}";
-    }
-    if (medicationQuantity != null) {
-      reminderInfoData += ", ${medicationQuantity} ";
-    }
-    if (medicationType != null) {
-      reminderInfoData += "${unitTypes[medicationType]}";
-    }
-    return reminderInfoData;
+    return remDescription;
   }
 
   //TODO: Remove the 'none' type of StrengthType either from the constants or from being shown via the if statement.
