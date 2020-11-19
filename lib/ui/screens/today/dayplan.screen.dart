@@ -269,54 +269,91 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
           status == AnimationStatus.dismissed) setState(() {});
     });
     manager.fadeAnimation = fadeController;
+    manager.minController.addStatusListener((status) {
+      print(status);
+      if (status == AnimationStatus.dismissed) setState(() {});
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    print(manager.minController.status);
+    print('HELOO');
+    print((fadeAnim.value == true));
+
     return Container(
       width: size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            color: Colors.red,
-            width: 50,
-            alignment: Alignment.centerRight,
-            child: RotatedBox(
-              quarterTurns: 2,
-              child: AnimatedOpacity(
-                opacity: fadeAnim.value != true ? 0 : 1,
-                duration: Duration(milliseconds: 200),
-                child: SvgPicture.asset(
-                  'assets/icons/navigation/essentials/next.svg',
-                  height: 18,
-                  width: 18,
-                  color: Colors.orange[800],
+          Expanded(
+            child: GestureDetector(
+              onTap: (manager.minController.status == AnimationStatus.dismissed)
+                  ? () {
+                      print('clicked');
+                      fadeController.reverse(from: 1);
+                    }
+                  : null,
+              child: AbsorbPointer(
+                absorbing: !(fadeAnim.value == true),
+                child: GestureDetector(
+                  onTap: (manager.minController.status ==
+                          AnimationStatus.dismissed)
+                      ? () {
+                          print('clicked');
+                          fadeController.reverse(from: 1);
+                        }
+                      : null,
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    child: RotatedBox(
+                      quarterTurns: 2,
+                      child: AnimatedOpacity(
+                        opacity: fadeAnim.value != true ? 0 : 1,
+                        duration: Duration(milliseconds: 200),
+                        child: SvgPicture.asset(
+                          'assets/icons/navigation/essentials/next.svg',
+                          height: 18,
+                          width: 18,
+                          color: Colors.orange[800],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-          AnimatedSize(
-            alignment: Alignment.center,
-            duration: Duration(milliseconds: 1),
-            vsync: this,
-            child: Container(width: size.width * 0.7, child: widget.child),
-          ),
-          Container(
-            color: Colors.transparent,
-            width: 50,
-            alignment: Alignment.centerLeft,
-            child: AnimatedOpacity(
-              opacity: fadeAnim.value != true ? 0 : 1,
-              duration: Duration(milliseconds: 200),
-              child: SvgPicture.asset(
-                'assets/icons/navigation/essentials/next.svg',
-                height: 18,
-                width: 18,
-                color: Colors.orange[800],
+          Container(width: size.width * 0.7, child: widget.child),
+          Expanded(
+            child: AbsorbPointer(
+              absorbing: !(fadeAnim.value == true),
+              child: GestureDetector(
+                onTap:
+                    (manager.minController.status == AnimationStatus.dismissed)
+                        ? () {
+                            print('clicked');
+                            fadeController.reverse(from: 1);
+                          }
+                        : null,
+                child: Container(
+                  color: Colors.transparent,
+                  alignment: Alignment.centerLeft,
+                  child: AnimatedOpacity(
+                    opacity: fadeAnim.value != true ? 0 : 1,
+                    duration: Duration(milliseconds: 200),
+                    child: SvgPicture.asset(
+                      'assets/icons/navigation/essentials/next.svg',
+                      height: 18,
+                      width: 18,
+                      color: Colors.orange[800],
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
