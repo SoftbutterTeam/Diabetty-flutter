@@ -1,9 +1,17 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
+import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
+import 'package:diabetty/ui/screens/diary/components/CustomTextField.dart';
+import 'package:diabetty/ui/screens/therapy/components/therapy_profile_reminder.dart';
+import 'package:duration/duration.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -35,9 +43,102 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
             child: SingleChildScrollView(
                 physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                child: IntrinsicHeight(child: Container()))),
+                child: _buildBody(size))),
         _buildFooter(size),
       ],
+    );
+  }
+
+  Widget _buildBody(Size size) {
+    List<Widget> reminderRulesList = (widget.therapy.schedule == null ||
+            widget.therapy.schedule.reminderRules.isEmpty)
+        ? List()
+        : widget.therapy.schedule.reminderRules
+            .map((e) => TherapyProfileReminder(rule: e) as Widget)
+            .toList();
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 25),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 2),
+            child: _buildStockField(),
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: size.width * 0.03,
+              ),
+              Text(
+                "reminders",
+                style: TextStyle(
+                  fontSize: textSizeLargeMedium - 3,
+                  color: Colors.grey[700],
+                ),
+              )
+            ],
+          ),
+          if (reminderRulesList.isNotEmpty)
+            Container(
+              padding: EdgeInsets.only(top: 10),
+              child: (reminderRulesList.length < 7)
+                  ? ColumnBuilder(
+                      itemCount: reminderRulesList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return reminderRulesList[index];
+                      },
+                    )
+                  : 'yeye',
+            ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            child: _buildWindowField(),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 2),
+            child: _buildMinRestField(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStockField() {
+    return CustomTextField(
+      stackIcons: _stackedHeartIcons(true),
+      onTap: () {},
+      placeholder: _getStockMessage(),
+      placeholderText: 'Stock',
+    );
+  }
+
+  Widget _buildWindowField() {
+    return CustomTextField(
+      stackIcons: _stackedHeartIcons(true),
+      onTap: () {},
+      placeholder: (widget.therapy.schedule == null ||
+              widget.therapy.schedule.window == null)
+          ? 'none'
+          : prettyDuration(widget.therapy.schedule.window, abbreviated: false),
+      placeholderText: 'Window',
+       placeholderTextStyle: TextStyle(
+          fontSize: textSizeLargeMedium - 4,
+          color: Colors.grey[700],
+        ),
+    );
+  }
+
+  Widget _buildMinRestField() {
+    return CustomTextField(
+      stackIcons: _stackedHeartIcons(true),
+      onTap: () {},
+      placeholder: _getStockMessage(),
+      placeholderText: 'Min Rest',
+      placeholderTextStyle: TextStyle(
+          fontSize: textSizeLargeMedium - 4,
+          color: Colors.grey[700],
+        ),
     );
   }
 
@@ -100,7 +201,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
   Container _buildHeader(Size size) {
     return Container(
       width: size.width,
-      height: size.height * 0.25,
+      height: size.height * 0.20,
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(
           color: appWhite,
@@ -113,7 +214,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
             ),
             BoxShadow(
               color: Colors.white.withOpacity(1),
-              spreadRadius: 1.5,
+              spreadRadius: 3,
               blurRadius: 0,
               offset: Offset(0, -1),
             ),
@@ -128,32 +229,35 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: size.height * 0.05,
-                width: size.width * 0.1,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
+          Padding(
+            padding: EdgeInsets.only(top: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: size.height * 0.05,
+                  width: size.width * 0.1,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: SvgPicture.asset(
+                    appearance_iconss[
+                        widget.therapy.medicationInfo.appearanceIndex],
+                    width: 10,
+                    height: 10,
+                  ),
                 ),
-                child: SvgPicture.asset(
-                  appearance_iconss[
-                      widget.therapy.medicationInfo.appearanceIndex],
-                  width: 10,
-                  height: 10,
-                ),
-              ),
-              SizedBox(width: size.width * 0.05),
-              Text(widget.therapy.name,
-                  style: TextStyle(
-                      fontSize: 22.0,
-                      color: textColor,
-                      fontWeight: FontWeight.w600)),
-            ],
+                SizedBox(width: size.width * 0.05),
+                Text(widget.therapy.name,
+                    style: TextStyle(
+                        fontSize: 22.0,
+                        color: textColor,
+                        fontWeight: FontWeight.w600)),
+              ],
+            ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 50, right: 50),
+            padding: EdgeInsets.only(left: 50, right: 50, bottom: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -198,6 +302,70 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
           ),
         ],
       ),
+    );
+  }
+
+  _getStockMessage() {
+    if (widget.therapy.stock == null ||
+        widget.therapy.stock.currentLevel == null) {
+      return Text(
+        '',
+        style: TextStyle(
+          fontSize: textSizeLargeMedium - 5,
+          color: Colors.grey[700],
+        ),
+      );
+    } else if (widget.therapy.stock.isOutOfStock) {
+      return Text(
+        'Out of Stock',
+        style: TextStyle(
+          fontSize: textSizeLargeMedium - 5,
+          color: Colors.grey[700],
+        ),
+      );
+    } else if (widget.therapy.stock.isLowOnStock) {
+      return text('Low on Stock',
+          textColor: Colors.black87,
+          fontFamily: fontMedium,
+          maxLine: 2,
+          fontSize: 11.0,
+          overflow: TextOverflow.ellipsis);
+    } else {
+      return text(widget.therapy.stock.currentLevel.toString() + ' in Stock',
+          textColor: Colors.black87,
+          fontFamily: fontMedium,
+          maxLine: 2,
+          fontSize: 11.0,
+          overflow: TextOverflow.ellipsis);
+    }
+  }
+
+  Stack _stackedHeartIcons(bool cond) {
+    return Stack(
+      children: [
+        AnimatedOpacity(
+          opacity: cond ? 0 : 1,
+          duration: Duration(milliseconds: 1000),
+          child: Icon(
+            CupertinoIcons.circle_filled,
+            color: Colors.black,
+            size: 23,
+          ),
+        ),
+        AnimatedOpacity(
+          opacity: cond ? 1 : 0,
+          duration: Duration(milliseconds: 1000),
+          child: Icon(
+            CupertinoIcons.circle_filled,
+            color: (widget.therapy.stock.isOutOfStock)
+                ? Colors.red
+                : (widget.therapy.stock.isOutOfStock)
+                    ? Colors.amber
+                    : Colors.green,
+            size: 23,
+          ),
+        )
+      ],
     );
   }
 }
