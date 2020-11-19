@@ -49,6 +49,7 @@ class _CirclePlanState extends State<CirclePlan> {
   }
 
   Widget _buildCirclePlan(BuildContext context) {
+    print('yeye, come on');
     var size = MediaQuery.of(context).size;
     List<Reminder> reminders = List.of(manager.getFinalRemindersList());
     //print('remidners length ' + reminders.length.toString());

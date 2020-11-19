@@ -268,7 +268,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                       style: TextStyle(
                           color: textColor,
                           fontSize: 20.0,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w400),
                     ),
                     Text(
                       "3 hours ago",
@@ -286,7 +286,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                       style: TextStyle(
                           color: textColor,
                           fontSize: 20.0,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w400),
                     ),
                     Text(
                       "in 6 hours",
