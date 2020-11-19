@@ -30,7 +30,8 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   void skipReminder(Reminder reminder) {
-    reminder.cancelled = false;
+    reminder.cancelled = true;
+
     reminderService.updateReminder(reminder);
     updateListeners();
     /**
