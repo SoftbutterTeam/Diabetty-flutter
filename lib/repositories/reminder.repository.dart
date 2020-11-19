@@ -10,7 +10,7 @@ class ReminderRepository {
 
   Future<void> updateReminder(Reminder reminder) async {
     Map<String, dynamic> reminderData = Map();
-    //therapyData = reminder.toJson();
+    reminderData = reminder.tojson();
     // reminder.
     await _db
         .collection('users')

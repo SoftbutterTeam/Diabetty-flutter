@@ -37,6 +37,8 @@ class CircleList extends StatefulWidget {
 
   Animation<double> spinFactor;
 
+  final double innerProgressCompletion;
+
   CircleList({
     this.innerRadius,
     this.outerRadius,
@@ -62,6 +64,7 @@ class CircleList extends StatefulWidget {
     this.dragAngleRange,
     this.progressColor,
     this.progressCompletion = 0,
+    this.innerProgressCompletion,
   }) : assert(children != null);
 
   @override
@@ -119,6 +122,7 @@ class _CircleListState extends State<CircleList>
     final dragAngleRange = widget.dragAngleRange;
     final progressColor = widget.progressColor;
     final progressCompletion = widget.progressCompletion;
+    final innerProgressCompletion = widget.innerProgressCompletion;
 
     ///the origin is the point to left and top
     final Offset origin = widget.origin ?? Offset(0, -outerRadius);
@@ -131,8 +135,12 @@ class _CircleListState extends State<CircleList>
       height: outerRadius * 2,
       child: AnimatedTransformRotate(
         animation: widget.spinFactor,
-        transformValue:
-            -(progressCompletion / 100 * 2 * pi) + widget.progressAngle,
+        transformValue: () {
+          if (progressCompletion != 0) {
+            return -(progressCompletion / 100 * 2 * pi) + widget.progressAngle;
+          } else
+            return -innerProgressCompletion / 100 * 2 * pi;
+        }.call(),
         child: Stack(
           children: <Widget>[
             Positioned(
@@ -273,8 +281,10 @@ class _CircleListState extends State<CircleList>
                             child: AnimatedTransformRotate(
                               animation: widget.spinFactor,
                               transformValue:
-                                  (progressCompletion / 100 * 2 * pi) +
-                                      widget.progressAngle,
+                                  (progressCompletion / 100 * 2 * pi) > 1
+                                      ? (progressCompletion / 100 * 2 * pi) +
+                                          widget.progressAngle
+                                      : 0,
                               child: Container(
                                   width: childrenDiameter,
                                   height: childrenDiameter,

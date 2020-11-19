@@ -23,6 +23,9 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   String get uid => this.appContext.user?.uid;
 
   AnimationController pushAnimation;
+  AnimationController fadeAnimation;
+  AnimationController minController;
+
   DatePickerController dateController = DatePickerController();
   DateTime _currentDateStamp;
   StreamController<List<Reminder>> _dataController = BehaviorSubject();

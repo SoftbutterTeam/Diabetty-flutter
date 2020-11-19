@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/constants/icons.dart';
@@ -16,6 +17,7 @@ import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
     as SlotWidget;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
@@ -94,6 +96,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         AnimationController(vsync: this, duration: Duration(milliseconds: 600));
     _minAnimationRotate =
         Tween<double>(begin: 0, end: 1).animate(_minController);
+    manager.minController = _minController;
   }
 
   @override
@@ -120,6 +123,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                   heightOfCircleSpace,
                   child: CirclePlan(
                     manager: manager,
+                    heightOfCircleSpace: heightOfCircleSpace,
                     circleMinimized: circleMinimized,
                     minAnimationRotate: _minAnimationRotate,
                   ),
@@ -175,6 +179,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               setState(() {
                 _minController.forward();
                 circleMinimized = true;
+                manager.fadeAnimation.reset();
               });
             }
           }
@@ -189,6 +194,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             setState(() {
               _minController.forward();
               circleMinimized = true;
+              manager.fadeAnimation.reset();
             });
           }
         },
@@ -196,11 +202,14 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             width: size.width,
             height: heightOfCircleSpace / (circleMinimized ? 2.8 : 1),
             // 2.8
-            child: FittedBox(
-                alignment:
-                    circleMinimized ? Alignment.topCenter : Alignment.center,
-                fit: circleMinimized ? BoxFit.none : BoxFit.contain,
-                child: child)),
+
+            child: CirclePlanOverlay(
+              child: FittedBox(
+                  alignment:
+                      circleMinimized ? Alignment.topCenter : Alignment.center,
+                  fit: circleMinimized ? BoxFit.none : BoxFit.scaleDown,
+                  child: child),
+            )),
       ),
     );
   }
@@ -230,5 +239,126 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   Widget build(BuildContext context) {
     return _body(context);
+  }
+}
+
+class CirclePlanOverlay extends StatefulWidget {
+  const CirclePlanOverlay({Key key, @required this.child}) : super(key: key);
+
+  final Widget child;
+
+  @override
+  _CirclePlanOverlayState createState() => _CirclePlanOverlayState();
+}
+
+class _CirclePlanOverlayState extends State<CirclePlanOverlay>
+    with TickerProviderStateMixin {
+  AnimationController fadeController;
+  Animation<bool> fadeAnim;
+  DayPlanManager manager;
+  @override
+  void initState() {
+    manager = Provider.of<DayPlanManager>(context, listen: false);
+    fadeController = AnimationController(
+        vsync: this,
+        reverseDuration: Duration(seconds: 4),
+        duration: Duration(milliseconds: 100));
+    fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
+    fadeController.addStatusListener((status) {
+      if (status == AnimationStatus.completed ||
+          status == AnimationStatus.dismissed) setState(() {});
+    });
+    manager.fadeAnimation = fadeController;
+    manager.minController.addStatusListener((status) {
+      print(status);
+      if (status == AnimationStatus.dismissed) setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    print(manager.minController.status);
+    print('HELOO');
+    print((fadeAnim.value == true));
+
+    return Container(
+      width: size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: (manager.minController.status == AnimationStatus.dismissed)
+                  ? () {
+                      print('clicked');
+                      fadeController.reverse(from: 1);
+                    }
+                  : null,
+              child: AbsorbPointer(
+                absorbing: !(fadeAnim.value == true),
+                child: GestureDetector(
+                  onTap: (manager.minController.status ==
+                          AnimationStatus.dismissed)
+                      ? () {
+                          print('clicked');
+                          fadeController.reverse(from: 1);
+                        }
+                      : null,
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    child: RotatedBox(
+                      quarterTurns: 2,
+                      child: AnimatedOpacity(
+                        opacity: fadeAnim.value != true ? 0 : 1,
+                        duration: Duration(milliseconds: 200),
+                        child: SvgPicture.asset(
+                          'assets/icons/navigation/essentials/next.svg',
+                          height: 18,
+                          width: 18,
+                          color: Colors.orange[800],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(width: size.width * 0.7, child: widget.child),
+          Expanded(
+            child: AbsorbPointer(
+              absorbing: !(fadeAnim.value == true),
+              child: GestureDetector(
+                onTap:
+                    (manager.minController.status == AnimationStatus.dismissed)
+                        ? () {
+                            print('clicked');
+                            fadeController.reverse(from: 1);
+                          }
+                        : null,
+                child: Container(
+                  color: Colors.transparent,
+                  alignment: Alignment.centerLeft,
+                  child: AnimatedOpacity(
+                    opacity: fadeAnim.value != true ? 0 : 1,
+                    duration: Duration(milliseconds: 200),
+                    child: SvgPicture.asset(
+                      'assets/icons/navigation/essentials/next.svg',
+                      height: 18,
+                      width: 18,
+                      color: Colors.orange[800],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

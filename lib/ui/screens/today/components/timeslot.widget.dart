@@ -70,9 +70,6 @@ class _TimeSlotState extends State<TimeSlot>
       onTap: () {
         _toggleMinimize();
       },
-      onDoubleTap: () {
-        _toggleMinimize();
-      },
       child: Container(
           decoration: BoxDecoration(
               color: allComplete ? Colors.greenAccent : null,
@@ -113,9 +110,6 @@ class _TimeSlotState extends State<TimeSlot>
       onTap: () {
         _toggleMinimize();
       },
-      onDoubleTap: () {
-        _toggleMinimize();
-      },
       child: Container(
         alignment: Alignment.center,
         width: double.maxFinite,
@@ -135,11 +129,6 @@ class _TimeSlotState extends State<TimeSlot>
 
   Widget _buildReminderColumn() {
     return GestureDetector(
-      onDoubleTap: () {
-        setState(() {
-          minimize = !minimize;
-        });
-      },
       child: ColumnBuilder(
         itemCount: widget.timeSlot.reminders.length,
         itemBuilder: (context, index) {
