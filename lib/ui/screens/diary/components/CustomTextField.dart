@@ -13,6 +13,8 @@ class CustomTextField extends StatelessWidget {
   final Function onSubmitted;
   final String placeholderText;
   final bool showHeart;
+  final TextStyle textstyle;
+  final TextStyle placeholderTextStyle;
 
   CustomTextField(
       {this.stackIcons,
@@ -21,7 +23,9 @@ class CustomTextField extends StatelessWidget {
       this.placeholder,
       this.placeholderText,
       this.onSubmitted,
-      this.showHeart});
+      this.showHeart,
+      this.placeholderTextStyle,
+      this.textstyle});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,7 @@ class CustomTextField extends StatelessWidget {
         maxLines: 1,
         maxLength: 30,
         padding: EdgeInsets.only(left: 18, top: 13, bottom: 11, right: 10),
-        placeholderStyle: TextStyle(
+        placeholderStyle: placeholderTextStyle ?? TextStyle(
           fontSize: textSizeLargeMedium - 3,
           color: Colors.grey[700],
         ),

@@ -23,7 +23,7 @@ class TherapyProfileHeader extends StatelessWidget {
                 padding: EdgeInsets.only(left: 5),
                 child: Align(
                   child: Icon(Icons.arrow_back_ios,
-                      color: Colors.orange[800], size: 20),
+                      color: Colors.orange[800], size: 15),
                   alignment: Alignment.centerLeft,
                 ),
               ),
@@ -43,7 +43,7 @@ class TherapyProfileHeader extends StatelessWidget {
                 padding: EdgeInsets.only(right: 5),
                 child: Align(
                   child:
-                      Text("edit", style: TextStyle(color: Colors.orange[800], fontSize: 17.0)),
+                      Text("edit", style: TextStyle(color: Colors.orange[800], fontSize: 17.0, fontWeight: FontWeight.w400)),
                   alignment: Alignment.centerRight,
                 ),
               ),
