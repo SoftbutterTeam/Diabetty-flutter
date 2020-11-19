@@ -91,6 +91,17 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                     )
                   : 'yeye',
             ),
+          if (reminderRulesList.isEmpty)
+            Container(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              child: Text(
+                'No reminders here man, move on pls',
+                style: TextStyle(
+                  fontSize: textSizeLargeMedium,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 2),
             child: _buildWindowField(),
@@ -106,7 +117,12 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
 
   Widget _buildStockField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _icons(
+          color: (widget.therapy.stock == null ||
+                  widget.therapy.stock.currentLevel == null ||
+                  widget.therapy.stock.isOutOfStock)
+              ? Colors.red
+              : Colors.green),
       onTap: () {},
       placeholder: _getStockMessage(),
       placeholderText: 'Stock',
@@ -115,30 +131,35 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
 
   Widget _buildWindowField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _icons(
+          color: (widget.therapy.schedule == null ||
+                  widget.therapy.schedule.window == null)
+              ? Colors.red
+              : Colors.green),
       onTap: () {},
-      placeholder: (widget.therapy.schedule == null ||
-              widget.therapy.schedule.window == null)
-          ? 'none'
-          : prettyDuration(widget.therapy.schedule.window, abbreviated: false),
+      placeholder: _getWindowMessage(),
       placeholderText: 'Window',
-       placeholderTextStyle: TextStyle(
-          fontSize: textSizeLargeMedium - 4,
-          color: Colors.grey[700],
-        ),
+      placeholderTextStyle: TextStyle(
+        fontSize: textSizeLargeMedium - 4,
+        color: Colors.grey[700],
+      ),
     );
   }
 
   Widget _buildMinRestField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: _icons(
+          color: (widget.therapy.medicationInfo == null ||
+                  widget.therapy.medicationInfo.restDuration == null)
+              ? Colors.red
+              : Colors.green),
       onTap: () {},
-      placeholder: _getStockMessage(),
-      placeholderText: 'Min Rest',
+      placeholder: _getMinRestMessage(),
+      placeholderText: 'Minimum Rest Duration',
       placeholderTextStyle: TextStyle(
-          fontSize: textSizeLargeMedium - 4,
-          color: Colors.grey[700],
-        ),
+        fontSize: textSizeLargeMedium - 4,
+        color: Colors.grey[700],
+      ),
     );
   }
 
@@ -305,13 +326,52 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
     );
   }
 
+  _getWindowMessage() {
+    return (widget.therapy.schedule == null ||
+            widget.therapy.schedule.window == null)
+        ? Text(
+            'none',
+            style: TextStyle(
+              fontSize: textSizeLargeMedium - 4,
+              color: Colors.grey[700],
+            ),
+          )
+        : Text(
+            prettyDuration(widget.therapy.schedule.window, abbreviated: false),
+            style: TextStyle(
+              fontSize: textSizeLargeMedium - 4,
+              color: Colors.grey[700],
+            ),
+          );
+  }
+
+  _getMinRestMessage() {
+    return (widget.therapy.medicationInfo == null ||
+            widget.therapy.medicationInfo.restDuration == null)
+        ? Text(
+            'none',
+            style: TextStyle(
+              fontSize: textSizeLargeMedium - 4,
+              color: Colors.grey[700],
+            ),
+          )
+        : Text(
+            prettyDuration(widget.therapy.medicationInfo.restDuration,
+                abbreviated: false),
+            style: TextStyle(
+              fontSize: textSizeLargeMedium - 4,
+              color: Colors.grey[700],
+            ),
+          );
+  }
+
   _getStockMessage() {
     if (widget.therapy.stock == null ||
         widget.therapy.stock.currentLevel == null) {
       return Text(
         '',
         style: TextStyle(
-          fontSize: textSizeLargeMedium - 5,
+          fontSize: textSizeLargeMedium - 4,
           color: Colors.grey[700],
         ),
       );
@@ -319,32 +379,34 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
       return Text(
         'Out of Stock',
         style: TextStyle(
-          fontSize: textSizeLargeMedium - 5,
+          fontSize: textSizeLargeMedium - 4,
           color: Colors.grey[700],
         ),
       );
     } else if (widget.therapy.stock.isLowOnStock) {
-      return text('Low on Stock',
-          textColor: Colors.black87,
-          fontFamily: fontMedium,
-          maxLine: 2,
-          fontSize: 11.0,
-          overflow: TextOverflow.ellipsis);
+      return Text(
+        'Low on Stock',
+        style: TextStyle(
+          fontSize: textSizeLargeMedium - 4,
+          color: Colors.grey[700],
+        ),
+      );
     } else {
-      return text(widget.therapy.stock.currentLevel.toString() + ' in Stock',
-          textColor: Colors.black87,
-          fontFamily: fontMedium,
-          maxLine: 2,
-          fontSize: 11.0,
-          overflow: TextOverflow.ellipsis);
+      return Text(
+        widget.therapy.stock.currentLevel.toString() + ' in Stock',
+        style: TextStyle(
+          fontSize: textSizeLargeMedium - 4,
+          color: Colors.grey[700],
+        ),
+      );
     }
   }
 
-  Stack _stackedHeartIcons(bool cond) {
+  Stack _icons({MaterialColor color}) {
     return Stack(
       children: [
         AnimatedOpacity(
-          opacity: cond ? 0 : 1,
+          opacity: true ? 0 : 1,
           duration: Duration(milliseconds: 1000),
           child: Icon(
             CupertinoIcons.circle_filled,
@@ -353,15 +415,11 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
           ),
         ),
         AnimatedOpacity(
-          opacity: cond ? 1 : 0,
+          opacity: true ? 1 : 0,
           duration: Duration(milliseconds: 1000),
           child: Icon(
             CupertinoIcons.circle_filled,
-            color: (widget.therapy.stock.isOutOfStock)
-                ? Colors.red
-                : (widget.therapy.stock.isOutOfStock)
-                    ? Colors.amber
-                    : Colors.green,
+            color: color,
             size: 23,
           ),
         )
