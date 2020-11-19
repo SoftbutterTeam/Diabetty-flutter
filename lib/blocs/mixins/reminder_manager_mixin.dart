@@ -3,7 +3,7 @@ import 'package:diabetty/models/reminder.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:diabetty/services/reminder.service.dart';
 
-abstract class ReminderManagerMixin<T extends Manager> {
+class ReminderManagerMixin<T extends Manager> {
   ReminderService reminderService = ReminderService();
   /**
     Big Brain todos
@@ -13,8 +13,8 @@ abstract class ReminderManagerMixin<T extends Manager> {
     Tips if you need something from the day manager use @protected get. 
     e.g. is in the ReminderActionsMixin
    */
-  @protected
-  void updateListeners();
+  //@protected
+  void updateListeners() {}
 
   void takeReminder(Reminder reminder, DateTime takenAt) {
     takenAt ??= DateTime.now();
