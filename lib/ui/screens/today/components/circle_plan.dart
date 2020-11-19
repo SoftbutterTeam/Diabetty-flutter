@@ -35,12 +35,13 @@ class _CirclePlanState extends State<CirclePlan> {
   double progressAngle;
   bool circleMinimized;
 
+  TimeOfDay get initialTime => manager.choosenTime ?? _initialTime;
   /* get choosenTime {
     if (manager.choosenTime == null)
     return _initialTime;
     else if (manager.choosenTime == )*/
   DateTime get initalDateTime =>
-      widget.manager.currentDateStamp.applyTimeOfDay(_initialTime);
+      widget.manager.currentDateStamp.applyTimeOfDay(initialTime);
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
   double dragSensitivity = 3;
 
@@ -50,6 +51,14 @@ class _CirclePlanState extends State<CirclePlan> {
   void initState() {
     _minAnimationRotate = widget.minAnimationRotate;
     circleMinimized = widget.circleMinimized;
+    manager.minController.addStatusListener((status) {
+      setState(() {});
+    });
+    manager.fadeAnimation.addStatusListener((status) {
+      setState(() {});
+    });
+
+    print('newwoo');
     super.initState();
   }
 
@@ -66,11 +75,12 @@ class _CirclePlanState extends State<CirclePlan> {
     List<Reminder> reminders = List.of(manager.getFinalRemindersList());
     //print('remidners length ' + reminders.length.toString());
     calcTimeFrames();
+    setUpCirclesAngles();
     print(size.width * 0.65);
     double circleWidth = size.width * 0.65;
     double completePercent = calcProgressTime();
     double innerCompletePercent =
-        calcProgressTime(TimeOfDay(hour: 0, minute: 0), _initialTime);
+        calcProgressTime(TimeOfDay(hour: 0, minute: 0), initialTime);
     return Container(
         height: widget.heightOfCircleSpace,
         alignment: Alignment.center,
@@ -89,39 +99,71 @@ class _CirclePlanState extends State<CirclePlan> {
           progressCompletion: completePercent,
           innerProgressCompletion: innerCompletePercent,
           centerWidget: new Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(12),
-              height: double.maxFinite,
-              width: double.maxFinite,
-              child: new CustomPaint(
-                  foregroundPainter: new MyPainter(
-                      completeColor: Colors.orangeAccent,
-                      completePercent: innerCompletePercent,
-                      //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
-                      width: 1.0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(0),
-                    height: double.maxFinite,
-                    width: double.maxFinite,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(12),
+            height: double.maxFinite,
+            width: double.maxFinite,
+            child: new CustomPaint(
+                foregroundPainter: new MyPainter(
+                    completeColor: Colors.orangeAccent,
+                    completePercent: innerCompletePercent,
+                    //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
+                    width: 1.0),
+                child: GestureDetector(
+                    onTap: (manager.minController.status ==
+                            AnimationStatus.dismissed)
+                        ? () {
+                            manager.fadeAnimation.reverse(from: 1);
+                          }
+                        : null,
+                    child: Stack(
                       children: [
-                        Text(
-                          '6.00am - 6.00pm',
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.deepOrange[900], fontSize: 14),
-                          semanticsLabel: 'the time represented by the clock',
+                        Center(
+                          child: Text(
+                            '', // '1:02 PM',
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.deepOrange[900], fontSize: 14),
+                            semanticsLabel: 'the time represented by the clock',
+                          ),
                         ),
-                        Text('reminders',
-                            style:
-                                TextStyle(color: Colors.black54, fontSize: 12))
+                        AnimatedOpacity(
+                          opacity: manager.fadeAnimation.value != 1 ? 0 : 1,
+                          duration: Duration(milliseconds: 100),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.all(30),
+                            height: double.maxFinite,
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '0 am - 12 pm', // ' midnight - noon '
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.deepOrange[900],
+                                      fontSize: 14),
+                                  semanticsLabel:
+                                      'the time represented by the clock',
+                                ),
+                                Text('reminders',
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 12))
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
-                    ),
-                  ))),
+                    ))),
+          ),
           children: List.generate(12 * 4, (index) {
             final rems = getReminderOnIndex(index, reminders);
             return rems.isNotEmpty
@@ -147,6 +189,19 @@ class _CirclePlanState extends State<CirclePlan> {
     return results;
   }
 
+  void setUpCirclesAngles() {
+    if (initialTime.hour == 0) {
+      initialAngle = -(pi / 2);
+      progressAngle = 0;
+    } else if (initialTime.hour == 6) {
+      initialAngle = (pi / 2);
+      progressAngle = (pi);
+    } else if (initialTime.hour == 12) {
+      initialAngle = -(pi / 2);
+      progressAngle = 0;
+    }
+  }
+
   void calcTimeFrames() {
     if (hasReminderBetween(
             manager.currentDateStamp
@@ -161,8 +216,6 @@ class _CirclePlanState extends State<CirclePlan> {
                 .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
             manager.getFinalRemindersList())) {
       _initialTime = TimeOfDay(hour: 0, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
     } else if (!hasReminderBetween(
             manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 0, minute: 0)),
@@ -176,8 +229,6 @@ class _CirclePlanState extends State<CirclePlan> {
                 .applyTimeOfDay(TimeOfDay(hour: 24, minute: 0)),
             manager.getFinalRemindersList())) {
       _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
     } else if (DateTime.now().compareTo(manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0))) <
             0 &&
@@ -188,8 +239,6 @@ class _CirclePlanState extends State<CirclePlan> {
                 .applyTimeOfDay(TimeOfDay(hour: 6, minute: 0)),
             manager.getFinalRemindersList())) {
       _initialTime = TimeOfDay(hour: 0, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
     } else if (DateTime.now().compareTo(manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
             0 &&
@@ -201,8 +250,6 @@ class _CirclePlanState extends State<CirclePlan> {
             manager.getFinalRemindersList())) {
       //print("0yyy");
       _initialTime = TimeOfDay(hour: 0, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = (0);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 12, minute: 0))) <
             0 &&
@@ -214,8 +261,6 @@ class _CirclePlanState extends State<CirclePlan> {
             manager.getFinalRemindersList())) {
       //print("12aaa");
       _initialTime = TimeOfDay(hour: 6, minute: 0);
-      initialAngle = (pi / 2);
-      progressAngle = (pi);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
                 .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
             0 &&
@@ -233,21 +278,16 @@ class _CirclePlanState extends State<CirclePlan> {
             manager.getFinalRemindersList())) {
       //print("18aaa0");
       _initialTime = TimeOfDay(hour: 6, minute: 0);
-      initialAngle = (pi / 2);
-      progressAngle = (pi);
     } else if (DateTime.now().compareTo(manager.currentDateStamp
             .applyTimeOfDay(TimeOfDay(hour: 18, minute: 0))) <
         0) {
       //print("18aaa");
       _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
     } else {
       //print("18aaa2");
       _initialTime = TimeOfDay(hour: 12, minute: 0);
-      initialAngle = -(pi / 2);
-      progressAngle = 0;
     }
+    manager.initalTime = _initialTime;
   }
 
   double calcProgressTime([TimeOfDay timeOfDay, TimeOfDay limit]) {
@@ -262,6 +302,7 @@ class _CirclePlanState extends State<CirclePlan> {
         DateTime.now().applyTimeOfDay(limit).compareTo(
                 manager.currentDateStamp.applyTimeOfDay(timeOfDay)) <=
             0) {
+      print('hokakkkkk');
       return 0;
     }
     DateTime percTimeLimit = DateTime.now();

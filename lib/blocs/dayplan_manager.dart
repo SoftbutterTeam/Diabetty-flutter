@@ -26,6 +26,23 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   AnimationController fadeAnimation;
   AnimationController minController;
 
+  TimeOfDay initalTime;
+  TimeOfDay _choosenTime;
+
+  TimeOfDay get choosenTime => _choosenTime ?? initalTime;
+  set choosenTime(TimeOfDay time) => time.hour == initalTime.hour ? null : time;
+
+  bool get inTheNow => choosenTime.hour == initalTime.hour;
+  void forwardTime() {
+    if (choosenTime.hour == 12) return;
+    _choosenTime = TimeOfDay(hour: (choosenTime.hour + 6) % 24, minute: 0);
+  }
+
+  void backTime() {
+    if (choosenTime.hour == 0) return;
+    _choosenTime = TimeOfDay(hour: (choosenTime.hour - 6) % 24, minute: 0);
+  }
+
   DatePickerController dateController = DatePickerController();
   DateTime _currentDateStamp;
   StreamController<List<Reminder>> _dataController = BehaviorSubject();

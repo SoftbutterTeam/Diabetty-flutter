@@ -176,10 +176,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             }
           } else if (details.delta.dy < -dragSensitivity) {
             if (!circleMinimized) {
+              manager.fadeAnimation.reset();
               setState(() {
                 _minController.forward();
                 circleMinimized = true;
-                manager.fadeAnimation.reset();
               });
             }
           }
@@ -191,10 +191,11 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               circleMinimized = false;
             });
           } else {
+            manager.fadeAnimation.reset();
+
             setState(() {
               _minController.forward();
               circleMinimized = true;
-              manager.fadeAnimation.reset();
             });
           }
         },
@@ -205,8 +206,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
             child: CirclePlanOverlay(
               child: FittedBox(
-                  alignment:
-                      circleMinimized ? Alignment.topCenter : Alignment.center,
+                  clipBehavior: Clip.none,
+                  alignment: true ? Alignment.topCenter : Alignment.center,
                   fit: circleMinimized ? BoxFit.none : BoxFit.scaleDown,
                   child: child),
             )),
@@ -262,7 +263,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
     fadeController = AnimationController(
         vsync: this,
         reverseDuration: Duration(seconds: 4),
-        duration: Duration(milliseconds: 100));
+        duration: Duration(milliseconds: 150));
     fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
     fadeController.addStatusListener((status) {
       if (status == AnimationStatus.completed ||
@@ -273,6 +274,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
       print(status);
       if (status == AnimationStatus.dismissed) setState(() {});
     });
+
     super.initState();
   }
 
@@ -304,6 +306,8 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                           AnimationStatus.dismissed)
                       ? () {
                           print('clicked');
+                          manager.backTime();
+                          print(manager.choosenTime.toString());
                           fadeController.reverse(from: 1);
                         }
                       : null,
@@ -312,9 +316,8 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                     alignment: Alignment.centerRight,
                     child: RotatedBox(
                       quarterTurns: 2,
-                      child: AnimatedOpacity(
+                      child: Opacity(
                         opacity: fadeAnim.value != true ? 0 : 1,
-                        duration: Duration(milliseconds: 200),
                         child: SvgPicture.asset(
                           'assets/icons/navigation/essentials/next.svg',
                           height: 18,
@@ -330,27 +333,36 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
           ),
           Container(width: size.width * 0.7, child: widget.child),
           Expanded(
-            child: AbsorbPointer(
-              absorbing: !(fadeAnim.value == true),
-              child: GestureDetector(
-                onTap:
-                    (manager.minController.status == AnimationStatus.dismissed)
-                        ? () {
-                            print('clicked');
-                            fadeController.reverse(from: 1);
-                          }
-                        : null,
-                child: Container(
-                  color: Colors.transparent,
-                  alignment: Alignment.centerLeft,
-                  child: AnimatedOpacity(
-                    opacity: fadeAnim.value != true ? 0 : 1,
-                    duration: Duration(milliseconds: 200),
-                    child: SvgPicture.asset(
-                      'assets/icons/navigation/essentials/next.svg',
-                      height: 18,
-                      width: 18,
-                      color: Colors.orange[800],
+            child: GestureDetector(
+              onTap: (manager.minController.status == AnimationStatus.dismissed)
+                  ? () {
+                      print('clicked');
+                      fadeController.reverse(from: 1);
+                    }
+                  : null,
+              child: AbsorbPointer(
+                absorbing: !(fadeAnim.value == true),
+                child: GestureDetector(
+                  onTap: (manager.minController.status ==
+                          AnimationStatus.dismissed)
+                      ? () {
+                          print('clicked');
+                          manager.forwardTime();
+                          print(manager.choosenTime.toString());
+                          fadeController.reverse(from: 1);
+                        }
+                      : null,
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerLeft,
+                    child: Opacity(
+                      opacity: fadeAnim.value != true ? 0 : 1,
+                      child: SvgPicture.asset(
+                        'assets/icons/navigation/essentials/next.svg',
+                        height: 18,
+                        width: 18,
+                        color: Colors.orange[800],
+                      ),
                     ),
                   ),
                 ),
