@@ -21,6 +21,7 @@ class Reminder with DateMixin {
   DateTime takenAt;
   DateTime rescheduledTime;
   double editedDose;
+  bool doseEdited;
   bool cancelled;
   List<int> advices;
 
@@ -72,7 +73,8 @@ class Reminder with DateMixin {
       this.window,
       this.editedDose,
       this.rescheduledTime,
-      this.takenAt});
+      this.takenAt,
+      this.doseEdited});
 
   ///*  Used to Project Reminders from the Therapys
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
@@ -111,17 +113,38 @@ class Reminder with DateMixin {
     if (json.containsKey('strengthUnitIndex'))
       this.strengthUnitindex = json['strengthUnitIndex'];
     if (json.containsKey('advices')) this.advices = json['advices'];
-    if (json.containsKey('window')) this.window = json['window'];
-    if (json.containsKey('takenAt')) this.takenAt = json['takenAt'];
+    if (json.containsKey('window'))
+      this.window = Duration(seconds: json['window']);
+    if (json.containsKey('takenAt'))
+      this.takenAt = DateTime.parse(json['takenAt']);
     if (json.containsKey('cancelled')) this.cancelled = json['cancelled'];
+    if (json.containsKey('doseEdited')) this.doseEdited = json['doseEdited'];
   }
 
   //TODO
-  Map<String, dynamic> toJson() => {
-        'id': this.id,
-        'userId': this.userId,
-        'therapy': this.therapyId,
-        'reminderRuleId': this.reminderRuleId,
-        'name': this.name,
-      };
+  Map<String, dynamic> tojson() {
+    Map<String, dynamic> output = {};
+    if (this.id != null) output['id'] = this.id;
+    if (this.userId != null) output['userId'] = this.userId;
+    if (this.therapyId != null) output['therapyId'] = this.therapyId;
+    if (this.reminderRuleId != null)
+      output['reminderRuleId'] = this.reminderRuleId;
+    if (this.name != null) output['name'] = this.name;
+    if (this.time != null) output['time'] = this.time.toString();
+    if (this.dose != null) output['dose'] = this.dose;
+    if (this.doseTypeIndex != null)
+      output['doseTypeIndex'] = this.doseTypeIndex;
+    if (this.strength != null) output['strength'] = this.strength;
+    if (this.strengthUnitindex != null)
+      output['strengthUnitindex'] = this.strengthUnitindex;
+    if (this.window != null) output['window'] = this.window.inSeconds;
+    if (this.takenAt != null) output['takenAt'] = this.takenAt.toString();
+    if (this.rescheduledTime != null)
+      output['rescheduledTime'] = this.reminderRuleId.toString();
+    if (this.editedDose != null) output['editedDose'] = this.editedDose;
+    if (this.cancelled != null) output['cancelled'] = this.cancelled;
+    if (this.advices != null) output['advices'] = this.advices;
+    if (this.doseEdited != null) output['doseEdited'] = this.doseEdited;
+    return output;
+  }
 }

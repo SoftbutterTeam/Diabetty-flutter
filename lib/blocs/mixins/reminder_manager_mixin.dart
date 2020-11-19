@@ -1,8 +1,10 @@
 import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:diabetty/services/reminder.service.dart';
 
 abstract class ReminderManagerMixin<T extends Manager> {
+  ReminderService reminderService = ReminderService();
   /**
     Big Brain todos
       - what if a Reminder is Taken, and then cancelled after. Does it still have takenAt
@@ -16,7 +18,8 @@ abstract class ReminderManagerMixin<T extends Manager> {
 
   void takeReminder(Reminder reminder, DateTime takenAt) {
     takenAt ??= DateTime.now();
-
+    reminder.takenAt = takenAt;
+    reminderService.updateReminder(reminder);
     /**
      Calls the Service Code.
      -> reminder.takenAt -> DateTime takenAt
@@ -27,6 +30,9 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   void skipReminder(Reminder reminder) {
+    reminder.cancelled = false;
+    reminderService.updateReminder(reminder);
+    updateListeners();
     /**
      Calls the Service Code.
      -> reminder.cancelled -> true
@@ -37,6 +43,9 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   void snoozeReminder(Reminder reminder, Duration snoozeFor) {
+    reminder.time = reminder.time.add(snoozeFor);
+    reminderService.updateReminder(reminder);
+    updateListeners();
     /**
      Calls the Service Code.
      -> reminder.time -> time.add( duration snoozeFor)
@@ -47,6 +56,9 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   void rescheduleReminder(Reminder reminder, DateTime rescheduledTo) {
+    reminder.time = rescheduledTo;
+    reminderService.updateReminder(reminder);
+    updateListeners();
     /**
      Calls the Service Code.
      -> reminder.time -> rescheduledTo
@@ -57,6 +69,10 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   void editDoseReminder(Reminder reminder, int dose) {
+    reminder.dose = dose;
+    reminder.doseEdited = true;
+    reminderService.updateReminder(reminder);
+    updateListeners();
     /**
      Calls the Service Code.
      -> dose-> dose
