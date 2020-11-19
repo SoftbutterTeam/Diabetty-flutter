@@ -281,8 +281,10 @@ class _CircleListState extends State<CircleList>
                             child: AnimatedTransformRotate(
                               animation: widget.spinFactor,
                               transformValue:
-                                  (progressCompletion / 100 * 2 * pi) +
-                                      widget.progressAngle,
+                                  (progressCompletion / 100 * 2 * pi) > 1
+                                      ? (progressCompletion / 100 * 2 * pi) +
+                                          widget.progressAngle
+                                      : 0,
                               child: Container(
                                   width: childrenDiameter,
                                   height: childrenDiameter,
