@@ -62,6 +62,7 @@ class Therapy {
 
   Map<String, dynamic> toJson() => {
         'id': this.id,
+        'userId': userId,
         'name': this.name,
         'schedule': (this.schedule == null) ? null : this.schedule.toJson(),
         'medicationInfo': this.medicationInfo.toJson(),
