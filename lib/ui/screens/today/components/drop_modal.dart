@@ -108,7 +108,7 @@ class _DropModalState extends State<DropModal>
         children: [
           DatePicker(DateTime.now().subtract(Duration(days: 14)),
               daysCount: 21,
-              initialSelectedDate: DateTime.now(),
+              initialSelectedDate: dayManager.currentDateStamp,
               selectionColor: Colors.deepOrange,
               selectedTextColor: Colors.white,
               controller: _controller,
@@ -124,6 +124,7 @@ class _DropModalState extends State<DropModal>
               padding: EdgeInsets.zero,
               onPressed: () {
                 dayManager.currentDateStamp = DateTime.now();
+
                 _controller.animateToDate(
                     dayManager.currentDateStamp.subtract(Duration(days: 2)));
                 //print(_selectedValue);

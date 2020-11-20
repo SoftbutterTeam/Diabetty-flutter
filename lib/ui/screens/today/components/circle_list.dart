@@ -137,9 +137,9 @@ class _CircleListState extends State<CircleList>
         animation: widget.spinFactor,
         transformValue: () {
           if (progressCompletion != 0) {
-            return -(progressCompletion / 100 * 2 * pi) + widget.progressAngle;
+            return (progressCompletion / 100 * 2 * pi) + widget.progressAngle;
           } else
-            return -innerProgressCompletion / 100 * 2 * pi;
+            return innerProgressCompletion / 100 * 2 * pi;
         }.call(),
         child: Stack(
           children: <Widget>[
@@ -280,9 +280,14 @@ class _CircleListState extends State<CircleList>
                                 : ((dragModel.angleDiff) + widget.initialAngle),
                             child: AnimatedTransformRotate(
                               animation: widget.spinFactor,
-                              transformValue:
-                                  (progressCompletion / 100 * 2 * pi) +
-                                      widget.progressAngle,
+                              reverse: true,
+                              transformValue: () {
+                                if (progressCompletion != 0) {
+                                  return (progressCompletion / 100 * 2 * pi) +
+                                      widget.progressAngle;
+                                } else
+                                  return innerProgressCompletion / 100 * 2 * pi;
+                              }.call(),
                               child: Container(
                                   width: childrenDiameter,
                                   height: childrenDiameter,
@@ -301,6 +306,22 @@ class _CircleListState extends State<CircleList>
         ),
       ),
     );
+  }
+
+  double reverseAngle(progressCompletion, innerProgressCompletion) {
+    double angle = () {
+      print(widget.progressAngle);
+      if (progressCompletion != 0) {
+        return (progressCompletion / 100 * 2 * pi) + widget.progressAngle;
+      } else
+        return innerProgressCompletion / 100 * 2 * pi;
+    }.call();
+    angle = angle.sign * (angle % (2 * pi));
+    print('AAAA----------------+' + angle.toString());
+    double result =
+        -(angle.abs() <= pi ? angle : ((angle.sign * 2 * pi) - angle));
+    print(result);
+    return result;
   }
 
   Offset getChildPoint(

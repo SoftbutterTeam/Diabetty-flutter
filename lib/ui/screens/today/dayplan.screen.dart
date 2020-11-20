@@ -78,6 +78,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   double initialAngle;
   double progressAngle;
   bool circleMinimized;
+  bool show;
   DateTime get initalDateTime =>
       manager.currentDateStamp.applyTimeOfDay(_initialTime);
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
@@ -97,16 +98,26 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     _minAnimationRotate =
         Tween<double>(begin: 0, end: 1).animate(_minController);
     manager.minController = _minController;
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => manager.fadeAnimation.addStatusListener((status) {
+              setState(() {});
+            }));
+    manager.pushAnimation.addListener(() {
+      setState(() {});
+    });
+    show = true;
   }
 
   @override
   void dispose() {
     _dateController.dispose();
+    _minController.dispose();
     super.dispose();
   }
 
   Widget _body(BuildContext context) {
     //print(_minAnimationRotate.value.toString() + "ds");
+
     Size size = MediaQuery.of(context).size;
     double heightOfCircleSpace = size.height * 0.35;
     return Background(
@@ -144,7 +155,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                         border: Border(
                             top: BorderSide(
                                 color: (circleMinimized
-                                    ? Colors.orangeAccent
+                                    ? Colors.transparent //deepOrange
                                     : Colors.transparent),
                                 width: 1))),
                     child: Container(
@@ -160,6 +171,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   AnimatedSize _buildCirclePlanOverlay(Size size, double heightOfCircleSpace,
       {CirclePlan child}) {
+    print('AAAAAQQQQQQQ ' + (manager.fadeAnimation?.status.toString()));
     return AnimatedSize(
       duration: Duration(milliseconds: 600),
       vsync: this,
@@ -177,7 +189,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           } else if (details.delta.dy < -dragSensitivity) {
             if (!circleMinimized) {
               manager.fadeAnimation.reset();
-              manager.choosenTime = null;
+              manager.resetTime();
               setState(() {
                 _minController.forward();
                 circleMinimized = true;
@@ -194,7 +206,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           } else {
             if (manager.fadeAnimation.status == AnimationStatus.dismissed) {
               manager.fadeAnimation.reset();
-              manager.choosenTime = null;
+              manager.resetTime();
               print('jojo');
               setState(() {
                 _minController.forward();
@@ -205,7 +217,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         },
         child: SizedBox(
             width: size.width,
-            height: heightOfCircleSpace / (circleMinimized ? 2.8 : 1),
+            height: heightOfCircleSpace /
+                (!show ? circleMinimized ? 2.8 : 1 : heightOfCircleSpace),
             // 2.8
 
             child: CirclePlanOverlay(
@@ -232,11 +245,45 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: ColumnBuilder(
-        itemCount: timeSlots.length,
+        itemCount: timeSlots.length + 1,
         itemBuilder: (context, index) {
+          if (show &&
+                  index == 0 &&
+                  manager.pushAnimation.status == AnimationStatus.dismissed ||
+              index == 0 &&
+                  manager.fadeAnimation != null &&
+                  manager.fadeAnimation.status != AnimationStatus.dismissed) {
+            return SizedBox(
+              child: (show)
+                  ? GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.all(3),
+                        color: Colors.transparent,
+                        child: Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.deepOrange,
+                        ),
+                      ),
+                      onTap: () => setState(() {
+                            manager.fadeAnimation.reset();
+                            show = false;
+                          }))
+                  : GestureDetector(
+                      child: Icon(
+                        Icons.arrow_drop_up,
+                        color: Colors.deepOrange,
+                      ),
+                      onTap: () => setState(() {
+                            manager.fadeAnimation.reset();
+                            show = true;
+                          })),
+            );
+          } else if (index == 0) {
+            return SizedBox();
+          }
           return Container(
               margin: EdgeInsets.symmetric(vertical: 10),
-              child: SlotWidget.TimeSlot(timeSlot: timeSlots[index]));
+              child: SlotWidget.TimeSlot(timeSlot: timeSlots[index - 1]));
         },
       ),
     );
@@ -266,7 +313,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
     manager = Provider.of<DayPlanManager>(context, listen: false);
     fadeController = AnimationController(
         vsync: this,
-        reverseDuration: Duration(seconds: 5),
+        reverseDuration: Duration(seconds: 4),
         duration: Duration(milliseconds: 150));
     fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
     fadeController.addStatusListener((status) {
@@ -283,11 +330,14 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
   }
 
   @override
+  void dispose() {
+    fadeController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    print(manager.minController.status);
-    print('HELOO');
-    print((fadeAnim.value == true));
 
     return Container(
       width: size.width,
@@ -296,7 +346,59 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: GestureDetector(
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: size.height * 0.05),
+              child: GestureDetector(
+                  onTap: (manager.minController.status ==
+                          AnimationStatus.dismissed)
+                      ? () {
+                          print('clicked');
+                          fadeController.reverse(from: 1);
+                        }
+                      : null,
+                  child: AbsorbPointer(
+                    absorbing: !(fadeAnim.value == true),
+                    child: Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.centerRight,
+                      child: AnimatedScaleButton(
+                        onTap: (manager.minController.status ==
+                                AnimationStatus.dismissed)
+                            ? () {
+                                print('clicked');
+                                manager.backTime();
+                                fadeController.reverse(from: 1);
+                              }
+                            : null,
+                        child: Container(
+                          color: Colors.transparent,
+                          alignment: Alignment.centerRight,
+                          child: RotatedBox(
+                            quarterTurns: 2,
+                            child: Opacity(
+                              opacity: !(fadeAnim.value == true) ||
+                                      manager.choosenTime?.hour == 0
+                                  ? 0
+                                  : 1,
+                              child: SvgPicture.asset(
+                                'assets/icons/navigation/essentials/next.svg',
+                                height: 18,
+                                width: 18,
+                                color: Colors.orange[800],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )),
+            ),
+          ),
+          Container(width: size.width * 0.65, child: widget.child),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: size.height * 0.05),
+              child: GestureDetector(
                 onTap:
                     (manager.minController.status == AnimationStatus.dismissed)
                         ? () {
@@ -308,70 +410,31 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                   absorbing: !(fadeAnim.value == true),
                   child: Container(
                     color: Colors.transparent,
-                    alignment: Alignment.centerRight,
+                    alignment: Alignment.centerLeft,
                     child: AnimatedScaleButton(
                       onTap: (manager.minController.status ==
                               AnimationStatus.dismissed)
                           ? () {
                               print('clicked');
-                              manager.backTime();
+                              manager.forwardTime();
+                              print(manager.choosenTime.toString());
                               fadeController.reverse(from: 1);
                             }
                           : null,
                       child: Container(
                         color: Colors.transparent,
-                        alignment: Alignment.centerRight,
-                        child: RotatedBox(
-                          quarterTurns: 2,
-                          child: Opacity(
-                            opacity: fadeAnim.value != true ? 0 : 1,
-                            child: SvgPicture.asset(
-                              'assets/icons/navigation/essentials/next.svg',
-                              height: 18,
-                              width: 18,
-                              color: Colors.orange[800],
-                            ),
+                        alignment: Alignment.centerLeft,
+                        child: Opacity(
+                          opacity: !(fadeAnim.value == true) ||
+                                  manager.choosenTime?.hour == 12
+                              ? 0
+                              : 1,
+                          child: SvgPicture.asset(
+                            'assets/icons/navigation/essentials/next.svg',
+                            height: 18,
+                            width: 18,
+                            color: Colors.orange[800],
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )),
-          ),
-          Container(width: size.width * 0.65, child: widget.child),
-          Expanded(
-            child: GestureDetector(
-              onTap: (manager.minController.status == AnimationStatus.dismissed)
-                  ? () {
-                      print('clicked');
-                      fadeController.reverse(from: 1);
-                    }
-                  : null,
-              child: AbsorbPointer(
-                absorbing: !(fadeAnim.value == true),
-                child: Container(
-                  color: Colors.transparent,
-                  alignment: Alignment.centerLeft,
-                  child: AnimatedScaleButton(
-                    onTap: (manager.minController.status ==
-                            AnimationStatus.dismissed)
-                        ? () {
-                            print('clicked');
-                            manager.forwardTime();
-                            print(manager.choosenTime.toString());
-                            fadeController.reverse(from: 1);
-                          }
-                        : null,
-                    child: Container(
-                      color: Colors.transparent,
-                      alignment: Alignment.centerLeft,
-                      child: Opacity(
-                        opacity: fadeAnim.value != true ? 0 : 1,
-                        child: SvgPicture.asset(
-                          'assets/icons/navigation/essentials/next.svg',
-                          height: 18,
-                          width: 18,
-                          color: Colors.orange[800],
                         ),
                       ),
                     ),

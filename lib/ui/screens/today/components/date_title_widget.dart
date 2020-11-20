@@ -6,10 +6,12 @@
 /// ***
 
 import 'package:date_picker_timeline/gestures/tap.dart';
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class DateWidget extends StatefulWidget {
+class DateTitleWidget extends StatefulWidget {
   final double width;
   final DateTime date;
   final TextStyle monthTextStyle, dayTextStyle, dateTextStyle;
@@ -17,7 +19,7 @@ class DateWidget extends StatefulWidget {
   final DateSelectionCallback onDateSelected;
   final String locale;
 
-  DateWidget({
+  DateTitleWidget({
     @required this.date,
     @required this.monthTextStyle,
     @required this.dayTextStyle,
@@ -29,11 +31,13 @@ class DateWidget extends StatefulWidget {
   });
 
   @override
-  _DateWidgetState createState() => _DateWidgetState();
+  _DateTitleWidgetState createState() => _DateTitleWidgetState();
 }
 
-class _DateWidgetState extends State<DateWidget>
+class _DateTitleWidgetState extends State<DateTitleWidget>
     with AutomaticKeepAliveClientMixin {
+  DayPlanManager manager;
+
   bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {

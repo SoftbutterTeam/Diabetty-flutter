@@ -130,7 +130,7 @@ class _CirclePlanState extends State<CirclePlan> {
                           ),
                         ),
                         AnimatedOpacity(
-                          opacity: manager.fadeAnimation.value != 1 ? 0 : 1,
+                          opacity: manager.fadeAnimation.value != 1 ? 1 : 1,
                           duration: Duration(milliseconds: 100),
                           child: Container(
                             alignment: Alignment.center,

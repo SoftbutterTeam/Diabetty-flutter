@@ -80,6 +80,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
     return Center(
         child: FlatButton(
       onPressed: () {
+        dayManager.fadeAnimation.reset();
         _showDateSelectDropModal(context, null);
       },
       child: Center(
