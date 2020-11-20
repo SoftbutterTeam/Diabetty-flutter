@@ -29,11 +29,13 @@ class _EditStockDialogState extends State<EditStockDialog>
   void initState() {
     super.initState();
     currentLevelController = TextEditingController(
-        text: (widget.therapyForm?.stock?.currentLevel == null)
+        text: (widget.therapyForm.stock == null ||
+                widget.therapyForm.stock.currentLevel == null)
             ? null
             : widget.therapyForm.stock.currentLevel.toString());
     flagLimitController = TextEditingController(
-        text: (widget.therapyForm?.stock?.flagLimit == null)
+        text: (widget.therapyForm.stock == null ||
+                widget.therapyForm.stock.flagLimit == null)
             ? null
             : widget.therapyForm.stock.flagLimit.toString());
     _isFilled = (currentLevelController.text.isNotEmpty &&
@@ -258,7 +260,7 @@ class _EditStockDialogState extends State<EditStockDialog>
     widget.therapyForm.stock = Stock();
     int currentLevelControllerToInt = int.parse(currentLevelController.text);
     int flagLimitControllerToInt = int.parse(flagLimitController.text);
-    
+
     if (widget.therapyForm.stock != null) {
       widget.therapyForm.stock.refillAdd(currentLevelControllerToInt);
       widget.therapyForm.stock.flagLimit = flagLimitControllerToInt;

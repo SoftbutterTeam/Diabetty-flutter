@@ -9,6 +9,16 @@ class MedicationInfo {
   List<int> intakeAdvices;
   Duration restDuration;
 
+  set setMinRest(Duration x) {
+    //print(x.toString());
+
+    if ((x == null) || (Duration(hours: 0, minutes: 5).compareTo(x) > 0))
+      restDuration = null;
+    else
+      restDuration = x;
+    //print(minRest.toString());
+  }
+
   MedicationInfo({
     this.name,
     this.strength,

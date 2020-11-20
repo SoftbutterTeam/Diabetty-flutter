@@ -1,19 +1,25 @@
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
 import 'package:diabetty/ui/screens/diary/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_reminder.dart';
+import 'package:diabetty/extensions/index.dart';
+import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class TherapyProfileScreen2 extends StatefulWidget {
   final Therapy therapy;
@@ -25,7 +31,8 @@ class TherapyProfileScreen2 extends StatefulWidget {
   _TherapyProfileScreen2State createState() => _TherapyProfileScreen2State();
 }
 
-class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
+class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
+    with EditTherapyModalsMixin {
   Color textColor = Colors.orange[800];
 
   @override
@@ -123,7 +130,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                   widget.therapy.stock.isOutOfStock)
               ? Colors.red
               : Colors.green),
-      onTap: () {},
+      onTap: () {
+        showEditStockDialog2(context);
+      },
       placeholder: _getStockMessage(),
       placeholderText: 'Stock',
     );
@@ -136,7 +145,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                   widget.therapy.schedule.window == null)
               ? Colors.red
               : Colors.green),
-      onTap: () {},
+      onTap: () => showWindow2(context),
       placeholder: _getWindowMessage(),
       placeholderText: 'Window',
       placeholderTextStyle: TextStyle(
@@ -153,7 +162,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                   widget.therapy.medicationInfo.restDuration == null)
               ? Colors.red
               : Colors.green),
-      onTap: () {},
+      onTap: () => showMinRestPopup2(context),
       placeholder: _getMinRestMessage(),
       placeholderText: 'Minimum Rest Duration',
       placeholderTextStyle: TextStyle(
@@ -190,29 +199,65 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: size.height * 0.08,
-                width: size.width * 0.16,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.transparent,
-                    border: Border.all(color: textColor, width: 1)),
+              Column(
+                children: [
+                  Container(
+                    height: size.height * 0.08,
+                    width: size.width * 0.16,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.transparent,
+                        border: Border.all(color: textColor, width: 1)),
+                  ),
+                  SizedBox(height: size.height * 0.01),
+                  Center(
+                    child: text('settings', //reminder.name,
+                        fontFamily: 'Regular',
+                        fontSize: 15.0,
+                        overflow: TextOverflow.ellipsis,
+                        textColor: textColor),
+                  ),
+                ],
               ),
-              Container(
-                height: size.height * 0.08,
-                width: size.width * 0.16,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.transparent,
-                    border: Border.all(color: textColor, width: 1)),
+              Column(
+                children: [
+                  Container(
+                    height: size.height * 0.08,
+                    width: size.width * 0.16,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.transparent,
+                        border: Border.all(color: textColor, width: 1)),
+                  ),
+                  SizedBox(height: size.height * 0.01),
+                  Center(
+                    child: text('refill', //reminder.name,
+                        fontFamily: 'Regular',
+                        fontSize: 15.0,
+                        overflow: TextOverflow.ellipsis,
+                        textColor: textColor),
+                  ),
+                ],
               ),
-              Container(
-                height: size.height * 0.08,
-                width: size.width * 0.16,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.transparent,
-                    border: Border.all(color: textColor, width: 1)),
+              Column(
+                children: [
+                  Container(
+                    height: size.height * 0.08,
+                    width: size.width * 0.16,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.transparent,
+                        border: Border.all(color: textColor, width: 1)),
+                  ),
+                  SizedBox(height: size.height * 0.01),
+                  Center(
+                    child: text('take', //reminder.name,
+                        fontFamily: 'Regular',
+                        fontSize: 15.0,
+                        overflow: TextOverflow.ellipsis,
+                        textColor: textColor),
+                  ),
+                ],
               ),
             ],
           ),
@@ -220,6 +265,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
   }
 
   Container _buildHeader(Size size) {
+    String nextMessage = getNextReminderMessage();
+    String lastMessage = getLastReminderMessage();
     return Container(
       width: size.width,
       height: size.height * 0.20,
@@ -291,13 +338,14 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                           fontSize: 20.0,
                           fontWeight: FontWeight.w400),
                     ),
-                    Text(
-                      "3 hours ago",
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300),
-                    ),
+                    if (lastMessage != null)
+                      Text(
+                        lastMessage,
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w300),
+                      ),
                   ],
                 ),
                 Column(
@@ -309,13 +357,14 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
                           fontSize: 20.0,
                           fontWeight: FontWeight.w400),
                     ),
-                    Text(
-                      "in 6 hours",
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300),
-                    ),
+                    if (nextMessage != null)
+                      Text(
+                        nextMessage,
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w300),
+                      ),
                   ],
                 ),
               ],
@@ -402,6 +451,24 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
     }
   }
 
+  Future showEditStockDialog2(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => EditStockDialog(
+            manager: widget.manager,
+            therapyForm: widget.therapy) //TODO complete this modal
+        );
+  }
+
+  //     Future showEditWindowPopUp2(BuildContext context) {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (context) => EditStockDialog(
+  //           manager: widget.manager,
+  //           therapyForm: widget.therapy) //TODO complete this modal
+  //       );
+  // }
+
   Stack _icons({MaterialColor color}) {
     return Stack(
       children: [
@@ -425,5 +492,57 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2> {
         )
       ],
     );
+  }
+
+  String getLastReminderMessage() {
+    final dayManager = Provider.of<DayPlanManager>(context, listen: false);
+
+    List userRemindersLast =
+        List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
+            .where((element) => element.therapyId == widget.therapy.id)
+            .toList();
+    for (int i = 1; i < 7 && userRemindersLast.isEmpty; i++) {
+      userRemindersLast.addAll(dayManager
+          .getFinalRemindersList(
+              date: DateTime.now().subtract(Duration(days: i)))
+          .where((element) => element.therapyId == widget.therapy.id)
+          .toList());
+    }
+    userRemindersLast.sort((b, a) => a.time.compareTo(b.time));
+    if (userRemindersLast.isEmpty) return null;
+    Reminder lastReminder = userRemindersLast.first;
+
+    return ' ${lastReminder.time.shortenDayRepresent().toLowerCase()} ${lastReminder.time.formatTime().toLowerCase()} ';
+  }
+
+  String getNextReminderMessage() {
+    final dayManager = Provider.of<DayPlanManager>(context, listen: false);
+    if (widget.therapy.schedule == null ||
+        widget.therapy.schedule.reminderRules.isEmpty) return null;
+    List userRemindersNext =
+        List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
+            .where((element) => element.therapyId == widget.therapy.id)
+            .toList();
+    for (int i = 1; i < 7 && userRemindersNext.isEmpty; i++) {
+      userRemindersNext.addAll(dayManager
+          .getFinalRemindersList(date: DateTime.now().add(Duration(days: i)))
+          .where((element) => element.therapyId == widget.therapy.id)
+          .toList());
+    }
+
+    userRemindersNext.sort((a, b) => a.time.compareTo(b.time));
+
+    if (userRemindersNext.isEmpty) return null;
+    Reminder nextReminder = userRemindersNext.first;
+
+    return '${nextReminder.time.shortenDayRepresent().toLowerCase()} ${nextReminder.time.formatTime().toLowerCase()}';
+
+    /***
+     *? So this is an Example. When we have proper ReminderState checks, we can 
+      always show the most important ones next or missed or 'now.
+      and if none found intoday, check next day. 
+    
+
+    */
   }
 }

@@ -64,7 +64,6 @@ class _TopBarState extends State<TopBar> {
               Positioned(
                 left: 5,
                 child: Container(
-                    // color: Colors.green,
                     padding: EdgeInsets.only(top: 5),
                     child: FlatButton(
                       onPressed: () {},
@@ -88,27 +87,28 @@ class _TopBarState extends State<TopBar> {
                 child: Container(
                   // color: Colors.blue,
                   padding: EdgeInsets.only(top: 5),
-                  child: FlatButton(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    disabledTextColor: Colors.transparent,
-                    disabledColor: Colors.transparent,
-                    textColor: widget.color,
-                    onPressed: (widget.btnEnabled)
-                        ? widget.onRightTap
-                        : () {
-                            //print('nah');
-                          },
-                    color: Colors.transparent,
-                    padding: EdgeInsets.zero,
-                    child: Align(
-                      child: (widget.btnEnabled)
-                          ? text(widget.rightButtonText,
-                              fontSize: textSizeMedium2,
-                              //fontFamily: 'Regular',
-                              textColor: Colors.blue[900])
-                          : Text(''),
-                      alignment: Alignment.centerRight,
+                  child: AbsorbPointer(
+                    absorbing: (widget.btnEnabled) ? false : true,
+                    child: FlatButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      disabledTextColor: Colors.transparent,
+                      disabledColor: Colors.transparent,
+                      textColor: widget.color,
+                      onPressed: (widget.btnEnabled)
+                          ? widget.onRightTap
+                          : () {
+                              //print('nah');
+                            },
+                      color: Colors.transparent,
+                      padding: EdgeInsets.zero,
+                      child: Align(
+                        child: text(widget.rightButtonText,
+                            fontSize: textSizeMedium2,
+                            //fontFamily: 'Regular',
+                            textColor: Colors.blue[900]),
+                        alignment: Alignment.centerRight,
+                      ),
                     ),
                   ),
                 ),

@@ -8,6 +8,12 @@ class Schedule {
   DateTime startDate;
   DateTime endDate;
   AlarmSettings alarmSettings;
+    set setWindow(Duration x) {
+    if (Duration(hours: 0, minutes: 5).compareTo(x) > 0)
+      window = Duration(minutes: 5);
+    else
+      window = x;
+  }
 
 //!! TODO IT ISNT COMPLETE
   Schedule({
