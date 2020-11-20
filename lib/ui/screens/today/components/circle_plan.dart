@@ -79,8 +79,9 @@ class _CirclePlanState extends State<CirclePlan> {
     print(size.width * 0.65);
     double circleWidth = size.width * 0.65;
     double completePercent = calcProgressTime();
-    double innerCompletePercent =
-        calcProgressTime(TimeOfDay(hour: 0, minute: 0), initialTime);
+    double innerCompletePercent = calcProgressTime(
+        TimeOfDay(hour: 0, minute: 0),
+        initialTime.hour != 6 ? initialTime : null); //initialTime
     return Container(
         height: widget.heightOfCircleSpace,
         alignment: Alignment.center,
@@ -145,7 +146,12 @@ class _CirclePlanState extends State<CirclePlan> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '0 am - 12 pm', // ' midnight - noon '
+                                  initalDateTime.formatTime2() +
+                                      ' ' +
+                                      ' - ' +
+                                      ' ' +
+                                      endDateTime
+                                          .formatTime2(), // ' midnight - noon '
                                   maxLines: 2,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -156,7 +162,7 @@ class _CirclePlanState extends State<CirclePlan> {
                                 ),
                                 Text('reminders',
                                     style: TextStyle(
-                                        color: Colors.black54, fontSize: 12))
+                                        color: Colors.black54, fontSize: 12)),
                               ],
                             ),
                           ),

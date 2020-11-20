@@ -17,12 +17,11 @@ class AnimatedTransformRotate extends AnimatedWidget {
     print((-2 * pi - transformValue).toString() +
         'herer' +
         transformValue.toString());
+    double angle = transformValue % (2 * pi);
     final animation = listenable as Animation<double>;
     return Transform.rotate(
       angle: animation.value *
-          (transformValue.abs() < pi
-              ? transformValue
-              : (transformValue.sign * 2 * pi - transformValue)),
+          (angle.abs() < pi ? angle : (angle.sign * 2 * pi + angle.abs())),
       child: child,
     );
   }

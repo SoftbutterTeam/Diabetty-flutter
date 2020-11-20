@@ -14,6 +14,10 @@ extension DateTimeExtension on DateTime {
     return DateTime(year, month, day, time.hour, time.minute);
   }
 
+  String formatTime2() {
+    return DateFormat('h a').format(this).toLowerCase();
+  }
+
   String formatTime() {
     return DateFormat.jm().format(this);
   }

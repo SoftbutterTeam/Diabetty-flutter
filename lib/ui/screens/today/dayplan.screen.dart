@@ -177,6 +177,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           } else if (details.delta.dy < -dragSensitivity) {
             if (!circleMinimized) {
               manager.fadeAnimation.reset();
+              manager.choosenTime = null;
               setState(() {
                 _minController.forward();
                 circleMinimized = true;
@@ -191,12 +192,15 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               circleMinimized = false;
             });
           } else {
-            manager.fadeAnimation.reset();
-
-            setState(() {
-              _minController.forward();
-              circleMinimized = true;
-            });
+            if (manager.fadeAnimation.status == AnimationStatus.dismissed) {
+              manager.fadeAnimation.reset();
+              manager.choosenTime = null;
+              print('jojo');
+              setState(() {
+                _minController.forward();
+                circleMinimized = true;
+              });
+            }
           }
         },
         child: SizedBox(
@@ -262,7 +266,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
     manager = Provider.of<DayPlanManager>(context, listen: false);
     fadeController = AnimationController(
         vsync: this,
-        reverseDuration: Duration(seconds: 4),
+        reverseDuration: Duration(seconds: 5),
         duration: Duration(milliseconds: 150));
     fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
     fadeController.addStatusListener((status) {
@@ -293,6 +297,50 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
         children: [
           Expanded(
             child: GestureDetector(
+                onTap:
+                    (manager.minController.status == AnimationStatus.dismissed)
+                        ? () {
+                            print('clicked');
+                            fadeController.reverse(from: 1);
+                          }
+                        : null,
+                child: AbsorbPointer(
+                  absorbing: !(fadeAnim.value == true),
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    child: AnimatedScaleButton(
+                      onTap: (manager.minController.status ==
+                              AnimationStatus.dismissed)
+                          ? () {
+                              print('clicked');
+                              manager.backTime();
+                              fadeController.reverse(from: 1);
+                            }
+                          : null,
+                      child: Container(
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        child: RotatedBox(
+                          quarterTurns: 2,
+                          child: Opacity(
+                            opacity: fadeAnim.value != true ? 0 : 1,
+                            child: SvgPicture.asset(
+                              'assets/icons/navigation/essentials/next.svg',
+                              height: 18,
+                              width: 18,
+                              color: Colors.orange[800],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )),
+          ),
+          Container(width: size.width * 0.65, child: widget.child),
+          Expanded(
+            child: GestureDetector(
               onTap: (manager.minController.status == AnimationStatus.dismissed)
                   ? () {
                       print('clicked');
@@ -301,21 +349,22 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                   : null,
               child: AbsorbPointer(
                 absorbing: !(fadeAnim.value == true),
-                child: GestureDetector(
-                  onTap: (manager.minController.status ==
-                          AnimationStatus.dismissed)
-                      ? () {
-                          print('clicked');
-                          manager.backTime();
-                          print(manager.choosenTime.toString());
-                          fadeController.reverse(from: 1);
-                        }
-                      : null,
-                  child: Container(
-                    color: Colors.transparent,
-                    alignment: Alignment.centerRight,
-                    child: RotatedBox(
-                      quarterTurns: 2,
+                child: Container(
+                  color: Colors.transparent,
+                  alignment: Alignment.centerLeft,
+                  child: AnimatedScaleButton(
+                    onTap: (manager.minController.status ==
+                            AnimationStatus.dismissed)
+                        ? () {
+                            print('clicked');
+                            manager.forwardTime();
+                            print(manager.choosenTime.toString());
+                            fadeController.reverse(from: 1);
+                          }
+                        : null,
+                    child: Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.centerLeft,
                       child: Opacity(
                         opacity: fadeAnim.value != true ? 0 : 1,
                         child: SvgPicture.asset(
@@ -331,45 +380,62 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
               ),
             ),
           ),
-          Container(width: size.width * 0.7, child: widget.child),
-          Expanded(
-            child: GestureDetector(
-              onTap: (manager.minController.status == AnimationStatus.dismissed)
-                  ? () {
-                      print('clicked');
-                      fadeController.reverse(from: 1);
-                    }
-                  : null,
-              child: AbsorbPointer(
-                absorbing: !(fadeAnim.value == true),
-                child: GestureDetector(
-                  onTap: (manager.minController.status ==
-                          AnimationStatus.dismissed)
-                      ? () {
-                          print('clicked');
-                          manager.forwardTime();
-                          print(manager.choosenTime.toString());
-                          fadeController.reverse(from: 1);
-                        }
-                      : null,
-                  child: Container(
-                    color: Colors.transparent,
-                    alignment: Alignment.centerLeft,
-                    child: Opacity(
-                      opacity: fadeAnim.value != true ? 0 : 1,
-                      child: SvgPicture.asset(
-                        'assets/icons/navigation/essentials/next.svg',
-                        height: 18,
-                        width: 18,
-                        color: Colors.orange[800],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
         ],
+      ),
+    );
+  }
+}
+
+class AnimatedScaleButton extends StatefulWidget {
+  const AnimatedScaleButton({
+    Key key,
+    this.onTap,
+    this.child,
+  }) : super(key: key);
+
+  final Function onTap;
+  final Widget child;
+
+  @override
+  _AnimatedScaleButtonState createState() => _AnimatedScaleButtonState();
+}
+
+class _AnimatedScaleButtonState extends State<AnimatedScaleButton>
+    with TickerProviderStateMixin {
+  AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 300), vsync: this);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) _controller.reverse();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    this._controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _controller.forward();
+        widget.onTap.call();
+      },
+      child: ScaleTransition(
+        scale: Tween(begin: 1.0, end: 1.2).animate(
+            CurvedAnimation(parent: _controller, curve: Curves.bounceInOut)),
+        child: Container(
+            color: Colors.transparent,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            alignment: Alignment.centerRight,
+            child: widget.child),
       ),
     );
   }

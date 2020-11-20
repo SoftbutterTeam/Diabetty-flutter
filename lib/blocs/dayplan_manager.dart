@@ -30,7 +30,8 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   TimeOfDay _choosenTime;
 
   TimeOfDay get choosenTime => _choosenTime ?? initalTime;
-  set choosenTime(TimeOfDay time) => time.hour == initalTime.hour ? null : time;
+  set choosenTime(TimeOfDay time) =>
+      (time ?? initalTime).hour == initalTime.hour ? null : time;
 
   bool get inTheNow => choosenTime.hour == initalTime.hour;
   void forwardTime() {
