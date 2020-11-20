@@ -508,7 +508,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
           .where((element) => element.therapyId == widget.therapy.id)
           .toList());
     }
-    userRemindersLast.sort((b, a) => a.time.compareTo(b.time));
+    userRemindersLast.sort((a, b) => a.time.compareTo(b.time));
     if (userRemindersLast.isEmpty) return null;
     Reminder lastReminder = userRemindersLast.first;
 
