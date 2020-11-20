@@ -1,4 +1,6 @@
+import 'package:animated_button/animated_button.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
@@ -21,31 +23,36 @@ class _IconWidgetState extends State<IconWidget> {
   @override
   Widget build(BuildContext context) {
     getIconSizes();
-    return SizedBox(
-      width: 37, //* was 35
-      height: 37,
-      child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 2, // was 2, 1 is good
+    return AnimatedScaleButton(
+      size: 37,
+      padding: 0,
+      onTap: () {},
+      child: SizedBox(
+        width: 37, //* was 35
+        height: 37,
+        child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 2, // was 2, 1 is good
+                color: Colors.white,
+              ),
+              borderRadius: BorderRadius.circular(60),
               color: Colors.white,
             ),
-            borderRadius: BorderRadius.circular(60),
-            color: Colors.white,
-          ),
-          child: Stack(
-            children: [
-              SvgPicture.asset(
-                widget.iconURL,
-                color: widget.index.isOdd ? Colors.indigo[900] : null,
-              ),
-              Container(
-                alignment: Alignment
-                    .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
-                child: _buildRelevantIcon(),
-              ),
-            ],
-          )),
+            child: Stack(
+              children: [
+                SvgPicture.asset(
+                  widget.iconURL,
+                  color: widget.index.isOdd ? Colors.indigo[900] : null,
+                ),
+                Container(
+                  alignment: Alignment
+                      .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
+                  child: _buildRelevantIcon(),
+                ),
+              ],
+            )),
+      ),
     );
   }
 

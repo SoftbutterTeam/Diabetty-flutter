@@ -454,10 +454,14 @@ class AnimatedScaleButton extends StatefulWidget {
     Key key,
     this.onTap,
     this.child,
+    this.size,
+    this.padding = 20,
   }) : super(key: key);
 
   final Function onTap;
   final Widget child;
+  final double size;
+  final double padding;
 
   @override
   _AnimatedScaleButtonState createState() => _AnimatedScaleButtonState();
@@ -495,8 +499,10 @@ class _AnimatedScaleButtonState extends State<AnimatedScaleButton>
         scale: Tween(begin: 1.0, end: 1.2).animate(
             CurvedAnimation(parent: _controller, curve: Curves.bounceInOut)),
         child: Container(
+            height: widget.size,
+            width: widget.size,
             color: Colors.transparent,
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: widget.padding),
             alignment: Alignment.centerRight,
             child: widget.child),
       ),
