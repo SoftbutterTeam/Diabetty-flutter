@@ -17,9 +17,12 @@ abstract class ReminderManagerMixin<T extends Manager> {
   void updateListeners();
 
   void takeReminder(Reminder reminder, DateTime takenAt) {
-    takenAt ??= DateTime.now();
-    reminder.takenAt = takenAt;
-    reminderService.updateReminder(reminder);
+    if (reminder.cancelled == false) {
+      takenAt ??= DateTime.now();
+      reminder.takenAt = takenAt;
+      reminderService.setReminder(reminder);
+    }
+
     /**
      Calls the Service Code.
      -> reminder.takenAt -> DateTime takenAt
@@ -30,10 +33,12 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   void skipReminder(Reminder reminder) {
-    reminder.cancelled = true;
+    if (reminder.takenAt == null) {
+      reminder.cancelled = true;
+      reminderService.setReminder(reminder);
+      updateListeners();
+    }
 
-    reminderService.updateReminder(reminder);
-    updateListeners();
     /**
      Calls the Service Code.
      -> reminder.cancelled -> true
@@ -45,7 +50,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
 
   void snoozeReminder(Reminder reminder, Duration snoozeFor) {
     reminder.time = reminder.time.add(snoozeFor);
-    reminderService.updateReminder(reminder);
+    reminderService.setReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.
@@ -58,7 +63,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
 
   void rescheduleReminder(Reminder reminder, DateTime rescheduledTo) {
     reminder.time = rescheduledTo;
-    reminderService.updateReminder(reminder);
+    reminderService.setReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.
@@ -72,7 +77,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
   void editDoseReminder(Reminder reminder, int dose) {
     reminder.dose = dose;
     reminder.doseEdited = true;
-    reminderService.updateReminder(reminder);
+    reminderService.setReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.

@@ -11,4 +11,12 @@ class ReminderService {
       rethrow;
     }
   }
+
+  Future<void> setReminder(Reminder reminder) async {
+    try {
+      reminderRepository.setReminder(reminder);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

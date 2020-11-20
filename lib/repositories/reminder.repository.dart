@@ -23,6 +23,22 @@ class ReminderRepository {
     });
     return true;
   }
+
+  Future<void> setReminder(Reminder reminder) async {
+    Map<String, dynamic> reminderData = Map();
+    reminderData = reminder.tojson();
+    // reminder.
+    await _db
+        .collection('users')
+        .document(reminder.userId)
+        .collection('therapies')
+        .document(reminder.therapyId)
+        .setData(reminderData)
+        .catchError((e) {
+      //print(e);
+    });
+    return true;
+  }
 }
 
 class DataResult<T> {
