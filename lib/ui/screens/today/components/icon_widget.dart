@@ -1,32 +1,39 @@
 import 'package:animated_button/animated_button.dart';
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 import 'package:diabetty/extensions/string_extension.dart';
+import 'package:provider/provider.dart';
 
-class IconWidget extends StatefulWidget {
+class RemIconWidget extends StatefulWidget {
   final String iconURL;
   final int index;
   final Reminder reminder;
 
-  IconWidget({this.iconURL, this.index, this.reminder});
+  RemIconWidget({this.iconURL, this.index, this.reminder});
 
   @override
-  _IconWidgetState createState() => _IconWidgetState();
+  _RemIconWidgetState createState() => _RemIconWidgetState();
 }
 
-class _IconWidgetState extends State<IconWidget> {
+class _RemIconWidgetState extends State<RemIconWidget> {
   var iconWidth;
   var iconHeight;
   @override
   Widget build(BuildContext context) {
     getIconSizes();
+    DayPlanManager manager =
+        Provider.of<DayPlanManager>(context, listen: false);
     return AnimatedScaleButton(
       size: 37,
       padding: 0,
-      onTap: () {},
+      onTap: () {
+        Scrollable.ensureVisible(manager
+            .reminderScrollKeys[widget.reminder.reminderRuleId].currentContext);
+      },
       child: SizedBox(
         width: 37, //* was 35
         height: 37,

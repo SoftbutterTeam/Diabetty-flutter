@@ -173,7 +173,7 @@ class _CirclePlanState extends State<CirclePlan> {
           children: List.generate(12 * 4, (index) {
             final rems = getReminderOnIndex(index, reminders);
             return rems.isNotEmpty
-                ? IconWidget(
+                ? RemIconWidget(
                     index: index,
                     iconURL: appearance_icon_0,
                     reminder: rems[0],

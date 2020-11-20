@@ -85,6 +85,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   double dragSensitivity = 3;
   @override
   void initState() {
+    manager.reminderScrollKeys = {};
     super.initState();
     _dateController = AnimationController(
         vsync: this,
@@ -283,7 +284,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           }
           return Container(
               margin: EdgeInsets.symmetric(vertical: 10),
-              child: SlotWidget.TimeSlot(timeSlot: timeSlots[index - 1]));
+              child: SlotWidget.TimeSlot(
+                  key: new GlobalKey(), timeSlot: timeSlots[index - 1]));
         },
       ),
     );
