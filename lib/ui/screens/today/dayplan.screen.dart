@@ -83,8 +83,12 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       manager.currentDateStamp.applyTimeOfDay(_initialTime);
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
   double dragSensitivity = 3;
+  bool draggingIdle;
+
   @override
   void initState() {
+    draggingIdle = true;
+
     manager.reminderScrollKeys = {};
     super.initState();
     _dateController = AnimationController(
@@ -180,48 +184,72 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       alignment: Alignment.topCenter,
       child: GestureDetector(
         onVerticalDragUpdate: (details) {
-          if (details.delta.dy > dragSensitivity) {
-            if (circleMinimized) {
-              setState(() {
-                _minController.reverse();
-                circleMinimized = false;
-              });
-            }
-          } else if (details.delta.dy < -dragSensitivity) {
-            if (!circleMinimized) {
-              manager.fadeAnimation.reset();
-              manager.resetTime();
-              setState(() {
-                _minController.forward();
-                circleMinimized = true;
-              });
-            }
-          }
-        },
-        onDoubleTap: () {
-          if (circleMinimized) {
-            setState(() {
-              _minController.reverse();
-              circleMinimized = false;
-            });
-          } else {
-            if (manager.fadeAnimation.status == AnimationStatus.dismissed) {
-              manager.fadeAnimation.reset();
-              manager.resetTime();
-              print('jojo');
-              setState(() {
-                _minController.forward();
-                circleMinimized = true;
-              });
+          if (draggingIdle) {
+            if (details.delta.dy > dragSensitivity) {
+              if (circleMinimized) {
+                setState(() {
+                  draggingIdle = false;
+                  _minController.reverse();
+                  circleMinimized = false;
+                });
+              }
+            } else if (details.delta.dy < -dragSensitivity) {
+              if (!circleMinimized) {
+                manager.fadeAnimation.reset();
+                manager.resetTime();
+                print('RECYYYYY');
+                setState(() {
+                  draggingIdle = false;
+                  _minController.forward();
+                  circleMinimized = true;
+                });
+              } else if (circleMinimized) {
+                print('RECAAAAA');
+                setState(() {
+                  draggingIdle = false;
+                  manager.fadeAnimation.reset();
+                  show = true;
+                });
+              }
             }
           }
         },
+        onPanCancel: () {
+          setState(() {
+            draggingIdle = true;
+          });
+        },
+        onVerticalDragCancel: () {
+          setState(() {
+            draggingIdle = true;
+          });
+        },
+        onDoubleTap: false
+            ? () {
+                if (circleMinimized) {
+                  setState(() {
+                    _minController.reverse();
+                    circleMinimized = false;
+                  });
+                } else {
+                  if (manager.fadeAnimation.status ==
+                      AnimationStatus.dismissed) {
+                    manager.fadeAnimation.reset();
+                    manager.resetTime();
+                    print('jojo');
+                    setState(() {
+                      _minController.forward();
+                      circleMinimized = true;
+                    });
+                  }
+                }
+              }
+            : null,
         child: SizedBox(
             width: size.width,
             height: heightOfCircleSpace /
                 (!show ? circleMinimized ? 2.8 : 1 : heightOfCircleSpace),
             // 2.8
-
             child: CirclePlanOverlay(
               child: FittedBox(
                   clipBehavior: Clip.none,
@@ -232,6 +260,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       ),
     );
   }
+  //! onDoubleTap slows down a onTap
 
   Widget _buildRemindersList(
       BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -274,10 +303,16 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                         Icons.arrow_drop_up,
                         color: Colors.deepOrange,
                       ),
-                      onTap: () => setState(() {
-                            manager.fadeAnimation.reset();
-                            show = true;
-                          })),
+                      onTap: () => circleMinimized
+                          ? setState(() {
+                              manager.fadeAnimation.reset();
+                              show = true;
+                            })
+                          : setState(() {
+                              manager.fadeAnimation.reset();
+                              _minController.forward();
+                              circleMinimized = true;
+                            })),
             );
           } else if (index == 0) {
             return SizedBox();
@@ -412,6 +447,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                   ? null
                   : () {
                       print('clicked');
+                      print('ERRRRRRUUUUUUUUU');
                       fadeController.reverse(from: 1);
                       showArrows = false;
                     },
