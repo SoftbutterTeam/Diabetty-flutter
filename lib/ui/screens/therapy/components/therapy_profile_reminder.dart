@@ -44,12 +44,12 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
   );
 
   @override
-  Widget build2(BuildContext context) {
+  Widget build(BuildContext context) {
     TherapyManager manager = Provider.of<TherapyManager>(context);
     var size = MediaQuery.of(context).size;
     List<Widget> weekDays = buildWeekWidgets(context);
     return custom.CupertinoTextField(
-      overflow: TextOverflow.visible,
+      overflow: TextOverflow.clip,
       decoration: BoxDecoration(
         color: appWhite,
         border: Border.all(
@@ -59,9 +59,8 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
       prefix: Row(
         children: [
           GestureDetector(
-            onTap: () {
-              //  _deleteRule(manager)
-            },
+            onTap: null,
+            // onTap: () => _deleteRule(manager),
             child: Container(
               padding: EdgeInsets.only(left: 18, right: 14),
               child: Icon(
@@ -87,17 +86,18 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
           Opacity(
             opacity: 0,
             child: Container(
-                padding: EdgeInsets.only(right: 1),
+                padding: EdgeInsets.only(right: 15),
                 child: Text('00:00 AM', style: textstyle)),
           ),
           Container(
-              padding: EdgeInsets.only(right: 1),
+              padding: EdgeInsets.only(right: 15),
               child: Text(_getTime(), style: textstyle)),
         ],
       ),
       placeholder: widget.rule.dose.toString() +
           ' ' +
-          unitTypes[0].plurarlUnits(widget.rule.dose),
+          unitTypes[0]
+              .plurarlUnits(widget.rule.dose),
       textAlign: TextAlign.right,
       style: TextStyle(
         fontFeatures: [
@@ -107,13 +107,13 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
       readOnly: true,
       maxLines: 1,
       maxLength: 30,
-      padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
+      padding: EdgeInsets.only(left: 18, top: 13, bottom: 11, right: 10),
       placeholderStyle: textstyle,
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build2(BuildContext context) {
     TherapyManager manager = Provider.of<TherapyManager>(context);
     var size = MediaQuery.of(context).size;
     List<Widget> weekDays = buildWeekWidgets(context);
@@ -182,7 +182,7 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
                           child: Text(
                             widget.rule.dose.toString() +
                                 ' ' +
-                                unitTypes[0].plurarlUnits(widget.rule.dose) +
+                                unitTypes[2].plurarlUnits(widget.rule.dose) +
                                 ' at ' +
                                 _getTime(),
                             style: textstyle,

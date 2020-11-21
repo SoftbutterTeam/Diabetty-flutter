@@ -64,61 +64,58 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             .map((e) => TherapyProfileReminder(rule: e) as Widget)
             .toList();
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 25),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 2),
-            child: _buildStockField(),
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: size.width * 0.03,
-              ),
-              Text(
-                "reminders",
-                style: TextStyle(
-                  fontSize: textSizeLargeMedium - 3,
-                  color: Colors.grey[700],
-                ),
-              )
-            ],
-          ),
-          if (reminderRulesList.isNotEmpty)
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: (reminderRulesList.length < 7)
-                  ? ColumnBuilder(
-                      itemCount: reminderRulesList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return reminderRulesList[index];
-                      },
-                    )
-                  : 'yeye',
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 5),
+          child: _buildStockField(),
+        ),
+        Row(
+          children: [
+            SizedBox(
+              width: size.width * 0.03,
             ),
-          if (reminderRulesList.isEmpty)
-            Container(
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: Text(
-                'No reminders here man, move on pls',
-                style: TextStyle(
-                  fontSize: textSizeLargeMedium,
-                  color: Colors.grey[700],
-                ),
+            Text(
+              "reminders",
+              style: TextStyle(
+                fontSize: textSizeLargeMedium - 3,
+                color: Colors.grey[700],
+              ),
+            )
+          ],
+        ),
+        if (reminderRulesList.isNotEmpty)
+          Container(
+            padding: EdgeInsets.only(top: 10),
+            child: (reminderRulesList.length < 7)
+                ? ColumnBuilder(
+                    itemCount: reminderRulesList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return reminderRulesList[index];
+                    },
+                  )
+                : 'yeye',
+          ),
+        if (reminderRulesList.isEmpty)
+          Container(
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: Text(
+              'No reminders here man, move on pls',
+              style: TextStyle(
+                fontSize: textSizeLargeMedium,
+                color: Colors.grey[700],
               ),
             ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 2),
-            child: _buildWindowField(),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 2),
-            child: _buildMinRestField(),
-          ),
-        ],
-      ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: _buildWindowField(),
+        ),
+        // Padding(
+        //   padding: EdgeInsets.only(top: 2),
+        //   child: _buildMinRestField(),
+        // ),
+      ],
     );
   }
 
@@ -197,21 +194,21 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
               )),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: size.height * 0.08,
-                    width: size.width * 0.16,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                        border: Border.all(color: textColor, width: 1)),
+                  SvgPicture.asset(
+                    'assets/icons/navigation/essentials/volume.svg',
+                    height: size.height * 0.05,
+                    width: size.width * 0.10,
+                    color: Colors.orange[800],
+                    
                   ),
                   SizedBox(height: size.height * 0.01),
                   Center(
-                    child: text('settings', //reminder.name,
+                    child: text('silent', //reminder.name,
                         fontFamily: 'Regular',
                         fontSize: 15.0,
                         overflow: TextOverflow.ellipsis,
@@ -496,7 +493,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   String getLastReminderMessage() {
     final dayManager = Provider.of<DayPlanManager>(context, listen: false);
-
+    if (widget.therapy.schedule == null ||
+        widget.therapy.schedule.reminderRules.isEmpty) return null;
     List userRemindersLast =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
             .where((element) => element.therapyId == widget.therapy.id)
