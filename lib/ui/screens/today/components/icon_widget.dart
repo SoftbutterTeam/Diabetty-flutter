@@ -1,4 +1,3 @@
-import 'package:animated_button/animated_button.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
@@ -31,8 +30,12 @@ class _RemIconWidgetState extends State<RemIconWidget> {
       size: 37,
       padding: 0,
       onTap: () {
-        Scrollable.ensureVisible(manager
-            .reminderScrollKeys[widget.reminder.reminderRuleId].currentContext);
+        if (manager.reminderScrollKeys[widget.reminder.reminderRuleId] !=
+            null) {
+          Scrollable.ensureVisible(manager
+              .reminderScrollKeys[widget.reminder.reminderRuleId]
+              .currentContext);
+        }
       },
       child: SizedBox(
         width: 37, //* was 35
