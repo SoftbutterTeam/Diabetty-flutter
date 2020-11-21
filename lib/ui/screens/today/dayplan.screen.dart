@@ -219,14 +219,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           }
         },
         onPanCancel: () {
-          setState(() {
-            draggingIdle = true;
-          });
+          draggingIdle = true;
         },
         onVerticalDragCancel: () {
-          setState(() {
-            draggingIdle = true;
-          });
+          draggingIdle = true;
         },
         onDoubleTap: false
             ? () {
@@ -311,14 +307,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                         }
                       },
                       onPanCancel: () {
-                        setState(() {
-                          draggingIdle = true;
-                        });
+                        draggingIdle = true;
                       },
                       onVerticalDragCancel: () {
-                        setState(() {
-                          draggingIdle = true;
-                        });
+                        draggingIdle = true;
                       },
                       onTap: () => setState(() {
                             manager.fadeAnimation.reset();
