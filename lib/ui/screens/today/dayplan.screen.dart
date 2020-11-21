@@ -361,7 +361,7 @@ class CirclePlanOverlay extends StatefulWidget {
 }
 
 class _CirclePlanOverlayState extends State<CirclePlanOverlay>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   AnimationController fadeController;
   Animation<bool> fadeAnim;
   DayPlanManager manager;
@@ -548,7 +548,7 @@ class AnimatedScaleButton extends StatefulWidget {
 }
 
 class _AnimatedScaleButtonState extends State<AnimatedScaleButton>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
 
   @override

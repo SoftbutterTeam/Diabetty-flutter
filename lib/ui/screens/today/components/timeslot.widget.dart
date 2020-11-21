@@ -22,7 +22,7 @@ class TimeSlot extends StatefulWidget {
 }
 
 class _TimeSlotState extends State<TimeSlot>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool minimize;
   bool allComplete;
   @override
@@ -58,9 +58,9 @@ class _TimeSlotState extends State<TimeSlot>
         curve: Curves.bounceInOut,
         duration: Duration(milliseconds: 300),
         child: IntrinsicHeight(
-          child:  TimeSlotDecor(
-              child:SizedBox(
-            child: Column(children: <Widget>[
+          child: TimeSlotDecor(
+            child: SizedBox(
+              child: Column(children: <Widget>[
                 _buildTimeHeader(time),
                 Expanded(
                     child: !minimize
