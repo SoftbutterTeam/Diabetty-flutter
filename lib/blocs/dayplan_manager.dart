@@ -49,7 +49,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     _choosenTime = TimeOfDay(hour: (choosenTime.hour - 6) % 24, minute: 0);
   }
 
-  void reset() {
+  void refresh() {
     _currentDateStamp = null;
     _choosenTime = null;
     updateListeners();

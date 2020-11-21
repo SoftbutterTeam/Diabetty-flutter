@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
         child: AuthWidgetBuilder(builder: (BuildContext context,
             AsyncSnapshot<User> userSnapshot,
             AsyncSnapshot<UserModel.User> aUserSnapshot) {
-          startKeepAlive(dayPlanManager.reset);
+          startKeepAlive(dayPlanManager.refresh);
           return MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
