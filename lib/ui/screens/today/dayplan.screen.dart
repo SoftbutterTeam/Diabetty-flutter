@@ -120,7 +120,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     _dateController.dispose();
     _minController.dispose();
     manager.fadeAnimation.removeStatusListener(setStateFunc);
-    manager.fadeAnimation.dispose();
+    manager.fadeAnimation?.dispose();
     super.dispose();
   }
 
