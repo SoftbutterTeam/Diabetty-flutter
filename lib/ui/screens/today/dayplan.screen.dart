@@ -230,15 +230,14 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         },
         onDoubleTap: false
             ? () {
-                if (circleMinimized) {
+                if (circleMinimized == null && circleMinimized == true) {
                   setState(() {
                     _minController.reverse();
                     circleMinimized = false;
                   });
                 } else {
-                  if (manager.fadeAnimation.status ==
-                      AnimationStatus.dismissed) {
-                    manager.fadeAnimation.reset();
+                  if (true) {
+                    manager.fadeAnimation?.reset();
                     manager.resetTime();
                     print('jojo');
                     setState(() {
@@ -298,6 +297,29 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                           color: Colors.deepOrange,
                         ),
                       ),
+                      onVerticalDragUpdate: (details) {
+                        if (draggingIdle) {
+                          print(details.delta.dy);
+                          if (details.delta.dy > dragSensitivity) {
+                            setState(() {
+                              manager.fadeAnimation.reset();
+                              show = false;
+                              _minController.reverse();
+                              circleMinimized = false;
+                            });
+                          }
+                        }
+                      },
+                      onPanCancel: () {
+                        setState(() {
+                          draggingIdle = true;
+                        });
+                      },
+                      onVerticalDragCancel: () {
+                        setState(() {
+                          draggingIdle = true;
+                        });
+                      },
                       onTap: () => setState(() {
                             manager.fadeAnimation.reset();
                             show = false;
