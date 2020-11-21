@@ -107,10 +107,10 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
               ),
             ),
           ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 5),
-          child: _buildWindowField(),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(vertical: 5),
+        //   child: _buildWindowField(),
+        // ),
         // Padding(
         //   padding: EdgeInsets.only(top: 2),
         //   child: _buildMinRestField(),
@@ -197,14 +197,15 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                
                 children: [
-                  SvgPicture.asset(
-                    'assets/icons/navigation/essentials/volume.svg',
-                    height: size.height * 0.05,
-                    width: size.width * 0.10,
-                    color: Colors.orange[800],
-                    
+                  Container(
+                    height: size.height * 0.08,
+                    width: size.width * 0.16,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.transparent,
+                        border: Border.all(color: textColor, width: 1)),
                   ),
                   SizedBox(height: size.height * 0.01),
                   Center(
