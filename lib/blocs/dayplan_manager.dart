@@ -49,6 +49,12 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     _choosenTime = TimeOfDay(hour: (choosenTime.hour - 6) % 24, minute: 0);
   }
 
+  void reset() {
+    _currentDateStamp = null;
+    _choosenTime = null;
+    updateListeners();
+  }
+
   DatePickerController dateController = DatePickerController();
   DateTime _currentDateStamp;
   StreamController<List<Reminder>> _dataController = BehaviorSubject();

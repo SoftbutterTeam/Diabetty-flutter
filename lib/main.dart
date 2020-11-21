@@ -22,6 +22,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
+import 'package:diabetty/utils/application_state_reset_timer.dart';
 
 GoogleSignIn _googleSignIn = new GoogleSignIn(
   scopes: <String>[
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
         child: AuthWidgetBuilder(builder: (BuildContext context,
             AsyncSnapshot<User> userSnapshot,
             AsyncSnapshot<UserModel.User> aUserSnapshot) {
+          startKeepAlive(dayPlanManager.reset);
           return MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
