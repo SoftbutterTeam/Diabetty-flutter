@@ -224,7 +224,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         onVerticalDragCancel: () {
           draggingIdle = true;
         },
-        onDoubleTap: false
+        onDoubleTap: true
             ? () {
                 if (circleMinimized == null && circleMinimized == true) {
                   setState(() {

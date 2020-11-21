@@ -58,9 +58,9 @@ class _TimeSlotState extends State<TimeSlot>
         curve: Curves.bounceInOut,
         duration: Duration(milliseconds: 300),
         child: IntrinsicHeight(
-          child: SizedBox(
-            child: TimeSlotDecor(
-              child: Column(children: <Widget>[
+          child:  TimeSlotDecor(
+              child:SizedBox(
+            child: Column(children: <Widget>[
                 _buildTimeHeader(time),
                 Expanded(
                     child: !minimize

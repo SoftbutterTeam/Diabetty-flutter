@@ -261,9 +261,8 @@ class _CircleListState extends State<CircleList>
                         : (-_animationRotate.value * pi * 2 +
                             widget.initialAngle),
                     child: Stack(
-                      children: List.generate(widget.children.length, (ind) {
-                        final index =
-                            (ind - (widget.children.length - 1)).abs();
+                      children: (List.generate(widget.children.length, (ind) {
+                        final index = (ind).abs();
                         final double childrenDiameter =
                             2 * pi * listRadius / 12 - widget.childrenPadding;
                         Offset childPoint = getChildPoint(
@@ -296,7 +295,52 @@ class _CircleListState extends State<CircleList>
                             ),
                           ),
                         );
-                      }),
+                      })
+                            ..add(() {
+                              final double childrenDiameter =
+                                  2 * pi * listRadius / 12 -
+                                      widget.childrenPadding;
+                              Offset childPoint = getChildPointPerc(
+                                  progressCompletion / 100,
+                                  innerRadius,
+                                  (childrenDiameter) * .15);
+                              return Positioned(
+                                left: outerRadius + childPoint.dx,
+                                top: outerRadius + childPoint.dy,
+                                child: Transform.rotate(
+                                  angle: widget.isChildrenVertical
+                                      ? (-(dragModel.angleDiff) -
+                                          widget.initialAngle)
+                                      : ((dragModel.angleDiff) +
+                                          widget.initialAngle),
+                                  child: AnimatedTransformRotate(
+                                    animation: widget.spinFactor,
+                                    reverse: true,
+                                    transformValue: () {
+                                      if (progressCompletion != 0) {
+                                        return (progressCompletion /
+                                                100 *
+                                                2 *
+                                                pi) +
+                                            widget.progressAngle;
+                                      } else
+                                        return innerProgressCompletion /
+                                            100 *
+                                            2 *
+                                            pi;
+                                    }.call(),
+                                    child: Container(
+                                        width: childrenDiameter * .15,
+                                        height: childrenDiameter * .15,
+                                        alignment: Alignment.center,
+                                        color: Colors.red,
+                                        child: null),
+                                  ),
+                                ),
+                              );
+                            }.call()))
+                          .reversed
+                          .toList(),
                     ),
                   ),
                 ),
@@ -327,6 +371,14 @@ class _CircleListState extends State<CircleList>
   Offset getChildPoint(
       int index, int length, double listRadius, double childrenDiameter) {
     double angel = 2 * pi * (index / length);
+    double x = cos(angel) * listRadius - (childrenDiameter / 2);
+    double y = sin(angel) * listRadius - (childrenDiameter / 2);
+    return Offset(x, y);
+  }
+
+  Offset getChildPointPerc(
+      double percentage, double listRadius, double childrenDiameter) {
+    double angel = 2 * pi * (percentage);
     double x = cos(angel) * listRadius - (childrenDiameter / 2);
     double y = sin(angel) * listRadius - (childrenDiameter / 2);
     return Offset(x, y);
