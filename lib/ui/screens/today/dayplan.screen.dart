@@ -5,6 +5,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/constants/icons.dart';
+import 'dart:async';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
@@ -84,11 +85,14 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
   double dragSensitivity = 3;
   bool draggingIdle;
+  Timer _everysecond;
 
   @override
   void initState() {
     draggingIdle = true;
-
+    _everysecond = Timer.periodic(Duration(minutes: 1), (Timer t) {
+      setState(() {});
+    });
     manager.reminderScrollKeys = {};
     super.initState();
     _dateController = AnimationController(
@@ -247,7 +251,11 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         child: SizedBox(
             width: size.width,
             height: heightOfCircleSpace /
-                (!show ? circleMinimized ? 2.8 : 1 : heightOfCircleSpace),
+                (!show
+                    ? circleMinimized
+                        ? 2.8
+                        : 1
+                    : heightOfCircleSpace),
             // 2.8
             child: CirclePlanOverlay(
               child: FittedBox(
