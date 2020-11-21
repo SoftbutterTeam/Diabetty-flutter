@@ -2,7 +2,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/routes.dart';
+import 'package:diabetty/routes.dart' as routerthing;
 import 'package:diabetty/services/authentication/apple_auth_api/apple_sign_in_available.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/authentication/auth_service_adapter.dart';
@@ -110,7 +110,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.indigo,
                 visualDensity: VisualDensity.adaptivePlatformDensity,
               ),
-              onGenerateRoute: Router.generateRoute,
+              onGenerateRoute: routerthing.Router.generateRoute,
               home: EmailLinkErrorPresenter.create(context,
                   child: AuthWidget(
                     userSnapshot: userSnapshot,
