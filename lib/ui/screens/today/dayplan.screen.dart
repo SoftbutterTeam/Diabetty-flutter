@@ -297,6 +297,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                       onTap: () => setState(() {
                             manager.fadeAnimation.reset();
                             show = false;
+                            _minController.reverse();
+                            circleMinimized = false;
                           }))
                   : GestureDetector(
                       child: Icon(
