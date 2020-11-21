@@ -104,19 +104,23 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         Tween<double>(begin: 0, end: 1).animate(_minController);
     manager.minController = _minController;
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => manager.fadeAnimation.addStatusListener((status) {
-              setState(() {});
-            }));
+        (_) => manager.fadeAnimation.addStatusListener(setStateFunc));
     manager.pushAnimation.addListener(() {
       setState(() {});
     });
     show = true;
   }
 
+  void setStateFunc(AnimationStatus status) {
+    setState(() {});
+  }
+
   @override
   void dispose() {
     _dateController.dispose();
     _minController.dispose();
+    manager.fadeAnimation.removeStatusListener(setStateFunc);
+    manager.fadeAnimation.dispose();
     super.dispose();
   }
 
@@ -364,18 +368,20 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
       }
     });
     manager.fadeAnimation = fadeController;
-    manager.minController.addStatusListener((status) {
-      print(status);
-      if (status == AnimationStatus.dismissed) setState(() {});
-    });
+    manager.minController.addStatusListener(statusListenFunc);
     showArrows = true;
 
     super.initState();
   }
 
+  void statusListenFunc(AnimationStatus status) {
+    if (status == AnimationStatus.dismissed) setState(() {});
+  }
+
   @override
   void dispose() {
     fadeController.dispose();
+    manager.minController.removeStatusListener(statusListenFunc);
     super.dispose();
   }
 

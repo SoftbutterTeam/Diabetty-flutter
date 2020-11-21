@@ -48,18 +48,32 @@ class _CirclePlanState extends State<CirclePlan> {
   DayPlanManager get manager => widget.manager;
 
   @override
+  void setState(fn) {
+    // TODO: implement setState
+    super.setState(fn);
+  }
+
+  void setStateFunc(AnimationStatus status) {
+    setState(() {});
+  }
+
+  @override
   void initState() {
     _minAnimationRotate = widget.minAnimationRotate;
     circleMinimized = widget.circleMinimized;
-    manager.minController.addStatusListener((status) {
-      setState(() {});
-    });
-    manager.fadeAnimation.addStatusListener((status) {
-      setState(() {});
-    });
+
+    manager.minController.addStatusListener(setStateFunc);
+    manager.fadeAnimation.addStatusListener(setStateFunc);
 
     print('newwoo');
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    manager.minController.removeStatusListener(setStateFunc);
+    manager.fadeAnimation.removeStatusListener(setStateFunc);
+    super.dispose();
   }
 
   @override
