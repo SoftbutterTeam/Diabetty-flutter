@@ -108,8 +108,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         Tween<double>(begin: 0, end: 1).animate(_minController);
     manager.minController = _minController;
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => manager.fadeAnimation.addStatusListener(setStateFunc));
-    manager.pushAnimation.addListener(() {
+        (_) => manager.fadeAnimation?.addStatusListener(setStateFunc));
+    manager.pushAnimation?.addListener(() {
       setState(() {});
     });
     show = true;
@@ -121,9 +121,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   @override
   void dispose() {
-    _dateController.dispose();
-    _minController.dispose();
-    manager.fadeAnimation.removeStatusListener(setStateFunc);
+    _dateController?.dispose();
+    _minController?.dispose();
+    manager.fadeAnimation?.removeStatusListener(setStateFunc);
+    _everysecond?.cancel();
     //manager.fadeAnimation?.dispose();
     super.dispose();
   }
@@ -197,25 +198,25 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               if (circleMinimized) {
                 setState(() {
                   draggingIdle = false;
-                  _minController.reverse();
+                  _minController?.reverse();
                   circleMinimized = false;
                 });
               }
             } else if (details.delta.dy < -dragSensitivity) {
               if (!circleMinimized) {
-                manager.fadeAnimation.reset();
+                manager.fadeAnimation?.reset();
                 manager.resetTime();
                 print('RECYYYYY');
                 setState(() {
                   draggingIdle = false;
-                  _minController.forward();
+                  _minController?.forward();
                   circleMinimized = true;
                 });
               } else if (circleMinimized) {
                 print('RECAAAAA');
                 setState(() {
                   draggingIdle = false;
-                  manager.fadeAnimation.reset();
+                  manager.fadeAnimation?.reset();
                   show = true;
                 });
               }
@@ -228,34 +229,25 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         onVerticalDragCancel: () {
           draggingIdle = true;
         },
-        onDoubleTap: true
+        onDoubleTap: (circleMinimized)
             ? () {
-                if (circleMinimized == null && circleMinimized == true) {
-                  setState(() {
-                    _minController.reverse();
-                    circleMinimized = false;
-                  });
-                } else {
-                  if (true) {
-                    manager.fadeAnimation?.reset();
-                    manager.resetTime();
-                    print('jojo');
-                    setState(() {
-                      _minController.forward();
-                      circleMinimized = true;
-                    });
-                  }
-                }
+                setState(() {
+                  manager.fadeAnimation?.reset();
+                  show = true;
+                });
               }
-            : null,
+            : () {
+                setState(() {
+                  manager.fadeAnimation?.reset();
+                  _minController?.forward();
+                  manager.resetTime();
+                  circleMinimized = true;
+                });
+              },
         child: SizedBox(
             width: size.width,
             height: heightOfCircleSpace /
-                (!show
-                    ? circleMinimized
-                        ? 2.8
-                        : 1
-                    : heightOfCircleSpace),
+                (!show ? circleMinimized ? 2.8 : 1 : heightOfCircleSpace),
             // 2.8
             child: CirclePlanOverlay(
               child: FittedBox(
@@ -278,78 +270,120 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
 
     if (timeSlots.length == 0) return Container();
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: ColumnBuilder(
-        itemCount: timeSlots.length + 1,
-        itemBuilder: (context, index) {
-          if (show &&
-                  index == 0 &&
-                  manager.pushAnimation.status == AnimationStatus.dismissed ||
-              index == 0 &&
-                  manager.fadeAnimation != null &&
-                  manager.fadeAnimation.status != AnimationStatus.dismissed) {
-            return SizedBox(
-              child: (show)
-                  ? GestureDetector(
-                      child: Container(
-                        padding: EdgeInsets.all(3),
-                        color: Colors.transparent,
-                        child: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.deepOrange,
+    var size = MediaQuery.of(context).size;
+    return Scrollbar(
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        child: ColumnBuilder(
+          itemCount: timeSlots.length + 1,
+          itemBuilder: (context, index) {
+            if (show && index == 0 && manager.pushAnimation.isDismissed ||
+                index == 0 &&
+                    manager.fadeAnimation != null &&
+                    manager.fadeAnimation.isDismissed) {
+              return SizedBox(
+                width: size.width,
+                child: (show)
+                    ? GestureDetector(
+                        child: SizedBox(
+                          width: size.width,
+                          child: Container(
+                            padding: EdgeInsets.all(3),
+                            color: Colors.transparent,
+                            child: Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.deepOrange,
+                            ),
+                          ),
                         ),
-                      ),
-                      onVerticalDragUpdate: (details) {
-                        if (draggingIdle) {
-                          print(details.delta.dy);
-                          if (details.delta.dy > dragSensitivity) {
-                            setState(() {
-                              manager.fadeAnimation.reset();
-                              show = false;
-                              _minController.reverse();
-                              circleMinimized = false;
-                            });
+                        onVerticalDragUpdate: (details) {
+                          if (draggingIdle) {
+                            print(details.delta.dy);
+                            if (details.delta.dy > dragSensitivity) {
+                              setState(() {
+                                manager.fadeAnimation?.reset();
+                                show = false;
+                                _minController?.reverse();
+                                circleMinimized = false;
+                              });
+                            }
                           }
-                        }
-                      },
-                      onPanCancel: () {
-                        draggingIdle = true;
-                      },
-                      onVerticalDragCancel: () {
-                        draggingIdle = true;
-                      },
-                      onTap: () => setState(() {
-                            manager.fadeAnimation.reset();
-                            show = false;
-                            _minController.reverse();
-                            circleMinimized = false;
-                          }))
-                  : GestureDetector(
-                      child: Icon(
-                        Icons.arrow_drop_up,
-                        color: Colors.deepOrange,
-                      ),
-                      onTap: () => circleMinimized
-                          ? setState(() {
-                              manager.fadeAnimation.reset();
-                              show = true;
-                            })
-                          : setState(() {
-                              manager.fadeAnimation.reset();
-                              _minController.forward();
-                              circleMinimized = true;
-                            })),
-            );
-          } else if (index == 0) {
-            return SizedBox();
-          }
-          return Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: SlotWidget.TimeSlot(
-                  key: new GlobalKey(), timeSlot: timeSlots[index - 1]));
-        },
+                        },
+                        onPanCancel: () {
+                          draggingIdle = true;
+                        },
+                        onVerticalDragCancel: () {
+                          draggingIdle = true;
+                        },
+                        onTap: () => setState(() {
+                          manager.fadeAnimation?.reset();
+                          show = false;
+                          _minController?.reverse();
+                          circleMinimized = false;
+                        }),
+                      )
+                    : GestureDetector(
+                        child: SizedBox(
+                            width: size.width,
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              color: Colors.transparent,
+                              child: Icon(
+                                Icons.arrow_drop_up,
+                                color: Colors.deepOrange,
+                              ),
+                            )),
+                        onTap: () => circleMinimized
+                            ? setState(() {
+                                manager.fadeAnimation?.reset();
+                                show = true;
+                              })
+                            : setState(() {
+                                manager.fadeAnimation?.reset();
+                                _minController?.forward();
+                                manager.resetTime();
+                                circleMinimized = true;
+                              }),
+                        onPanCancel: () {
+                          draggingIdle = true;
+                        },
+                        onVerticalDragCancel: () {
+                          draggingIdle = true;
+                        },
+                        onVerticalDragUpdate: (true)
+                            ? (details) {
+                                if (draggingIdle) {
+                                  if (details.delta.dy < -dragSensitivity) {
+                                    setState(() {
+                                      manager.fadeAnimation?.reset();
+                                      show = true;
+                                    });
+                                  }
+                                }
+                              }
+                            : (details) {
+                                if (draggingIdle) {
+                                  if (details.delta.dy < -dragSensitivity) {
+                                    setState(() {
+                                      manager.fadeAnimation?.reset();
+                                      _minController?.forward();
+                                      manager.resetTime();
+                                      circleMinimized = true;
+                                    });
+                                  }
+                                }
+                              }),
+              );
+            } else if (index == 0) {
+              return SizedBox();
+            }
+            return Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: SlotWidget.TimeSlot(
+                    key: new GlobalKey(), timeSlot: timeSlots[index - 1]));
+          },
+        ),
       ),
     );
   }
@@ -371,26 +405,27 @@ class CirclePlanOverlay extends StatefulWidget {
 class _CirclePlanOverlayState extends State<CirclePlanOverlay>
     with SingleTickerProviderStateMixin {
   AnimationController fadeController;
-  Animation<bool> fadeAnim;
   DayPlanManager manager;
   bool showArrows;
   @override
+  bool isVisible = false;
   void initState() {
     manager = Provider.of<DayPlanManager>(context, listen: false);
     fadeController = AnimationController(
         vsync: this,
         reverseDuration: Duration(seconds: 4),
         duration: Duration(milliseconds: 150));
-    fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
-    fadeController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) setState(() {});
-      if (status == AnimationStatus.dismissed) {
+    //fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
+    fadeController?.addStatusListener((status) {
+      if (status == AnimationStatus.completed)
+        setState(() {});
+      else if (status == AnimationStatus.dismissed) {
         showArrows = true;
         setState(() {});
       }
     });
     manager.fadeAnimation = fadeController;
-    manager.minController.addStatusListener(statusListenFunc);
+    manager.minController?.addStatusListener(statusListenFunc);
     showArrows = true;
 
     super.initState();
@@ -402,8 +437,9 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
 
   @override
   void dispose() {
-    fadeController.dispose();
-    manager.minController.removeStatusListener(statusListenFunc);
+    fadeController?.dispose();
+    manager.fadeAnimation = null;
+    manager.minController?.removeStatusListener(statusListenFunc);
     super.dispose();
   }
 
@@ -421,30 +457,31 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
             child: Container(
               margin: EdgeInsets.symmetric(vertical: size.height * 0.05),
               child: GestureDetector(
-                  onTap: (manager.minController.status ==
-                          AnimationStatus.dismissed)
+                  onTap: (manager.minController != null &&
+                          manager.minController.isDismissed)
                       ? () {
                           print('clicked');
-                          fadeController.reverse(from: 1);
+                          fadeController?.reverse(from: 1);
                         }
                       : () {
                           print('clicked');
-                          fadeController.reverse(from: 1);
+                          fadeController?.reverse(from: 1);
                           showArrows = false;
                         },
                   child: AbsorbPointer(
-                    absorbing: !showArrows || !(fadeAnim.value == true),
+                    absorbing:
+                        !showArrows || !(manager.fadeAnimation.isCompleted),
                     child: Container(
                       color: Colors.transparent,
                       alignment: Alignment.centerRight,
                       child: AnimatedScaleButton(
                         onTap: showArrows &&
-                                (manager.minController.status ==
-                                    AnimationStatus.dismissed)
+                                (manager.minController != null &&
+                                    manager.minController.isDismissed)
                             ? () {
                                 print('clicked');
                                 manager.backTime();
-                                fadeController.reverse(from: 1);
+                                fadeController?.reverse(from: 1);
                               }
                             : null,
                         child: Container(
@@ -454,8 +491,10 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                             quarterTurns: 2,
                             child: Opacity(
                               opacity: showArrows &&
-                                      !((!(fadeAnim.value == true)) ||
-                                          manager.choosenTime?.hour == 0)
+                                      (manager.choosenTime != null &&
+                                              manager.choosenTime?.hour != 0 ||
+                                          manager.fadeAnimation != null &&
+                                              manager.fadeAnimation.isCompleted)
                                   ? 1
                                   : 0,
                               child: SvgPicture.asset(
@@ -473,12 +512,13 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
             ),
           ),
           GestureDetector(
-              onTap: (manager.minController.status == AnimationStatus.dismissed)
+              onTap: (manager.minController != null &&
+                      manager.minController.isDismissed)
                   ? null
                   : () {
                       print('clicked');
                       print('ERRRRRRUUUUUUUUU');
-                      fadeController.reverse(from: 1);
+                      fadeController?.reverse(from: 1);
                       showArrows = false;
                     },
               child: Container(width: size.width * 0.65, child: widget.child)),
@@ -486,26 +526,26 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
             child: Container(
               margin: EdgeInsets.symmetric(vertical: size.height * 0.05),
               child: GestureDetector(
-                onTap:
-                    (manager.minController.status == AnimationStatus.dismissed)
-                        ? () {
-                            print('clicked');
-                            fadeController.reverse(from: 1);
-                          }
-                        : null,
+                onTap: (manager.minController != null &&
+                        manager.minController.isDismissed)
+                    ? () {
+                        print('clicked');
+                        fadeController?.reverse(from: 1);
+                      }
+                    : null,
                 child: AbsorbPointer(
-                  absorbing: !showArrows || !(fadeAnim.value == true),
+                  absorbing:
+                      !showArrows || !(manager.fadeAnimation.isCompleted),
                   child: Container(
                     color: Colors.transparent,
                     alignment: Alignment.centerLeft,
                     child: AnimatedScaleButton(
-                      onTap: (manager.minController.status ==
-                              AnimationStatus.dismissed)
+                      onTap: (manager.minController != null &&
+                              manager.minController.isDismissed)
                           ? () {
                               print('clicked');
                               manager.forwardTime();
-                              print(manager.choosenTime.toString());
-                              fadeController.reverse(from: 1);
+                              fadeController?.reverse(from: 1);
                             }
                           : null,
                       child: Container(
@@ -513,8 +553,10 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                         alignment: Alignment.centerLeft,
                         child: Opacity(
                           opacity: showArrows &&
-                                  !((!(fadeAnim.value == true)) ||
-                                      manager.choosenTime?.hour == 12)
+                                  (manager.choosenTime != null &&
+                                      manager.choosenTime?.hour != 12 &&
+                                      manager.fadeAnimation != null &&
+                                      manager.fadeAnimation.isCompleted)
                               ? 1
                               : 0,
                           child: SvgPicture.asset(
@@ -558,6 +600,7 @@ class AnimatedScaleButton extends StatefulWidget {
 class _AnimatedScaleButtonState extends State<AnimatedScaleButton>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
+  Animation<double> tween;
 
   @override
   void initState() {
@@ -565,27 +608,30 @@ class _AnimatedScaleButtonState extends State<AnimatedScaleButton>
 
     _controller = AnimationController(
         duration: const Duration(milliseconds: 300), vsync: this);
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) _controller.reverse();
+    _controller?.addStatusListener((status) {
+      if (status == AnimationStatus.completed) _controller?.reverse();
     });
+
+    tween = Tween(begin: 1.0, end: 1.2).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.bounceInOut));
   }
 
   @override
   void dispose() {
+    _controller?.stop();
+    this._controller?.dispose();
     super.dispose();
-    this._controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _controller.forward();
+        _controller?.forward();
         widget.onTap.call();
       },
       child: ScaleTransition(
-        scale: Tween(begin: 1.0, end: 1.2).animate(
-            CurvedAnimation(parent: _controller, curve: Curves.bounceInOut)),
+        scale: tween != null && _controller != null ? tween : 1,
         child: Container(
             height: widget.size,
             width: widget.size,

@@ -34,7 +34,6 @@ class _TimeSlotState extends State<TimeSlot>
     widget.timeSlot.reminders.forEach((element) {
       manager.reminderScrollKeys.addAll({element.reminderRuleId: widget.key});
     });
-    print(manager.reminderScrollKeys);
 
     super.initState();
   }

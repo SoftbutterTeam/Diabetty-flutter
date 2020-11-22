@@ -47,12 +47,6 @@ class _CirclePlanState extends State<CirclePlan> {
 
   DayPlanManager get manager => widget.manager;
 
-  @override
-  void setState(fn) {
-    // TODO: implement setState
-    super.setState(fn);
-  }
-
   void setStateFunc(AnimationStatus status) {
     setState(() {});
   }

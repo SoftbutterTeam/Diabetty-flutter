@@ -329,17 +329,21 @@ class _CircleListState extends State<CircleList>
                                             2 *
                                             pi;
                                     }.call(),
-                                    child: Container(
-                                        width: childrenDiameter * .15,
-                                        height: childrenDiameter * .15,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: progressColor, width: 1),
-                                        ),
-                                        child: null),
+                                    child: (progressCompletion != 0 &&
+                                            progressCompletion != 100)
+                                        ? Container(
+                                            width: childrenDiameter * .15,
+                                            height: childrenDiameter * .15,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                  color: progressColor,
+                                                  width: 1),
+                                            ),
+                                            child: null)
+                                        : null,
                                   ),
                                 ),
                               );
