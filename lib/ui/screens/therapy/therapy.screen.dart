@@ -52,23 +52,17 @@ class _TherapyScreenState extends State<TherapyScreen>
   @override
   Widget build(BuildContext context) {
     return Background(
-      child: SingleChildScrollView(
-          scrollDirection: Axis.vertical, child: _body(context)),
+      child: _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: 10),
-          height: size.height,
-          width: size.width,
-          child: _buildTherapiesList(context),
-        ),
-      ],
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      height: size.height,
+      width: size.width,
+      child: _buildTherapiesList(context),
     );
   }
 
