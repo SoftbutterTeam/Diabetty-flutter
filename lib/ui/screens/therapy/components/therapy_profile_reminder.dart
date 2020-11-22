@@ -20,9 +20,11 @@ class TherapyProfileReminder extends StatefulWidget {
   const TherapyProfileReminder({
     Key key,
     this.rule,
+    this.therapy,
   }) : super(key: key);
 
   final ReminderRule rule;
+  final Therapy therapy;
 
   @override
   _TherapyProfileReminderState createState() => _TherapyProfileReminderState();
@@ -96,7 +98,7 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
       ),
       placeholder: widget.rule.dose.toString() +
           ' ' +
-          unitTypes[0]
+          unitTypes[widget.therapy.medicationInfo.unitIndex]
               .plurarlUnits(widget.rule.dose),
       textAlign: TextAlign.right,
       style: TextStyle(

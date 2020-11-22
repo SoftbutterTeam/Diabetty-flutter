@@ -7,6 +7,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/components/edit_alarm_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
@@ -61,13 +62,14 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             widget.therapy.schedule.reminderRules.isEmpty)
         ? List()
         : widget.therapy.schedule.reminderRules
-            .map((e) => TherapyProfileReminder(rule: e) as Widget)
+            .map((e) => TherapyProfileReminder(rule: e, therapy: widget.therapy)
+                as Widget)
             .toList();
 
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 5),
+          padding: EdgeInsets.only(top: 15, left: 25, right: 25),
           child: _buildStockField(),
         ),
         Row(
@@ -76,7 +78,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
               width: size.width * 0.03,
             ),
             Text(
-              "reminders",
+              "active reminders",
               style: TextStyle(
                 fontSize: textSizeLargeMedium - 3,
                 color: Colors.grey[700],
@@ -127,9 +129,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   widget.therapy.stock.isOutOfStock)
               ? Colors.red
               : Colors.green),
-      onTap: () {
-        showEditStockDialog2(context);
-      },
+      onTap: () {},
       placeholder: _getStockMessage(),
       placeholderText: 'Stock',
     );
@@ -196,70 +196,101 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
-                
-                children: [
-                  Container(
-                    height: size.height * 0.08,
-                    width: size.width * 0.16,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                        border: Border.all(color: textColor, width: 1)),
-                  ),
-                  SizedBox(height: size.height * 0.01),
-                  Center(
-                    child: text('silent', //reminder.name,
-                        fontFamily: 'Regular',
-                        fontSize: 15.0,
-                        overflow: TextOverflow.ellipsis,
-                        textColor: textColor),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Container(
-                    height: size.height * 0.08,
-                    width: size.width * 0.16,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                        border: Border.all(color: textColor, width: 1)),
-                  ),
-                  SizedBox(height: size.height * 0.01),
-                  Center(
-                    child: text('refill', //reminder.name,
-                        fontFamily: 'Regular',
-                        fontSize: 15.0,
-                        overflow: TextOverflow.ellipsis,
-                        textColor: textColor),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Container(
-                    height: size.height * 0.08,
-                    width: size.width * 0.16,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                        border: Border.all(color: textColor, width: 1)),
-                  ),
-                  SizedBox(height: size.height * 0.01),
-                  Center(
-                    child: text('take', //reminder.name,
-                        fontFamily: 'Regular',
-                        fontSize: 15.0,
-                        overflow: TextOverflow.ellipsis,
-                        textColor: textColor),
-                  ),
-                ],
-              ),
+              _buildSilentColumn(size),
+              _buildRefillColumn(size),
+              _buildTakeColumn(size),
             ],
           ),
         )));
+  }
+
+  Column _buildTakeColumn(Size size) {
+    return Column(
+      children: [
+        Container(
+          height: size.height * 0.08,
+          width: size.width * 0.16,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: textColor),
+          child: Center(
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+              size: 35,
+            ),
+          ),
+        ),
+        SizedBox(height: size.height * 0.01),
+        Center(
+          child: text('take', //reminder.name,
+              fontFamily: 'Regular',
+              fontSize: 15.0,
+              overflow: TextOverflow.ellipsis,
+              textColor: textColor),
+        ),
+      ],
+    );
+  }
+
+  Column _buildSilentColumn(Size size) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () => showEditAlarmDialog2(context),
+          child: Container(
+            height: size.height * 0.08,
+            width: size.width * 0.16,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle, color: Colors.orange[100]),
+            child: Center(
+              child: Icon(
+                Icons.alarm,
+                color: textColor,
+                size: 35,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: size.height * 0.01),
+        Center(
+          child: text('alarm', //reminder.name,
+              fontFamily: 'Regular',
+              fontSize: 15.0,
+              overflow: TextOverflow.ellipsis,
+              textColor: textColor),
+        ),
+      ],
+    );
+  }
+
+  GestureDetector _buildRefillColumn(Size size) {
+    return GestureDetector(
+      onTap: () => showEditStockDialog2(context),
+      child: Column(
+        children: [
+          Container(
+            height: size.height * 0.08,
+            width: size.width * 0.16,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle, color: Colors.orange[100]),
+            child: Center(
+              child: Icon(
+                Icons.add,
+                color: textColor,
+                size: 35,
+              ),
+            ),
+          ),
+          SizedBox(height: size.height * 0.01),
+          Center(
+            child: text('refill', //reminder.name,
+                fontFamily: 'Regular',
+                fontSize: 15.0,
+                overflow: TextOverflow.ellipsis,
+                textColor: textColor),
+          ),
+        ],
+      ),
+    );
   }
 
   Container _buildHeader(Size size) {
@@ -453,6 +484,15 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     return showDialog(
         context: context,
         builder: (context) => EditStockDialog(
+            manager: widget.manager,
+            therapyForm: widget.therapy) //TODO complete this modal
+        );
+  }
+
+  Future showEditAlarmDialog2(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => EditAlarmDialog(
             manager: widget.manager,
             therapyForm: widget.therapy) //TODO complete this modal
         );
