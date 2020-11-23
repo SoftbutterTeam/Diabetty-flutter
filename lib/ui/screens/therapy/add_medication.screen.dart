@@ -30,8 +30,7 @@ class AddMedicationScreen extends StatefulWidget {
   AddMedicationScreenState createState() => AddMedicationScreenState();
 }
 
-class AddMedicationScreenState extends State<AddMedicationScreen>
-    with TickerProviderStateMixin {
+class AddMedicationScreenState extends State<AddMedicationScreen> {
   AddTherapyForm therapyForm;
   ReminderRule reminder;
 

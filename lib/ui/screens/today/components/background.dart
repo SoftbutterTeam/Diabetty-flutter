@@ -15,10 +15,9 @@ class Background extends StatelessWidget {
     return Container(
       width: double.maxFinite,
       decoration: BoxDecoration(
-          gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-        Colors.orange[900],
-        Colors.orange[600]
-      ])),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [Colors.orange[900], Colors.orange[600]])),
       height: size.height,
       child: SafeArea(
         child: Scaffold(

@@ -34,7 +34,9 @@ class TherapyManager extends Manager {
     //print('Therapy Init is runnning');
     authService = appContext.authService;
     if (uid != null) {
-      usersTherapies = await therapyService.getTherapies(uid, local: true);
+      try {
+        usersTherapies = await therapyService.getTherapies(uid, local: true);
+      } catch (e) {}
       this._therapyStream().listen((event) async {
         usersTherapies = event;
         usersTherapies ??= List();

@@ -73,7 +73,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center, //was space evently
           children: <Widget>[
-            text(reminder.name, //reminder.name,
+            text(reminder.name.toLowerCase(),
                 fontFamily: 'Regular',
                 fontSize: 15.0,
                 overflow: TextOverflow.ellipsis),

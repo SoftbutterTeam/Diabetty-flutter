@@ -24,7 +24,7 @@ class TimeSlot extends StatefulWidget {
 }
 
 class _TimeSlotState extends State<TimeSlot>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool minimize;
   bool allComplete;
   @override

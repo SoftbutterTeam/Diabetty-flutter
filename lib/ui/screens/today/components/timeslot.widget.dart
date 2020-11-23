@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -9,24 +10,31 @@ import 'package:flutter/rendering.dart';
 import 'package:diabetty/models/timeslot.model.dart' as Plan;
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class TimeSlot extends StatefulWidget {
   final Plan.TimeSlot timeSlot;
-
-  const TimeSlot({Key key, this.timeSlot}) : super(key: key);
+  final Key key;
+  const TimeSlot({this.key, this.timeSlot}) : super(key: key);
 
   @override
   _TimeSlotState createState() => _TimeSlotState();
 }
 
 class _TimeSlotState extends State<TimeSlot>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool minimize;
   bool allComplete;
   @override
   void initState() {
     allComplete = widget.timeSlot.allComplete;
     minimize = allComplete;
+    DayPlanManager manager =
+        Provider.of<DayPlanManager>(context, listen: false);
+    widget.timeSlot.reminders.forEach((element) {
+      manager.reminderScrollKeys.addAll({element.reminderRuleId: widget.key});
+    });
+
     super.initState();
   }
 
@@ -49,8 +57,8 @@ class _TimeSlotState extends State<TimeSlot>
         curve: Curves.bounceInOut,
         duration: Duration(milliseconds: 300),
         child: IntrinsicHeight(
-          child: SizedBox(
-            child: TimeSlotDecor(
+          child: TimeSlotDecor(
+            child: SizedBox(
               child: Column(children: <Widget>[
                 _buildTimeHeader(time),
                 Expanded(
