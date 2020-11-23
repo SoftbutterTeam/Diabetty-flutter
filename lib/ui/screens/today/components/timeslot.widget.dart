@@ -102,11 +102,28 @@ class _TimeSlotState extends State<TimeSlot>
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 2),
               alignment: Alignment.center,
-              child: text(
-                time,
-                textColor: Colors.black87,
-                fontFamily: 'Regular',
-                fontSize: textSizeMedium,
+              child: Row(
+                children: [
+                  Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    child: RotatedBox(
+                      quarterTurns: 1,
+                      child: SvgPicture.asset(
+                        'assets/icons/navigation/essentials/next.svg',
+                        height: 18,
+                        width: 18,
+                        color: Colors.orange[800],
+                      ),
+                    ),
+                  ),
+                  text(
+                    time,
+                    textColor: Colors.black87,
+                    fontFamily: 'Regular',
+                    fontSize: textSizeMedium,
+                  ),
+                ],
               ),
             ),
           )),
