@@ -80,7 +80,6 @@ class _CircleListState extends State<CircleList>
 
   @override
   void initState() {
-    //print('yo init');
     if (widget.showInitialAnimation) {
       _controller = AnimationController(
           vsync: this,

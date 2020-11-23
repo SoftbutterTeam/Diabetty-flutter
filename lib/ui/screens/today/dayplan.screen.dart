@@ -420,9 +420,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
         reverseDuration: Duration(seconds: 4),
         duration: Duration(milliseconds: 150));
     // fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
-    fadeController?.addStatusListener((status) {
-      setState(() {});
-    });
+    fadeController?.addStatusListener(statusListenFunc);
     manager.fadeAnimation = fadeController;
     manager.minController?.addStatusListener(statusListenFunc);
     showArrows = true;
@@ -432,6 +430,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
 
   void statusListenFunc(AnimationStatus status) {
     if (status == AnimationStatus.dismissed) setState(() {});
+    else if (status == AnimationStatus.completed) setState(() {});
   }
 
   @override
