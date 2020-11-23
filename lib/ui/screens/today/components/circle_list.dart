@@ -80,7 +80,6 @@ class _CircleListState extends State<CircleList>
 
   @override
   void initState() {
-    //print('yo init');
     if (widget.showInitialAnimation) {
       _controller = AnimationController(
           vsync: this,
@@ -137,9 +136,9 @@ class _CircleListState extends State<CircleList>
         animation: widget.spinFactor,
         transformValue: () {
           if (progressCompletion != 0) {
-            return -(progressCompletion / 100 * 2 * pi) + widget.progressAngle;
+            return (progressCompletion / 100 * 2 * pi) + widget.progressAngle;
           } else
-            return -innerProgressCompletion / 100 * 2 * pi;
+            return innerProgressCompletion / 100 * 2 * pi;
         }.call(),
         child: Stack(
           children: <Widget>[
@@ -261,9 +260,8 @@ class _CircleListState extends State<CircleList>
                         : (-_animationRotate.value * pi * 2 +
                             widget.initialAngle),
                     child: Stack(
-                      children: List.generate(widget.children.length, (ind) {
-                        final index =
-                            (ind - (widget.children.length - 1)).abs();
+                      children: (List.generate(widget.children.length, (ind) {
+                        final index = (ind).abs();
                         final double childrenDiameter =
                             2 * pi * listRadius / 12 - widget.childrenPadding;
                         Offset childPoint = getChildPoint(
@@ -280,11 +278,14 @@ class _CircleListState extends State<CircleList>
                                 : ((dragModel.angleDiff) + widget.initialAngle),
                             child: AnimatedTransformRotate(
                               animation: widget.spinFactor,
-                              transformValue:
-                                  (progressCompletion / 100 * 2 * pi) > 1
-                                      ? (progressCompletion / 100 * 2 * pi) +
-                                          widget.progressAngle
-                                      : 0,
+                              reverse: true,
+                              transformValue: () {
+                                if (progressCompletion != 0) {
+                                  return (progressCompletion / 100 * 2 * pi) +
+                                      widget.progressAngle;
+                                } else
+                                  return innerProgressCompletion / 100 * 2 * pi;
+                              }.call(),
                               child: Container(
                                   width: childrenDiameter,
                                   height: childrenDiameter,
@@ -293,7 +294,61 @@ class _CircleListState extends State<CircleList>
                             ),
                           ),
                         );
-                      }),
+                      })
+                            ..add(() {
+                              final double childrenDiameter =
+                                  2 * pi * listRadius / 12 -
+                                      widget.childrenPadding;
+                              Offset childPoint = getChildPointPerc(
+                                  progressCompletion / 100,
+                                  innerRadius,
+                                  (childrenDiameter) * .15);
+                              return Positioned(
+                                left: outerRadius + childPoint.dx,
+                                top: outerRadius + childPoint.dy,
+                                child: Transform.rotate(
+                                  angle: widget.isChildrenVertical
+                                      ? (-(dragModel.angleDiff) -
+                                          widget.initialAngle)
+                                      : ((dragModel.angleDiff) +
+                                          widget.initialAngle),
+                                  child: AnimatedTransformRotate(
+                                    animation: widget.spinFactor,
+                                    reverse: true,
+                                    transformValue: () {
+                                      if (progressCompletion != 0) {
+                                        return (progressCompletion /
+                                                100 *
+                                                2 *
+                                                pi) +
+                                            widget.progressAngle;
+                                      } else
+                                        return innerProgressCompletion /
+                                            100 *
+                                            2 *
+                                            pi;
+                                    }.call(),
+                                    child: (progressCompletion != 0 &&
+                                            progressCompletion != 100)
+                                        ? Container(
+                                            width: childrenDiameter * .15,
+                                            height: childrenDiameter * .15,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                  color: progressColor,
+                                                  width: 1),
+                                            ),
+                                            child: null)
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            }.call()))
+                          .reversed
+                          .toList(),
                     ),
                   ),
                 ),
@@ -305,9 +360,33 @@ class _CircleListState extends State<CircleList>
     );
   }
 
+  double reverseAngle(progressCompletion, innerProgressCompletion) {
+    double angle = () {
+      print(widget.progressAngle);
+      if (progressCompletion != 0) {
+        return (progressCompletion / 100 * 2 * pi) + widget.progressAngle;
+      } else
+        return innerProgressCompletion / 100 * 2 * pi;
+    }.call();
+    angle = angle.sign * (angle % (2 * pi));
+    print('AAAA----------------+' + angle.toString());
+    double result =
+        -(angle.abs() <= pi ? angle : ((angle.sign * 2 * pi) - angle));
+    print(result);
+    return result;
+  }
+
   Offset getChildPoint(
       int index, int length, double listRadius, double childrenDiameter) {
     double angel = 2 * pi * (index / length);
+    double x = cos(angel) * listRadius - (childrenDiameter / 2);
+    double y = sin(angel) * listRadius - (childrenDiameter / 2);
+    return Offset(x, y);
+  }
+
+  Offset getChildPointPerc(
+      double percentage, double listRadius, double childrenDiameter) {
+    double angel = 2 * pi * (percentage);
     double x = cos(angel) * listRadius - (childrenDiameter / 2);
     double y = sin(angel) * listRadius - (childrenDiameter / 2);
     return Offset(x, y);

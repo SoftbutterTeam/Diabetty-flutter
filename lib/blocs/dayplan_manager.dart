@@ -26,6 +26,35 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   AnimationController fadeAnimation;
   AnimationController minController;
 
+  TimeOfDay initalTime;
+  TimeOfDay _choosenTime;
+
+  TimeOfDay get choosenTime => _choosenTime ?? initalTime;
+  set choosenTime(TimeOfDay time) =>
+      (time ?? initalTime).hour == initalTime.hour ? null : time;
+  void resetTime() {
+    if (inTheNow) return;
+    _choosenTime = null;
+    updateListeners();
+  }
+
+  bool get inTheNow => _choosenTime == null;
+  void forwardTime() {
+    if (choosenTime.hour == 12) return;
+    _choosenTime = TimeOfDay(hour: (choosenTime.hour + 6) % 24, minute: 0);
+  }
+
+  void backTime() {
+    if (choosenTime.hour == 0) return;
+    _choosenTime = TimeOfDay(hour: (choosenTime.hour - 6) % 24, minute: 0);
+  }
+
+  void refresh() {
+    _currentDateStamp = null;
+    _choosenTime = null;
+    updateListeners();
+  }
+
   DatePickerController dateController = DatePickerController();
   DateTime _currentDateStamp;
   StreamController<List<Reminder>> _dataController = BehaviorSubject();
@@ -110,7 +139,9 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         timeSlots[slotIndex].reminders.add(reminder);
       }
     }
-    return timeSlots = orderTimeSlots(timeSlots);
+    return timeSlots = orderTimeSlots(timeSlots)
+      ..forEach((element) =>
+          element.reminders.sort((a, b) => a.name.compareTo(b.name)));
   }
 
   int getTimeSlotIndex(List<TimeSlot> timeSlots, DateTime time) {
@@ -131,4 +162,6 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     timeSlots.sort((TimeSlot a, TimeSlot b) => a.time.compareTo(b.time));
     return timeSlots;
   }
+
+  Map<String, GlobalKey> reminderScrollKeys = {};
 }

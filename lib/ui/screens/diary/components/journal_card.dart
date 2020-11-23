@@ -23,7 +23,7 @@ class JournalCard extends StatelessWidget with JournalActionsMixin {
         margin: EdgeInsets.symmetric(vertical: 10),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-              minHeight: 80,
+              minHeight: 65,
               maxHeight: max(80, size.height * 0.16),
               minWidth: size.width * 0.8,
               maxWidth: size.width * 0.9),
@@ -35,13 +35,13 @@ class JournalCard extends StatelessWidget with JournalActionsMixin {
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withOpacity(0.15),
                       spreadRadius: 1,
                       blurRadius: 4,
                       offset: Offset(0, -1),
                     ),
                   ],
-                  borderRadius: BorderRadius.all(Radius.circular(13)),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
                 child: Container(
                   alignment: Alignment.centerLeft,

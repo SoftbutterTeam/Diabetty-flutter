@@ -58,13 +58,11 @@ class _TherapyScreenState extends State<TherapyScreen>
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return IntrinsicHeight(
-      child: Container(
-        padding: EdgeInsets.only(top: 10),
-        width: size.width,
-        height: size.height,
-        child: _buildTherapiesList(context),
-      ),
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      height: size.height,
+      width: size.width,
+      child: _buildTherapiesList(context),
     );
   }
 

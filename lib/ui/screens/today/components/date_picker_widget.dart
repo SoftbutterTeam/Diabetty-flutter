@@ -7,7 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:diabetty/ui/screens/today/components/date_widget.dart';
+import 'package:diabetty/ui/screens/today/components/date_title_widget.dart';
 
 class DatePicker extends StatefulWidget {
   /// Start Date in case user wants to show past dates
@@ -109,8 +109,7 @@ class _DatePickerState extends State<DatePicker> {
     // Init the calendar locale
     initializeDateFormatting(widget.locale, null);
     // Set initial Values
-    _currentDate =
-        Provider.of<DayPlanManager>(context, listen: false).currentDateStamp;
+    _currentDate = widget.initialSelectedDate;
     _opacity = 0;
     if (widget.controller != null) {
       widget.controller.setDatePickerState(this);
@@ -207,7 +206,7 @@ class _DatePickerState extends State<DatePicker> {
                   : false;
 
               // Return the Date Widget
-              return DateWidget(
+              return DateTitleWidget(
                 date: date,
                 monthTextStyle: isDeactivated
                     ? deactivatedMonthStyle
@@ -261,8 +260,12 @@ class DatePickerController {
         'DatePickerController is not attached to any DatePicker View.');
 
     // jump to the current Date
-    _datePickerState._controller.jumpTo(_calculateDateOffset(
-        _datePickerState._currentDate.subtract(Duration(days: 2))));
+    _datePickerState._controller.jumpTo(_calculateDateOffset((_datePickerState
+                ._currentDate
+                .compareTo(DateTime.now().add(Duration(days: 5))) >
+            0)
+        ? _datePickerState._currentDate.subtract(Duration(days: 5))
+        : _datePickerState._currentDate.subtract(Duration(days: 2))));
   }
 
   /// This function will animate the Timeline to the currently selected Date

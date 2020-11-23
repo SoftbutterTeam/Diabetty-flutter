@@ -16,20 +16,25 @@ class TherapyService {
   }
 
   Future<List<Therapy>> getTherapies(String uid, {bool local: false}) async {
-    final therapies =
-        (await therapyRepo.getAllTherapies(uid, local: local)).data;
-    if (therapies == null) {
-      //print('init null');
-      return List();
+    try {
+      final therapies =
+          (await therapyRepo.getAllTherapies(uid, local: local)).data;
+      if (therapies == null) {
+        //print('init null');
+        return List();
+      }
+      //print('init here');
+      return therapies.map<Therapy>((json) {
+        //print('init map');
+        Therapy therapy = Therapy();
+        therapy.id = json['id'];
+        //print(therapy.id);
+        return therapy..loadFromJson(json);
+      }).toList();
+    } catch (e) {
+      print(e);
+      throw e;
     }
-    //print('init here');
-    return therapies.map<Therapy>((json) {
-      //print('init map');
-      Therapy therapy = Therapy();
-      therapy.id = json['id'];
-      //print(therapy.id);
-      return therapy..loadFromJson(json);
-    }).toList();
   }
 
   Stream<List<Therapy>> therapyStream(String uid) {
