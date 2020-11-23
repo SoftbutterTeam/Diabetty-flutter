@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
@@ -243,7 +245,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                 shape: BoxShape.circle, color: Colors.orange[100]),
             child: Center(
               child: Icon(
-                Icons.alarm,
+                CupertinoIcons.volume_up,
                 color: textColor,
                 size: 35,
               ),
@@ -252,7 +254,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         ),
         SizedBox(height: size.height * 0.01),
         Center(
-          child: text('alarm', //reminder.name,
+          child: text('sound', //reminder.name,
               fontFamily: 'Regular',
               fontSize: 15.0,
               overflow: TextOverflow.ellipsis,
@@ -483,18 +485,22 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   Future showEditStockDialog2(BuildContext context) {
     return showDialog(
         context: context,
-        builder: (context) => EditStockDialog(
-            manager: widget.manager,
-            therapyForm: widget.therapy) //TODO complete this modal
+        builder: (context) => BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: EditStockDialog(
+                  manager: widget.manager, therapyForm: widget.therapy),
+            ) //TODO complete this modal
         );
   }
 
   Future showEditAlarmDialog2(BuildContext context) {
     return showDialog(
         context: context,
-        builder: (context) => EditAlarmDialog(
-            manager: widget.manager,
-            therapyForm: widget.therapy) //TODO complete this modal
+        builder: (context) => BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: EditAlarmDialog(
+                  manager: widget.manager, therapyForm: widget.therapy),
+            ) //TODO complete this modal
         );
   }
 

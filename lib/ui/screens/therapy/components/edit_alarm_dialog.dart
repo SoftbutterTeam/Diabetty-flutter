@@ -7,6 +7,7 @@ import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
+import 'package:diabetty/ui/screens/therapy/snooze_option.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -98,18 +99,24 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: size.width * 0.4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 2.0),
-                  child: Text("Snooze", style: TextStyle(fontSize: 20.0)),
-                ),
-                Text((snooze) ? "15 min, 3 times" : "off",
-                    style: TextStyle(fontSize: 15.0)),
-              ],
+          GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SnoozeOptionScreen()),
+            ),
+            child: Container(
+              width: size.width * 0.4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 2.0),
+                    child: Text("Recurring", style: TextStyle(fontSize: 20.0)),
+                  ),
+                  Text((snooze) ? "15 min, 3 times" : "off",
+                      style: TextStyle(fontSize: 15.0)),
+                ],
+              ),
             ),
           ),
           SizedBox(width: size.width * 0.1),
