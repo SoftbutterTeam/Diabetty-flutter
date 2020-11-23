@@ -72,7 +72,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
               offset: Offset(0, -1),
             ),
           ],
-          border: Border(top: BorderSide(color: Colors.transparent, width: 1))),
+          border:
+              Border(top: BorderSide(color: Colors.transparent, width: 1))),
       child: ConstrainedBox(
           constraints: BoxConstraints(
               minWidth: size.width,

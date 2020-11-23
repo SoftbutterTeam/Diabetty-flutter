@@ -80,25 +80,29 @@ class _TherapyScreenState extends State<TherapyScreen>
           List<Therapy> therapies = snapshot.data;
           therapies.sort((a, b) => a.name.compareTo(b.name));
           return Container(
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: therapies.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TherapyProfileScreen2(
-                                therapy: therapies[index], manager: manager)),
+            child: Scrollbar( 
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25),
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: therapies.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TherapyProfileScreen2(
+                                    therapy: therapies[index], manager: manager)),
+                          );
+                        },
+                        child: TherapyCard(
+                          therapy: therapies[index],
+                        ),
                       );
-                    },
-                    child: TherapyCard(
-                      therapy: therapies[index],
-                    ),
-                  );
-                }),
+                    }),
+              ),
+            ),
           );
         });
   }
