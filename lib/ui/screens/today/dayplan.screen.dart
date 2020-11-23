@@ -278,10 +278,14 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         child: ColumnBuilder(
           itemCount: timeSlots.length + 1,
           itemBuilder: (context, index) {
-            if (show && index == 0 && manager.pushAnimation.isDismissed ||
+            if (show &&
+                    index == 0 &&
+                    manager.pushAnimation?.status ==
+                        AnimationStatus.dismissed ||
                 index == 0 &&
                     manager.fadeAnimation != null &&
-                    manager.fadeAnimation.isDismissed) {
+                    manager.fadeAnimation?.status !=
+                        AnimationStatus.dismissed) {
               return SizedBox(
                 width: size.width,
                 child: (show)
@@ -405,24 +409,19 @@ class CirclePlanOverlay extends StatefulWidget {
 class _CirclePlanOverlayState extends State<CirclePlanOverlay>
     with SingleTickerProviderStateMixin {
   AnimationController fadeController;
+//  Animation<bool> fadeAnim;
   DayPlanManager manager;
   bool showArrows;
   @override
-  bool isVisible = false;
   void initState() {
     manager = Provider.of<DayPlanManager>(context, listen: false);
     fadeController = AnimationController(
         vsync: this,
         reverseDuration: Duration(seconds: 4),
         duration: Duration(milliseconds: 150));
-    //fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
+    // fadeAnim = Tween<bool>(begin: false, end: true).animate(fadeController);
     fadeController?.addStatusListener((status) {
-      if (status == AnimationStatus.completed)
-        setState(() {});
-      else if (status == AnimationStatus.dismissed) {
-        showArrows = true;
-        setState(() {});
-      }
+      setState(() {});
     });
     manager.fadeAnimation = fadeController;
     manager.minController?.addStatusListener(statusListenFunc);
@@ -458,7 +457,8 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
               margin: EdgeInsets.symmetric(vertical: size.height * 0.05),
               child: GestureDetector(
                   onTap: (manager.minController != null &&
-                          manager.minController.isDismissed)
+                          manager.minController?.status ==
+                              AnimationStatus.dismissed)
                       ? () {
                           print('clicked');
                           fadeController?.reverse(from: 1);
@@ -469,15 +469,15 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                           showArrows = false;
                         },
                   child: AbsorbPointer(
-                    absorbing:
-                        !showArrows || !(manager.fadeAnimation.isCompleted),
+                    absorbing: !showArrows || (fadeController.isCompleted),
                     child: Container(
                       color: Colors.transparent,
                       alignment: Alignment.centerRight,
                       child: AnimatedScaleButton(
                         onTap: showArrows &&
                                 (manager.minController != null &&
-                                    manager.minController.isDismissed)
+                                    manager.minController?.status ==
+                                        AnimationStatus.dismissed)
                             ? () {
                                 print('clicked');
                                 manager.backTime();
@@ -491,10 +491,8 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                             quarterTurns: 2,
                             child: Opacity(
                               opacity: showArrows &&
-                                      (manager.choosenTime != null &&
-                                              manager.choosenTime?.hour != 0 ||
-                                          manager.fadeAnimation != null &&
-                                              manager.fadeAnimation.isCompleted)
+                                      !(fadeController.isDismissed ||
+                                          manager.choosenTime?.hour == 0)
                                   ? 1
                                   : 0,
                               child: SvgPicture.asset(
@@ -513,7 +511,8 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
           ),
           GestureDetector(
               onTap: (manager.minController != null &&
-                      manager.minController.isDismissed)
+                      manager.minController?.status ==
+                          AnimationStatus.dismissed)
                   ? null
                   : () {
                       print('clicked');
@@ -527,21 +526,22 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
               margin: EdgeInsets.symmetric(vertical: size.height * 0.05),
               child: GestureDetector(
                 onTap: (manager.minController != null &&
-                        manager.minController.isDismissed)
+                        manager.minController?.status ==
+                            AnimationStatus.dismissed)
                     ? () {
                         print('clicked');
                         fadeController?.reverse(from: 1);
                       }
                     : null,
                 child: AbsorbPointer(
-                  absorbing:
-                      !showArrows || !(manager.fadeAnimation.isCompleted),
+                  absorbing: !showArrows || (fadeController.isCompleted),
                   child: Container(
                     color: Colors.transparent,
                     alignment: Alignment.centerLeft,
                     child: AnimatedScaleButton(
                       onTap: (manager.minController != null &&
-                              manager.minController.isDismissed)
+                              manager.minController?.status ==
+                                  AnimationStatus.dismissed)
                           ? () {
                               print('clicked');
                               manager.forwardTime();
@@ -553,10 +553,8 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                         alignment: Alignment.centerLeft,
                         child: Opacity(
                           opacity: showArrows &&
-                                  (manager.choosenTime != null &&
-                                      manager.choosenTime?.hour != 12 &&
-                                      manager.fadeAnimation != null &&
-                                      manager.fadeAnimation.isCompleted)
+                                  !(fadeController.isDismissed ||
+                                      manager.choosenTime?.hour == 12)
                               ? 1
                               : 0,
                           child: SvgPicture.asset(
