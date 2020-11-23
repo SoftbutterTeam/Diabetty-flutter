@@ -68,6 +68,7 @@ class _JournalScreenState extends State<JournalScreen>
               ),
             ),
           ),
+          _buildJournalFooter(size)
         ]);
   }
 
@@ -91,4 +92,78 @@ class _JournalScreenState extends State<JournalScreen>
             ),
           );
   }
+}
+
+Container _buildJournalFooter(Size size) {
+  final decorationStyle = BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.white,
+      border: Border.all(color: Colors.black87));
+
+  final style = TextStyle(
+      color: Colors.deepOrange[900],
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500);
+
+  return Container(
+    width: size.width,
+    height: size.height * 0.16,
+    decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 1,
+          blurRadius: 3,
+          offset: Offset(0, 1), // changes position of shadow
+        ),
+      ],
+      color: Colors.white,
+      border: Border.all(
+        color: Colors.orange[800],
+        width: 1,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+    ),
+    child: Padding(
+      padding: EdgeInsets.only(top: 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children: [
+              Container(
+                height: size.height * 0.075,
+                width: size.width * 0.15,
+                decoration: decorationStyle,
+              ),
+              // SizedBox(
+              //   height: size.height * 0.01,
+              // ),
+              Text(
+                'add note',
+                style: style,
+              )
+            ],
+          ),
+          Column(
+            children: [
+              Container(
+                height: size.height * 0.075,
+                width: size.width * 0.15,
+                decoration: decorationStyle,
+              ),
+              // SizedBox(
+              //   height: size.height * 0.01,
+              // ),
+              Text(
+                'add journal entry',
+                style: style,
+              )
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }

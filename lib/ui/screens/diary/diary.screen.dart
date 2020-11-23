@@ -5,6 +5,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/components/background.dart';
 import 'package:diabetty/ui/screens/diary/components/journal_card.dart';
+import 'package:diabetty/ui/screens/diary/components/journal_card2.dart';
 import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/my_painter.dart';
@@ -29,7 +30,6 @@ class DiaryScreenBuilder extends StatelessWidget {
 
 class DiaryScreen extends StatefulWidget {
   final DiaryBloc manager;
-
   const DiaryScreen({Key key, this.manager}) : super(key: key);
 
   @override
@@ -50,10 +50,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Background(
-      child: SingleChildScrollView(
-          scrollDirection: Axis.vertical, child: _body(context)),
+      child: _body(context),
     );
   }
 
@@ -61,43 +61,26 @@ class _DiaryScreenState extends State<DiaryScreen> {
     Size size = MediaQuery.of(context).size;
     double firstSectionHeight = 0.25;
     return Container(
-      color: appWhite,
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 8.0),
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: SizedBox(
-                width: size.width,
-                height: size.height * firstSectionHeight,
-                child: _buildReportSection(context)),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 5),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: Offset(0, -1),
-                ),
-              ],
-              border:
-                  Border(top: BorderSide(color: Colors.transparent, width: 1))),
-          child: ConstrainedBox(
-              constraints: BoxConstraints(
-                  minWidth: size.width,
-                  minHeight: size.height * (0.9 - firstSectionHeight)),
-              child: Container(
-                margin: EdgeInsets.only(top: 5, left: 5, right: 5),
-                child: _buildJournalCards(context),
-              )),
-        ),
-      ]),
+      padding: EdgeInsets.only(top: 4),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: Offset(0, -1),
+            ),
+          ],
+          border: Border(top: BorderSide(color: Colors.transparent, width: 1))),
+      child: ConstrainedBox(
+          constraints: BoxConstraints(
+              minWidth: size.width,
+              minHeight: size.height * (0.9 - firstSectionHeight)),
+          child: Container(
+            margin: EdgeInsets.only(top: 5, left: 5, right: 5),
+            child: _buildJournalCards(context),
+          )),
     );
   }
 
@@ -116,13 +99,14 @@ class _DiaryScreenState extends State<DiaryScreen> {
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: ColumnBuilder(
                 itemCount: journals.length,
-                itemBuilder: (context, index) => JournalCard(
+                itemBuilder: (context, index) => JournalCard2(
                       journal: journals[index],
                     )),
           );
         });
   }
 
+  // TODO: Remove this if it isn't going to be used in the diary screen anymore.
   Widget _buildReportSection(BuildContext context) {
     return Container(
         padding: EdgeInsets.only(left: 0, right: 10, bottom: 5),
@@ -136,10 +120,11 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 }
 
+//TODO: Remove this if we're not using the circle in the future.
 Widget _buildReportPercCircle(BuildContext context) {
   var size = MediaQuery.of(context).size;
   return SizedBox(
-    width: size.width * 0.6,
+    width: size.width,
     child: Container(
         margin: EdgeInsets.all(size.width * 0.04),
         padding: EdgeInsets.all(size.width * 0.02),
