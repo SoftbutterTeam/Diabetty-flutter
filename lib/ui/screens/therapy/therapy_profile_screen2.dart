@@ -60,6 +60,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   Widget _buildBody(Size size) {
+    Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     List<Widget> reminderRulesList = (widget.therapy.schedule == null ||
             widget.therapy.schedule.reminderRules.isEmpty)
         ? List()
@@ -68,58 +69,55 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                 as Widget)
             .toList();
 
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 15, left: 25, right: 25),
-          child: _buildStockField(),
-        ),
-        Row(
-          children: [
-            SizedBox(
-              width: size.width * 0.03,
-            ),
-            Text(
-              "active reminders",
-              style: TextStyle(
-                fontSize: textSizeLargeMedium - 3,
-                color: Colors.grey[700],
-              ),
-            )
-          ],
-        ),
-        if (reminderRulesList.isNotEmpty)
-          Container(
-            padding: EdgeInsets.only(top: 10),
-            child: (reminderRulesList.length < 7)
-                ? ColumnBuilder(
-                    itemCount: reminderRulesList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return reminderRulesList[index];
-                    },
-                  )
-                : 'yeye',
+    return Container(
+      color: backgroundColor,
+      height: size.height,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 15, left: 25, right: 25),
+            child: _buildStockField(),
           ),
-        if (reminderRulesList.isEmpty)
-          Container(
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            child: Text(
-              'No reminders here man, move on pls',
-              style: TextStyle(
-                fontSize: textSizeLargeMedium,
-                color: Colors.grey[700],
+          Row(
+            children: [
+              SizedBox(
+                width: size.width * 0.03,
+              ),
+              Text(
+                "active reminders",
+                style: TextStyle(
+                  fontSize: textSizeLargeMedium - 3,
+                  color: Colors.grey[700],
+                ),
+              )
+            ],
+          ),
+          if (reminderRulesList.isNotEmpty)
+            Container(
+              color: backgroundColor,
+              padding: EdgeInsets.only(top: 10),
+              child: (reminderRulesList.length < 7)
+                  ? ColumnBuilder(
+                      itemCount: reminderRulesList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return reminderRulesList[index];
+                      },
+                    )
+                  : 'yeye',
+            ),
+          if (reminderRulesList.isEmpty)
+            Container(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              child: Text(
+                'No reminders here man, move on pls',
+                style: TextStyle(
+                  fontSize: textSizeLargeMedium,
+                  color: Colors.grey[700],
+                ),
               ),
             ),
-          ),
-        // Padding(
-        //   padding: EdgeInsets.symmetric(vertical: 5),
-        //   child: _buildWindowField(),
-        // ),
-        // Padding(
-        //   padding: EdgeInsets.only(top: 2),
-        //   child: _buildMinRestField(),
-        // ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -330,28 +328,32 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         children: [
           Padding(
             padding: EdgeInsets.only(top: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Wrap(
               children: [
-                Container(
-                  height: size.height * 0.05,
-                  width: size.width * 0.1,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    appearance_iconss[
-                        widget.therapy.medicationInfo.appearanceIndex],
-                    width: 10,
-                    height: 10,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: size.height * 0.05,
+                      width: size.width * 0.1,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: SvgPicture.asset(
+                        appearance_iconss[
+                            widget.therapy.medicationInfo.appearanceIndex],
+                        width: 10,
+                        height: 10,
+                      ),
+                    ),
+                    SizedBox(width: size.width * 0.05),
+                    Text(widget.therapy.name,
+                        style: TextStyle(
+                            fontSize: 22.0,
+                            color: textColor,
+                            fontWeight: FontWeight.w600)),
+                  ],
                 ),
-                SizedBox(width: size.width * 0.05),
-                Text(widget.therapy.name,
-                    style: TextStyle(
-                        fontSize: 22.0,
-                        color: textColor,
-                        fontWeight: FontWeight.w600)),
               ],
             ),
           ),

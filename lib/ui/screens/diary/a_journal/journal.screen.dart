@@ -1,6 +1,7 @@
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/header.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/journal_action.mixin.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/journal_background.dart';
@@ -94,76 +95,102 @@ class _JournalScreenState extends State<JournalScreen>
   }
 }
 
-Container _buildJournalFooter(Size size) {
+Widget _buildJournalFooter(Size size) {
   final decorationStyle = BoxDecoration(
       shape: BoxShape.circle,
       color: Colors.white,
       border: Border.all(color: Colors.black87));
 
   final style = TextStyle(
-      color: Colors.deepOrange[900],
-      fontSize: 14.0,
-      fontWeight: FontWeight.w500);
+    color: Colors.orange[800],
+    fontFamily: 'Regular',
+    fontSize: 15.0,
+  );
 
-  return Container(
-    width: size.width,
-    height: size.height * 0.16,
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 1,
-          blurRadius: 3,
-          offset: Offset(0, 1), // changes position of shadow
+  return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: size.height * 0.15),
+      child: IntrinsicHeight(
+          child: Container(
+        padding: EdgeInsets.only(top: 15),
+        width: size.width,
+        decoration: BoxDecoration(
+            color: appWhite,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0),
+                spreadRadius: 0.5,
+                blurRadius: 1.5,
+                offset: Offset(0, -1),
+              ),
+            ],
+            border: Border(
+              top: BorderSide(
+                color: Color.fromRGBO(200, 100, 100, 0.2),
+                width: 0.7,
+              ),
+            )),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildAddNoteColumn(size, decorationStyle, style),
+            _buildAddJournalEntryColumn(size, decorationStyle, style),
+          ],
         ),
-      ],
-      color: Colors.white,
-      border: Border.all(
-        color: Colors.orange[800],
-        width: 1,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-    ),
-    child: Padding(
-      padding: EdgeInsets.only(top: 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            children: [
-              Container(
-                height: size.height * 0.075,
-                width: size.width * 0.15,
-                decoration: decorationStyle,
-              ),
-              // SizedBox(
-              //   height: size.height * 0.01,
-              // ),
-              Text(
-                'add note',
-                style: style,
-              )
-            ],
+      )));
+}
+
+Column _buildAddJournalEntryColumn(
+    Size size, BoxDecoration decorationStyle, TextStyle style) {
+  return Column(
+    children: [
+      Container(
+        height: size.height * 0.08,
+        width: size.width * 0.16,
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: Colors.orange[100]),
+        child: Center(
+          child: Icon(
+            Icons.library_add,
+            color: Colors.orange[800],
+            size: 35,
           ),
-          Column(
-            children: [
-              Container(
-                height: size.height * 0.075,
-                width: size.width * 0.15,
-                decoration: decorationStyle,
-              ),
-              // SizedBox(
-              //   height: size.height * 0.01,
-              // ),
-              Text(
-                'add journal entry',
-                style: style,
-              )
-            ],
-          ),
-        ],
+        ),
       ),
-    ),
+      SizedBox(height: size.height * 0.01),
+      Center(
+        child: Text(
+          'add journal entry',
+          style: style,
+        ),
+      )
+    ],
+  );
+}
+
+Column _buildAddNoteColumn(
+    Size size, BoxDecoration decorationStyle, TextStyle style) {
+  return Column(
+    children: [
+      Container(
+        height: size.height * 0.08,
+        width: size.width * 0.16,
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: Colors.orange[100]),
+        child: Center(
+          child: Icon(
+            Icons.note_add,
+            color: Colors.orange[800],
+            size: 35,
+          ),
+        ),
+      ),
+      SizedBox(height: size.height * 0.01),
+      Center(
+          child: Text(
+        'add note',
+        style: style,
+      )),
+    ],
   );
 }
