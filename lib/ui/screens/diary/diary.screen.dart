@@ -97,11 +97,15 @@ class _DiaryScreenState extends State<DiaryScreen> {
           List<Journal> journals = manager.usersJournals;
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
-            child: ColumnBuilder(
-                itemCount: journals.length,
-                itemBuilder: (context, index) => JournalCard2(
-                      journal: journals[index],
-                    )),
+            child: Scrollbar(
+              child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: journals.length,
+                  addAutomaticKeepAlives: true,
+                  itemBuilder: (context, index) => JournalCard2(
+                        journal: journals[index],
+                      )),
+            ),
           );
         });
   }

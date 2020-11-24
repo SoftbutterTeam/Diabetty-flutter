@@ -83,6 +83,7 @@ class _TherapyScreenState extends State<TherapyScreen>
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
+                physics: BouncingScrollPhysics(),
                 itemCount: therapies.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
