@@ -98,30 +98,40 @@ class _TimeSlotState extends State<TimeSlot>
                 topRight: Radius.circular(20),
               )),
           child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 20),
+            constraints: BoxConstraints(minHeight: 35),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 2),
+              padding: EdgeInsets.symmetric(horizontal: 4),
               alignment: Alignment.center,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    color: Colors.transparent,
-                    alignment: Alignment.centerRight,
-                    child: RotatedBox(
-                      quarterTurns: 1,
-                      child: SvgPicture.asset(
-                        'assets/icons/navigation/essentials/next.svg',
-                        height: 18,
-                        width: 18,
-                        color: Colors.orange[800],
-                      ),
+                      color: Colors.transparent,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(left: 15, top: 2, right: 10),
+                      child: Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 20,
+                      )),
+                  Container(
+                    padding: EdgeInsets.only(left: 0), //was 10
+                    child: text(
+                      time,
+                      textColor: Colors.black87,
+                      fontFamily: 'Regular',
+                      fontSize: textSizeMedium,
                     ),
                   ),
-                  text(
-                    time,
-                    textColor: Colors.black87,
-                    fontFamily: 'Regular',
-                    fontSize: textSizeMedium,
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                        padding: EdgeInsets.only(right: 13.0, left: 12),
+                        color: Colors.transparent,
+                        child: Icon(
+                          Icons.more_horiz,
+                          size: 20,
+                        )),
                   ),
                 ],
               ),
@@ -153,7 +163,8 @@ class _TimeSlotState extends State<TimeSlot>
   }
 
   Widget _buildReminderColumn() {
-    return GestureDetector(
+    return Container(
+      alignment: Alignment.topCenter,
       child: ColumnBuilder(
         itemCount: widget.timeSlot.reminders.length,
         itemBuilder: (context, index) {

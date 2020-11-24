@@ -80,12 +80,13 @@ class _TherapyScreenState extends State<TherapyScreen>
           List<Therapy> therapies = snapshot.data;
           therapies.sort((a, b) => a.name.compareTo(b.name));
           return Container(
-            child: Scrollbar( 
+            child: Scrollbar(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: therapies.length,
+                    physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
@@ -93,7 +94,8 @@ class _TherapyScreenState extends State<TherapyScreen>
                             context,
                             MaterialPageRoute(
                                 builder: (context) => TherapyProfileScreen2(
-                                    therapy: therapies[index], manager: manager)),
+                                    therapy: therapies[index],
+                                    manager: manager)),
                           );
                         },
                         child: TherapyCard(

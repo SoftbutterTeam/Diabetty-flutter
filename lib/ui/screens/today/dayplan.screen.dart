@@ -85,14 +85,11 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
   double dragSensitivity = 3;
   bool draggingIdle;
-  Timer _everysecond;
 
   @override
   void initState() {
     draggingIdle = true;
-    _everysecond = Timer.periodic(Duration(minutes: 1), (Timer t) {
-      setState(() {});
-    });
+
     manager.reminderScrollKeys = {};
     super.initState();
     _dateController = AnimationController(
@@ -124,7 +121,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     _dateController?.dispose();
     _minController?.dispose();
     manager.fadeAnimation?.removeStatusListener(setStateFunc);
-    _everysecond?.cancel();
     //manager.fadeAnimation?.dispose();
     super.dispose();
   }
@@ -272,122 +268,119 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     if (timeSlots.length == 0) return Container();
     var size = MediaQuery.of(context).size;
     return Scrollbar(
-      child: SingleChildScrollView(
+      child: ListView.builder(
+        addAutomaticKeepAlives: true,
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
-        child: ColumnBuilder(
-          itemCount: timeSlots.length + 1,
-          itemBuilder: (context, index) {
-            if (show &&
-                    index == 0 &&
-                    manager.pushAnimation?.status ==
-                        AnimationStatus.dismissed ||
-                index == 0 &&
-                    manager.fadeAnimation != null &&
-                    manager.fadeAnimation?.status !=
-                        AnimationStatus.dismissed) {
-              return SizedBox(
-                width: size.width,
-                child: (show)
-                    ? GestureDetector(
-                        child: SizedBox(
+        itemCount: timeSlots.length + 1,
+        itemBuilder: (context, index) {
+          if (show &&
+                  index == 0 &&
+                  manager.pushAnimation?.status == AnimationStatus.dismissed ||
+              index == 0 &&
+                  manager.fadeAnimation != null &&
+                  manager.fadeAnimation?.status != AnimationStatus.dismissed) {
+            return SizedBox(
+              width: size.width,
+              child: (show)
+                  ? GestureDetector(
+                      child: SizedBox(
+                        width: size.width,
+                        child: Container(
+                          padding: EdgeInsets.all(3),
+                          color: Colors.transparent,
+                          child: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.deepOrange,
+                          ),
+                        ),
+                      ),
+                      onVerticalDragUpdate: (details) {
+                        if (draggingIdle) {
+                          print(details.delta.dy);
+                          if (details.delta.dy > dragSensitivity) {
+                            setState(() {
+                              manager.fadeAnimation?.reset();
+                              show = false;
+                              _minController?.reverse();
+                              circleMinimized = false;
+                            });
+                          }
+                        }
+                      },
+                      onPanCancel: () {
+                        draggingIdle = true;
+                      },
+                      onVerticalDragCancel: () {
+                        draggingIdle = true;
+                      },
+                      onTap: () => setState(() {
+                        manager.fadeAnimation?.reset();
+                        show = false;
+                        _minController?.reverse();
+                        circleMinimized = false;
+                      }),
+                    )
+                  : GestureDetector(
+                      child: SizedBox(
                           width: size.width,
                           child: Container(
                             padding: EdgeInsets.all(3),
                             color: Colors.transparent,
                             child: Icon(
-                              Icons.arrow_drop_down,
+                              Icons.arrow_drop_up,
                               color: Colors.deepOrange,
                             ),
-                          ),
-                        ),
-                        onVerticalDragUpdate: (details) {
-                          if (draggingIdle) {
-                            print(details.delta.dy);
-                            if (details.delta.dy > dragSensitivity) {
-                              setState(() {
-                                manager.fadeAnimation?.reset();
-                                show = false;
-                                _minController?.reverse();
-                                circleMinimized = false;
-                              });
-                            }
-                          }
-                        },
-                        onPanCancel: () {
-                          draggingIdle = true;
-                        },
-                        onVerticalDragCancel: () {
-                          draggingIdle = true;
-                        },
-                        onTap: () => setState(() {
-                          manager.fadeAnimation?.reset();
-                          show = false;
-                          _minController?.reverse();
-                          circleMinimized = false;
-                        }),
-                      )
-                    : GestureDetector(
-                        child: SizedBox(
-                            width: size.width,
-                            child: Container(
-                              padding: EdgeInsets.all(3),
-                              color: Colors.transparent,
-                              child: Icon(
-                                Icons.arrow_drop_up,
-                                color: Colors.deepOrange,
-                              ),
-                            )),
-                        onTap: () => circleMinimized
-                            ? setState(() {
-                                manager.fadeAnimation?.reset();
-                                show = true;
-                              })
-                            : setState(() {
-                                manager.fadeAnimation?.reset();
-                                _minController?.forward();
-                                manager.resetTime();
-                                circleMinimized = true;
-                              }),
-                        onPanCancel: () {
-                          draggingIdle = true;
-                        },
-                        onVerticalDragCancel: () {
-                          draggingIdle = true;
-                        },
-                        onVerticalDragUpdate: (true)
-                            ? (details) {
-                                if (draggingIdle) {
-                                  if (details.delta.dy < -dragSensitivity) {
-                                    setState(() {
-                                      manager.fadeAnimation?.reset();
-                                      show = true;
-                                    });
-                                  }
+                          )),
+                      onTap: () => circleMinimized
+                          ? setState(() {
+                              manager.fadeAnimation?.reset();
+                              show = true;
+                            })
+                          : setState(() {
+                              manager.fadeAnimation?.reset();
+                              _minController?.forward();
+                              manager.resetTime();
+                              circleMinimized = true;
+                            }),
+                      onPanCancel: () {
+                        draggingIdle = true;
+                      },
+                      onVerticalDragCancel: () {
+                        draggingIdle = true;
+                      },
+                      onVerticalDragUpdate: (true)
+                          ? (details) {
+                              if (draggingIdle) {
+                                if (details.delta.dy < -dragSensitivity) {
+                                  setState(() {
+                                    manager.fadeAnimation?.reset();
+                                    show = true;
+                                  });
                                 }
                               }
-                            : (details) {
-                                if (draggingIdle) {
-                                  if (details.delta.dy < -dragSensitivity) {
-                                    setState(() {
-                                      manager.fadeAnimation?.reset();
-                                      _minController?.forward();
-                                      manager.resetTime();
-                                      circleMinimized = true;
-                                    });
-                                  }
+                            }
+                          : (details) {
+                              if (draggingIdle) {
+                                if (details.delta.dy < -dragSensitivity) {
+                                  setState(() {
+                                    manager.fadeAnimation?.reset();
+                                    _minController?.forward();
+                                    manager.resetTime();
+                                    circleMinimized = true;
+                                  });
                                 }
-                              }),
-              );
-            } else if (index == 0) {
-              return SizedBox();
-            }
-            return Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: SlotWidget.TimeSlot(
-                    key: new GlobalKey(), timeSlot: timeSlots[index - 1]));
-          },
-        ),
+                              }
+                            }),
+            );
+          } else if (index == 0) {
+            return SizedBox();
+          }
+          return Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              child: SlotWidget.TimeSlot(
+                  key: new GlobalKey(), timeSlot: timeSlots[index - 1]));
+        },
       ),
     );
   }
@@ -429,7 +422,8 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
   }
 
   void statusListenFunc(AnimationStatus status) {
-    if (status == AnimationStatus.dismissed) setState(() {});
+    if (status == AnimationStatus.dismissed)
+      setState(() {});
     else if (status == AnimationStatus.completed) setState(() {});
   }
 

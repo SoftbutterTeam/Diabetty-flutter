@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'dart:async';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/today/components/icon_widget.dart';
@@ -34,12 +34,14 @@ class _CirclePlanState extends State<CirclePlan> {
   double initialAngle;
   double progressAngle;
   bool circleMinimized;
+  Timer _everysecond;
 
   TimeOfDay get initialTime => manager.choosenTime ?? _initialTime;
   /* get choosenTime {
     if (manager.choosenTime == null)
     return _initialTime;
     else if (manager.choosenTime == )*/
+
   DateTime get initalDateTime =>
       widget.manager.currentDateStamp.applyTimeOfDay(initialTime);
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
@@ -58,6 +60,9 @@ class _CirclePlanState extends State<CirclePlan> {
 
     manager.minController.addStatusListener(setStateFunc);
     manager.fadeAnimation.addStatusListener(setStateFunc);
+    _everysecond = Timer.periodic(Duration(minutes: 2), (Timer t) {
+      setState(() {});
+    });
 
     print('newwoo');
     super.initState();
@@ -65,6 +70,7 @@ class _CirclePlanState extends State<CirclePlan> {
 
   @override
   void dispose() {
+    _everysecond?.cancel();
     manager.minController.removeStatusListener(setStateFunc);
     manager.fadeAnimation.removeStatusListener(setStateFunc);
     super.dispose();
@@ -79,7 +85,6 @@ class _CirclePlanState extends State<CirclePlan> {
   }
 
   Widget _buildCirclePlan(BuildContext context) {
-    print('yeye, come on');
     var size = MediaQuery.of(context).size;
     List<Reminder> reminders = List.of(manager.getFinalRemindersList());
     //print('remidners length ' + reminders.length.toString());
