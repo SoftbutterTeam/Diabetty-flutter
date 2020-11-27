@@ -297,7 +297,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   void _takenActionSheet(BuildContext context) {
-    takeReminder(context, this.reminder);
+    showTakeActionPopup(context);
   }
 }
 

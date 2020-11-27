@@ -17,27 +17,26 @@ abstract class ReminderManagerMixin<T extends Manager> {
   void updateListeners();
 
   void takeReminder(Reminder reminder, DateTime takenAt) {
-    if (reminder.cancelled == false) {
-      takenAt ??= DateTime.now();
-      reminder.takenAt = takenAt;
-      reminderService.setReminder(reminder);
-    }
-
-    /**
+    takenAt ??= DateTime.now();
+    reminder.takenAt = takenAt;
+    reminder.cancelled = false;
+    // update Push Notifcations
+    reminderService.saveReminder(reminder);
+    updateListeners();
+  }
+  /**
      Calls the Service Code.
      -> reminder.takenAt -> DateTime takenAt
      -> if Reminder is not Stored, Save.
      -> then calls updateListeners 
     */
-    updateListeners();
-  }
 
   void skipReminder(Reminder reminder) {
-    if (reminder.takenAt == null) {
-      reminder.cancelled = true;
-      reminderService.setReminder(reminder);
-      updateListeners();
-    }
+    reminder.takenAt = null;
+    reminder.cancelled = true;
+    reminderService.saveReminder(reminder);
+    // update Push Notifcations
+    updateListeners();
 
     /**
      Calls the Service Code.
@@ -49,8 +48,9 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   void snoozeReminder(Reminder reminder, Duration snoozeFor) {
-    reminder.time = reminder.time.add(snoozeFor);
-    reminderService.setReminder(reminder);
+    reminder.rescheduledTime = reminder.time.add(snoozeFor);
+    reminder.cancelled = false;
+    reminderService.saveReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.
@@ -62,8 +62,8 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   void rescheduleReminder(Reminder reminder, DateTime rescheduledTo) {
-    reminder.time = rescheduledTo;
-    reminderService.setReminder(reminder);
+    reminder.rescheduledTime = rescheduledTo;
+    reminderService.saveReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.
@@ -77,7 +77,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
   void editDoseReminder(Reminder reminder, int dose) {
     reminder.dose = dose;
     reminder.doseEdited = true;
-    reminderService.setReminder(reminder);
+    reminderService.saveReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.

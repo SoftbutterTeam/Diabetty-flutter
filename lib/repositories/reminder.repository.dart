@@ -15,11 +15,11 @@ class ReminderRepository {
     await _db
         .collection('users')
         .document(reminder.userId)
-        .collection('therapies')
-        .document(reminder.therapyId)
+        .collection('reminders')
+        .document(reminder.id)
         .updateData(reminderData)
         .catchError((e) {
-      //print(e);
+      print(e);
     });
     return true;
   }
@@ -31,11 +31,11 @@ class ReminderRepository {
     await _db
         .collection('users')
         .document(reminder.userId)
-        .collection('therapies')
-        .document(reminder.therapyId)
+        .collection('reminders')
+        .document(reminder.id)
         .setData(reminderData)
         .catchError((e) {
-      //print(e);
+      print(e);
     });
     return true;
   }

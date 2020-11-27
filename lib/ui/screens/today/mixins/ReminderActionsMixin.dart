@@ -21,6 +21,9 @@ mixin ReminderActionsMixin<T extends Widget> {
     dayPlanManager.snoozeReminder(reminder, snoozeFor);
   }
 
+  DayPlanManager getDayPlanManager(BuildContext context) =>
+      Provider.of<DayPlanManager>(context, listen: false);
+
 // pass reminder into here
   void showSnoozeActionSheet(BuildContext context, Reminder reminder) =>
       showCupertinoModalPopup(
@@ -61,7 +64,7 @@ mixin ReminderActionsMixin<T extends Widget> {
               ));
 
   void skipReminder(BuildContext context, Reminder reminder) {
-    DayPlanManager dayPlanManager = Provider.of<DayPlanManager>(context);
+    DayPlanManager dayPlanManager = getDayPlanManager(context);
     dayPlanManager.skipReminder(reminder);
   }
 
@@ -100,19 +103,75 @@ mixin ReminderActionsMixin<T extends Widget> {
               },
             ),
           ));
+/*
+  void showTakenActionSheet(context) {
+    DayPlanManager dayPlanManager = getDayPlanManager(context);
 
-  void showTakenActionSheet(context) => showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
+    return showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+              message: const Text('When did you take it?'),
+              actions: <Widget>[
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      dayPlanManager.takeReminder(reminder, DateTime.now());
+                    },
+                    child: Text('Now')),
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      dayPlanManager.takeReminder(reminder, reminder.time);
+                    },
+                    child: Text('On Time')),
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      showExactTimePicker(context);
+                    },
+                    child: Text('Choose a Time')),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                onPressed: () => Navigator.pop(context),
+                child: Container(color: Colors.white, child: Text('Cancel')),
+              ),
+            ));
+  }
+*/ /*
+  void takeReminder(BuildContext context, Reminder reminder) {
+    showTakeModalPopup(context);
+  } */
+
+  void showTakeActionPopup(BuildContext context) => showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          DayPlanManager dayPlanManager = getDayPlanManager(context);
+
+          return CupertinoActionSheet(
+            //  title: const Text('When did you it?'),
             message: const Text('When did you take it?'),
+
             actions: <Widget>[
-              CupertinoActionSheetAction(onPressed: () {}, child: Text('Now')),
               CupertinoActionSheetAction(
-                  onPressed: () {}, child: Text('On Time')),
+                  onPressed: () {
+                    dayPlanManager.takeReminder(reminder, DateTime.now());
+                    Navigator.pop(context);
+                  },
+                  child: Text('Now')),
+              CupertinoActionSheetAction(
+                  onPressed: () {
+                    dayPlanManager.takeReminder(reminder, reminder.time);
+                    Navigator.pop(context);
+                  },
+                  child: Text('On Time')),
               CupertinoActionSheetAction(
                   onPressed: () {
                     Navigator.pop(context);
-                    showExactTimePicker(context);
+                    showExactTimePicker(
+                      context,
+                      (DateTime choosenTime) {
+                        dayPlanManager.takeReminder(reminder, choosenTime);
+                        Navigator.pop(context);
+                      },
+                    );
                   },
                   child: Text('Choose a Time')),
             ],
@@ -120,37 +179,33 @@ mixin ReminderActionsMixin<T extends Widget> {
               onPressed: () => Navigator.pop(context),
               child: Container(color: Colors.white, child: Text('Cancel')),
             ),
-          ));
-
-  void takeReminder(BuildContext context, Reminder reminder) {
-    DayPlanManager dayPlanManager =
-        Provider.of<DayPlanManager>(context, listen: false);
-    dayPlanManager.takeReminder(reminder, DateTime.now());
-  }
-
-  void showTakeModalPopup(BuildContext context) => showCupertinoModalPopup(
-        context: context,
-        builder: (BuildContext context) => CupertinoActionSheet(
-          //  title: const Text('When did you it?'),
-          message: const Text('When did you take it?'),
-
-          actions: <Widget>[
-            CupertinoActionSheetAction(onPressed: () {}, child: Text('Now')),
-            CupertinoActionSheetAction(
-                onPressed: () {}, child: Text('On Time')),
-            CupertinoActionSheetAction(
-                onPressed: () {
-                  Navigator.pop(context);
-                  showExactTimePicker(context);
-                },
-                child: Text('Choose a Time')),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            onPressed: () => Navigator.pop(context),
-            child: Container(color: Colors.white, child: Text('Cancel')),
-          ),
-        ),
+          );
+        },
       );
+  void showExactTimePicker(BuildContext context, Function function) {
+    DateTime choosenTime;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return TimerPicker(
+          onConfirm: () {
+            function(choosenTime);
+            Navigator.pop(context);
+          },
+          timepicker: CupertinoDatePicker(
+            use24hFormat: false,
+            mode: CupertinoDatePickerMode.dateAndTime,
+            minimumDate: DateTime.now(),
+            minuteInterval: 1,
+            initialDateTime: DateTime.now(),
+            onDateTimeChanged: (dateTimeChange) {
+              choosenTime = dateTimeChange;
+            },
+          ),
+        );
+      },
+    );
+  }
 
   void showPostponePicker(BuildContext context, Reminder reminder) =>
       showCupertinoModalPopup(
@@ -165,38 +220,11 @@ mixin ReminderActionsMixin<T extends Widget> {
               mode: CupertinoDatePickerMode.time,
               minuteInterval: 1,
               initialDateTime: DateTime.now(),
-              onDateTimeChanged: (dateTimeChange) {
-                DayPlanManager dayPlanManager =
-                    Provider.of<DayPlanManager>(context, listen: false);
-                dayPlanManager.setReminderTime(reminder, dateTimeChange);
-              },
+              onDateTimeChanged: (dateTimeChange) {},
             ),
           );
         },
       );
-
-  void showExactTimePicker(BuildContext context) {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (context) {
-        return TimerPicker(
-          onConfirm: () {
-            Navigator.pop(context);
-          },
-          timepicker: CupertinoDatePicker(
-            use24hFormat: false,
-            mode: CupertinoDatePickerMode.dateAndTime,
-            minimumDate: DateTime.now(),
-            minuteInterval: 1,
-            initialDateTime: DateTime.now(),
-            onDateTimeChanged: (dateTimeChange) {
-              //print(dateTimeChange);
-            },
-          ),
-        );
-      },
-    );
-  }
 
   void showReminderPopupModal(BuildContext context) => showGeneralDialog(
         barrierDismissible: true,

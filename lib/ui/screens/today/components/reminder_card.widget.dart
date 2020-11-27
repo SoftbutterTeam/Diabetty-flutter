@@ -68,6 +68,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   Widget _buildReminderInfo(BuildContext context) {
     return Expanded(
       child: Container(
+        color: Colors.transparent,
         padding: EdgeInsets.only(left: 16, bottom: 3),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +110,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   Widget _buildReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
     return GestureDetector(
-      onTap: () => showTakeModalPopup(context),
+      onTap: () => showTakeActionPopup(context),
       child: Container(
         alignment: Alignment.center,
         color: Colors.transparent,

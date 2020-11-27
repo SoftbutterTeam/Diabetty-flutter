@@ -133,6 +133,8 @@ class Reminder with DateMixin {
     if (json.containsKey('advices')) this.advices = json['advices'];
     if (json.containsKey('window'))
       this.window = Duration(seconds: json['window']);
+    if (json.containsKey('rescheduledTime'))
+      this.rescheduledTime = json['rescheduledTime'];
     if (json.containsKey('takenAt'))
       this.takenAt = DateTime.parse(json['takenAt']);
     if (json.containsKey('cancelled')) this.cancelled = json['cancelled'];
@@ -158,7 +160,7 @@ class Reminder with DateMixin {
     if (this.window != null) output['window'] = this.window.inSeconds;
     if (this.takenAt != null) output['takenAt'] = this.takenAt.toString();
     if (this.rescheduledTime != null)
-      output['rescheduledTime'] = this.reminderRuleId.toString();
+      output['rescheduledTime'] = this.rescheduledTime.toString();
     if (this.editedDose != null) output['editedDose'] = this.editedDose;
     if (this.cancelled != null) output['cancelled'] = this.cancelled;
     if (this.advices != null) output['advices'] = this.advices;

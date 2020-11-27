@@ -12,7 +12,7 @@ class ReminderService {
     }
   }
 
-  Future<void> setReminder(Reminder reminder) async {
+  Future<void> saveReminder(Reminder reminder) async {
     try {
       reminderRepository.setReminder(reminder);
     } catch (e) {
