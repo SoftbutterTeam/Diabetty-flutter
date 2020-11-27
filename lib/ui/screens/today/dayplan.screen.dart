@@ -255,6 +255,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       ),
     );
   }
+
   //! onDoubleTap slows down a onTap
 
   Widget _buildRemindersList(

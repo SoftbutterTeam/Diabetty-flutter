@@ -3,6 +3,7 @@ import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
+import 'package:flutter/animation.dart';
 import 'package:intl/intl.dart';
 
 class Reminder with DateMixin {
@@ -44,21 +45,38 @@ class Reminder with DateMixin {
     return isSameDay(this.date, date);
   }
 
+  // late is like isActive but for rescheduledTime.
+  //? im going to remove is late, dont really think it makes sense, in a computational manor.
   bool get isComplete => takenAt != null;
-  bool get isSnoozed => rescheduledTime != null;
+  bool get isSnoozed =>
+      !isComplete &&
+      rescheduledTime != null &&
+      DateTime.now().isBefore(rescheduledTime);
   bool get isMissed =>
       takenAt == null &&
-      DateTime.now().compareTo(time.add(this.window ?? Duration(minutes: 5))) >
-          0;
+      !isSkipped &&
+      DateTime.now().isAfter(
+          (rescheduledTime ?? time).add(this.window ?? Duration(minutes: 5)));
   bool get isActive =>
       takenAt == null &&
-      DateTime.now().compareTo(time) >=
-          0; // (>= - may cause occasional problem)
-  //TODO late means that it is past its window
-  /// well isMissed should mean, when it is late and u cant take it because it collides with your minRest
-  /// and isLate meaning it is late and can still be taken without health risk
-  bool get isLate => takenAt != null && takenAt.compareTo(time) > 0;
+      !isLate &&
+      DateTime.now().compareTo(time) >= 0 &&
+      !isMissed;
   bool get isSkipped => takenAt == null && cancelled == true;
+  bool get isLate =>
+      !isComplete &&
+      rescheduledTime != null &&
+      DateTime.now().compareTo(rescheduledTime) >= 0;
+
+  ReminderStatus get status {
+    if (isComplete) return ReminderStatus.completed;
+    if (isSnoozed) return ReminderStatus.snoozed;
+    if (isMissed) return ReminderStatus.missed;
+    if (isActive) return ReminderStatus.active;
+    if (isSkipped) return ReminderStatus.skipped;
+    if (isLate) return ReminderStatus.isLate;
+    return null;
+  }
 
   Reminder(
       {this.id,
@@ -148,3 +166,5 @@ class Reminder with DateMixin {
     return output;
   }
 }
+
+enum ReminderStatus { completed, missed, active, skipped, isLate, snoozed }
