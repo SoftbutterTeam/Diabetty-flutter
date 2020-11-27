@@ -5,48 +5,65 @@ import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_info.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/mixins/reminder_manager_mixin.dart';
+import 'package:provider/provider.dart';
 
 @optionalTypeArgs
 mixin ReminderActionsMixin<T extends Widget> {
   @protected
   Reminder get reminder;
 
-  // void navigateTherapyProfile(context) {
-  //    Navigator.pushNamed(context, therapyprofile, arguments: {'reminder' : reminder});
-  // }
+  void snoozeReminder(
+      BuildContext context, Reminder reminder, Duration snoozeFor) {
+    DayPlanManager dayPlanManager =
+        Provider.of<DayPlanManager>(context, listen: false);
+    dayPlanManager.snoozeReminder(reminder, snoozeFor);
+  }
 
-  void showSnoozeActionSheet(context) => showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-            message: Text(
-              "How long do you want to snooze for?",
-            ),
-            actions: [
-              CupertinoActionSheetAction(
-                child: Text("Snooze 10 min"),
-                onPressed: () {},
-              ),
-              CupertinoActionSheetAction(
-                child: Text("Snooze 30 min"),
-                onPressed: () {},
-              ),
-              CupertinoActionSheetAction(
-                child: Text(
-                  "Reschedule till...",
+// pass reminder into here
+  void showSnoozeActionSheet(BuildContext context, Reminder reminder) =>
+      showCupertinoModalPopup(
+          context: context,
+          builder: (context) => CupertinoActionSheet(
+                message: Text(
+                  "How long do you want to snooze for?",
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  showPostponePicker(context);
-                },
-              ),
-            ],
-            cancelButton: CupertinoActionSheetAction(
-              child: Container(color: Colors.white, child: Text('Cancel')),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ));
+                actions: [
+                  CupertinoActionSheetAction(
+                    child: Text("Snooze 10 min"),
+                    onPressed: () {
+                      snoozeReminder(context, reminder, Duration(minutes: 10));
+                    },
+                  ),
+                  CupertinoActionSheetAction(
+                    child: Text("Snooze 30 min"),
+                    onPressed: () {
+                      snoozeReminder(context, reminder, Duration(minutes: 10));
+                    },
+                  ),
+                  CupertinoActionSheetAction(
+                    child: Text(
+                      "Reschedule till...",
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      showPostponePicker(context, reminder);
+                    },
+                  ),
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  child: Container(color: Colors.white, child: Text('Cancel')),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ));
+
+  void skipReminder(BuildContext context, Reminder reminder) {
+    DayPlanManager dayPlanManager = Provider.of<DayPlanManager>(context);
+    dayPlanManager.skipReminder(reminder);
+  }
 
   void showSkipActionSheet(context) => showCupertinoModalPopup(
       context: context,
@@ -105,6 +122,12 @@ mixin ReminderActionsMixin<T extends Widget> {
             ),
           ));
 
+  void takeReminder(BuildContext context, Reminder reminder) {
+    DayPlanManager dayPlanManager =
+        Provider.of<DayPlanManager>(context, listen: false);
+    dayPlanManager.takeReminder(reminder, DateTime.now());
+  }
+
   void showTakeModalPopup(BuildContext context) => showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) => CupertinoActionSheet(
@@ -129,7 +152,8 @@ mixin ReminderActionsMixin<T extends Widget> {
         ),
       );
 
-  void showPostponePicker(BuildContext context) => showCupertinoModalPopup(
+  void showPostponePicker(BuildContext context, Reminder reminder) =>
+      showCupertinoModalPopup(
         context: context,
         builder: (context) {
           return TimerPicker(
@@ -142,7 +166,9 @@ mixin ReminderActionsMixin<T extends Widget> {
               minuteInterval: 1,
               initialDateTime: DateTime.now(),
               onDateTimeChanged: (dateTimeChange) {
-                //print(dateTimeChange);
+                DayPlanManager dayPlanManager =
+                    Provider.of<DayPlanManager>(context, listen: false);
+                dayPlanManager.setReminderTime(reminder, dateTimeChange);
               },
             ),
           );

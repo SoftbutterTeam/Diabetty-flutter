@@ -289,15 +289,15 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   void _snoozeActionSheet(BuildContext context) {
-    showSnoozeActionSheet(context);
+    showSnoozeActionSheet(context, this.reminder);
   }
 
   void _skipActionSheet(BuildContext context) {
-    showSkipActionSheet(context);
+    skipReminder(context, this.reminder);
   }
 
   void _takenActionSheet(BuildContext context) {
-    showTakenActionSheet(context);
+    takeReminder(context, this.reminder);
   }
 }
 
