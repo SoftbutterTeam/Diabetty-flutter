@@ -1,5 +1,6 @@
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/routes.dart';
+import 'package:diabetty/ui/screens/diary/components/journal_add_note.dart';
 import 'package:flutter/material.dart';
 
 @optionalTypeArgs
@@ -9,5 +10,14 @@ mixin JournalActionsMixin<T extends Widget> {
 
   void navigateToJournal(context) {
     Navigator.pushNamed(context, aJournal, arguments: {'journal': journal});
+  }
+
+  void navigateToAddJournalNote(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JournalNote(),
+      ),
+    );
   }
 }
