@@ -135,10 +135,10 @@ mixin ReminderActionsMixin<T extends Widget> {
               ),
             ));
   }
-*/ /*
-  void takeReminder(BuildContext context, Reminder reminder) {
-    showTakeModalPopup(context);
-  } */
+*/
+  void unTakeReminder(BuildContext context, Reminder reminder) {
+    getDayPlanManager(context).unTakeReminder(reminder);
+  }
 
   void showTakeActionPopup(BuildContext context) => showCupertinoModalPopup(
         context: context,

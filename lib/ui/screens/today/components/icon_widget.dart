@@ -1,18 +1,25 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 import 'package:diabetty/extensions/string_extension.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class RemIconWidget extends StatefulWidget {
-  final String iconURL;
   final int index;
   final Reminder reminder;
-
-  RemIconWidget({this.iconURL, this.index, this.reminder});
+  final double size;
+  final bool extraFeatures;
+  final Function func;
+  RemIconWidget(
+      {this.index,
+      this.extraFeatures = true,
+      this.size = 37,
+      this.func,
+      this.reminder});
 
   @override
   _RemIconWidgetState createState() => _RemIconWidgetState();
@@ -21,59 +28,81 @@ class RemIconWidget extends StatefulWidget {
 class _RemIconWidgetState extends State<RemIconWidget> {
   var iconWidth;
   var iconHeight;
+
   @override
   Widget build(BuildContext context) {
-    getIconSizes();
+    String iconURL = appearance_iconss[widget.reminder.appearance ?? 0];
+
+    double size = widget.size;
     DayPlanManager manager =
         Provider.of<DayPlanManager>(context, listen: false);
     return AnimatedScaleButton(
-      size: 37,
+      size: size,
       padding: 0,
-      onTap: () {
-        if (manager.reminderScrollKeys[widget.reminder.reminderRuleId] !=
-            null) {
-          Scrollable.ensureVisible(manager
-              .reminderScrollKeys[widget.reminder.reminderRuleId]
-              .currentContext);
-        }
-      },
-      child: SizedBox(
-        width: 37, //* was 35
-        height: 37,
-        child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 2, // was 2, 1 is good
-                color: Colors.white,
-              ),
-              borderRadius: BorderRadius.circular(60),
-              color: Colors.white,
-            ),
-            child: Stack(
-              children: [
-                SvgPicture.asset(
-                  widget.iconURL,
-                  color: widget.index.isOdd ? Colors.indigo[900] : null,
-                ),
-                Container(
-                  alignment: Alignment
-                      .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
-                  child: _buildRelevantIcon(),
-                ),
-              ],
-            )),
+      onTap: widget.func ??
+          (widget.extraFeatures
+              ? () {
+                  if (manager
+                          .reminderScrollKeys[widget.reminder.reminderRuleId] !=
+                      null) {
+                    Scrollable.ensureVisible(manager
+                        .reminderScrollKeys[widget.reminder.reminderRuleId]
+                        .currentContext);
+                  }
+                }
+              : () => null),
+      child: Tooltip(
+        message: widget.extraFeatures
+            ? (widget.reminder.rescheduledTime ?? widget.reminder.time)
+                .formatTime()
+            : widget.reminder.name,
+        waitDuration: Duration(milliseconds: 0),
+        showDuration: Duration(milliseconds: 3000),
+        child: SizedBox(
+          width: size, //* was 35
+          height: size,
+          child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 2, // was 2, 1 is good
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(60),
+                  color: Colors.white,
+                  boxShadow: widget.extraFeatures && false
+                      ? [
+                          BoxShadow(
+                              blurRadius: 0.7,
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 0.5)
+                        ]
+                      : null),
+              child: Stack(
+                children: [
+                  SvgPicture.asset(
+                    iconURL,
+                    color: widget.index.isOdd ? Colors.indigo[900] : null,
+                  ),
+                  Container(
+                    alignment: Alignment
+                        .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
+                    child: _buildRelevantIcon(),
+                  ),
+                ],
+              )),
+        ),
       ),
     );
   }
 
   Container _buildCompletedIcon() {
     return Container(
-      width: 15,
-      height: 15,
+      width: 16,
+      height: 16,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.greenAccent[700],
-          border: Border.all(color: Colors.transparent, width: 1)),
+          border: Border.all(color: Colors.white, width: 1)),
       child: Center(
         child: Icon(
           Icons.check,
@@ -91,7 +120,7 @@ class _RemIconWidgetState extends State<RemIconWidget> {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
-          border: Border.all(color: Colors.white, width: 2)),
+          border: Border.all(color: Colors.white, width: 1)),
       child: Center(
         child: SvgPicture.asset(
           'assets/icons/navigation/checkbox/tick.svg',
@@ -110,33 +139,30 @@ class _RemIconWidgetState extends State<RemIconWidget> {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.amber,
-          border: Border.all(color: Colors.transparent, width: 0.5)),
+          border: Border.all(color: Colors.white, width: 1)),
       child: Center(
           child: Container(
-        height: 1,
-        width: 10,
+        height: 15,
+        width: 15,
         color: Colors.white,
       )),
     );
   }
 
-  Tooltip _buildActiveIcon() {
-    return Tooltip(
-      message: 'This means its active',
-      child: Container(
-        width: 18,
-        height: 18,
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            border: Border.all(color: Colors.white, width: 2)),
-        child: Center(
-          child: SvgPicture.asset(
-            'assets/icons/navigation/checkbox/tick.svg',
-            color: Colors.greenAccent[700], //Colors.white
-            height: 15,
-            width: 15,
-          ),
+  Widget _buildActiveIcon() {
+    return Container(
+      width: 18,
+      height: 18,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          border: Border.all(color: Colors.white, width: 1)),
+      child: Center(
+        child: SvgPicture.asset(
+          'assets/icons/navigation/checkbox/tick.svg',
+          color: Colors.greenAccent[700], //Colors.white
+          height: 15,
+          width: 15,
         ),
       ),
     );
@@ -179,37 +205,24 @@ class _RemIconWidgetState extends State<RemIconWidget> {
   }
 
   Widget _buildRelevantIcon() {
-    final reminder = widget.reminder;
-    final complete = reminder.isComplete;
-    final snoozed = reminder.isSnoozed;
-    final missed = reminder.isMissed;
-    final active = reminder.isActive;
-    final skipped = reminder.isSkipped;
-    final late = reminder.isLate;
-    String error = "Reminder has encountered an error";
-    print(reminder.window);
-
-    if (complete) {
-      return _buildCompletedIcon();
-    } else if (skipped) {
-      return _buildSkippedIcon();
-    } else if (false) {
-      return _buildMissedIcon();
-    } else if (late) {
-      return _buildLateIcon();
-    } else if (snoozed) {
-      return _buildSnoozedIcon();
-    } else if (active) {
-      return _buildActiveIcon();
-    } else {
-      return Tooltip(message: "Reminder has encountered an error");
+    ReminderStatus status = widget.reminder.status;
+    switch (status) {
+      case ReminderStatus.completed:
+        return _buildCompletedIcon();
+      case ReminderStatus.skipped:
+        return _buildSkippedIcon();
+      case ReminderStatus.missed:
+        return _buildMissedIcon();
+      case ReminderStatus.snoozed:
+        return _buildSnoozedIcon();
+      case ReminderStatus.active:
+        return _buildActiveIcon();
+      case ReminderStatus.isLate:
+        return _buildLateIcon();
+      case ReminderStatus.idle:
+        return null;
+      default:
+        return null;
     }
-  }
-
-  void getIconSizes() {
-    /// if reminder is in the last 30minutes or next 30minutes and requires action
-    /// -> should be larger
-    /// but if () ->
-    return;
   }
 }

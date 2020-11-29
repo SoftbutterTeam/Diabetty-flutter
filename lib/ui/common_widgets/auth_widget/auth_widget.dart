@@ -1,14 +1,10 @@
-import 'package:diabetty/blocs/link_account_manager.dart';
-import 'package:diabetty/routes.dart';
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/layouts/dashboard.layout.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/link_accounts/link_accounts.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/welcome/welcome.screen.dart';
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
@@ -41,7 +37,11 @@ class AuthWidget extends StatelessWidget {
         //print(4);
 
         return FutureBuilder<UserModel.User>(
-            future: appContext.lazyFetchUser(),
+            future: () async {
+              var result = await appContext.lazyFetchUser();
+              await Provider.of<DayPlanManager>(context, listen: false).init();
+              return result;
+            }.call(),
             builder: (context, snapshot) {
               //print('snappshot ' + snapshot.data.toString());
               if (snapshot.connectionState != ConnectionState.done)

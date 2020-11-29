@@ -27,7 +27,7 @@ class DiaryBloc extends Manager {
     super.dispose();
   }
 
-  void init() async {
+  Future<void> init() async {
     super.init();
     //print('Diary Init is runnning');
     authService = appContext.authService;

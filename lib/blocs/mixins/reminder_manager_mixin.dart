@@ -16,25 +16,32 @@ abstract class ReminderManagerMixin<T extends Manager> {
   @protected
   void updateListeners();
 
-  void takeReminder(Reminder reminder, DateTime takenAt) {
+  void takeReminder(Reminder reminder, DateTime takenAt) async {
     takenAt ??= DateTime.now();
     reminder.takenAt = takenAt;
     reminder.cancelled = false;
     // update Push Notifcations
-    reminderService.saveReminder(reminder);
+    await reminderService.saveReminder(reminder);
+    updateListeners();
+  }
+
+  void unTakeReminder(Reminder reminder) async {
+    reminder.takenAt = null;
+    reminder.cancelled = false;
+    await reminderService.saveReminder(reminder);
     updateListeners();
   }
   /**
      Calls the Service Code.
      -> reminder.takenAt -> DateTime takenAt
      -> if Reminder is not Stored, Save.
-     -> then calls updateListeners 
+     -> then calls updateListeners r
     */
 
-  void skipReminder(Reminder reminder) {
+  void skipReminder(Reminder reminder) async {
     reminder.takenAt = null;
     reminder.cancelled = true;
-    reminderService.saveReminder(reminder);
+    await reminderService.saveReminder(reminder);
     // update Push Notifcations
     updateListeners();
 
@@ -47,10 +54,10 @@ abstract class ReminderManagerMixin<T extends Manager> {
     */
   }
 
-  void snoozeReminder(Reminder reminder, Duration snoozeFor) {
+  Future<void> snoozeReminder(Reminder reminder, Duration snoozeFor) async {
     reminder.rescheduledTime = reminder.time.add(snoozeFor);
     reminder.cancelled = false;
-    reminderService.saveReminder(reminder);
+    await reminderService.saveReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.
@@ -61,9 +68,10 @@ abstract class ReminderManagerMixin<T extends Manager> {
     */
   }
 
-  void rescheduleReminder(Reminder reminder, DateTime rescheduledTo) {
+  Future<void> rescheduleReminder(
+      Reminder reminder, DateTime rescheduledTo) async {
     reminder.rescheduledTime = rescheduledTo;
-    reminderService.saveReminder(reminder);
+    await reminderService.saveReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.
@@ -74,10 +82,10 @@ abstract class ReminderManagerMixin<T extends Manager> {
     */
   }
 
-  void editDoseReminder(Reminder reminder, int dose) {
+  Future<void> editDoseReminder(Reminder reminder, int dose) async {
     reminder.dose = dose;
     reminder.doseEdited = true;
-    reminderService.saveReminder(reminder);
+    await reminderService.saveReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.

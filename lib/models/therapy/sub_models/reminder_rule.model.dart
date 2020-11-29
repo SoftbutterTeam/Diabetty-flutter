@@ -25,7 +25,7 @@ class ReminderRule {
     Days days = Days();
     days.loadFromJson(daysJson);
     this.days = days;
-    this.id ??= json['id'];
+    this.id = json['id'];
     this.dose = json['dose'];
     this.time = TimeOfDay.now().stringToTimeOfDay(json['time']);
   }
@@ -54,6 +54,7 @@ class ReminderRule {
     if (days.friday && date.weekday == 5) return true;
     if (days.saturday && date.weekday == 6) return true;
     if (days.sunday && date.weekday == 7) return true;
+
     return false;
   }
 }
@@ -79,12 +80,12 @@ class Days {
         sunday = days.sunday;
 
   bool get isADaySelected => (monday ||
-        tuesday ||
-        wednesday ||
-        thursday ||
-        friday ||
-        saturday ||
-        sunday);
+      tuesday ||
+      wednesday ||
+      thursday ||
+      friday ||
+      saturday ||
+      sunday);
 
   loadFromJson(Map<String, dynamic> json) {
     this.monday = json['monday'];

@@ -29,7 +29,7 @@ class TherapyManager extends Manager {
     super.dispose();
   }
 
-  void init() async {
+  Future<void> init() async {
     super.init();
     //print('Therapy Init is runnning');
     authService = appContext.authService;
@@ -38,8 +38,11 @@ class TherapyManager extends Manager {
         usersTherapies = await therapyService.getTherapies(uid, local: true);
       } catch (e) {}
       this._therapyStream().listen((event) async {
-        usersTherapies = event;
-        usersTherapies ??= List();
+        usersTherapies = event ?? usersTherapies;
+        usersTherapies.forEach((element) {
+          print(element.toJson());
+        });
+        // usersTherapies ??= List();
       });
     }
   }

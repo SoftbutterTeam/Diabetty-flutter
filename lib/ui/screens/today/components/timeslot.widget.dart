@@ -94,8 +94,8 @@ class _TimeSlotState extends State<TimeSlot>
                 ],
               ),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), // was 20  10
-                topRight: Radius.circular(20),
+                topLeft: Radius.circular(10), // was 20  10
+                topRight: Radius.circular(10),
               )),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 35),
@@ -197,8 +197,8 @@ class TimeSlotDecor extends StatelessWidget {
             ),
           ],
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10)),
           color: Colors.white,

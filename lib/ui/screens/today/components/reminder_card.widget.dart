@@ -60,7 +60,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
       child: SizedBox(
         height: 25,
         width: 25,
-        child: SvgPicture.asset(appearance_icon_0),
+        child: SvgPicture.asset(appearance_iconss[reminder.appearance]),
       ),
     );
   }

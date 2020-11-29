@@ -121,7 +121,7 @@ class _CirclePlanState extends State<CirclePlan> {
             child: new CustomPaint(
                 foregroundPainter: new MyPainter(
                     completeColor: Colors.orangeAccent,
-                    completePercent: innerCompletePercent,
+                    completePercent: 0, //innerCompletePercent,
                     //? styl1 : can try toggle the limit (_initalTime) for different but still accurate representation
                     width: 1.0),
                 child: GestureDetector(
@@ -144,7 +144,7 @@ class _CirclePlanState extends State<CirclePlan> {
                           ),
                         ),
                         AnimatedOpacity(
-                          opacity: manager.fadeAnimation.value != 1 ? 1 : 1,
+                          opacity: manager.minController.isCompleted ? 0 : 1,
                           duration: Duration(milliseconds: 100),
                           child: Container(
                             alignment: Alignment.center,
@@ -189,8 +189,7 @@ class _CirclePlanState extends State<CirclePlan> {
             return rems.isNotEmpty
                 ? RemIconWidget(
                     index: index,
-                    iconURL: appearance_icon_0,
-                    reminder: rems[0],
+                    reminder: getMostImportantRem(rems),
                   )
                 : SizedBox.shrink();
           }),
@@ -359,4 +358,27 @@ class _CirclePlanState extends State<CirclePlan> {
         element.time.compareTo(firstTime) >= 0 &&
         element.time.compareTo(lastTime) < 0));
   }
+}
+
+Reminder getMostImportantRem(List<Reminder> reminders) {
+  return reminders.firstWhere(
+          (element) => element.status == ReminderStatus.isLate,
+          orElse: () => null) ??
+      reminders.firstWhere((element) => element.status == ReminderStatus.active,
+          orElse: () => null) ??
+      reminders.firstWhere((element) => element.status == ReminderStatus.missed,
+          orElse: () => null) ??
+      reminders.firstWhere(
+          (element) => element.status == ReminderStatus.snoozed,
+          orElse: () => null) ??
+      reminders.firstWhere((element) => element.status == ReminderStatus.idle,
+          orElse: () => null) ??
+      reminders.firstWhere((element) => element.status == ReminderStatus.missed,
+          orElse: () => null) ??
+      reminders.firstWhere(
+          (element) => element.status == ReminderStatus.skipped,
+          orElse: () => null) ??
+      reminders.firstWhere(
+          (element) => element.status == ReminderStatus.completed,
+          orElse: () => null);
 }
