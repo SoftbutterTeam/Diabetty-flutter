@@ -11,7 +11,7 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_alarm_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
-import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
+import 'package:diabetty/ui/screens/therapy/components/refill_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
 import 'package:diabetty/ui/screens/diary/components/CustomTextField.dart';
@@ -75,9 +75,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 15, left: 25, right: 25),
-            child: _buildStockField(),
-          ),
+              padding: EdgeInsets.only(top: 15, left: 25, right: 25),
+              child: _buildStockField()),
           Row(
             children: [
               SizedBox(
@@ -129,7 +128,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   widget.therapy.stock.isOutOfStock)
               ? Colors.red
               : Colors.green),
-      onTap: () {},
+      onTap: () => showEditStockDialog2(context),
       placeholder: _getStockMessage(),
       placeholderText: 'Stock',
     );
@@ -264,7 +263,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   GestureDetector _buildRefillColumn(Size size) {
     return GestureDetector(
-      onTap: () => showEditStockDialog2(context),
+      onTap: () => showRefillDialog(context),
       child: Column(
         children: [
           Container(
@@ -482,6 +481,17 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         ),
       );
     }
+  }
+
+  Future showRefillDialog(BuildContext context) {
+     return showDialog(
+        context: context,
+        builder: (context) => BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: RefillDialog(
+                  manager: widget.manager, therapyForm: widget.therapy),
+            ) //TODO complete this modal
+        );
   }
 
   Future showEditStockDialog2(BuildContext context) {
