@@ -231,12 +231,12 @@ mixin ReminderActionsMixin<T extends Widget> {
         barrierDismissible: true,
         barrierLabel: '',
         context: context,
-        barrierColor: Colors.black38, //black12 white
+        barrierColor: Colors.black12, //black12 white
         pageBuilder: (context, anim1, anim2) => Dialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            elevation: 0,
+            elevation: 3,
             child: ReminderInfoModal(reminder: reminder)),
         transitionBuilder: _transitionBuilderStyle1(),
         transitionDuration: Duration(milliseconds: 250),

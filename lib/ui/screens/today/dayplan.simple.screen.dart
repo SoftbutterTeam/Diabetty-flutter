@@ -80,7 +80,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   DateTime get endDateTime => initalDateTime.add(Duration(hours: 12));
   double dragSensitivity = 3;
   bool draggingIdle;
-
+  StreamSubscription _subscription;
   @override
   void initState() {
     draggingIdle = true;
@@ -104,10 +104,11 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     manager.pushAnimation?.addListener(() {
       setState(() {});
     });
+
     show = true;
   }
 
-  void setStateFunc(AnimationStatus status) {
+  void setStateFunc([AnimationStatus status]) {
     setState(() {});
   }
 
@@ -115,6 +116,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   void dispose() {
     _dateController?.dispose();
     _minController?.dispose();
+    _subscription?.cancel();
     manager.fadeAnimation?.removeStatusListener(setStateFunc);
     //manager.fadeAnimation?.dispose();
     super.dispose();

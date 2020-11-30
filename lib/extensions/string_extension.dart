@@ -3,6 +3,14 @@ extension StringExtension on String {
     return "${this[0].toUpperCase()}${this.substring(1)}";
   }
 
+  String capitalizeBegins() {
+    return this
+        .split(" ")
+        .map((e) => e.capitalize())
+        .reduce((value, element) => value += " " + element)
+        .trimLeft();
+  }
+
   String plurarlUnits(var num) {
     if (num != 1 &&
         this.substring(this.length - 3, this.length).contains("(s)"))
