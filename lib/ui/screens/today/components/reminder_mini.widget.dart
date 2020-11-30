@@ -1,6 +1,6 @@
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/constants/icons.dart';
-import 'package:diabetty/ui/screens/today/components/icon_widget.dart';
+import 'package:diabetty/ui/screens/today/components/reminder_icon_widget.dart';
 import 'package:diabetty/ui/screens/today/components/medication_profile.screen.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,6 @@ class ReminderMiniCard extends StatelessWidget with ReminderActionsMixin {
       child: RemIconWidget(
         reminder: reminder,
         size: 35,
-        index: 0,
         extraFeatures: false,
         func: () => showReminderPopupModal(context),
       ),

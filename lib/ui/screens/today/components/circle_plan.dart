@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:async';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/constants/icons.dart';
-import 'package:diabetty/ui/screens/today/components/icon_widget.dart';
+import 'package:diabetty/ui/screens/today/components/reminder_icon_widget.dart';
 import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
@@ -188,7 +188,6 @@ class _CirclePlanState extends State<CirclePlan> {
             final rems = getReminderOnIndex(index, reminders);
             return rems.isNotEmpty
                 ? RemIconWidget(
-                    index: index,
                     reminder: getMostImportantRem(rems),
                   )
                 : SizedBox.shrink();

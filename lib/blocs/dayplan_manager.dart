@@ -94,7 +94,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
       } catch (e) {}
       this._reminderStream().listen((event) async {
         usersReminders = event ?? usersReminders;
-        if (event.isNotEmpty) updateListeners();
+        // if (event.isNotEmpty) updateListeners();
       });
     }
   }
@@ -106,10 +106,6 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         .where((element) => element.time.isSameDayAs(date))
         .toList();
     finalReminders.removeWhere((element) {
-      print(element.name + '---' + element.reminderRuleId);
-      print(fetchedReminders.length);
-      print(fetchedReminders
-          .any((e) => element.reminderRuleId == e.reminderRuleId));
       return fetchedReminders
           .any((e) => element.reminderRuleId == e.reminderRuleId);
     });
@@ -149,11 +145,12 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
       return List();
     }
     for (Reminder reminder in tempReminders) {
-      DateTime time = reminder.getDateTimeAs12hr;
+      DateTime time = reminder.time.toSimpleDateTime();
+      DateTime rescheduledTime = reminder.rescheduledTime.toSimpleDateTime();
       TimeSlot timeSlot;
-      int slotIndex = getTimeSlotIndex(timeSlots, time);
+      int slotIndex = getTimeSlotIndex(timeSlots, rescheduledTime ?? time);
       if (slotIndex == null) {
-        timeSlot = new TimeSlot(time);
+        timeSlot = new TimeSlot(rescheduledTime ?? time);
         timeSlots.add(timeSlot);
         timeSlot.reminders.add(reminder);
       } else {

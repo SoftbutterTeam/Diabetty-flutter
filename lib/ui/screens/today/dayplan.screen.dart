@@ -24,7 +24,7 @@ import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
-import 'components/icon_widget.dart';
+import 'components/reminder_icon_widget.dart';
 
 class DayPlanScreenBuilder extends StatelessWidget {
   @override

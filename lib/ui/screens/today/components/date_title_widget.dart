@@ -47,7 +47,7 @@ class _DateTitleWidgetState extends State<DateTitleWidget>
         width: widget.width,
         margin: EdgeInsets.all(3.0),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          borderRadius: BorderRadius.all(Radius.circular(80.0)),
           color: widget.selectionColor,
         ),
         child: Padding(

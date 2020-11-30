@@ -19,7 +19,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
   void takeReminder(Reminder reminder, DateTime takenAt) async {
     takenAt ??= DateTime.now();
     reminder.takenAt = takenAt;
-    reminder.cancelled = false;
+    reminder.skippedAt = null;
     // update Push Notifcations
     await reminderService.saveReminder(reminder);
     updateListeners();
@@ -27,7 +27,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
 
   void unTakeReminder(Reminder reminder) async {
     reminder.takenAt = null;
-    reminder.cancelled = false;
+    reminder.skippedAt = null;
     await reminderService.saveReminder(reminder);
     updateListeners();
   }
@@ -40,7 +40,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
 
   void skipReminder(Reminder reminder) async {
     reminder.takenAt = null;
-    reminder.cancelled = true;
+    reminder.skippedAt = DateTime.now();
     await reminderService.saveReminder(reminder);
     // update Push Notifcations
     updateListeners();
@@ -55,9 +55,11 @@ abstract class ReminderManagerMixin<T extends Manager> {
   }
 
   Future<void> snoozeReminder(Reminder reminder, Duration snoozeFor) async {
-    reminder.rescheduledTime = reminder.time.add(snoozeFor);
-    reminder.cancelled = false;
-    await reminderService.saveReminder(reminder);
+    reminder.rescheduledTime =
+        (reminder.rescheduledTime ?? reminder.time).add(snoozeFor);
+    reminder.skippedAt = null;
+    reminder.takenAt = null;
+    reminderService.saveReminder(reminder);
     updateListeners();
     /**
      Calls the Service Code.
@@ -71,6 +73,8 @@ abstract class ReminderManagerMixin<T extends Manager> {
   Future<void> rescheduleReminder(
       Reminder reminder, DateTime rescheduledTo) async {
     reminder.rescheduledTime = rescheduledTo;
+    reminder.takenAt = null;
+    reminder.skippedAt = null;
     await reminderService.saveReminder(reminder);
     updateListeners();
     /**

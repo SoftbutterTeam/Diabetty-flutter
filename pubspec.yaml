@@ -59,6 +59,7 @@ dependencies:
   modern_charts: ^0.1.19
   syncfusion_flutter_charts: ^18.3.48+1
   animated_button: ^0.1.2
+  calendar_strip: ^1.0.6
 
 dev_dependencies:
   flutter_test:

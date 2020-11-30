@@ -14,6 +14,13 @@ extension DateTimeExtension on DateTime {
     return DateTime(year, month, day, time.hour, time.minute);
   }
 
+  DateTime toSimpleDateTime() {
+    if (this == null) return this;
+    final df = new DateFormat('dd-MM-yyyy hh:mm a');
+    String dtFormatted = df.format(this);
+    return (df.parse(dtFormatted));
+  }
+
   String formatTime2() {
     return DateFormat('h a').format(this).toLowerCase();
   }

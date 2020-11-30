@@ -152,8 +152,9 @@ mixin ReminderActionsMixin<T extends Widget> {
             actions: <Widget>[
               CupertinoActionSheetAction(
                   onPressed: () {
-                    dayPlanManager.takeReminder(reminder, DateTime.now());
                     Navigator.pop(context);
+
+                    dayPlanManager.takeReminder(reminder, DateTime.now());
                   },
                   child: Text('Now')),
               CupertinoActionSheetAction(

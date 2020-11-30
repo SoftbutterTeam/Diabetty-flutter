@@ -9,15 +9,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class RemIconWidget extends StatefulWidget {
-  final int index;
   final Reminder reminder;
   final double size;
   final bool extraFeatures;
   final Function func;
+  final bool stateIcon;
+
   RemIconWidget(
-      {this.index,
-      this.extraFeatures = true,
+      {this.extraFeatures = true,
       this.size = 37,
+      this.stateIcon = true,
       this.func,
       this.reminder});
 
@@ -81,13 +82,13 @@ class _RemIconWidgetState extends State<RemIconWidget> {
                 children: [
                   SvgPicture.asset(
                     iconURL,
-                    color: widget.index.isOdd ? Colors.indigo[900] : null,
                   ),
-                  Container(
-                    alignment: Alignment
-                        .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
-                    child: _buildRelevantIcon(),
-                  ),
+                  if (widget.stateIcon)
+                    Container(
+                      alignment: Alignment
+                          .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
+                      child: _buildRelevantIcon(),
+                    ),
                 ],
               )),
         ),
@@ -124,7 +125,7 @@ class _RemIconWidgetState extends State<RemIconWidget> {
       child: Center(
         child: SvgPicture.asset(
           'assets/icons/navigation/checkbox/tick.svg',
-          color: Colors.red, //Colors.white
+          color: Colors.orange[900], //Colors.white
           height: 15,
           width: 15,
         ),
@@ -206,6 +207,7 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 
   Widget _buildRelevantIcon() {
     ReminderStatus status = widget.reminder.status;
+    print(status.toString() + " ---h");
     switch (status) {
       case ReminderStatus.completed:
         return _buildCompletedIcon();
