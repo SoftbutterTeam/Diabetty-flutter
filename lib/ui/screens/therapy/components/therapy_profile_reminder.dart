@@ -58,29 +58,20 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
             color: Colors.black54, width: 0.1, style: BorderStyle.solid),
         borderRadius: BorderRadius.circular(0),
       ),
-      prefix: Row(
-        children: [
-          GestureDetector(
-            onTap: null,
-            // onTap: () => _deleteRule(manager),
-            child: Container(
-              padding: EdgeInsets.only(left: 18, right: 14),
-              child: Icon(
-                CupertinoIcons.minus_circled,
-                color: Colors.red,
-                size: 23,
+      prefix: Padding(
+        padding: EdgeInsets.only(left: 15.0),
+        child: Row(
+          children: [
+            Container(
+              width: size.width * 0.4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: weekDays,
               ),
-            ),
-          ),
-          Container(
-            width: size.width * 0.4,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: weekDays,
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
       suffix: Stack(
         alignment: Alignment.centerRight,

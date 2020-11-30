@@ -14,7 +14,7 @@ class TherapyProfileBackground extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      color: Colors.white,
+      color: appWhite,
       child: Container(
         width: double.maxFinite,
         height: size.height,
@@ -26,7 +26,7 @@ class TherapyProfileBackground extends StatelessWidget {
                   child: header, preferredSize: Size.fromHeight(60)),
               body: Container(
                 decoration: BoxDecoration(
-                  color: appWhite, //Colors.grey[50], appWhite,
+                  color: Colors.grey[50], //Colors.grey[50], appWhite,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(0), //was 20
                       topRight: Radius.circular(0)), // was 20

@@ -25,6 +25,8 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
   bool alarmSound;
   bool vibration;
   bool snooze;
+  int reoccurringMin = 5;
+  int reoccurringTimes = 3;
 
   @override
   void initState() {
@@ -102,7 +104,10 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
           GestureDetector(
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SnoozeOptionScreen()),
+              MaterialPageRoute(
+                  builder: (context) => SnoozeOptionScreen(
+                      selectedRepeatRadioTile: reoccurringTimes,
+                      selectedMinuteRadioTile: reoccurringMin)),
             ),
             child: Container(
               width: size.width * 0.4,
@@ -111,10 +116,19 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 2.0),
-                    child: Text("Recurring", style: TextStyle(fontSize: 20.0)),
+                    child: text(
+                  "Reoccurring",
+                  fontSize: 16.0,
+                  fontFamily: fontBold),
                   ),
-                  Text((snooze) ? "15 min, 3 times" : "off",
-                      style: TextStyle(fontSize: 15.0)),
+                  text(
+                      (snooze)
+                          ? reoccurringMin.toString() +
+                              " min ," +
+                              reoccurringTimes.toString() +
+                              " times"
+                          : "off",
+                      fontSize: 14.0),
                 ],
               ),
             ),
@@ -152,10 +166,13 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 2.0),
-                  child: Text("Vibration", style: TextStyle(fontSize: 20.0)),
+                  child: text(
+                  "Vibration",
+                  fontSize: 16.0,
+                  fontFamily: fontBold),
                 ),
-                Text((vibration) ? "on" : "off",
-                    style: TextStyle(fontSize: 15.0)),
+                text((vibration) ? "on" : "off",
+                    fontSize: 14.0),
               ],
             ),
           ),
@@ -192,10 +209,13 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 2.0),
-                  child: Text("Alarm Sound", style: TextStyle(fontSize: 20.0)),
+                  child: text(
+                  "Alarm Sound",
+                  fontSize: 16.0,
+                  fontFamily: fontBold),
                 ),
-                Text((alarmSound) ? "ringtone: Homecoming" : "off",
-                    style: TextStyle(fontSize: 15.0)),
+                text((alarmSound) ? "unmuted" : "muted",
+                    fontSize: 14.0),
               ],
             ),
           ),

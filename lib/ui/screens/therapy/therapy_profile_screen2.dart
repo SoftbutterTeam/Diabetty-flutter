@@ -11,10 +11,11 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_alarm_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
-import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
+import 'package:diabetty/ui/screens/therapy/components/refill_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
-import 'package:diabetty/ui/screens/diary/components/CustomTextField.dart';
+// import 'package:diabetty/ui/screens/diary/components/CustomTextField.dart';
+import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_reminder.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
@@ -51,7 +52,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         _buildHeader(size),
         Expanded(
             child: SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 child: _buildBody(size))),
         _buildFooter(size),
@@ -69,55 +70,59 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                 as Widget)
             .toList();
 
-    return Container(
-      color: backgroundColor,
-      height: size.height,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 15, left: 25, right: 25),
-            child: _buildStockField(),
+    return Column(
+      children: [
+        Padding(padding: EdgeInsets.only(top: 15), child: _buildStockField()),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            text(
+              "active reminders",
+              fontSize: 16.0,
+              textColor: Colors.grey[600],
+            )
+          ],
+        ),
+        if (reminderRulesList.isNotEmpty)
+          Container(
+            color: backgroundColor,
+            padding: EdgeInsets.only(top: 10),
+            child: (reminderRulesList.length < 10)
+                ? ColumnBuilder(
+                    itemCount: reminderRulesList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return reminderRulesList[index];
+                    },
+                  )
+                : 'yeye',
           ),
-          Row(
-            children: [
-              SizedBox(
-                width: size.width * 0.03,
+        if (reminderRulesList.isEmpty)
+          Container(
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: Text(
+              'No reminders here man, move on pls',
+              style: TextStyle(
+                fontSize: textSizeLargeMedium,
+                color: Colors.grey[700],
               ),
-              Text(
-                "active reminders",
-                style: TextStyle(
-                  fontSize: textSizeLargeMedium - 3,
-                  color: Colors.grey[700],
-                ),
+            ),
+          ),
+        Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              text(
+                "more info",
+                fontSize: 16.0,
+                textColor: Colors.grey[600],
               )
             ],
           ),
-          if (reminderRulesList.isNotEmpty)
-            Container(
-              color: backgroundColor,
-              padding: EdgeInsets.only(top: 10),
-              child: (reminderRulesList.length < 7)
-                  ? ColumnBuilder(
-                      itemCount: reminderRulesList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return reminderRulesList[index];
-                      },
-                    )
-                  : 'yeye',
-            ),
-          if (reminderRulesList.isEmpty)
-            Container(
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: Text(
-                'No reminders here man, move on pls',
-                style: TextStyle(
-                  fontSize: textSizeLargeMedium,
-                  color: Colors.grey[700],
-                ),
-              ),
-            ),
-        ],
-      ),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10), child: _buildWindowField()),
+        Padding(padding: EdgeInsets.only(top: 5), child: _buildMinRestField()),
+      ],
     );
   }
 
@@ -125,11 +130,12 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     return CustomTextField(
       stackIcons: _icons(
           color: (widget.therapy.stock == null ||
-                  widget.therapy.stock.currentLevel == null ||
-                  widget.therapy.stock.isOutOfStock)
-              ? Colors.red
-              : Colors.green),
-      onTap: () {},
+                  widget.therapy.stock.currentLevel == null)
+              ? Colors.blueGrey
+              : (widget.therapy.stock.isLowOnStock)
+                  ? Colors.red
+                  : Colors.blueGrey),
+      onTap: () => showEditStockDialog2(context),
       placeholder: _getStockMessage(),
       placeholderText: 'Stock',
     );
@@ -145,10 +151,10 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
       onTap: () => showWindow2(context),
       placeholder: _getWindowMessage(),
       placeholderText: 'Window',
-      placeholderTextStyle: TextStyle(
-        fontSize: textSizeLargeMedium - 4,
-        color: Colors.grey[700],
-      ),
+      // placeholderTextStyle: TextStyle(
+      //   fontSize: textSizeLargeMedium - 4,
+      //   color: Colors.grey[700],
+      // ),
     );
   }
 
@@ -162,10 +168,10 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
       onTap: () => showMinRestPopup2(context),
       placeholder: _getMinRestMessage(),
       placeholderText: 'Minimum Rest Duration',
-      placeholderTextStyle: TextStyle(
-        fontSize: textSizeLargeMedium - 4,
-        color: Colors.grey[700],
-      ),
+      // placeholderTextStyle: TextStyle(
+      //   fontSize: textSizeLargeMedium - 4,
+      //   color: Colors.grey[700],
+      // ),
     );
   }
 
@@ -264,14 +270,16 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   GestureDetector _buildRefillColumn(Size size) {
     return GestureDetector(
-      onTap: () => showEditStockDialog2(context),
+      onTap: () => showRefillDialog(context),
       child: Column(
         children: [
           Container(
             height: size.height * 0.08,
             width: size.width * 0.16,
             decoration: BoxDecoration(
-                shape: BoxShape.circle, color: Colors.orange[100]),
+              shape: BoxShape.circle,
+              color: Colors.orange[100],
+            ),
             child: Center(
               child: Icon(
                 Icons.add,
@@ -482,6 +490,17 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         ),
       );
     }
+  }
+
+  Future showRefillDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: RefillDialog(
+                  manager: widget.manager, therapyForm: widget.therapy),
+            ) //TODO complete this modal
+        );
   }
 
   Future showEditStockDialog2(BuildContext context) {
