@@ -116,16 +116,19 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 2.0),
-                    child: Text("Reoccurring", style: TextStyle(fontSize: 20.0)),
+                    child: text(
+                  "Reoccurring",
+                  fontSize: 16.0,
+                  fontFamily: fontBold),
                   ),
-                  Text(
+                  text(
                       (snooze)
                           ? reoccurringMin.toString() +
                               " min ," +
                               reoccurringTimes.toString() +
                               " times"
                           : "off",
-                      style: TextStyle(fontSize: 15.0)),
+                      fontSize: 14.0),
                 ],
               ),
             ),
@@ -163,10 +166,13 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 2.0),
-                  child: Text("Vibration", style: TextStyle(fontSize: 20.0)),
+                  child: text(
+                  "Vibration",
+                  fontSize: 16.0,
+                  fontFamily: fontBold),
                 ),
-                Text((vibration) ? "on" : "off",
-                    style: TextStyle(fontSize: 15.0)),
+                text((vibration) ? "on" : "off",
+                    fontSize: 14.0),
               ],
             ),
           ),
@@ -203,10 +209,13 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 2.0),
-                  child: Text("Alarm Sound", style: TextStyle(fontSize: 20.0)),
+                  child: text(
+                  "Alarm Sound",
+                  fontSize: 16.0,
+                  fontFamily: fontBold),
                 ),
-                Text((alarmSound) ? "unmuted" : "muted",
-                    style: TextStyle(fontSize: 15.0)),
+                text((alarmSound) ? "unmuted" : "muted",
+                    fontSize: 14.0),
               ],
             ),
           ),

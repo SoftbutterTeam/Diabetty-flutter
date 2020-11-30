@@ -31,7 +31,7 @@ class _RefillDialogState extends State<RefillDialog>
       contentPadding: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       content: Container(
-        height: size.height * 0.36,
+        height: size.height * 0.30,
         width: size.width * 0.85,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -81,14 +81,12 @@ class _RefillDialogState extends State<RefillDialog>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               text(
-                  "How many " +
-                      unitTypes[widget.therapyForm.medicationInfo.unitIndex] +
-                      " would you like to add",
+                  "Add",
                   fontSize: 16.0,
                   fontFamily: fontBold),
             ],
           ),
-          SizedBox(height: size.height * 0.01),
+          SizedBox(height: size.height * 0.004),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
