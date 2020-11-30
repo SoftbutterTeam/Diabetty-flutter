@@ -25,6 +25,8 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
   bool alarmSound;
   bool vibration;
   bool snooze;
+  int reoccurringMin = 15;
+  int reoccurringTimes = 3;
 
   @override
   void initState() {
@@ -111,9 +113,9 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 2.0),
-                    child: Text("Recurring", style: TextStyle(fontSize: 20.0)),
+                    child: Text("Reocurring", style: TextStyle(fontSize: 20.0)),
                   ),
-                  Text((snooze) ? "15 min, 3 times" : "off",
+                  Text((snooze) ? reoccurringMin.toString() + " min ," +  reoccurringTimes.toString() + " times" : "off",
                       style: TextStyle(fontSize: 15.0)),
                 ],
               ),
@@ -194,7 +196,7 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
                   padding: const EdgeInsets.only(bottom: 2.0),
                   child: Text("Alarm Sound", style: TextStyle(fontSize: 20.0)),
                 ),
-                Text((alarmSound) ? "ringtone: Homecoming" : "off",
+                Text((alarmSound) ? "unmuted" : "muted",
                     style: TextStyle(fontSize: 15.0)),
               ],
             ),
