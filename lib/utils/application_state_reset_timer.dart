@@ -49,8 +49,9 @@ class _KeepAliveObserver extends WidgetsBindingObserver {
 
 /// Must be called only when app is visible, and exactly once
 void startKeepAlive([Function onTimerEnd]) {
-  assert(_keepAliveTimer == null);
-  function = onTimerEnd;
-  _keepAlive(true);
-  WidgetsBinding.instance.addObserver(_KeepAliveObserver());
+  if (_keepAliveTimer == null) {
+    function = onTimerEnd;
+    _keepAlive(true);
+    WidgetsBinding.instance.addObserver(_KeepAliveObserver());
+  }
 }

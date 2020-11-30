@@ -15,29 +15,66 @@ class ReminderRepository {
     await _db
         .collection('users')
         .document(reminder.userId)
-        .collection('therapies')
-        .document(reminder.therapyId)
+        .collection('reminders')
+        .document(reminder.id)
         .updateData(reminderData)
         .catchError((e) {
-      //print(e);
+      print(e);
     });
     return true;
+  }
+
+  Future<DataResult<List<Map<String, dynamic>>>> getAllReminders(String userId,
+      {bool local}) async {
+    try {
+      Source source = local ? Source.cache : Source.server;
+
+      var result = await _db
+          .collection("users")
+          .document(userId)
+          .collection('reminders')
+          .getDocuments(source: source);
+
+      var data = (result.documents.map((e) {
+        var json = Map<String, dynamic>.from(e.data)..['id'] = e.documentID;
+        return json;
+      }).toList());
+      //print(data.map((e) => e.toString()));
+      return DataResult<List<Map<String, dynamic>>>(data: data);
+    } catch (exception, stackTrace) {
+      //print('HELLLO');
+      return DataResult(exception: exception, stackTrace: stackTrace);
+    }
   }
 
   Future<void> setReminder(Reminder reminder) async {
     Map<String, dynamic> reminderData = Map();
     reminderData = reminder.tojson();
+    print('ahhhhhhh');
+    print(reminderData);
+
     // reminder.
     await _db
         .collection('users')
         .document(reminder.userId)
-        .collection('therapies')
-        .document(reminder.therapyId)
+        .collection('reminders')
+        .document(reminder.id)
         .setData(reminderData)
         .catchError((e) {
-      //print(e);
+      print('error');
+      print(e);
     });
     return true;
+  }
+
+  Stream<QuerySnapshot> onStateChanged(String uid) {
+    //print('hererehere' + uid);
+
+    return _db
+        .collection('users')
+        .document(uid)
+        .collection('reminders')
+        .snapshots();
   }
 }
 

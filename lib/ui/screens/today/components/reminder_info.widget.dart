@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
@@ -131,46 +132,36 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Column(
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: size.height * 0.045,
+                    width: size.width * 0.1,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: SvgPicture.asset(
+                      appearance_iconss[reminder.appearance],
+                    ),
+                  ),
+                  SizedBox(width: max(size.width * 0.03, 10)),
+                  Column(
                     children: [
-                      SvgPicture.asset(
-                        appearance_iconss[reminder.appearance],
-                        width: 30,
-                        height: 30,
-                      ),
+                      Text(reminder.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 22.0,
+                              color: null,
+                              fontWeight: FontWeight.w600)),
                     ],
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 5, top: 5),
-                      child: text(reminder.name,
-                          fontSize: 18.0,
-                          textColor: Colors.black,
-                          fontFamily: fontBold,
-                          latterSpacing: 1.5),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 5, bottom: 10),
-                      child: text(
-                          reminder.advices != null &&
-                                  reminder.advices.isNotEmpty
-                              ? intakeAdvice[reminder.advices[0]]
-                              : '',
-                          fontSize: 15.0,
-                          textColor: Colors.black87,
-                          fontFamily: fontSemibold,
-                          overflow: TextOverflow.ellipsis),
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
             Container(
               height: 1,
@@ -289,15 +280,15 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   void _snoozeActionSheet(BuildContext context) {
-    showSnoozeActionSheet(context);
+    showSnoozeActionSheet(context, this.reminder);
   }
 
   void _skipActionSheet(BuildContext context) {
-    showSkipActionSheet(context);
+    skipReminder(context, this.reminder);
   }
 
   void _takenActionSheet(BuildContext context) {
-    showTakenActionSheet(context);
+    showTakeActionPopup(context);
   }
 }
 

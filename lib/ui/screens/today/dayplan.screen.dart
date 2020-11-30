@@ -24,7 +24,7 @@ import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
-import 'components/icon_widget.dart';
+import 'components/reminder_icon_widget.dart';
 
 class DayPlanScreenBuilder extends StatelessWidget {
   @override
@@ -131,51 +131,54 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     Size size = MediaQuery.of(context).size;
     double heightOfCircleSpace = size.height * 0.35;
     return Background(
-      child: StreamBuilder(
-          stream: manager.dataStream, // manager.remindersbyDayDataStream,
-          builder: (context, snapshot) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                AnimatedBox(
-                    animation: _animation, shouldAnim: !circleMinimized),
-                _buildCirclePlanOverlay(
-                  size,
-                  heightOfCircleSpace,
-                  child: CirclePlan(
-                    manager: manager,
-                    heightOfCircleSpace: heightOfCircleSpace,
-                    circleMinimized: circleMinimized,
-                    minAnimationRotate: _minAnimationRotate,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(top: 5),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 4,
-                            offset: Offset(0, -1),
-                          ),
-                        ],
-                        border: Border(
-                            top: BorderSide(
-                                color: (circleMinimized
-                                    ? Colors.transparent //deepOrange
-                                    : Colors.transparent),
-                                width: 1))),
-                    child: Container(
-                        margin: EdgeInsets.only(top: 5),
-                        child: _buildRemindersList(context, snapshot)),
-                  ),
-                )
-              ],
-            );
-          }),
+      child: Builder(builder: (context) {
+        if (manager.getFinalRemindersList().isEmpty) {
+          return Container(
+            child: Text('no reminders'),
+            alignment: Alignment.center,
+          );
+        }
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            AnimatedBox(animation: _animation, shouldAnim: !circleMinimized),
+            _buildCirclePlanOverlay(
+              size,
+              heightOfCircleSpace,
+              child: CirclePlan(
+                manager: manager,
+                heightOfCircleSpace: heightOfCircleSpace,
+                circleMinimized: circleMinimized,
+                minAnimationRotate: _minAnimationRotate,
+              ),
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(top: 5),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: Offset(0, -1),
+                      ),
+                    ],
+                    border: Border(
+                        top: BorderSide(
+                            color: (circleMinimized
+                                ? Colors.transparent //deepOrange
+                                : Colors.transparent),
+                            width: 1))),
+                child: Container(
+                    margin: EdgeInsets.only(top: 5),
+                    child: _buildRemindersList(context)),
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 
@@ -255,14 +258,10 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       ),
     );
   }
+
   //! onDoubleTap slows down a onTap
 
-  Widget _buildRemindersList(
-      BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-    if (widget.isLoading)
-      return LoadingScreen();
-    else if (snapshot.hasError) return Container();
-
+  Widget _buildRemindersList(BuildContext context) {
     List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
 
     if (timeSlots.length == 0) return Container();
@@ -617,6 +616,7 @@ class _AnimatedScaleButtonState extends State<AnimatedScaleButton>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         _controller?.forward();
         widget.onTap.call();

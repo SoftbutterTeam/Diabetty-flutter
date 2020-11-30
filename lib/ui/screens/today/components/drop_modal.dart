@@ -1,10 +1,8 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -28,8 +26,6 @@ class _DropModalState extends State<DropModal>
   void initState() {
     final manager = Provider.of<DayPlanManager>(context, listen: false);
     _selectedValue = manager.currentDateStamp;
-    //print('newState');
-
     super.initState();
   }
 

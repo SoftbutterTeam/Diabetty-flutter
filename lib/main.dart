@@ -51,12 +51,13 @@ class MyApp extends StatelessWidget {
     AuthService authService = AuthServiceAdapter(
       initialAuthServiceType: initialAuthServiceType,
     );
-    AppContext appContext = new AppContext(authService)..init();
+    AppContext appContext = AppContext(authService)..init();
     TherapyManager therapyManager = TherapyManager(appContext: appContext)
       ..init();
+
+    DiaryBloc diaryBloc = DiaryBloc(appContext: appContext)..init();
     DayPlanManager dayPlanManager = DayPlanManager(appContext: appContext)
       ..init();
-    DiaryBloc diaryBloc = DiaryBloc(appContext: appContext)..init();
     return MultiProvider(
         providers: [
           // ignore: todo

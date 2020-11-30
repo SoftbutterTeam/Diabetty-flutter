@@ -3,7 +3,9 @@ import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
+import 'package:flutter/animation.dart';
 import 'package:intl/intl.dart';
+import 'package:validators/sanitizers.dart';
 
 class Reminder with DateMixin {
   String id;
@@ -22,7 +24,7 @@ class Reminder with DateMixin {
   DateTime rescheduledTime;
   double editedDose;
   bool doseEdited;
-  bool cancelled;
+  DateTime skippedAt;
   List<int> advices;
 
   DateTime get getDateTimeAs12hr {
@@ -44,21 +46,47 @@ class Reminder with DateMixin {
     return isSameDay(this.date, date);
   }
 
+  // late is like isActive but for rescheduledTime.
+  //? im going to remove is late, dont really think it makes sense, in a computational manor.
   bool get isComplete => takenAt != null;
-  bool get isSnoozed => rescheduledTime != null;
+  bool get isSnoozed =>
+      !isComplete &&
+      rescheduledTime != null &&
+      !isLate &&
+      DateTime.now().isBefore(rescheduledTime);
   bool get isMissed =>
       takenAt == null &&
-      DateTime.now().compareTo(time.add(this.window ?? Duration(minutes: 5))) >
-          0;
+      !isSkipped &&
+      DateTime.now().isAfter(
+          (rescheduledTime ?? time).add(this.window ?? Duration(minutes: 5)));
   bool get isActive =>
       takenAt == null &&
-      DateTime.now().compareTo(time) >=
-          0; // (>= - may cause occasional problem)
-  //TODO late means that it is past its window
-  /// well isMissed should mean, when it is late and u cant take it because it collides with your minRest
-  /// and isLate meaning it is late and can still be taken without health risk
-  bool get isLate => takenAt != null && takenAt.compareTo(time) > 0;
-  bool get isSkipped => takenAt == null && cancelled == true;
+      !isLate &&
+      DateTime.now().compareTo(time) >= 0 &&
+      !isSkipped &&
+      !isMissed;
+  bool get isSkipped => skippedAt != null;
+  bool get isLate =>
+      !isComplete &&
+      !isSkipped &&
+      rescheduledTime != null &&
+      DateTime.now().compareTo(rescheduledTime) >= 0;
+  bool get isIdle =>
+      !isComplete &&
+      !isSkipped &&
+      rescheduledTime == null &&
+      DateTime.now().compareTo(time) < 0;
+
+  ReminderStatus get status {
+    if (isComplete) return ReminderStatus.completed;
+    if (isSnoozed) return ReminderStatus.snoozed;
+    if (isMissed) return ReminderStatus.missed;
+    if (isActive) return ReminderStatus.active;
+    if (isSkipped) return ReminderStatus.skipped;
+    if (isLate) return ReminderStatus.isLate;
+    if (isIdle) return ReminderStatus.idle;
+    return null;
+  }
 
   Reminder(
       {this.id,
@@ -69,7 +97,7 @@ class Reminder with DateMixin {
       this.time,
       this.dose,
       this.advices,
-      this.cancelled,
+      this.skippedAt,
       this.window,
       this.editedDose,
       this.rescheduledTime,
@@ -105,19 +133,23 @@ class Reminder with DateMixin {
       this.reminderRuleId = json['reminderRuleId'];
     if (json.containsKey('name')) this.name = json['name'];
     if (json.containsKey('appearance')) this.appearance = json['appearance'];
-    if (json.containsKey('time')) this.time = json['time'];
+    if (json.containsKey('time')) this.time = DateTime.parse(json['time']);
     if (json.containsKey('dose')) this.dose = json['dose'];
     if (json.containsKey('doseTypeIndex'))
       this.doseTypeIndex = json['doseTypeIndex'];
     if (json.containsKey('strength')) this.strength = json['strength'];
     if (json.containsKey('strengthUnitIndex'))
       this.strengthUnitindex = json['strengthUnitIndex'];
-    if (json.containsKey('advices')) this.advices = json['advices'];
+    if (json.containsKey('advices'))
+      this.advices = new List<int>.from(json['advices']);
     if (json.containsKey('window'))
       this.window = Duration(seconds: json['window']);
+    if (json.containsKey('rescheduledTime'))
+      this.rescheduledTime = DateTime.parse(json['rescheduledTime']);
     if (json.containsKey('takenAt'))
       this.takenAt = DateTime.parse(json['takenAt']);
-    if (json.containsKey('cancelled')) this.cancelled = json['cancelled'];
+    if (json.containsKey('skippedAt'))
+      this.skippedAt = DateTime.parse(json['skippedAt']);
     if (json.containsKey('doseEdited')) this.doseEdited = json['doseEdited'];
   }
 
@@ -129,6 +161,8 @@ class Reminder with DateMixin {
     if (this.therapyId != null) output['therapyId'] = this.therapyId;
     if (this.reminderRuleId != null)
       output['reminderRuleId'] = this.reminderRuleId;
+    if (this.appearance != null) output['appearance'] = this.appearance;
+
     if (this.name != null) output['name'] = this.name;
     if (this.time != null) output['time'] = this.time.toString();
     if (this.dose != null) output['dose'] = this.dose;
@@ -136,15 +170,25 @@ class Reminder with DateMixin {
       output['doseTypeIndex'] = this.doseTypeIndex;
     if (this.strength != null) output['strength'] = this.strength;
     if (this.strengthUnitindex != null)
-      output['strengthUnitindex'] = this.strengthUnitindex;
+      output['strengthUnitIndex'] = this.strengthUnitindex;
     if (this.window != null) output['window'] = this.window.inSeconds;
     if (this.takenAt != null) output['takenAt'] = this.takenAt.toString();
     if (this.rescheduledTime != null)
-      output['rescheduledTime'] = this.reminderRuleId.toString();
+      output['rescheduledTime'] = this.rescheduledTime.toString();
     if (this.editedDose != null) output['editedDose'] = this.editedDose;
-    if (this.cancelled != null) output['cancelled'] = this.cancelled;
+    if (this.skippedAt != null) output['cancelled'] = this.skippedAt.toString();
     if (this.advices != null) output['advices'] = this.advices;
     if (this.doseEdited != null) output['doseEdited'] = this.doseEdited;
     return output;
   }
+}
+
+enum ReminderStatus {
+  completed,
+  missed,
+  active,
+  skipped,
+  isLate,
+  snoozed,
+  idle
 }

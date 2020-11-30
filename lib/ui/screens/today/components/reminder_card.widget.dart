@@ -3,6 +3,7 @@ import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/constants/icons.dart';
+import 'package:diabetty/ui/screens/today/components/reminder_icon_widget.dart';
 import 'package:diabetty/ui/screens/today/components/medication_profile.screen.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,17 +58,21 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
 
   Widget _buildReminderIcon(BuildContext context) {
     return Container(
-      child: SizedBox(
-        height: 25,
-        width: 25,
-        child: SvgPicture.asset(appearance_icon_0),
-      ),
-    );
+        child: RemIconWidget(
+      extraFeatures: false,
+      reminder: reminder,
+      size: 30,
+      stateIcon: false,
+      func: () => showTakeActionPopup(context),
+    ));
   }
 
   Widget _buildReminderInfo(BuildContext context) {
+    print(reminder.status);
+
     return Expanded(
       child: Container(
+        color: Colors.transparent,
         padding: EdgeInsets.only(left: 16, bottom: 3),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,10 +87,59 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
               fontSize: textSizeSmall,
               maxLine: 2,
             ),
+            if (reminder.status != ReminderStatus.idle)
+              _buildReminderStatusDescription(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildReminderStatusDescription() {
+    String remDescription = "";
+    Color color;
+
+    switch (reminder.status) {
+      case ReminderStatus.completed:
+        if (reminder.takenAt == null) return null;
+        remDescription = "taken at ${reminder.takenAt.formatTime()}";
+        color = Colors.green[600];
+        break;
+      case ReminderStatus.skipped:
+        if (reminder.skippedAt == null) return null;
+        remDescription = "skipped at ${reminder.skippedAt.formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.missed:
+        if (reminder.time == null) return null;
+        remDescription =
+            "missed at ${(reminder.rescheduledTime ?? reminder.time).add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.redAccent[700];
+        break;
+      case ReminderStatus.snoozed:
+        if (reminder.rescheduledTime == null) return null;
+        remDescription = "rescheduled from ${reminder.time.formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.active:
+        if (reminder.time == null) return null;
+        remDescription =
+            "take before ${reminder.time.add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.green[600];
+        break;
+      case ReminderStatus.isLate:
+        if (reminder.rescheduledTime == null) return null;
+        remDescription =
+            "take before ${reminder.rescheduledTime.add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.idle:
+        return null;
+      default:
+        return null;
+    }
+    return text(remDescription,
+        fontSize: textSizeSmall, maxLine: 2, textColor: color);
   }
 
   String _buildReminderDescription() {
@@ -109,7 +163,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   Widget _buildReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
     return GestureDetector(
-      onTap: () => showTakeModalPopup(context),
+      onTap: () => showTakeActionPopup(context),
       child: Container(
         alignment: Alignment.center,
         color: Colors.transparent,

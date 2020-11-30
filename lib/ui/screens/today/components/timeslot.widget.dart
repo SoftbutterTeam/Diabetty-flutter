@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
+import 'package:diabetty/ui/screens/today/components/animated_transform_rotate.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_card.widget.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_mini.widget.dart';
 import 'package:flutter/material.dart';
@@ -22,25 +25,45 @@ class TimeSlot extends StatefulWidget {
 }
 
 class _TimeSlotState extends State<TimeSlot>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool minimize;
   bool allComplete;
+  AnimationController rotationController;
+  Timer _timer;
   @override
   void initState() {
     allComplete = widget.timeSlot.allComplete;
     minimize = allComplete;
     DayPlanManager manager =
         Provider.of<DayPlanManager>(context, listen: false);
+    rotationController = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+
     widget.timeSlot.reminders.forEach((element) {
       manager.reminderScrollKeys.addAll({element.reminderRuleId: widget.key});
+    });
+
+    !minimize
+        ? rotationController.forward(from: 1)
+        : rotationController.reverse(from: 0.0);
+
+    _timer = Timer.periodic(Duration(seconds: 50), (Timer t) {
+      setState(() {});
     });
 
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   void _toggleMinimize() {
     setState(() {
       minimize = !minimize;
+      !minimize ? rotationController.forward() : rotationController.reverse();
     });
   }
 
@@ -49,26 +72,31 @@ class _TimeSlotState extends State<TimeSlot>
 
   @override
   Widget build(BuildContext context) {
+    DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
+
     super.build(context);
     String time = new DateFormat.jm()
         .format(DateTime.parse(widget.timeSlot.time.toString()));
-    return AnimatedSize(
-        vsync: this,
-        curve: Curves.bounceInOut,
-        duration: Duration(milliseconds: 300),
-        child: IntrinsicHeight(
-          child: TimeSlotDecor(
-            child: SizedBox(
-              child: Column(children: <Widget>[
-                _buildTimeHeader(time),
-                Expanded(
-                    child: !minimize
-                        ? _buildReminderColumn()
-                        : _buildMiniRemindersWrap())
-              ]),
+    return Container(
+      alignment: Alignment.topCenter,
+      child: AnimatedSize(
+          vsync: this,
+          curve: Curves.bounceInOut,
+          duration: Duration(milliseconds: 300),
+          child: IntrinsicHeight(
+            child: TimeSlotDecor(
+              child: SizedBox(
+                child: Column(children: <Widget>[
+                  _buildTimeHeader(time),
+                  Expanded(
+                      child: !minimize
+                          ? _buildReminderColumn()
+                          : _buildMiniRemindersWrap())
+                ]),
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   Widget _buildTimeHeader(String time) {
@@ -94,8 +122,8 @@ class _TimeSlotState extends State<TimeSlot>
                 ],
               ),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), // was 20  10
-                topRight: Radius.circular(20),
+                topLeft: Radius.circular(10), // was 20  10
+                topRight: Radius.circular(10),
               )),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: 35),
@@ -110,9 +138,13 @@ class _TimeSlotState extends State<TimeSlot>
                       color: Colors.transparent,
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(left: 15, top: 2, right: 10),
-                      child: Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 20,
+                      child: RotationTransition(
+                        turns: Tween(begin: 0.0, end: 0.5)
+                            .animate(rotationController),
+                        child: Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 20,
+                        ),
                       )),
                   Container(
                     padding: EdgeInsets.only(left: 0), //was 10
@@ -197,8 +229,8 @@ class TimeSlotDecor extends StatelessWidget {
             ),
           ],
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10)),
           color: Colors.white,

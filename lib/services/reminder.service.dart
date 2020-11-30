@@ -1,22 +1,63 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/repositories/reminder.repository.dart';
 import 'package:diabetty/models/reminder.model.dart';
 
 class ReminderService {
-  ReminderRepository reminderRepository = ReminderRepository();
+  ReminderRepository reminderRepo = ReminderRepository();
 
   Future<void> updateReminder(Reminder reminder) async {
     try {
-      reminderRepository.updateReminder(reminder);
+      reminderRepo.updateReminder(reminder);
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> setReminder(Reminder reminder) async {
+  Future<void> saveReminder(Reminder reminder) async {
     try {
-      reminderRepository.setReminder(reminder);
+      print('aaah');
+      reminderRepo.setReminder(reminder);
     } catch (e) {
+      print(e);
+      print('herrrrre');
       rethrow;
     }
+  }
+
+  Future<List<Reminder>> getReminders(String uid, {bool local: false}) async {
+    try {
+      final reminders =
+          (await reminderRepo.getAllReminders(uid, local: local)).data;
+      if (reminders == null) {
+        //print('init null');
+        return List();
+      }
+      //print('init here');
+      return reminders.map<Reminder>((json) {
+        //print('init map');
+        Reminder reminder = Reminder();
+        reminder.id = json['id'];
+        //print(therapy.id);
+        return reminder..loadFromJson(json);
+      }).toList();
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+  }
+
+  Stream<List<Reminder>> reminderStream(String uid) {
+    return reminderRepo.onStateChanged(uid).map(_reminderListFromSnapshop);
+  }
+
+  List<Reminder> _reminderListFromSnapshop(QuerySnapshot snapshot) {
+    return snapshot.documents.map<Reminder>((doc) {
+      Reminder reminder = Reminder();
+      reminder.id = doc.documentID;
+      doc.data['id'] = reminder.id;
+      reminder.loadFromJson(doc.data);
+
+      return reminder;
+    }).toList();
   }
 }

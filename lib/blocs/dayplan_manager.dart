@@ -4,6 +4,7 @@ import 'package:diabetty/blocs/mixins/reminder_manager_mixin.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/repositories/user.repository.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/material.dart';
@@ -64,8 +65,10 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   get userTherapies => (therapyManager?.usersTherapies) ?? List();
 
   DateTime get currentDateStamp => _currentDateStamp ?? DateTime.now();
-  Sink<List<Reminder>> get dataSink => _dataController.sink;
-  Stream<List<Reminder>> get dataStream => _dataController.stream;
+
+  Stream<List<Reminder>> _reminderStream() =>
+      reminderService.reminderStream(uid);
+  Stream<List<Reminder>> get reminderStream => this._reminderStream();
 
   set currentDateStamp(DateTime value) {
     if (value.isSameDayAs(DateTime.now()))
@@ -82,20 +85,30 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   }
 
   @override
-  void init() {
+  Future<void> init() async {
     super.init();
     currentDateStamp = DateTime.now();
+    if (uid != null) {
+      try {
+        usersReminders = await reminderService.getReminders(uid, local: true);
+      } catch (e) {}
+      this._reminderStream().listen((event) async {
+        usersReminders = event ?? usersReminders;
+        // if (event.isNotEmpty) updateListeners();
+      });
+    }
   }
 
   List<Reminder> getFinalRemindersList({DateTime date}) {
     date = date ?? currentDateStamp;
     List<Reminder> finalReminders = getProjectedReminders(date: date);
     List<Reminder> fetchedReminders = usersReminders
-        .where((reminder) => reminder.isToday(date: date))
+        .where((element) => element.time.isSameDayAs(date))
         .toList();
-    finalReminders.removeWhere((element) => fetchedReminders.any((e) =>
-        element.therapyId == e.therapyId &&
-        element.reminderRuleId == e.reminderRuleId));
+    finalReminders.removeWhere((element) {
+      return fetchedReminders
+          .any((e) => element.reminderRuleId == e.reminderRuleId);
+    });
     finalReminders.addAll(fetchedReminders);
     return finalReminders;
   }
@@ -106,8 +119,12 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     //print(therapies.length);
     List<Reminder> projectedReminders = List();
     therapies
-        .where(
-            (therapy) => therapy.mode == "planned" && therapy.schedule != null)
+        .where((therapy) =>
+            therapy.mode == "planned" &&
+            therapy.schedule != null &&
+            therapy.schedule.startDate.compareTo(DateTime.now()) <= 0 &&
+            (therapy.schedule.endDate == null ||
+                therapy.schedule.endDate.isAfter(DateTime.now())))
         .forEach((therapy) {
       therapy.schedule?.reminderRules?.forEach((rule) {
         if (rule.isActiveOn(date))
@@ -128,11 +145,12 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
       return List();
     }
     for (Reminder reminder in tempReminders) {
-      DateTime time = reminder.getDateTimeAs12hr;
+      DateTime time = reminder.time.toSimpleDateTime();
+      DateTime rescheduledTime = reminder.rescheduledTime.toSimpleDateTime();
       TimeSlot timeSlot;
-      int slotIndex = getTimeSlotIndex(timeSlots, time);
+      int slotIndex = getTimeSlotIndex(timeSlots, rescheduledTime ?? time);
       if (slotIndex == null) {
-        timeSlot = new TimeSlot(time);
+        timeSlot = new TimeSlot(rescheduledTime ?? time);
         timeSlots.add(timeSlot);
         timeSlot.reminders.add(reminder);
       } else {

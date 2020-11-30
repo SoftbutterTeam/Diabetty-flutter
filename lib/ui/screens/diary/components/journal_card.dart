@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
-import 'package:diabetty/ui/screens/diary/a_journal/journal_action.mixin.dart';
+import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/extensions/string_extension.dart';
 
