@@ -6,21 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class SnoozeOptionScreen extends StatefulWidget {
+  int selectedRepeatRadioTile;
+  int selectedMinuteRadioTile;
+
+  SnoozeOptionScreen({this.selectedMinuteRadioTile, this.selectedRepeatRadioTile});
+
   @override
   _SnoozeOptionScreenState createState() => _SnoozeOptionScreenState();
 }
 
 class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
   bool toggle = false;
-  int selectedRepeatRadioTile;
-  int selectedMinuteRadioTile;
 
-  @override
-  void initState() {
-    super.initState();
-    selectedRepeatRadioTile = 0;
-    selectedMinuteRadioTile = 0;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +43,13 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
 
   setSelectedRadio(int val) {
     setState(() {
-      selectedRepeatRadioTile = val;
+      widget.selectedRepeatRadioTile = val;
     });
   }
 
   setSelectedRadioTile(int val) {
     setState(() {
-      selectedMinuteRadioTile = val;
+      widget.selectedMinuteRadioTile = val;
     });
   }
 
@@ -62,18 +59,48 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
         _buildToggle(size),
         SizedBox(height: size.height * 0.04),
         HeadingText(size: size, title: "interval"),
-        IgnorePointer(
-            ignoring: (toggle) ? false : true,
-            child: _buildMinuteContainer(size)),
+        AnimatedOpacity(
+          duration: Duration(milliseconds: 100),
+          opacity: (toggle) ? 1 : 0.5,
+          child: IgnorePointer(
+              ignoring: (toggle) ? false : true,
+              child: _buildMinuteContainer(size)),
+        ),
         SizedBox(height: size.height * 0.04),
         HeadingText(size: size, title: "repeat"),
-        IgnorePointer(
-          ignoring: (toggle) ? false : true,
-          child: _buildRepeatContainer(size),
+        AnimatedOpacity(
+          duration: Duration(milliseconds: 100),
+          opacity: (toggle) ? 1 : 0.5,
+          child: IgnorePointer(
+            ignoring: (toggle) ? false : true,
+            child: _buildRepeatContainer(size),
+          ),
         ),
       ],
     );
   }
+
+  BoxDecoration toggleDecoration = BoxDecoration(
+      color: Colors.grey[50],
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 1,
+          blurRadius: 3,
+          offset: Offset(0, 0.5),
+        ),
+        BoxShadow(
+          color: Colors.white.withOpacity(1),
+          spreadRadius: 3,
+          blurRadius: 0,
+          offset: Offset(0, -1),
+        ),
+      ],
+      border: Border.all(
+        color: Colors.black26,
+        width: 0.2,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(20)));
 
   BoxDecoration decoration = BoxDecoration(
       color: Colors.grey[50],
@@ -103,7 +130,27 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: size.width,
       height: size.height * 0.07,
-      decoration: decoration,
+      decoration: BoxDecoration(
+          color: (toggle) ? Colors.orange[100] : Colors.grey[50],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: Offset(0, 0.5),
+            ),
+            BoxShadow(
+              color: Colors.white.withOpacity(1),
+              spreadRadius: 3,
+              blurRadius: 0,
+              offset: Offset(0, -1),
+            ),
+          ],
+          border: Border.all(
+            color: Colors.black26,
+            width: 0.2,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -134,27 +181,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
         padding: EdgeInsets.symmetric(vertical: 10),
         width: size.width,
         height: size.height * 0.22,
-        decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: Offset(0, 0.5),
-              ),
-              BoxShadow(
-                color: Colors.white.withOpacity(1),
-                spreadRadius: 3,
-                blurRadius: 0,
-                offset: Offset(0, -1),
-              ),
-            ],
-            border: Border.all(
-              color: Colors.black26,
-              width: 0.2,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+        decoration: decoration,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -162,36 +189,36 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               activeColor: Colors.orange[800],
               title: Text("3 times"),
               value: 3,
-              groupValue: selectedRepeatRadioTile,
+              groupValue: widget.selectedRepeatRadioTile,
               onChanged: (value) => {
                 setSelectedRadio(value),
                 print(value),
               },
-              selected: (selectedRepeatRadioTile == 3) ? true : false,
+              selected: (widget.selectedRepeatRadioTile == 3) ? true : false,
             ),
             _divider(size),
             RadioListTile(
               activeColor: Colors.orange[800],
               title: Text("5 times"),
               value: 5,
-              groupValue: selectedRepeatRadioTile,
+              groupValue: widget.selectedRepeatRadioTile,
               onChanged: (value) => {
                 setSelectedRadio(value),
                 print(value),
               },
-              selected: (selectedRepeatRadioTile == 5) ? true : false,
+              selected: (widget.selectedRepeatRadioTile == 5) ? true : false,
             ),
             _divider(size),
             RadioListTile(
               activeColor: Colors.orange[800],
-              title: Text("Forever"),
-              value: 100,
-              groupValue: selectedRepeatRadioTile,
+              title: Text("10 times"),
+              value: 10,
+              groupValue: widget.selectedRepeatRadioTile,
               onChanged: (value) => {
                 setSelectedRadio(value),
                 print(value),
               },
-              selected: (selectedRepeatRadioTile == 100) ? true : false,
+              selected: (widget.selectedRepeatRadioTile == 100) ? true : false,
             ),
           ],
         ));
@@ -204,27 +231,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
         padding: EdgeInsets.symmetric(vertical: 10),
         width: size.width,
         height: size.height * 0.30,
-        decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: Offset(0, 0.5),
-              ),
-              BoxShadow(
-                color: Colors.white.withOpacity(1),
-                spreadRadius: 3,
-                blurRadius: 0,
-                offset: Offset(0, -1),
-              ),
-            ],
-            border: Border.all(
-              color: Colors.black26,
-              width: 0.2,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+        decoration: decoration,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -232,48 +239,48 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               activeColor: Colors.orange[800],
               title: Text("5 minutes"),
               value: 5,
-              groupValue: selectedMinuteRadioTile,
+              groupValue: widget.selectedMinuteRadioTile,
               onChanged: (value) => {
                 setSelectedRadioTile(value),
                 print(value),
               },
-              selected: (selectedMinuteRadioTile == 5) ? true : false,
+              selected: (widget.selectedMinuteRadioTile == 5) ? true : false,
             ),
             _divider(size),
             RadioListTile(
               activeColor: Colors.orange[800],
               title: Text("10 minutes"),
               value: 10,
-              groupValue: selectedMinuteRadioTile,
+              groupValue: widget.selectedMinuteRadioTile,
               onChanged: (value) => {
                 setSelectedRadioTile(value),
                 print(value),
               },
-              selected: (selectedMinuteRadioTile == 10) ? true : false,
+              selected: (widget.selectedMinuteRadioTile == 10) ? true : false,
             ),
             _divider(size),
             RadioListTile(
               activeColor: Colors.orange[800],
               title: Text("15 minutes"),
               value: 15,
-              groupValue: selectedMinuteRadioTile,
+              groupValue: widget.selectedMinuteRadioTile,
               onChanged: (value) => {
                 setSelectedRadioTile(value),
                 print(value),
               },
-              selected: (selectedMinuteRadioTile == 15) ? true : false,
+              selected: (widget.selectedMinuteRadioTile == 15) ? true : false,
             ),
             _divider(size),
             RadioListTile(
               activeColor: Colors.orange[800],
               title: Text("30 minutes"),
               value: 30,
-              groupValue: selectedMinuteRadioTile,
+              groupValue: widget.selectedMinuteRadioTile,
               onChanged: (value) => {
                 setSelectedRadioTile(value),
                 print(value),
               },
-              selected: (selectedMinuteRadioTile == 30) ? true : false,
+              selected: (widget.selectedMinuteRadioTile == 30) ? true : false,
             ),
           ],
         ));

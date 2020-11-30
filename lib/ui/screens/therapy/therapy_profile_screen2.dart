@@ -51,7 +51,6 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         _buildHeader(size),
         Expanded(
             child: SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 child: _buildBody(size))),
         _buildFooter(size),
@@ -95,7 +94,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             Container(
               color: backgroundColor,
               padding: EdgeInsets.only(top: 10),
-              child: (reminderRulesList.length < 7)
+              child: (reminderRulesList.length < 10)
                   ? ColumnBuilder(
                       itemCount: reminderRulesList.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -270,7 +269,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             height: size.height * 0.08,
             width: size.width * 0.16,
             decoration: BoxDecoration(
-                shape: BoxShape.circle, color: Colors.orange[100]),
+              shape: BoxShape.circle,
+              color: Colors.orange[100],
+            ),
             child: Center(
               child: Icon(
                 Icons.add,
@@ -484,7 +485,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   Future showRefillDialog(BuildContext context) {
-     return showDialog(
+    return showDialog(
         context: context,
         builder: (context) => BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),

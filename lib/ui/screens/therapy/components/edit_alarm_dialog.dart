@@ -25,7 +25,7 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
   bool alarmSound;
   bool vibration;
   bool snooze;
-  int reoccurringMin = 15;
+  int reoccurringMin = 5;
   int reoccurringTimes = 3;
 
   @override
@@ -104,7 +104,10 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
           GestureDetector(
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SnoozeOptionScreen()),
+              MaterialPageRoute(
+                  builder: (context) => SnoozeOptionScreen(
+                      selectedRepeatRadioTile: reoccurringTimes,
+                      selectedMinuteRadioTile: reoccurringMin)),
             ),
             child: Container(
               width: size.width * 0.4,
@@ -113,9 +116,15 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 2.0),
-                    child: Text("Reocurring", style: TextStyle(fontSize: 20.0)),
+                    child: Text("Reoccurring", style: TextStyle(fontSize: 20.0)),
                   ),
-                  Text((snooze) ? reoccurringMin.toString() + " min ," +  reoccurringTimes.toString() + " times" : "off",
+                  Text(
+                      (snooze)
+                          ? reoccurringMin.toString() +
+                              " min ," +
+                              reoccurringTimes.toString() +
+                              " times"
+                          : "off",
                       style: TextStyle(fontSize: 15.0)),
                 ],
               ),
