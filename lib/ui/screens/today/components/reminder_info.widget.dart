@@ -148,7 +148,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                       appearance_iconss[reminder.appearance],
                     ),
                   ),
-                  SizedBox(width: max(size.width * 0.04, 50)),
+                  SizedBox(width: max(size.width * 0.03, 10)),
                   Column(
                     children: [
                       Text(reminder.name,
