@@ -44,7 +44,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   @override
   Widget build(BuildContext context) {
-    colorToFade = reminder.isComplete ? Colors.green : Colors.grey;
+    colorToFade = false ? Colors.green : Colors.grey;
     opacity = reminder.isComplete ? .3 : .3;
     var size = MediaQuery.of(context).size;
     return IntrinsicHeight(
@@ -84,43 +84,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     );
   }
 
-  Widget _buildBody(size) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SvgPicture.asset(
-            appearance_iconss[reminder.appearance],
-            width: 30,
-            height: 30,
-          ),
-          text(reminder.name),
-          Row(
-            children: [
-              SizedBox(width: 10),
-              Icon(Icons.date_range, size: 20),
-              SizedBox(width: 10),
-              text(
-                  'Scheduled for ' +
-                      DateFormat('dd/MM/yy').format(reminder.time),
-                  fontSize: 12.0),
-            ],
-          ),
-          Row(
-            children: [
-              SizedBox(width: 10),
-              Icon(Icons.filter_center_focus, size: 20),
-              SizedBox(width: 10),
-              text('Take ' + 'reminder.dose.toString()' + ' pill(s)',
-                  fontSize: 12.0),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildBody2(size) {
     int remStrength = reminder.strength;
     int remQuantity = reminder.dose;
@@ -144,8 +107,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 direction: Axis.horizontal,
                 children: [
                   SizedBox(
-                    height: 30,
-                    width: 30,
+                    height: 33,
+                    width: 33,
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
@@ -161,7 +124,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.clip,
                         style: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 21.0,
                             color: null,
                             fontWeight: FontWeight.w600)),
                   ),
@@ -172,7 +135,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               height: 1,
               width: size.width * 0.1,
               color: Colors.orange[800],
-              margin: EdgeInsets.only(bottom: 30),
+              margin: EdgeInsets.only(bottom: 30, top: 5),
             ),
             Container(
               padding: EdgeInsets.only(bottom: 3),
@@ -297,6 +260,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   Widget _buildHeader() {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -415,33 +379,36 @@ class ReminderModalFooterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var edgeInsets = EdgeInsets.fromLTRB(10, 10, 10, 0);
+    var size = MediaQuery.of(context).size;
+    var edgeInsets = EdgeInsets.fromLTRB(0, 10, 0, 0);
     return Container(
-        decoration: BoxDecoration(
-            color: Colors.transparent, borderRadius: BorderRadius.circular(10)),
-        margin: edgeInsets,
-        height: height2,
-        width: width2,
-        child: Column(children: <Widget>[
-          IconButton(
-            onPressed: onTap,
-            padding: EdgeInsets.all(3),
-            icon: SvgPicture.asset(
-              assetName,
-              width: width3,
-              height: height3,
-              color: color,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          color: Colors.transparent, borderRadius: BorderRadius.circular(10)),
+      margin: edgeInsets,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              onPressed: onTap,
+              padding: EdgeInsets.symmetric(
+                  vertical: 3, horizontal: size.height * 0.01),
+              icon: SvgPicture.asset(
+                assetName,
+                color: color,
+              ),
             ),
-          ),
-          SizedBox(height: 5),
-          text(
-            text2,
-            textColor: Colors.black,
-            fontFamily: fontSemibold,
-            fontSize: 12.0,
-            maxLine: 2,
-            isCentered: true,
-          ),
-        ]));
+            SizedBox(height: 5),
+            text(
+              text2,
+              textColor: Colors.black,
+              fontFamily: fontSemibold,
+              fontSize: 13.0,
+              maxLine: 1,
+              isCentered: true,
+            ),
+          ]),
+    );
   }
 }

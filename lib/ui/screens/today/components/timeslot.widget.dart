@@ -219,6 +219,8 @@ class TimeSlotDecor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DayPlanManager dayPlanManager =
+        Provider.of<DayPlanManager>(context, listen: true);
     return Container(
         margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
         decoration: BoxDecoration(
