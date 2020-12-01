@@ -143,7 +143,11 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildWindowField() {
     return CustomTextField(
-      stackIcons: _icons(color: Colors.blueGrey),
+      stackIcons: _icons(
+          color: (widget.therapy.schedule == null ||
+                  widget.therapy.schedule.window == null)
+              ? Colors.red
+              : Colors.green),
       onTap: () => showWindow2(context),
       placeholder: _getWindowMessage(),
       placeholderText: 'Window',
@@ -156,7 +160,11 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildMinRestField() {
     return CustomTextField(
-      stackIcons: _icons(color: Colors.blueGrey),
+      stackIcons: _icons(
+          color: (widget.therapy.medicationInfo == null ||
+                  widget.therapy.medicationInfo.restDuration == null)
+              ? Colors.red
+              : Colors.green),
       onTap: () => showMinRestPopup2(context),
       placeholder: _getMinRestMessage(),
       placeholderText: 'Minimum Rest Duration',
