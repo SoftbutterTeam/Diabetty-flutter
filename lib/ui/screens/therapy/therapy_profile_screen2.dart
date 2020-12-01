@@ -11,6 +11,7 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_alarm_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
+import 'package:diabetty/ui/screens/therapy/components/profile_custom_textfield.dart';
 import 'package:diabetty/ui/screens/therapy/components/refill_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
@@ -121,7 +122,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
           ),
         ),
         Padding(padding: EdgeInsets.only(top: 10), child: _buildWindowField()),
-        Padding(padding: EdgeInsets.only(top: 5), child: _buildMinRestField()),
+        _buildMinRestField(),
       ],
     );
   }
@@ -142,9 +143,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   Widget _buildWindowField() {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: _icons(color: Colors.blueGrey),
-      onTap: () => showWindow2(context),
+      onTap: () {},
       placeholder: _getWindowMessage(),
       placeholderText: 'Window',
       // placeholderTextStyle: TextStyle(
@@ -155,9 +156,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   Widget _buildMinRestField() {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: _icons(color: Colors.blueGrey),
-      onTap: () => showMinRestPopup2(context),
+      onTap: () {},
       placeholder: _getMinRestMessage(),
       placeholderText: 'Minimum Rest Duration',
       // placeholderTextStyle: TextStyle(
