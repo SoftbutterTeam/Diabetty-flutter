@@ -407,7 +407,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
   bool showArrows;
   @override
   void initState() {
-    manager = Provider.of<DayPlanManager>(context, listen: false);
+    manager = Provider.of<DayPlanManager>(context, listen: true);
     fadeController = AnimationController(
         vsync: this,
         reverseDuration: Duration(seconds: 4),

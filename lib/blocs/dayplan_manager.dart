@@ -81,7 +81,6 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   @override
   void dispose() {
     _dataController.close();
-
     super.dispose();
   }
 
@@ -94,8 +93,9 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         usersReminders = await reminderService.getReminders(uid, local: true);
       } catch (e) {}
       this._reminderStream().listen((event) async {
-        // usersReminders = event ?? usersReminders;
-        // if (event.isNotEmpty) updateListeners();
+        usersReminders = event ?? usersReminders;
+
+        if (event.isNotEmpty) updateListeners();
       });
     }
   }
