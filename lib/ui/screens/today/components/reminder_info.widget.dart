@@ -122,10 +122,16 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   Widget _buildBody2(size) {
+    int remStrength = reminder.strength;
+    int remQuantity = reminder.dose;
+    int remType = reminder.doseTypeIndex;
+    int remStrengthType = reminder.strengthUnitindex;
+    int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
+
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: size.height * 0.25),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20),
+        padding: EdgeInsets.symmetric(vertical: 15),
         child: Column(
           children: [
             Padding(
@@ -166,39 +172,124 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               height: 1,
               width: size.width * 0.1,
               color: Colors.orange[800],
-              margin: EdgeInsets.only(bottom: 10),
+              margin: EdgeInsets.only(bottom: 30),
             ),
-            Row(
-              children: [
-                SizedBox(width: 15),
-                Icon(Icons.date_range, size: 20),
-                SizedBox(width: 20),
-                text(
-                    'Scheduled for ' +
-                        DateFormat('dd/MM/yy').format(reminder.time) +
-                        ' at ' +
-                        reminder.time.formatTime(),
-                    fontSize: 12.0),
-              ],
+            Container(
+              padding: EdgeInsets.only(bottom: 3),
+              child: Row(
+                children: [
+                  SizedBox(width: 15),
+                  Icon(Icons.date_range, size: 20),
+                  SizedBox(width: 20),
+                  text(
+                      'Time: ' +
+                          reminder.time.shortenDateRepresent() +
+                          " " +
+                          reminder.time.formatTime().toLowerCase(),
+                      fontSize: 13.0),
+                ],
+              ),
             ),
-            SizedBox(height: size.height * 0.005),
-            Row(
-              children: [
-                SizedBox(width: 15),
-                Icon(Icons.filter_center_focus, size: 20),
-                SizedBox(width: 20),
-                text(
-                    'Take ' +
-                        reminder.dose.toString() +
-                        ' ' +
-                        unitTypes[reminder.doseTypeIndex],
-                    fontSize: 12.0),
-              ],
-            ),
+            if (remType != null && remQuantity != null)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.filter_center_focus, size: 20),
+                    SizedBox(width: 20),
+                    text(
+                        'Dose: ' +
+                            reminder.dose.toString() +
+                            ' ' +
+                            unitTypes[reminder.doseTypeIndex]
+                                .plurarlUnits(reminder.dose) +
+                            ((remStrength != null &&
+                                    remStrengthType != null &&
+                                    remStrengthType != 0)
+                                ? ", $remStrength ${strengthUnits[remStrengthType]}"
+                                : ''),
+                        fontSize: 13.0),
+                  ],
+                ),
+              ),
+            if (remAdviceInd != 0)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.filter_center_focus, size: 20),
+                    SizedBox(width: 20),
+                    text(
+                        "Advice: ${intakeAdvice[reminder.advices[0]].toLowerCase()}",
+                        fontSize: 13.0),
+                  ],
+                ),
+              ),
+            if (_buildReminderStatusDescription() != null)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.filter_center_focus, size: 20),
+                    SizedBox(width: 20),
+                    _buildReminderStatusDescription() ?? SizedBox(),
+                  ],
+                ),
+              )
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildReminderStatusDescription() {
+    String remDescription = "";
+    Color color;
+
+    switch (reminder.status) {
+      case ReminderStatus.completed:
+        if (reminder.takenAt == null) return null;
+        remDescription = "taken at ${reminder.takenAt.formatTime()}";
+        color = Colors.green[600];
+        break;
+      case ReminderStatus.skipped:
+        if (reminder.skippedAt == null) return null;
+        remDescription = "skipped at ${reminder.skippedAt.formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.missed:
+        if (reminder.time == null) return null;
+        remDescription =
+            "missed at ${(reminder.rescheduledTime ?? reminder.time).add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.redAccent[700];
+        break;
+      case ReminderStatus.snoozed:
+        if (reminder.rescheduledTime == null) return null;
+        remDescription = "rescheduled from ${reminder.time.formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.active:
+        if (reminder.time == null) return null;
+        remDescription =
+            "take before ${reminder.time.add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.green[600];
+        break;
+      case ReminderStatus.isLate:
+        if (reminder.rescheduledTime == null) return null;
+        remDescription =
+            "take before ${reminder.rescheduledTime.add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.idle:
+        return null;
+      default:
+        return null;
+    }
+    return text(remDescription.toLowerCase().capitalize(),
+        fontSize: 13.0, maxLine: 2, textColor: color);
   }
 
   Widget _buildHeader() {
@@ -212,7 +303,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: reminder.isComplete ? Colors.greenAccent : Colors.transparent,
+          color: reminder.isComplete ? Colors.transparent : Colors.transparent,
           gradient: RadialGradient(
             radius: 5,
             tileMode: TileMode.mirror,
@@ -252,7 +343,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   Widget _buildFooter(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: reminder.isComplete ? Colors.greenAccent : null,
+            color: reminder.isComplete
+                ? Colors.transparent
+                : Colors.transparent, // meant to be null
             gradient: RadialGradient(
               radius: 5,
               tileMode: TileMode.mirror,

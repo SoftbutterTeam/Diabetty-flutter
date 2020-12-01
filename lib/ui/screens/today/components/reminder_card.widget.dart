@@ -147,6 +147,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
     int remQuantity = reminder.dose;
     int remType = reminder.doseTypeIndex;
     int remStrengthType = reminder.strengthUnitindex;
+    int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
     String remDescription = "";
     if (remStrength != null && remStrengthType != null && remStrengthType != 0)
       remDescription += "$remStrength ${strengthUnits[remStrengthType]}";
@@ -154,6 +155,8 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
     if (remType != null && remQuantity != null)
       remDescription +=
           "${remQuantity ?? ''} ${unitTypes[remType].plurarlUnits(remQuantity ?? 1)}";
+    if (remAdviceInd != 0)
+      remDescription += ", ${intakeAdvice[reminder.advices[0]].toLowerCase()}";
 
     return remDescription;
   }

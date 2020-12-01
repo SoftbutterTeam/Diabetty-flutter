@@ -141,7 +141,7 @@ class _TimeSlotState extends State<TimeSlot>
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(left: 15, top: 2, right: 10),
                       child: RotationTransition(
-                        turns: Tween(begin: 0.0, end: 0.5)
+                        turns: Tween(begin: 0.0, end: -0.5)
                             .animate(rotationController),
                         child: Icon(
                           Icons.keyboard_arrow_down,

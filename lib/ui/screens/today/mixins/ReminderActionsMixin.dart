@@ -233,6 +233,7 @@ mixin ReminderActionsMixin<T extends Widget> {
         context: context,
         barrierColor: Colors.black12, //black12 white
         pageBuilder: (context, anim1, anim2) => Dialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: 25),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
@@ -246,14 +247,35 @@ mixin ReminderActionsMixin<T extends Widget> {
       (BuildContext context, Animation<double> anim1, anim2, Widget child) {
         bool isReversed = anim1.status == AnimationStatus.reverse;
         double animValue = isReversed ? 0 : anim1.value;
-        return BackdropFilter(
-          filter:
-              ImageFilter.blur(sigmaX: 8 * animValue, sigmaY: 8 * animValue),
-          child: Container(
-            alignment: Alignment.center,
-            child: FadeTransition(
-              child: child,
-              opacity: anim1,
+        var size = MediaQuery.of(context).size;
+        return SafeArea(
+          child: BackdropFilter(
+            filter:
+                ImageFilter.blur(sigmaX: 8 * animValue, sigmaY: 8 * animValue),
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(bottom: size.height * .1),
+              child: FadeTransition(
+                opacity: anim1,
+                child: Stack(
+                  children: [
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 10, left: 10),
+                      child: GestureDetector(
+                        onTapDown: (TapDownDetails tp) =>
+                            Navigator.pop(context),
+                        child: Icon(
+                          Icons.cancel,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                    child,
+                  ],
+                ),
+              ),
             ),
           ),
         );
