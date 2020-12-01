@@ -190,7 +190,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   Widget _buildRemindersList(BuildContext context) {
     List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
-
+    DayPlanManager dayPlanManager =
+        Provider.of<DayPlanManager>(context, listen: true);
     if (timeSlots.length == 0) return Container();
     var size = MediaQuery.of(context).size;
     return Scrollbar(
