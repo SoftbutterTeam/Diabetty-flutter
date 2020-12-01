@@ -72,6 +72,8 @@ class _TimeSlotState extends State<TimeSlot>
 
   @override
   Widget build(BuildContext context) {
+    allComplete = widget.timeSlot.allComplete;
+
     DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
 
     super.build(context);
@@ -139,7 +141,7 @@ class _TimeSlotState extends State<TimeSlot>
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(left: 15, top: 2, right: 10),
                       child: RotationTransition(
-                        turns: Tween(begin: 0.0, end: 0.5)
+                        turns: Tween(begin: 0.0, end: -0.5)
                             .animate(rotationController),
                         child: Icon(
                           Icons.keyboard_arrow_down,
@@ -217,6 +219,8 @@ class TimeSlotDecor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DayPlanManager dayPlanManager =
+        Provider.of<DayPlanManager>(context, listen: true);
     return Container(
         margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
         decoration: BoxDecoration(

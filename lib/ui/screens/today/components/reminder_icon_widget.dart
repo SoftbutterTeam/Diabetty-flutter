@@ -207,7 +207,7 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 
   Widget _buildRelevantIcon() {
     ReminderStatus status = widget.reminder.status;
-    print(status.toString() + " ---h");
+    // print(status.toString() + " ---h");
     switch (status) {
       case ReminderStatus.completed:
         return _buildCompletedIcon();

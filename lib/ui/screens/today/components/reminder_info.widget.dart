@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:diabetty/extensions/datetime_extension.dart';
+import 'package:diabetty/extensions/index.dart';
 
 class ReminderInfoModal extends StatefulWidget {
   const ReminderInfoModal({
@@ -36,8 +36,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   @override
   void initState() {
-    colorToFade = reminder.isComplete ? Colors.green : Colors.grey;
-    opacity = reminder.isComplete ? .3 : .3;
     super.initState();
   }
 
@@ -46,20 +44,18 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   @override
   Widget build(BuildContext context) {
+    colorToFade = reminder.isComplete ? Colors.green : Colors.grey;
+    opacity = reminder.isComplete ? .3 : .3;
     var size = MediaQuery.of(context).size;
     return IntrinsicHeight(
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
         alignment: Alignment.center,
-        child: Card(
-          shadowColor: null,
-          elevation: 0,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(curve),
-          ),
-          child: _buildContent(context, size),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
+        child: _buildContent(context, size),
       ),
     );
   }
@@ -126,126 +122,230 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   Widget _buildBody2(size) {
+    int remStrength = reminder.strength;
+    int remQuantity = reminder.dose;
+    int remType = reminder.doseTypeIndex;
+    int remStrengthType = reminder.strengthUnitindex;
+    int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
+
     return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: size.height * 0.15),
+      constraints: BoxConstraints(minHeight: size.height * 0.25),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20),
+        padding: EdgeInsets.symmetric(vertical: 15),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.only(bottom: 12.0, left: 13, right: 13),
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 3,
+                spacing: 7,
+                direction: Axis.horizontal,
                 children: [
-                  Container(
-                    height: size.height * 0.045,
-                    width: size.width * 0.1,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: SvgPicture.asset(
-                      appearance_iconss[reminder.appearance],
+                  SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.white),
+                      child: SvgPicture.asset(
+                        appearance_iconss[reminder.appearance],
+                      ),
                     ),
                   ),
-                  SizedBox(width: max(size.width * 0.03, 10)),
-                  Column(
-                    children: [
-                      Text(reminder.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 22.0,
-                              color: null,
-                              fontWeight: FontWeight.w600)),
-                    ],
+                  SizedBox(
+                    child: Text(reminder.name.capitalizeBegins() + " ",
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: null,
+                            fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),
             ),
             Container(
               height: 1,
-              width: size.width * 0.75,
-              color: Colors.black12,
-              margin: EdgeInsets.only(bottom: 10),
+              width: size.width * 0.1,
+              color: Colors.orange[800],
+              margin: EdgeInsets.only(bottom: 30),
             ),
-            Row(
-              children: [
-                SizedBox(width: 15),
-                Icon(Icons.date_range, size: 20),
-                SizedBox(width: 20),
-                text(
-                    'Scheduled for ' +
-                        DateFormat('dd/MM/yy').format(reminder.time) +
-                        ' at ' +
-                        reminder.time.formatTime(),
-                    fontSize: 12.0),
-              ],
+            Container(
+              padding: EdgeInsets.only(bottom: 3),
+              child: Row(
+                children: [
+                  SizedBox(width: 15),
+                  Icon(Icons.date_range, size: 20),
+                  SizedBox(width: 20),
+                  text(
+                      'Time: ' +
+                          reminder.time.shortenDateRepresent() +
+                          " " +
+                          reminder.time.formatTime().toLowerCase(),
+                      fontSize: 13.0),
+                ],
+              ),
             ),
-            SizedBox(height: size.height * 0.005),
-            Row(
-              children: [
-                SizedBox(width: 15),
-                Icon(Icons.filter_center_focus, size: 20),
-                SizedBox(width: 20),
-                text(
-                    'Take ' +
-                        reminder.dose.toString() +
-                        ' ' +
-                        unitTypes[reminder.doseTypeIndex],
-                    fontSize: 12.0),
-              ],
-            ),
+            if (remType != null && remQuantity != null)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.filter_center_focus, size: 20),
+                    SizedBox(width: 20),
+                    text(
+                        'Dose: ' +
+                            reminder.dose.toString() +
+                            ' ' +
+                            unitTypes[reminder.doseTypeIndex]
+                                .plurarlUnits(reminder.dose) +
+                            ((remStrength != null &&
+                                    remStrengthType != null &&
+                                    remStrengthType != 0)
+                                ? ", $remStrength ${strengthUnits[remStrengthType]}"
+                                : ''),
+                        fontSize: 13.0),
+                  ],
+                ),
+              ),
+            if (remAdviceInd != 0)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.filter_center_focus, size: 20),
+                    SizedBox(width: 20),
+                    text(
+                        "Advice: ${intakeAdvice[reminder.advices[0]].toLowerCase()}",
+                        fontSize: 13.0),
+                  ],
+                ),
+              ),
+            if (_buildReminderStatusDescription() != null)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.filter_center_focus, size: 20),
+                    SizedBox(width: 20),
+                    _buildReminderStatusDescription() ?? SizedBox(),
+                  ],
+                ),
+              )
           ],
         ),
       ),
     );
   }
 
+  Widget _buildReminderStatusDescription() {
+    String remDescription = "";
+    Color color;
+
+    switch (reminder.status) {
+      case ReminderStatus.completed:
+        if (reminder.takenAt == null) return null;
+        remDescription = "taken at ${reminder.takenAt.formatTime()}";
+        color = Colors.green[600];
+        break;
+      case ReminderStatus.skipped:
+        if (reminder.skippedAt == null) return null;
+        remDescription = "skipped at ${reminder.skippedAt.formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.missed:
+        if (reminder.time == null) return null;
+        remDescription =
+            "missed at ${(reminder.rescheduledTime ?? reminder.time).add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.redAccent[700];
+        break;
+      case ReminderStatus.snoozed:
+        if (reminder.rescheduledTime == null) return null;
+        remDescription = "rescheduled from ${reminder.time.formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.active:
+        if (reminder.time == null) return null;
+        remDescription =
+            "take before ${reminder.time.add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.green[600];
+        break;
+      case ReminderStatus.isLate:
+        if (reminder.rescheduledTime == null) return null;
+        remDescription =
+            "take before ${reminder.rescheduledTime.add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        color = Colors.orange[900];
+        break;
+      case ReminderStatus.idle:
+        return null;
+      default:
+        return null;
+    }
+    return text(remDescription.toLowerCase().capitalize(),
+        fontSize: 13.0, maxLine: 2, textColor: color);
+  }
+
   Widget _buildHeader() {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(curve),
+          topRight: Radius.circular(curve),
+        ),
+      ),
       child: Container(
-          decoration: BoxDecoration(
-              color: reminder.isComplete ? Colors.greenAccent : null,
-              gradient: RadialGradient(
-                radius: 5,
-                tileMode: TileMode.mirror,
-                focalRadius: 2,
-                colors: [
-                  colorToFade.shade300.withOpacity(opacity),
-                  colorToFade.shade200.withOpacity(opacity),
-                  Colors.white.withOpacity(.1),
-                  Colors.white.withOpacity(.1),
-                ],
+        decoration: BoxDecoration(
+          color: reminder.isComplete ? Colors.transparent : Colors.transparent,
+          gradient: RadialGradient(
+            radius: 5,
+            tileMode: TileMode.mirror,
+            focalRadius: 2,
+            colors: [
+              colorToFade.shade300.withOpacity(opacity),
+              colorToFade.shade200.withOpacity(opacity),
+              Colors.white.withOpacity(.1),
+              Colors.white.withOpacity(.1),
+            ],
+          ),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(curve),
+            topRight: Radius.circular(curve),
+          ),
+        ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 40),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(Icons.more_vert, color: Colors.transparent),
+              Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: GestureDetector(
+                    onTap: () {},
+                    // onTap: () => navigateTherapyProfile(context),
+                    child: Icon(Icons.more_horiz)),
               ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(curve), // was 20  10
-                topRight: Radius.circular(curve),
-              )),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 40),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.more_vert, color: Colors.transparent),
-                Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: GestureDetector(
-                      onTap: () {},
-                      // onTap: () => navigateTherapyProfile(context),
-                      child: Icon(Icons.more_horiz)),
-                ),
-              ],
-            ),
-          )),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildFooter(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: reminder.isComplete ? Colors.greenAccent : null,
+            color: reminder.isComplete
+                ? Colors.transparent
+                : Colors.transparent, // meant to be null
             gradient: RadialGradient(
               radius: 5,
               tileMode: TileMode.mirror,
