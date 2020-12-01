@@ -20,7 +20,7 @@ class ReminderService {
     } catch (e) {
       print(e);
       print('herrrrre');
-      rethrow;
+      return null;
     }
   }
 
@@ -42,7 +42,7 @@ class ReminderService {
       }).toList();
     } catch (e) {
       print(e);
-      throw e;
+      return null;
     }
   }
 

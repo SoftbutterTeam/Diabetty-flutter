@@ -33,8 +33,9 @@ class Therapy {
   bool get isNeeded => !isPlanned;
 
   loadFromJson(Map<String, dynamic> json) {
-    this.id ??= json['id'];
-    this.userId ??= json['userId'];
+    if (json.containsKey('id')) this.id ??= json['id'];
+
+    if (json.containsKey('userId')) this.userId ??= json['userId'];
     this.name = json['name'];
     this.mode = json['mode'];
     //print(json.toString());

@@ -49,7 +49,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                   ),
                   CupertinoActionSheetAction(
                     child: Text(
-                      "Reschedule till...",
+                      "Choose a Time",
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -169,7 +169,8 @@ mixin ReminderActionsMixin<T extends Widget> {
                   child: Text('Now')),
               CupertinoActionSheetAction(
                   onPressed: () {
-                    dayPlanManager.takeReminder(reminder, reminder.time);
+                    dayPlanManager.takeReminder(
+                        reminder, reminder.rescheduledTime ?? reminder.time);
                     Navigator.pop(context);
                   },
                   child: Text('On Time')),

@@ -1,10 +1,6 @@
-import 'dart:math';
+import 'package:diabetty/blocs/dayplan_manager.dart';
 
-import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
-import 'package:diabetty/models/reminder.model.dart';
-import 'package:diabetty/ui/constants/icons.dart';
 import 'dart:async';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
@@ -14,13 +10,9 @@ import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
     as SlotWidget;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
-import 'components/reminder_icon_widget.dart';
 
 class DayPlanScreenBuilder extends StatelessWidget {
   @override
@@ -55,7 +47,7 @@ class DayPlanScreen extends StatefulWidget {
   final bool isLoading;
 
   @override
-  _DayPlanScreenState createState() => _DayPlanScreenState(manager);
+  _DayPlanScreenState createState() => _DayPlanScreenState();
 }
 
 class _DayPlanScreenState extends State<DayPlanScreen>
@@ -65,7 +57,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   AnimationController _minController;
 
   Animation<double> _minAnimationRotate;
-  _DayPlanScreenState(this.manager);
+  _DayPlanScreenState();
 
   AnimationController _dateController;
   Animation _animation;
@@ -84,7 +76,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   @override
   void initState() {
     draggingIdle = true;
-
+    manager = Provider.of<DayPlanManager>(context, listen: false);
     manager.reminderScrollKeys = {};
     super.initState();
     _dateController = AnimationController(
@@ -99,6 +91,9 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     _minAnimationRotate =
         Tween<double>(begin: 0, end: 1).animate(_minController);
     manager.minController = _minController;
+    _subscription = manager.reminderStream.listen((event) {
+      setState(() {});
+    });
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => manager.fadeAnimation?.addStatusListener(setStateFunc));
     manager.pushAnimation?.addListener(() {
@@ -210,6 +205,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   Widget build(BuildContext context) {
+    manager = Provider.of<DayPlanManager>(context, listen: true);
     return _body(context);
   }
 }

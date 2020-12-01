@@ -74,7 +74,7 @@ class _TimeSlotState extends State<TimeSlot>
   Widget build(BuildContext context) {
     allComplete = widget.timeSlot.allComplete;
 
-    //DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
+    DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
 
     super.build(context);
     String time = new DateFormat.jm()
@@ -240,31 +240,5 @@ class TimeSlotDecor extends StatelessWidget {
           color: Colors.white,
         ),
         child: child);
-  }
-
-  Widget _buidReminderTick(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: IconButton(
-        color: Colors.transparent,
-        onPressed: () {},
-        padding: EdgeInsets.all(3),
-        icon: SizedBox(
-          width: 30,
-          height: 30,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: 0.0, color: Colors.transparent),
-              borderRadius: BorderRadius.circular(60),
-              color: Colors.transparent, //   Colors.greenAccent[700]
-            ),
-            child: SvgPicture.asset(
-              'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.greenAccent[700], //Colors.white
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

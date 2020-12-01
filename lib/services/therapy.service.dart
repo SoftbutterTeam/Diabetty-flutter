@@ -38,13 +38,16 @@ class TherapyService {
   }
 
   Stream<List<Therapy>> therapyStream(String uid) {
-    return therapyRepo.onStateChanged(uid).map(_therapyListFromSnapshop);
+    return therapyRepo
+        .onStateChanged(uid)
+        .map((e) => _therapyListFromSnapshop(e, uid));
   }
 
-  List<Therapy> _therapyListFromSnapshop(QuerySnapshot snapshot) {
+  List<Therapy> _therapyListFromSnapshop(QuerySnapshot snapshot, String uid) {
     return snapshot.documents.map<Therapy>((doc) {
       Therapy therapy = Therapy();
       therapy.id = doc.documentID;
+      therapy.userId = uid;
       therapy.loadFromJson(doc.data);
 
       return therapy;

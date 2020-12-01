@@ -49,7 +49,10 @@ class ReminderRepository {
 
   Future<void> setReminder(Reminder reminder) async {
     Map<String, dynamic> reminderData = Map();
+    if (reminder.userId == null) return null;
+
     reminderData = reminder.tojson();
+
     print('ahhhhhhh');
     print(reminderData);
 

@@ -56,7 +56,7 @@ class Reminder with DateMixin {
       DateTime.now().isBefore(rescheduledTime);
   bool get isMissed =>
       takenAt == null &&
-      !isSkipped &&
+      skippedAt == null &&
       DateTime.now().isAfter(
           (rescheduledTime ?? time).add(this.window ?? Duration(minutes: 5)));
   bool get isActive =>
@@ -176,7 +176,7 @@ class Reminder with DateMixin {
     if (this.rescheduledTime != null)
       output['rescheduledTime'] = this.rescheduledTime.toString();
     if (this.editedDose != null) output['editedDose'] = this.editedDose;
-    if (this.skippedAt != null) output['cancelled'] = this.skippedAt.toString();
+    if (this.skippedAt != null) output['skippedAt'] = this.skippedAt.toString();
     if (this.advices != null) output['advices'] = this.advices;
     if (this.doseEdited != null) output['doseEdited'] = this.doseEdited;
     return output;

@@ -345,7 +345,10 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             ReminderModalFooterButton(
                 text2: "Skip",
                 assetName: 'assets/icons/navigation/x/close.svg',
-                onTap: () => _skipActionSheet(context)),
+                onTap: () {
+                  skipReminder(context, reminder);
+                  Navigator.pop(context);
+                }),
             ReminderModalFooterButton(
                 text2: "Take",
                 assetName: 'assets/icons/navigation/checkbox/tick_outline2.svg',

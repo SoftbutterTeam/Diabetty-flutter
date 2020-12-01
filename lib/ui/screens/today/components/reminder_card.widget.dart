@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/extensions/index.dart';
+import 'package:provider/provider.dart';
 
 class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   final Reminder reminder;
@@ -19,6 +21,8 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
 
   @override
   Widget build(BuildContext context) {
+    // DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
+
     return IntrinsicHeight(
         child: SizedBox(
       child: ConstrainedBox(
@@ -63,7 +67,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
       reminder: reminder,
       size: 30,
       stateIcon: false,
-      func: () => showTakeActionPopup(context),
+      func: () => showReminderPopupModal(context),
     ));
   }
 
@@ -166,7 +170,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   Widget _buildReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
     return GestureDetector(
-      onTap: () => showTakeActionPopup(context),
+      onTap: reminder.isSkipped ? (null) : () => showTakeActionPopup(context),
       child: Container(
         alignment: Alignment.center,
         color: Colors.transparent,
@@ -201,7 +205,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
       case ReminderStatus.active:
         return Colors.greenAccent[700];
       case ReminderStatus.snoozed:
-        return Colors.greenAccent[700];
+        return Colors.orange[900];
       default:
         return Colors.greenAccent[700];
     }
