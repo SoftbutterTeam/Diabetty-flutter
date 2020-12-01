@@ -59,6 +59,8 @@ class TherapyRepository {
 
   Future<void> updateTherapy(Therapy therapy) async {
     //print(therapy.name);
+    if (therapy.userId == null) return null;
+
     Map<String, dynamic> therapyData = Map();
     therapyData = therapy.toJson();
     var timeNow = DateTime.now().toString();

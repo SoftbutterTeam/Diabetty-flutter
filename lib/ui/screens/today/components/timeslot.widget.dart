@@ -219,7 +219,8 @@ class TimeSlotDecor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //  DayPlanManager dayPlanManager =  Provider.of<DayPlanManager>(context, listen: true);
+    DayPlanManager dayPlanManager =
+        Provider.of<DayPlanManager>(context, listen: true);
     return Container(
         margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
         decoration: BoxDecoration(
@@ -239,31 +240,5 @@ class TimeSlotDecor extends StatelessWidget {
           color: Colors.white,
         ),
         child: child);
-  }
-
-  Widget _buidReminderTick(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: IconButton(
-        color: Colors.transparent,
-        onPressed: () {},
-        padding: EdgeInsets.all(3),
-        icon: SizedBox(
-          width: 30,
-          height: 30,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: 0.0, color: Colors.transparent),
-              borderRadius: BorderRadius.circular(60),
-              color: Colors.transparent, //   Colors.greenAccent[700]
-            ),
-            child: SvgPicture.asset(
-              'assets/icons/navigation/checkbox/tick.svg',
-              color: Colors.greenAccent[700], //Colors.white
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

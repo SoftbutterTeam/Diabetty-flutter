@@ -67,7 +67,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
       reminder: reminder,
       size: 30,
       stateIcon: false,
-      func: () => showTakeActionPopup(context),
+      func: () => showReminderPopupModal(context),
     ));
   }
 
@@ -170,7 +170,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   Widget _buildReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
     return GestureDetector(
-      onTap: () => showTakeActionPopup(context),
+      onTap: reminder.isSkipped ? (null) : () => showTakeActionPopup(context),
       child: Container(
         alignment: Alignment.center,
         color: Colors.transparent,
@@ -205,7 +205,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
       case ReminderStatus.active:
         return Colors.greenAccent[700];
       case ReminderStatus.snoozed:
-        return Colors.greenAccent[700];
+        return Colors.orange[900];
       default:
         return Colors.greenAccent[700];
     }

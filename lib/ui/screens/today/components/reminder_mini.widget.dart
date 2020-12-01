@@ -14,7 +14,7 @@ class ReminderMiniCard extends StatelessWidget with ReminderActionsMixin {
 
   @override
   Widget build(BuildContext context) {
-    //  DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
+    DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
 
     return IntrinsicWidth(
       child: IntrinsicHeight(
