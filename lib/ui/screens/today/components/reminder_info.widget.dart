@@ -183,9 +183,12 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   SizedBox(width: 20),
                   text(
                       'Time: ' +
-                          reminder.time.shortenDateRepresent() +
+                          (reminder.rescheduledTime ?? reminder.time)
+                              .shortenDateRepresent() +
                           " " +
-                          reminder.time.formatTime().toLowerCase(),
+                          (reminder.rescheduledTime ?? reminder.time)
+                              .formatTime()
+                              .toLowerCase(),
                       fontSize: 13.0),
                 ],
               ),

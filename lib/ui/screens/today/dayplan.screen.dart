@@ -262,6 +262,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   //! onDoubleTap slows down a onTap
 
   Widget _buildRemindersList(BuildContext context) {
+    DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
     List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
 
     if (timeSlots.length == 0) return Container();

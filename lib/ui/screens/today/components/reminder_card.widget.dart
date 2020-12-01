@@ -118,8 +118,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
         break;
       case ReminderStatus.snoozed:
         if (reminder.rescheduledTime == null) return null;
-        remDescription =
-            "rescheduled from ${reminder.rescheduledTime.formatTime()}";
+        remDescription = "rescheduled from ${reminder.time.formatTime()}";
         color = Colors.orange[900];
         break;
       case ReminderStatus.active:
