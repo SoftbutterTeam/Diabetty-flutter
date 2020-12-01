@@ -184,13 +184,30 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
               shape: BoxShape.circle,
               color: !completed ? Colors.transparent : Colors.greenAccent[700],
             ),
-            child: SvgPicture.asset(
-              'assets/icons/navigation/checkbox/tick.svg',
-              color: !completed ? Colors.greenAccent[700] : Colors.white,
-            ),
+            child: SvgPicture.asset('assets/icons/navigation/checkbox/tick.svg',
+                color: (_getTickColor())),
           ),
         ),
       ),
     );
+  }
+
+  Color _getTickColor() {
+    switch (reminder.status) {
+      case ReminderStatus.completed:
+        return Colors.white;
+      case ReminderStatus.missed:
+        return Colors.red[800];
+      case ReminderStatus.skipped:
+        return Colors.transparent;
+      case ReminderStatus.isLate:
+        return Colors.orange[900];
+      case ReminderStatus.active:
+        return Colors.greenAccent[700];
+      case ReminderStatus.snoozed:
+        return Colors.greenAccent[700];
+      default:
+        return Colors.greenAccent[700];
+    }
   }
 }
