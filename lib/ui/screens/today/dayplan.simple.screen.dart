@@ -73,12 +73,12 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   double dragSensitivity = 3;
   bool draggingIdle;
   StreamSubscription _subscription;
+  List<TimeSlot> timeSlots;
   @override
   void initState() {
     draggingIdle = true;
     manager = Provider.of<DayPlanManager>(context, listen: false);
     manager.reminderScrollKeys = {};
-    super.initState();
     _dateController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 200),
@@ -91,16 +91,21 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     _minAnimationRotate =
         Tween<double>(begin: 0, end: 1).animate(_minController);
     manager.minController = _minController;
+
     _subscription = manager.reminderStream.listen((event) {
-      setState(() {});
+      bool cond = timeSlots.any((element) => !element.reminders.every((el) =>
+          element.time.isAtSameMomentAs(el.rescheduledTime ?? el.time)));
+      if (cond) {
+        setState(() {});
+      }
     });
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => manager.fadeAnimation?.addStatusListener(setStateFunc));
     manager.pushAnimation?.addListener(() {
       setState(() {});
     });
-
     show = true;
+    super.initState();
   }
 
   void setStateFunc([AnimationStatus status]) {
@@ -122,6 +127,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
     Size size = MediaQuery.of(context).size;
     double heightOfCircleSpace = size.height * 0.35;
+
     return Background(
       child: Builder(builder: (context) {
         if (manager.getFinalRemindersList().isEmpty) {
@@ -184,7 +190,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   //! onDoubleTap slows down a onTap
 
   Widget _buildRemindersList(BuildContext context) {
-    List<TimeSlot> timeSlots = manager.sortRemindersByTimeSlots();
+    timeSlots = manager.sortRemindersByTimeSlots();
 
     if (timeSlots.length == 0) return Container();
     var size = MediaQuery.of(context).size;
@@ -205,7 +211,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   Widget build(BuildContext context) {
-    manager = Provider.of<DayPlanManager>(context, listen: true);
     return _body(context);
   }
 }

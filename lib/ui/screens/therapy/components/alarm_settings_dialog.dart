@@ -62,7 +62,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
                 color: CupertinoColors.destructiveRed,
               ),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.of(context).pop(context),
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
               vertical: 5.0,
@@ -106,14 +106,14 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
   }
 
   void _reset() {
-            if (noReminderToggle || silentToggle || enableCriticalToggle)
-              enableCriticalToggle = false;
-            silentToggle = false;
-            noReminderToggle = false;
-            widget.therapyForm.settings.handleReset();
-            setState(() {});
-            widget.manager.updateListeners();
-          }
+    if (noReminderToggle || silentToggle || enableCriticalToggle)
+      enableCriticalToggle = false;
+    silentToggle = false;
+    noReminderToggle = false;
+    widget.therapyForm.settings.handleReset();
+    setState(() {});
+    widget.manager.updateListeners();
+  }
 
   Container _buildAlarmSound(Size size) {
     return Container(
@@ -213,6 +213,6 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
     widget.therapyForm.settings
         .handleValidation(silentToggle, noReminderToggle, enableCriticalToggle);
     widget.manager.updateListeners();
-    Navigator.pop(context);
+    Navigator.of(context).pop(context);
   }
 }

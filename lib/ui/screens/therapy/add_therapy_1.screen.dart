@@ -76,7 +76,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       leftButtonText: 'Cancel',
       rightButtonText: 'Next',
       onLeftTap: () {
-        Navigator.pop(context);
+        Navigator.of(context).pop(context);
       },
       onRightTap: () {
         widget.manager.updateListeners();

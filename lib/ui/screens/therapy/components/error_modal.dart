@@ -24,7 +24,7 @@ class NoResponseErrorModal extends StatelessWidget {
                 isCentered: true, maxLine: 3, fontSize: 18.0),
             SizedBox(height: size.height * 0.02),
             CupertinoButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.of(context).pop(context),
               child: text('OK', textColor: Colors.indigo, fontSize: 15.0),
             )
           ],

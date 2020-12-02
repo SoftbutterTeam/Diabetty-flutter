@@ -39,7 +39,7 @@ showToast(BuildContext aContext, String caption) {
 }
 
 void finish(context) {
-  Navigator.pop(context);
+  Navigator.of(context).pop(context);
 }
 
 void hideKeyboard(context) {

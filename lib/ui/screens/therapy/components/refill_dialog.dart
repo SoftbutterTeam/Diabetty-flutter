@@ -80,10 +80,7 @@ class _RefillDialogState extends State<RefillDialog>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              text(
-                  "Add",
-                  fontSize: 16.0,
-                  fontFamily: fontBold),
+              text("Add", fontSize: 16.0, fontFamily: fontBold),
             ],
           ),
           SizedBox(height: size.height * 0.004),
@@ -146,7 +143,7 @@ class _RefillDialogState extends State<RefillDialog>
                 ),
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop(context);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -204,7 +201,7 @@ class _RefillDialogState extends State<RefillDialog>
 
     setState(() {});
     widget.manager.updateListeners();
-    Navigator.pop(context);
+    Navigator.of(context).pop(context);
     print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
   }
 }

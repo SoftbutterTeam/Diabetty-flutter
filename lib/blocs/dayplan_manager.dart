@@ -70,6 +70,8 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
       reminderService.reminderStream(uid);
   Stream<List<Reminder>> get reminderStream => this._reminderStream();
 
+  Function dayScreenSetState;
+
   set currentDateStamp(DateTime value) {
     if (value.isSameDayAs(DateTime.now()))
       _currentDateStamp = null;

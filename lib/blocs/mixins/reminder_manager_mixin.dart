@@ -73,6 +73,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
 
   Future<void> rescheduleReminder(
       Reminder reminder, DateTime rescheduledTo) async {
+    if (rescheduledTo == null) return null;
     reminder.rescheduledTime = rescheduledTo;
     reminder.takenAt = null;
     reminder.skippedAt = null;

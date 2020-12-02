@@ -156,7 +156,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
           height: height,
           width: width,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
             setState(() {});
           },
           intakePicker: CupertinoPicker(

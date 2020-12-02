@@ -39,7 +39,7 @@ class _IntakePopUpState extends State<IntakePopUp> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pop(context);
                 },
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,

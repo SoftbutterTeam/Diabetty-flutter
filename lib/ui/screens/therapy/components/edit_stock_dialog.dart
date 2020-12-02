@@ -207,7 +207,7 @@ class _EditStockDialogState extends State<EditStockDialog>
                 ),
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop(context);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -270,7 +270,7 @@ class _EditStockDialogState extends State<EditStockDialog>
 
     setState(() {});
     widget.manager.updateListeners();
-    Navigator.pop(context);
+    Navigator.of(context).pop(context);
     print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
   }
 }

@@ -21,7 +21,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
 
   @override
   Widget build(BuildContext context) {
-    // DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
+    DayPlanManager manager = Provider.of<DayPlanManager>(context, listen: true);
 
     return IntrinsicHeight(
         child: SizedBox(
@@ -72,19 +72,18 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   }
 
   Widget _buildReminderInfo(BuildContext context) {
-    print(reminder.status);
-
     return Expanded(
       child: Container(
         color: Colors.transparent,
         padding: EdgeInsets.only(left: 16, bottom: 3),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center, //was space evently
+          mainAxisAlignment: MainAxisAlignment.center, // was space evently
           children: <Widget>[
             text(reminder.name.toLowerCase(),
                 fontFamily: 'Regular',
                 fontSize: 15.0,
+                maxLine: 1,
                 overflow: TextOverflow.ellipsis),
             text(
               _buildReminderDescription(),
@@ -102,7 +101,6 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   Widget _buildReminderStatusDescription() {
     String remDescription = "";
     Color color;
-
     switch (reminder.status) {
       case ReminderStatus.completed:
         if (reminder.takenAt == null) return null;
@@ -201,7 +199,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
       case ReminderStatus.skipped:
         return Colors.transparent;
       case ReminderStatus.isLate:
-        return Colors.orange[900];
+        return Colors.greenAccent[700];
       case ReminderStatus.active:
         return Colors.greenAccent[700];
       case ReminderStatus.snoozed:

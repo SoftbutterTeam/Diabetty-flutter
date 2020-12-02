@@ -54,7 +54,7 @@ class _DropModalState extends State<DropModal>
             child: GestureDetector(
                 onTap: () {
                   dayManager.pushAnimation.reverse();
-                  Navigator.pop(context);
+                  Navigator.of(context).pop(context);
                 },
                 child: Container(
                   color: Colors.transparent,
@@ -68,7 +68,7 @@ class _DropModalState extends State<DropModal>
                 child: GestureDetector(
                     onPanStart: (value) {
                       dayManager.pushAnimation.reverse();
-                      Navigator.pop(context);
+                      Navigator.of(context).pop(context);
                     },
                     child: Container(color: Colors.transparent))),
           ],

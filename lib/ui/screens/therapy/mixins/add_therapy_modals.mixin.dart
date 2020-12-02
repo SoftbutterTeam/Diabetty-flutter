@@ -33,7 +33,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
             setState(() {});
           },
           intakePicker: CupertinoPicker(
@@ -69,7 +69,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
             if (therapyForm.strengthUnitsIndex != 0 &&
                 (therapyForm.strength == null || therapyForm.strength == 0)) {
               therapyForm.strength = 100;
@@ -112,7 +112,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             height: height,
             width: width,
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pop(context);
               setState(() {});
             },
             appearancePicker: CupertinoPicker(
@@ -152,7 +152,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {});
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
           },
           intakePicker: CupertinoPicker(
             scrollController: FixedExtentScrollController(
@@ -189,7 +189,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {});
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
           },
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
@@ -217,7 +217,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {});
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
           },
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,

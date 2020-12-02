@@ -200,7 +200,7 @@ class _StockDialogState extends State<StockDialog> {
                 ),
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop(context);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -256,6 +256,6 @@ class _StockDialogState extends State<StockDialog> {
     widget.therapyForm.stock.flagLimit = flagLimitControllerToInt;
 
     widget.manager.updateListeners();
-    Navigator.pop(context);
+    Navigator.of(context).pop(context);
   }
 }

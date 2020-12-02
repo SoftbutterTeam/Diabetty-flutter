@@ -16,7 +16,7 @@ class TherapyProfileHeader extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: FlatButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.of(context).pop(context),
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
@@ -42,8 +42,11 @@ class TherapyProfileHeader extends StatelessWidget {
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(right: 5),
                 child: Align(
-                  child:
-                      Text("edit", style: TextStyle(color: Colors.orange[800], fontSize: 17.0, fontWeight: FontWeight.w400)),
+                  child: Text("edit",
+                      style: TextStyle(
+                          color: Colors.orange[800],
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.w400)),
                   alignment: Alignment.centerRight,
                 ),
               ),

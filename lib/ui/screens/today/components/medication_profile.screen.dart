@@ -353,7 +353,7 @@ class _MedicationProfileState extends State<MedicationProfile> {
                     icon: Icon(Icons.arrow_back_ios),
                     iconSize: 30,
                     color: Colors.white,
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => Navigator.of(context).pop(context),
                   ),
                 ),
                 Positioned(

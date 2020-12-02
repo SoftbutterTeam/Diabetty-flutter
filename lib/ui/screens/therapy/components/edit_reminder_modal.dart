@@ -60,7 +60,8 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
   }
 
   DateTime getInitialTime() {
-    if (widget.therapyForm.schedule == null ||widget.therapyForm.schedule.reminderRules == null)
+    if (widget.therapyForm.schedule == null ||
+        widget.therapyForm.schedule.reminderRules == null)
       return DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 8, 00);
     else
@@ -109,7 +110,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
                     color: CupertinoColors.destructiveRed,
                   )),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop(context);
                 print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
@@ -171,7 +172,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
       timeString = hourAndMin;
     });
     print(hourAndMin);
-    Navigator.pop(context);
+    Navigator.of(context).pop(context);
   }
 
   _showTimePicker() {
@@ -310,7 +311,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
     manager.therapyForm.reminderRules.add(reminder);
     manager.updateListeners();
     print(manager.therapyForm.reminderRules.length);
-    Navigator.pop(context);
+    Navigator.of(context).pop(context);
   }
 
   allFieldsFilled() {

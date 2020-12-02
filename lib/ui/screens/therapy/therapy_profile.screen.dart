@@ -344,14 +344,14 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
         CupertinoActionSheetAction(
           child: text("Add Stock", fontSize: 18.0, textColor: Colors.indigo),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
             showEditStockDialog2(context);
           },
         ),
         CupertinoActionSheetAction(
           child: text("Add Reminder", fontSize: 18.0, textColor: Colors.indigo),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
             showEditReminderDialog2(context);
           },
         ),
@@ -359,7 +359,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
       cancelButton: CupertinoActionSheetAction(
         child: Container(color: Colors.white, child: Text('Cancel')),
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.of(context).pop(context);
         },
       ),
     );

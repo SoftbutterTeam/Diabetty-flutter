@@ -23,7 +23,7 @@ class AddJournalHeader extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               child: FlatButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.of(context).pop(context),
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
@@ -45,7 +45,7 @@ class AddJournalHeader extends StatelessWidget {
                 onPressed: () {
                   if (isValid) {
                     diaryManager.submitNewJournal(diaryManager.newJournal);
-                    Navigator.pop(context);
+                    Navigator.of(context).pop(context);
                   }
                 },
                 color: Colors.transparent,

@@ -1136,7 +1136,7 @@ class _DatePickerDialogState extends State<_DatePickerDialog> {
   }
 
   void _handleCancel() {
-    Navigator.pop(context);
+    Navigator.of(context).pop(context);
   }
 
   void _handleOk() {

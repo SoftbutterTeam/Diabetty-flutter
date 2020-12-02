@@ -1,11 +1,7 @@
 import 'package:diabetty/mixins/date_mixin.dart';
-import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/routes.dart';
-import 'package:flutter/animation.dart';
 import 'package:intl/intl.dart';
-import 'package:validators/sanitizers.dart';
 
 class Reminder with DateMixin {
   String id;

@@ -40,7 +40,7 @@ class _StrengthDropModalState extends State<StrengthDropModal> {
             preferredSize: Size.fromHeight(50),
             child: GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pop(context);
                 },
                 child: Container(
                   color: Colors.transparent,
@@ -53,7 +53,7 @@ class _StrengthDropModalState extends State<StrengthDropModal> {
             Expanded(
                 child: GestureDetector(
                     onPanStart: (value) {
-                      Navigator.pop(context);
+                      Navigator.of(context).pop(context);
                     },
                     child: Container(color: Colors.transparent))),
           ],

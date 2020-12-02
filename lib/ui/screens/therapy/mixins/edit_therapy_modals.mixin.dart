@@ -30,7 +30,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {});
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
           },
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
@@ -58,7 +58,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {});
-            Navigator.pop(context);
+            Navigator.of(context).pop(context);
           },
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
@@ -72,6 +72,4 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       },
     );
   }
-
-
 }
