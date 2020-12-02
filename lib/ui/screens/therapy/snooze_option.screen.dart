@@ -24,7 +24,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
   @override
   Widget build(BuildContext context) {
     return SnoozeOptionsBackground(
-        header: SnoozeOptionsHeader(), child: _body(context));
+        header: SnoozeOptionsHeader(text: ''), child: _body(context));
   }
 
   Widget _body(BuildContext context) {

@@ -1,7 +1,16 @@
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:flutter/material.dart';
 
-class SnoozeOptionsHeader extends StatelessWidget {
+class SnoozeOptionsHeader extends StatefulWidget {
+  final String text;
+
+  SnoozeOptionsHeader({this.text});
+
+  @override
+  _SnoozeOptionsHeaderState createState() => _SnoozeOptionsHeaderState();
+}
+
+class _SnoozeOptionsHeaderState extends State<SnoozeOptionsHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,8 +51,11 @@ class SnoozeOptionsHeader extends StatelessWidget {
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(right: 5),
                 child: Align(
-                  child:
-                      Text(""),
+                  child: Text(widget.text,
+                      style: TextStyle(
+                          color: Colors.orange[800],
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.w400)),
                   alignment: Alignment.centerRight,
                 ),
               ),
