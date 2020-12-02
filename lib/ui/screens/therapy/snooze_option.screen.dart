@@ -1,4 +1,6 @@
 import 'package:diabetty/ui/constants/colors.dart';
+import 'package:diabetty/ui/screens/therapy/components/snooze_options_header.dart';
+import 'package:diabetty/ui/screens/therapy/components/snooze_option_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,8 +23,8 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return TherapyProfileBackground(
-        header: TherapyProfileHeader(), child: _body(context));
+    return SnoozeOptionsBackground(
+        header: SnoozeOptionsHeader(), child: _body(context));
   }
 
   Widget _body(BuildContext context) {

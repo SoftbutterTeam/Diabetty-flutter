@@ -135,18 +135,20 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 
   Container _buildSkippedIcon() {
     return Container(
-      width: 15,
-      height: 15,
+      width: 18,
+      height: 18,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.amber,
           border: Border.all(color: Colors.white, width: 1)),
       child: Center(
-          child: Container(
-        height: 15,
-        width: 15,
-        color: Colors.white,
-      )),
+        child: SvgPicture.asset(
+          'assets/icons/navigation/checkbox/tick.svg',
+          color: Colors.white, //Colors.white
+          height: 15,
+          width: 15,
+        ),
+      ),
     );
   }
 

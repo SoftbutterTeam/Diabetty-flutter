@@ -1,17 +1,7 @@
-import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/screens/therapy/edit_therapy_screen.dart';
 import 'package:flutter/material.dart';
 
-class TherapyProfileHeader extends StatefulWidget {
-  final Therapy therapy;
-  TherapyProfileHeader({this.therapy});
-
-  @override
-  _TherapyProfileHeaderState createState() => _TherapyProfileHeaderState();
-}
-
-class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
+class SnoozeOptionsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,23 +36,14 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
             Container(
               alignment: Alignment.centerRight,
               child: FlatButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditTherapyScreen(therapy: widget.therapy)),
-                  );
-                },
+                onPressed: () {},
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(right: 5),
                 child: Align(
-                  child: Text("edit",
-                      style: TextStyle(
-                          color: Colors.orange[800],
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w400)),
+                  child:
+                      Text(""),
                   alignment: Alignment.centerRight,
                 ),
               ),

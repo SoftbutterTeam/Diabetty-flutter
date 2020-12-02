@@ -15,7 +15,6 @@ import 'package:diabetty/ui/screens/therapy/components/profile_custom_textfield.
 import 'package:diabetty/ui/screens/therapy/components/refill_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
-// import 'package:diabetty/ui/screens/diary/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_reminder.dart';
 import 'package:diabetty/extensions/index.dart';
@@ -43,7 +42,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   @override
   Widget build(BuildContext context) {
     return TherapyProfileBackground(
-        header: TherapyProfileHeader(), child: _body(context));
+        header: TherapyProfileHeader(therapy: widget.therapy), child: _body(context));
   }
 
   Widget _body(BuildContext context) {

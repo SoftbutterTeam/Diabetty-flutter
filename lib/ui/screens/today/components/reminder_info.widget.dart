@@ -72,11 +72,11 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             child: _buildHeader(),
           ),
           Flexible(
-            flex: 4,
+            flex: 3,
             child: _buildBody2(size),
           ),
           Flexible(
-            flex: 2,
+            flex: 1,
             child: _buildFooter(context),
           ),
         ],
@@ -93,53 +93,60 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: size.height * 0.20,
-        maxHeight: size.height * 0.25,
+        minHeight: size.height * 0.25,
       ),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 15),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12.0, left: 13, right: 13),
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                runSpacing: 3,
-                spacing: 7,
-                direction: Axis.horizontal,
-                children: [
-                  SizedBox(
-                    height: 33,
-                    width: 33,
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.white),
-                      child: SvgPicture.asset(
-                        appearance_iconss[reminder.appearance],
+            IntrinsicWidth(
+              child: Container(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 12.0, left: 13, right: 13),
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        direction: Axis.horizontal,
+                        children: [
+                          SizedBox(
+                            height: 33,
+                            width: 33,
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white),
+                              child: SvgPicture.asset(
+                                appearance_iconss[reminder.appearance],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            child: Text(
+                                reminder.name.capitalizeBegins() + " ",
+                                maxLines: 1,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.clip,
+                                style: TextStyle(
+                                    fontSize: 21.0,
+                                    color: null,
+                                    fontWeight: FontWeight.w600)),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  SizedBox(
-                    child: Text(reminder.name.capitalizeBegins() + " ",
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.clip,
-                        style: TextStyle(
-                            fontSize: 21.0,
-                            color: null,
-                            fontWeight: FontWeight.w600)),
-                  ),
-                ],
+                    Container(
+                      height: 1,
+                      color: Colors.orange[800],
+                      margin: EdgeInsets.only(
+                          bottom: 30, top: 5, left: 30, right: 30),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              height: 1,
-              width: size.width * 0.3,
-              color: Colors.orange[800],
-              margin: EdgeInsets.only(bottom: 30, top: 5),
             ),
             Container(
               padding: EdgeInsets.only(bottom: 3),
@@ -270,8 +277,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   Widget _buildHeader() {
-    Color color = reminder.isComplete ? Colors.green : reminder.isMissed ? Colors.red : Colors.white;
-    colorToFade = reminder.isComplete ? Colors.green : Colors.transparent;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 0),
       decoration: BoxDecoration(
@@ -284,16 +289,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          gradient: RadialGradient(
-            radius: 5,
-            tileMode: TileMode.mirror,
-            // focalRadius: 2,
-            colors: [
-              Colors.white.withOpacity(.1),
-              colorToFade.shade200.withOpacity(opacity),
-              colorToFade.shade500.withOpacity(opacity),
-            ],
-          ),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(curve),
             topRight: Radius.circular(curve),
@@ -322,19 +317,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   Widget _buildFooter(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: reminder.isComplete
-                ? Colors.green
-                : Colors.transparent, // meant to be null
-            gradient: RadialGradient(
-              radius: 5,
-              tileMode: TileMode.mirror,
-              // focalRadius: 2,
-              colors: [
-                Colors.white.withOpacity(.1),
-                Colors.green.shade200.withOpacity(opacity),
-                Colors.green.shade500.withOpacity(opacity),
-              ],
-            ),
+            color: Colors.white, // meant to be null
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(bottomCurve ?? curve), // was 20  10
               bottomRight: Radius.circular(bottomCurve ?? curve),
