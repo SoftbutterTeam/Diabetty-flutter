@@ -11,10 +11,10 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_alarm_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
+import 'package:diabetty/ui/screens/therapy/components/profile_custom_textfield.dart';
 import 'package:diabetty/ui/screens/therapy/components/refill_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
-// import 'package:diabetty/ui/screens/diary/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_reminder.dart';
 import 'package:diabetty/extensions/index.dart';
@@ -42,7 +42,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   @override
   Widget build(BuildContext context) {
     return TherapyProfileBackground(
-        header: TherapyProfileHeader(), child: _body(context));
+        header: TherapyProfileHeader(therapy: widget.therapy), child: _body(context));
   }
 
   Widget _body(BuildContext context) {
@@ -121,7 +121,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
           ),
         ),
         Padding(padding: EdgeInsets.only(top: 10), child: _buildWindowField()),
-        Padding(padding: EdgeInsets.only(top: 5), child: _buildMinRestField()),
+        _buildMinRestField(),
       ],
     );
   }
@@ -142,9 +142,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   Widget _buildWindowField() {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: _icons(color: Colors.blueGrey),
-      onTap: () => showWindow2(context),
+      onTap: () {},
       placeholder: _getWindowMessage(),
       placeholderText: 'Window',
       // placeholderTextStyle: TextStyle(
@@ -155,9 +155,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   Widget _buildMinRestField() {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: _icons(color: Colors.blueGrey),
-      onTap: () => showMinRestPopup2(context),
+      onTap: () {},
       placeholder: _getMinRestMessage(),
       placeholderText: 'Minimum Rest Duration',
       // placeholderTextStyle: TextStyle(

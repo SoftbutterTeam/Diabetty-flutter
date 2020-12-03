@@ -37,6 +37,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                   CupertinoActionSheetAction(
                     child: Text("Snooze 10 min"),
                     onPressed: () {
+                      Navigator.pop(context);
                       snoozeReminder(context, reminder, Duration(minutes: 10));
                       Navigator.of(context).pop(context);
                     },
@@ -80,23 +81,31 @@ mixin ReminderActionsMixin<T extends Widget> {
                 child: Text(
                   "No access / out of stock",
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               CupertinoActionSheetAction(
                 child: Text(
                   "Busy / unavailable",
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               CupertinoActionSheetAction(
                 child: Text(
                   "Side effects / other health concerns",
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               CupertinoActionSheetAction(
                 child: Text("Other"),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ],
             cancelButton: CupertinoActionSheetAction(

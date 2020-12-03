@@ -126,14 +126,11 @@ class _TherapyCardState extends State<TherapyCard>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: SvgPicture.asset(
-                            'assets/icons/navigation/essentials/next.svg',
-                            height: 15,
-                            width: 15,
-                            color: Colors.orange[800],
-                          ),
+                        SvgPicture.asset(
+                          'assets/icons/navigation/essentials/next.svg',
+                          height: 15,
+                          width: 15,
+                          color: Colors.orange[800],
                         ),
                       ],
                     ),

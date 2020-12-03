@@ -1,17 +1,16 @@
-import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/screens/therapy/edit_therapy_screen.dart';
 import 'package:flutter/material.dart';
 
-class TherapyProfileHeader extends StatefulWidget {
-  final Therapy therapy;
-  TherapyProfileHeader({this.therapy});
+class SnoozeOptionsHeader extends StatefulWidget {
+  final String text;
+
+  SnoozeOptionsHeader({this.text});
 
   @override
-  _TherapyProfileHeaderState createState() => _TherapyProfileHeaderState();
+  _SnoozeOptionsHeaderState createState() => _SnoozeOptionsHeaderState();
 }
 
-class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
+class _SnoozeOptionsHeaderState extends State<SnoozeOptionsHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +25,7 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
             Container(
               alignment: Alignment.centerLeft,
               child: FlatButton(
-                onPressed: () => Navigator.of(context).pop(context),
+                onPressed: () => Navigator.pop(context),
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
@@ -46,19 +45,13 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
             Container(
               alignment: Alignment.centerRight,
               child: FlatButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditTherapyScreen(therapy: widget.therapy)),
-                  );
-                },
+                onPressed: () {},
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(right: 5),
                 child: Align(
-                  child: Text("edit",
+                  child: Text(widget.text,
                       style: TextStyle(
                           color: Colors.orange[800],
                           fontSize: 17.0,

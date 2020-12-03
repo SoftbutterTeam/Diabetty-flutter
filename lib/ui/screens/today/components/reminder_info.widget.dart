@@ -53,7 +53,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     var size = MediaQuery.of(context).size;
     return IntrinsicHeight(
       child: Container(
-        margin: EdgeInsets.only(bottom: 10),
+        margin: EdgeInsets.only(bottom: 0),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -76,11 +76,11 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             child: _buildHeader(),
           ),
           Flexible(
-            flex: 4,
+            flex: 3,
             child: _buildBody2(size),
           ),
           Flexible(
-            flex: 2,
+            flex: 1,
             child: _buildFooter(context),
           ),
         ],
@@ -96,50 +96,61 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
 
     return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: size.height * 0.25),
+      constraints: BoxConstraints(
+        minHeight: size.height * 0.25,
+      ),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 15),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12.0, left: 13, right: 13),
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                runSpacing: 3,
-                spacing: 7,
-                direction: Axis.horizontal,
-                children: [
-                  SizedBox(
-                    height: 33,
-                    width: 33,
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.white),
-                      child: SvgPicture.asset(
-                        appearance_iconss[reminder.appearance],
+            IntrinsicWidth(
+              child: Container(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 12.0, left: 13, right: 13),
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        direction: Axis.horizontal,
+                        children: [
+                          SizedBox(
+                            height: 33,
+                            width: 33,
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white),
+                              child: SvgPicture.asset(
+                                appearance_iconss[reminder.appearance],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            child: Text(
+                                reminder.name.capitalizeBegins() + " ",
+                                maxLines: 1,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.clip,
+                                style: TextStyle(
+                                    fontSize: 21.0,
+                                    color: null,
+                                    fontWeight: FontWeight.w600)),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    child: Text(reminder.name.capitalizeBegins() + " ",
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.clip,
-                        style: TextStyle(
-                            fontSize: 21.0,
-                            color: null,
-                            fontWeight: FontWeight.w600)),
-                  ),
-                ],
+                    Container(
+                      height: 1,
+                      color: Colors.orange[800],
+                      margin: EdgeInsets.only(
+                          bottom: 30, top: 5, left: 30, right: 30),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              height: 1,
-              width: size.width * 0.1,
-              color: Colors.orange[800],
-              margin: EdgeInsets.only(bottom: 30, top: 5),
             ),
             Container(
               padding: EdgeInsets.only(bottom: 3),
@@ -166,7 +177,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 child: Row(
                   children: [
                     SizedBox(width: 15),
-                    Icon(Icons.filter_center_focus, size: 20),
+                    Icon(Icons.assessment, size: 20),
                     SizedBox(width: 20),
                     text(
                         'Dose: ' +
@@ -189,7 +200,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 child: Row(
                   children: [
                     SizedBox(width: 15),
-                    Icon(Icons.filter_center_focus, size: 20),
+                    Icon(Icons.assignment, size: 20),
                     SizedBox(width: 20),
                     text(
                         "Advice: ${intakeAdvice[reminder.advices[0]].toLowerCase()}",
@@ -200,15 +211,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             if (_buildReminderStatusDescription() != null)
               Container(
                 padding: EdgeInsets.only(bottom: 3),
-                child: Row(
-                  children: [
-                    SizedBox(width: 15),
-                    Icon(Icons.filter_center_focus, size: 20),
-                    SizedBox(width: 20),
-                    _buildReminderStatusDescription() ?? SizedBox(),
-                  ],
-                ),
-              )
+                child: _buildReminderStatusDescription() ?? SizedBox(),
+              ),
           ],
         ),
       ),
@@ -217,40 +221,47 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   Widget _buildReminderStatusDescription() {
     String remDescription = "";
+    IconData icon;
     Color color;
 
     switch (reminder.status) {
       case ReminderStatus.completed:
         if (reminder.takenAt == null) return null;
         remDescription = "taken at ${reminder.takenAt.formatTime()}";
+        icon = Icons.check;
         color = Colors.green[600];
         break;
       case ReminderStatus.skipped:
         if (reminder.skippedAt == null) return null;
         remDescription = "skipped at ${reminder.skippedAt.formatTime()}";
+        icon = Icons.skip_next;
         color = Colors.orange[900];
         break;
       case ReminderStatus.missed:
         if (reminder.time == null) return null;
         remDescription =
             "missed at ${(reminder.rescheduledTime ?? reminder.time).add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        icon = Icons.close;
         color = Colors.redAccent[700];
         break;
       case ReminderStatus.snoozed:
         if (reminder.rescheduledTime == null) return null;
         remDescription = "rescheduled from ${reminder.time.formatTime()}";
+        icon = Icons.alarm;
         color = Colors.orange[900];
         break;
       case ReminderStatus.active:
         if (reminder.time == null) return null;
         remDescription =
             "take before ${reminder.time.add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        icon = Icons.check;
         color = Colors.green[600];
         break;
       case ReminderStatus.isLate:
         if (reminder.rescheduledTime == null) return null;
         remDescription =
             "take before ${reminder.rescheduledTime.add(reminder.window ?? Duration(minutes: 5)).formatTime()}";
+        icon = Icons.check;
         color = Colors.orange[900];
         break;
       case ReminderStatus.idle:
@@ -258,13 +269,20 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
       default:
         return null;
     }
-    return text(remDescription.toLowerCase().capitalize(),
-        fontSize: 13.0, maxLine: 2, textColor: color);
+    return Row(
+      children: [
+        SizedBox(width: 15),
+        Icon(icon, size: 20, color: color),
+        SizedBox(width: 20),
+        text(remDescription.toLowerCase().capitalize(),
+            fontSize: 13.0, maxLine: 2, textColor: color),
+      ],
+    );
   }
 
   Widget _buildHeader() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -274,18 +292,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: reminder.isComplete ? Colors.transparent : Colors.transparent,
-          gradient: RadialGradient(
-            radius: 5,
-            tileMode: TileMode.mirror,
-            focalRadius: 2,
-            colors: [
-              colorToFade.shade300.withOpacity(opacity),
-              colorToFade.shade200.withOpacity(opacity),
-              Colors.white.withOpacity(.1),
-              Colors.white.withOpacity(.1),
-            ],
-          ),
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(curve),
             topRight: Radius.circular(curve),
@@ -298,7 +305,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             children: [
               Icon(Icons.more_vert, color: Colors.transparent),
               Padding(
-                padding: EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: 15.0),
                 child: GestureDetector(
                     onTap: () {},
                     // onTap: () => navigateTherapyProfile(context),
@@ -314,19 +321,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   Widget _buildFooter(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: reminder.isComplete
-                ? Colors.transparent
-                : Colors.transparent, // meant to be null
-            gradient: RadialGradient(
-              radius: 5,
-              tileMode: TileMode.mirror,
-              focalRadius: 2,
-              colors: [
-                Colors.white.withOpacity(.1),
-                colorToFade.shade200.withOpacity(opacity),
-                colorToFade.shade500.withOpacity(opacity),
-              ],
-            ),
+            color: Colors.white, // meant to be null
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(bottomCurve ?? curve), // was 20  10
               bottomRight: Radius.circular(bottomCurve ?? curve),
@@ -392,7 +387,7 @@ class ReminderModalFooterButton extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: Colors.transparent, borderRadius: BorderRadius.circular(10)),
-      margin: edgeInsets,
+      // margin: edgeInsets,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
