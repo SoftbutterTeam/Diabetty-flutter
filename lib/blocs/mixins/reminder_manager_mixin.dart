@@ -101,4 +101,23 @@ abstract class ReminderManagerMixin<T extends Manager> {
      -> then calls updateListeners 
     */
   }
+
+  Future<void> takeAllReminders(List<Reminder> reminders) async {
+    reminders.forEach((element) {
+      if (element.takenAt == null) takeReminder(element, DateTime.now());
+    });
+  }
+
+  Future<void> skipAllReminders(List<Reminder> reminders) async {
+    reminders.forEach((element) {
+      if (element.skippedAt == null) skipReminder(element);
+    });
+  }
+
+  Future<void> rescheduleAll(
+      List<Reminder> reminders, DateTime rescheduledTo) async {
+    reminders.forEach((element) {
+      if (element.takenAt == null) rescheduleReminder(element, rescheduledTo);
+    });
+  }
 }
