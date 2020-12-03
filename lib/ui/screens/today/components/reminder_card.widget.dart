@@ -109,7 +109,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
         break;
       case ReminderStatus.skipped:
         if (reminder.skippedAt == null) return null;
-        remDescription = "skipped at ${reminder.skippedAt.formatTime()}";
+        remDescription = "skipped at  ${reminder.skippedAt.formatTime()}";
         color = Colors.orange[900];
         break;
       case ReminderStatus.missed:
@@ -120,7 +120,8 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
         break;
       case ReminderStatus.snoozed:
         if (reminder.rescheduledTime == null) return null;
-        remDescription = "rescheduled from ${reminder.time.formatTime()}";
+        remDescription =
+            "rescheduled from ${reminder.time.slimDateTime(reminder.rescheduledTime)}";
         color = Colors.orange[900];
         break;
       case ReminderStatus.active:
@@ -140,7 +141,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
       default:
         return null;
     }
-    return text(remDescription,
+    return text(remDescription.toLowerCase(),
         fontSize: textSizeSmall, maxLine: 2, textColor: color);
   }
 
@@ -168,7 +169,13 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   Widget _buildReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
     return GestureDetector(
-      onTap: reminder.isSkipped ? (null) : () => showTakeActionPopup(context),
+      onTap: reminder.isSkipped
+          ? (null)
+          : reminder.isActive || reminder.isLate
+              ? () => takeReminder(context, reminder)
+              : reminder.isComplete
+                  ? () => showReminderPopupModal(context)
+                  : () => showTakeActionPopup(context),
       child: Container(
         alignment: Alignment.center,
         color: Colors.transparent,

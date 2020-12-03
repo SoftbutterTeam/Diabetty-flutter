@@ -103,42 +103,54 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         padding: EdgeInsets.symmetric(vertical: 15),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12.0, left: 13, right: 13),
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                runSpacing: 3,
-                spacing: 7,
-                direction: Axis.horizontal,
-                children: [
-                  SizedBox(
-                      height: 33,
-                      width: 33,
-                      child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.white),
-                          child: SvgPicture.asset(
-                            appearance_iconss[reminder.appearance],
-                          ))),
-                  SizedBox(
-                      child: Text(reminder.name.capitalizeBegins() + " ",
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                              fontSize: 21.0,
-                              color: null,
-                              fontWeight: FontWeight.w600))),
-                ],
+            IntrinsicWidth(
+              child: Container(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 12.0, left: 13, right: 13),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 45,
+                            width: 45,
+                            child: Container(
+                              padding: EdgeInsets.all(3.0),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.white),
+                              child: SvgPicture.asset(
+                                appearance_iconss[reminder.appearance],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(top: 3),
+                            child: Text(reminder.name.capitalizeBegins() + " ",
+                                maxLines: 1,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.clip,
+                                style: TextStyle(
+                                    fontSize: 23.0,
+                                    color: null,
+                                    fontWeight: FontWeight.w300)), // or w400
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Colors.orange[800],
+                      margin: EdgeInsets.only(
+                          bottom: 30, top: 5, left: 35, right: 35),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              height: 1,
-              width: size.width * 0.1,
-              color: Colors.orange[800],
-              margin: EdgeInsets.only(bottom: 30, top: 5),
             ),
             Container(
               padding: EdgeInsets.only(bottom: 3),
@@ -168,7 +180,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                     Icon(Icons.assessment, size: 20),
                     SizedBox(width: 20),
                     text(
-                        'Dose: ' +
+                        'Take ' +
                             reminder.dose.toString() +
                             ' ' +
                             unitTypes[reminder.doseTypeIndex]
@@ -234,7 +246,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         break;
       case ReminderStatus.snoozed:
         if (reminder.rescheduledTime == null) return null;
-        remDescription = "rescheduled from ${reminder.time.formatTime()}";
+        remDescription =
+            "rescheduled from ${reminder.time.slimDateTime(reminder.rescheduledTime)}";
         icon = Icons.alarm;
         color = Colors.orange[900];
         break;

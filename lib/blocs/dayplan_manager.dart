@@ -106,11 +106,13 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     date = date ?? currentDateStamp;
     List<Reminder> finalReminders = getProjectedReminders(date: date);
     List<Reminder> fetchedReminders = usersReminders
-        .where((element) => element.time.isSameDayAs(date))
+        .where((element) =>
+            (element.rescheduledTime ?? element.time).isSameDayAs(date))
         .toList();
     finalReminders.removeWhere((element) {
-      return fetchedReminders
-          .any((e) => element.reminderRuleId == e.reminderRuleId);
+      return fetchedReminders.any((e) =>
+          element.reminderRuleId == e.reminderRuleId &&
+          element.time.isSameDayAs(e.time));
     });
     finalReminders.addAll(fetchedReminders);
     return finalReminders;

@@ -38,8 +38,8 @@ class Reminder with DateMixin {
   }
 
   bool isToday({DateTime date}) {
-    date = date ?? DateTime.now();
-    return isSameDay(this.date, date);
+    date ??= DateTime.now();
+    return isSameDay(rescheduledTime ?? time, date);
   }
 
   // late is like isActive but for rescheduledTime.
@@ -66,6 +66,9 @@ class Reminder with DateMixin {
       !isComplete &&
       !isSkipped &&
       rescheduledTime != null &&
+      DateTime.now().compareTo(
+              rescheduledTime.add(this.window ?? Duration(minutes: 5))) <=
+          0 &&
       DateTime.now().compareTo(rescheduledTime) >= 0;
   bool get isIdle =>
       !isComplete &&
@@ -111,7 +114,7 @@ class Reminder with DateMixin {
         this.time = DateTime(
             date.year, date.month, date.day, rule.time.hour, rule.time.minute),
         this.dose = rule.dose,
-        this.window = therapy.schedule.window,
+        this.window = therapy.schedule.window ?? Duration(minutes: 5),
         this.doseTypeIndex = therapy.medicationInfo.typeIndex,
         this.strength = therapy.medicationInfo.strength,
         this.strengthUnitindex = therapy.medicationInfo.unitIndex,
@@ -140,6 +143,7 @@ class Reminder with DateMixin {
       this.advices = new List<int>.from(json['advices']);
     if (json.containsKey('window'))
       this.window = Duration(seconds: json['window']);
+
     if (json.containsKey('rescheduledTime'))
       this.rescheduledTime = DateTime.parse(json['rescheduledTime']);
     if (json.containsKey('takenAt'))

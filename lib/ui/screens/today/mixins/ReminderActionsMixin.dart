@@ -120,6 +120,10 @@ mixin ReminderActionsMixin<T extends Widget> {
     getDayPlanManager(context).unTakeReminder(reminder);
   }
 
+  void takeReminder(BuildContext context, Reminder reminder) {
+    getDayPlanManager(context).takeReminder(reminder, DateTime.now());
+  }
+
   void showTakeActionPopup(BuildContext context) => showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
@@ -134,13 +138,15 @@ mixin ReminderActionsMixin<T extends Widget> {
                     Navigator.of(context).pop(context);
                   },
                   child: Text('Now')),
-              CupertinoActionSheetAction(
-                  onPressed: () {
-                    dayPlanManager.takeReminder(
-                        reminder, reminder.rescheduledTime ?? reminder.time);
-                    Navigator.of(context).pop(context);
-                  },
-                  child: Text('On Time')),
+              if (!DateTime.now()
+                  .isBefore(reminder.rescheduledTime ?? reminder.time))
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      dayPlanManager.takeReminder(
+                          reminder, reminder.rescheduledTime ?? reminder.time);
+                      Navigator.of(context).pop(context);
+                    },
+                    child: Text('On Time')),
               CupertinoActionSheetAction(
                   onPressed: () {
                     Navigator.of(context).pop(context);
@@ -199,7 +205,7 @@ mixin ReminderActionsMixin<T extends Widget> {
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,
-            mode: CupertinoDatePickerMode.time,
+            mode: CupertinoDatePickerMode.dateAndTime,
             minuteInterval: 1,
             minimumDate: DateTime.now(),
             initialDateTime: DateTime.now(),

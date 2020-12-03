@@ -29,6 +29,20 @@ extension DateTimeExtension on DateTime {
     return DateFormat.jm().format(this);
   }
 
+  String slimDateTime(DateTime newTime) {
+    String dayOfWeek;
+    newTime ??= DateTime.now();
+    if (this.isSameDayAs(newTime))
+      dayOfWeek = "";
+    else if (this.isSameDayAs(newTime.add(Duration(days: 1))))
+      dayOfWeek = "Tomorrow, ";
+    else if (this.isSameDayAs(newTime.subtract(Duration(days: 1))))
+      dayOfWeek = "Yesterday, ";
+    else
+      dayOfWeek = DateFormat("EEEE, d MMM").format(this);
+    return dayOfWeek + this.formatTime();
+  }
+
   DateTime roundToNearest(int roundToMins) {
     var minute = this.minute;
 
