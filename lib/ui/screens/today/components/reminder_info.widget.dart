@@ -103,54 +103,42 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
         padding: EdgeInsets.symmetric(vertical: 15),
         child: Column(
           children: [
-            IntrinsicWidth(
-              child: Container(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 12.0, left: 13, right: 13),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        direction: Axis.horizontal,
-                        children: [
-                          SizedBox(
-                            height: 33,
-                            width: 33,
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white),
-                              child: SvgPicture.asset(
-                                appearance_iconss[reminder.appearance],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            child: Text(
-                                reminder.name.capitalizeBegins() + " ",
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                    fontSize: 21.0,
-                                    color: null,
-                                    fontWeight: FontWeight.w600)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Colors.orange[800],
-                      margin: EdgeInsets.only(
-                          bottom: 30, top: 5, left: 30, right: 30),
-                    ),
-                  ],
-                ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0, left: 13, right: 13),
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 3,
+                spacing: 7,
+                direction: Axis.horizontal,
+                children: [
+                  SizedBox(
+                      height: 33,
+                      width: 33,
+                      child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: SvgPicture.asset(
+                            appearance_iconss[reminder.appearance],
+                          ))),
+                  SizedBox(
+                      child: Text(reminder.name.capitalizeBegins() + " ",
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                              fontSize: 21.0,
+                              color: null,
+                              fontWeight: FontWeight.w600))),
+                ],
               ),
+            ),
+            Container(
+              height: 1,
+              width: size.width * 0.1,
+              color: Colors.orange[800],
+              margin: EdgeInsets.only(bottom: 30, top: 5),
             ),
             Container(
               padding: EdgeInsets.only(bottom: 3),
