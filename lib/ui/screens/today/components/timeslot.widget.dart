@@ -8,6 +8,7 @@ import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/animated_transform_rotate.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_card.widget.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_mini.widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:diabetty/models/timeslot.model.dart' as Plan;
@@ -158,7 +159,11 @@ class _TimeSlotState extends State<TimeSlot>
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      final actionsheet = addTherapyActionSheet(context);
+                      showCupertinoModalPopup(
+                          context: context, builder: (context) => actionsheet);
+                    },
                     child: Container(
                         padding: EdgeInsets.only(right: 13.0, left: 12),
                         color: Colors.transparent,
@@ -171,6 +176,31 @@ class _TimeSlotState extends State<TimeSlot>
               ),
             ),
           )),
+    );
+  }
+
+  CupertinoActionSheet addTherapyActionSheet(BuildContext context) {
+    return CupertinoActionSheet(
+      actions: [
+        CupertinoActionSheetAction(
+          child: text("Take", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Reschedule", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Skip", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Container(color: Colors.white, child: Text('Cancel')),
+        onPressed: () {
+          Navigator.of(context).pop(context);
+        },
+      ),
     );
   }
 
