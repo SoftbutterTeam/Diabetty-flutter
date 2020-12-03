@@ -77,7 +77,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             text(
-              "active reminders",
+              "scheduled reminders",
               fontSize: 16.0,
               textColor: Colors.grey[600],
             )
@@ -143,7 +143,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildWindowField() {
     return ProfileCustomTextField(
-      stackIcons: _icons(color: Colors.blueGrey),
+      stackIcons: null,
       onTap: () {},
       placeholder: _getWindowMessage(),
       placeholderText: 'Window',
@@ -156,7 +156,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildMinRestField() {
     return ProfileCustomTextField(
-      stackIcons: _icons(color: Colors.blueGrey),
+      stackIcons: null,
       onTap: () {},
       placeholder: _getMinRestMessage(),
       placeholderText: 'Minimum Rest Duration',

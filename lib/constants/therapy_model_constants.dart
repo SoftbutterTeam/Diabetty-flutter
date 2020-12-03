@@ -2,7 +2,7 @@ import 'package:diabetty/ui/constants/icons.dart';
 
 final appearance_iconss = appearance_icons;
 
-final unitTypes = const <String>['tablet(s)', 'pill(s)', 'puff(s)'];
+final unitTypes = const <String>['tablet(s)', 'pill(s)', 'puff(s)', 'powder(s)'];
 
 final strengthUnits = const <String>['none', 'mg/d', 'ml/s', 'ml/a'];
 
