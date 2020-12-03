@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -8,6 +9,7 @@ import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/animated_transform_rotate.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_card.widget.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_mini.widget.dart';
+import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -26,7 +28,7 @@ class TimeSlot extends StatefulWidget {
 }
 
 class _TimeSlotState extends State<TimeSlot>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with ReminderActionsMixin, TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool minimize;
   bool allComplete;
   AnimationController rotationController;
@@ -160,9 +162,7 @@ class _TimeSlotState extends State<TimeSlot>
                   ),
                   GestureDetector(
                     onTap: () {
-                      final actionsheet = addTherapyActionSheet(context);
-                      showCupertinoModalPopup(
-                          context: context, builder: (context) => actionsheet);
+                      _openActionSheet(context);
                     },
                     child: Container(
                         padding: EdgeInsets.only(right: 13.0, left: 12),
@@ -177,6 +177,10 @@ class _TimeSlotState extends State<TimeSlot>
             ),
           )),
     );
+  }
+
+  _openActionSheet(BuildContext context) {
+    showActionSheet(context, widget.timeSlot.reminders.single);
   }
 
   CupertinoActionSheet addTherapyActionSheet(BuildContext context) {
@@ -237,6 +241,10 @@ class _TimeSlotState extends State<TimeSlot>
       ),
     );
   }
+
+  @override
+  // TODO: implement reminder
+  Reminder get reminder => throw UnimplementedError();
 }
 
 class TimeSlotDecor extends StatelessWidget {

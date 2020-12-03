@@ -290,7 +290,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           topLeft: Radius.circular(curve),
           topRight: Radius.circular(curve),
         ),
-      ),
+      ), 
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,

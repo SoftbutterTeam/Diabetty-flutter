@@ -218,6 +218,43 @@ mixin ReminderActionsMixin<T extends Widget> {
     );
   }
 
+  void showActionSheet(BuildContext context, Reminder reminder) => showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoActionSheet(
+            message: const Text('Taken at?'),
+            actions: <Widget>[
+              CupertinoActionSheetAction(
+                  onPressed: () {
+                    Navigator.of(context).pop(context);
+                  },
+                  child: Text('Now')),
+              if (!DateTime.now()
+                  .isBefore(reminder.rescheduledTime ?? reminder.time))
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      Navigator.of(context).pop(context);
+                    },
+                    child: Text('On Time')),
+              CupertinoActionSheetAction(
+                  onPressed: () {
+                    Navigator.of(context).pop(context);
+                    showExactTimePicker(
+                      context,
+                      (DateTime choosenTime) {
+                      },
+                    );
+                  },
+                  child: Text('Choose a Time')),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              onPressed: () => Navigator.of(context).pop(context),
+              child: Container(color: Colors.white, child: Text('Cancel')),
+            ),
+          );
+        },
+      );
+
   void showReminderPopupModal(BuildContext context) => showGeneralDialog(
         barrierDismissible: true,
         barrierLabel: '',
@@ -233,6 +270,7 @@ mixin ReminderActionsMixin<T extends Widget> {
         transitionBuilder: _transitionBuilderStyle1(),
         transitionDuration: Duration(milliseconds: 250),
       );
+
 
   _transitionBuilderStyle1() =>
       (BuildContext context, Animation<double> anim1, anim2, Widget child) {
