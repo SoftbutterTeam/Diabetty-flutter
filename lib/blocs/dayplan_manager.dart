@@ -121,6 +121,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
           element.time.isSameDayAs(e.time));
     });
     finalReminders.addAll(fetchedReminders);
+    finalReminders.removeWhere((element) => element.isDeleted);
     return finalReminders;
   }
 

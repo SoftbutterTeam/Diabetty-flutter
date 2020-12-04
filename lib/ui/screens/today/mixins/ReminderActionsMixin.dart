@@ -93,14 +93,13 @@ mixin ReminderActionsMixin<T extends Widget> {
     dayPlanManager.skipReminder(reminder);
   }
 
-  void showSkipActionSheet(context) => showCupertinoModalPopup(
+  void showReminderInfoMoreActionSheet(context) => showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
-            message: Text("Why are you skipping this dose?"),
             actions: [
               CupertinoActionSheetAction(
                 child: Text(
-                  "No access / out of stock",
+                  "Edit Dose",
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -108,23 +107,11 @@ mixin ReminderActionsMixin<T extends Widget> {
               ),
               CupertinoActionSheetAction(
                 child: Text(
-                  "Busy / unavailable",
+                  "Delete Reminder",
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              CupertinoActionSheetAction(
-                child: Text(
-                  "Side effects / other health concerns",
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              CupertinoActionSheetAction(
-                child: Text("Other"),
-                onPressed: () {
+                  getDayPlanManager(context).deleteReminder(reminder);
+                  Navigator.of(context).pop(context);
                   Navigator.pop(context);
                 },
               ),
@@ -239,7 +226,8 @@ mixin ReminderActionsMixin<T extends Widget> {
     );
   }
 
-  void showActionSheet(BuildContext context, Reminder reminder) => showCupertinoModalPopup(
+  void showActionSheet(BuildContext context, Reminder reminder) =>
+      showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
           return CupertinoActionSheet(
@@ -262,8 +250,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                     Navigator.of(context).pop(context);
                     showExactTimePicker(
                       context,
-                      (DateTime choosenTime) {
-                      },
+                      (DateTime choosenTime) {},
                     );
                   },
                   child: Text('Choose a Time')),
@@ -291,7 +278,6 @@ mixin ReminderActionsMixin<T extends Widget> {
         transitionBuilder: _transitionBuilderStyle1(),
         transitionDuration: Duration(milliseconds: 250),
       );
-
 
   _transitionBuilderStyle1() =>
       (BuildContext context, Animation<double> anim1, anim2, Widget child) {

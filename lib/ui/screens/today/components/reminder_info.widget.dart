@@ -334,7 +334,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           topLeft: Radius.circular(curve),
           topRight: Radius.circular(curve),
         ),
-      ), 
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -349,12 +349,13 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Icon(Icons.more_vert, color: Colors.transparent),
-              Padding(
-                padding: EdgeInsets.only(right: 15.0),
-                child: GestureDetector(
-                    onTap: () {},
-                    // onTap: () => navigateTherapyProfile(context),
-                    child: Icon(Icons.more_horiz)),
+              Container(
+                color: Colors.transparent,
+                child: Padding(
+                    padding: EdgeInsets.only(right: 15.0),
+                    child: GestureDetector(
+                        onTap: () => showReminderInfoMoreActionSheet(context),
+                        child: Icon(Icons.more_horiz))),
               ),
             ],
           ),

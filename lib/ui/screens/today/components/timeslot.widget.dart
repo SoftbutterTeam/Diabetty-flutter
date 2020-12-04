@@ -10,6 +10,7 @@ import 'package:diabetty/ui/screens/today/components/animated_transform_rotate.d
 import 'package:diabetty/ui/screens/today/components/reminder_card.widget.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_mini.widget.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
+import 'package:diabetty/ui/screens/today/mixins/timeslot_actions.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -28,7 +29,10 @@ class TimeSlot extends StatefulWidget {
 }
 
 class _TimeSlotState extends State<TimeSlot>
-    with ReminderActionsMixin, TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with
+        TimeSlotActionsMixin,
+        TickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin {
   bool minimize;
   bool allComplete;
   AnimationController rotationController;
@@ -72,6 +76,8 @@ class _TimeSlotState extends State<TimeSlot>
 
   @override
   bool get wantKeepAlive => true;
+  @override
+  Plan.TimeSlot get timeSlot => widget.timeSlot;
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +186,7 @@ class _TimeSlotState extends State<TimeSlot>
   }
 
   _openActionSheet(BuildContext context) {
-    showActionSheet(context, widget.timeSlot.reminders.single);
+    showTimeSlotActionSheet(context, widget.timeSlot.reminders.single);
   }
 
   CupertinoActionSheet addTherapyActionSheet(BuildContext context) {
@@ -241,10 +247,6 @@ class _TimeSlotState extends State<TimeSlot>
       ),
     );
   }
-
-  @override
-  // TODO: implement reminder
-  Reminder get reminder => throw UnimplementedError();
 }
 
 class TimeSlotDecor extends StatelessWidget {
