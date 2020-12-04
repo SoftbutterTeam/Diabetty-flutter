@@ -87,6 +87,12 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   }
 
   @override
+  void updateListeners() {
+    therapyManager?.updateListeners();
+    super.updateListeners();
+  }
+
+  @override
   Future<void> init() async {
     super.init();
     currentDateStamp = DateTime.now();

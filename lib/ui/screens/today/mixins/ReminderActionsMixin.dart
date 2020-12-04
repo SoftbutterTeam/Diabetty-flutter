@@ -1,7 +1,10 @@
 import 'dart:ui';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
+import 'package:diabetty/ui/screens/therapy/therapy_profile_screen2.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_info.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +17,24 @@ import 'package:diabetty/extensions/index.dart';
 mixin ReminderActionsMixin<T extends Widget> {
   @protected
   Reminder get reminder;
+
+  void navigateToTherapy(
+      BuildContext context, Reminder reminder, Duration snoozeFor) {
+    DayPlanManager dayPlanManager =
+        Provider.of<DayPlanManager>(context, listen: false);
+    TherapyManager therapyManager = dayPlanManager.therapyManager;
+
+    Therapy therapy = therapyManager?.usersTherapies
+        ?.firstWhere((element) => element.id == reminder.therapyId);
+    if (therapy == null) return null;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            TherapyProfileScreen2(therapy: therapy, manager: therapyManager),
+      ),
+    );
+  }
 
   void snoozeReminder(
       BuildContext context, Reminder reminder, Duration snoozeFor) {

@@ -1,55 +1,59 @@
 class Stock {
-  int currentLevel;
+  int _currentLevel;
   int flagLimit;
   bool remind;
-  Stock({this.currentLevel, this.flagLimit, this.remind = true});
+  Stock({currentLevel, this.flagLimit, this.remind = true})
+      : _currentLevel = currentLevel;
 
-  bool get isActive => remind && currentLevel != null && flagLimit != null;
+  bool get isActive => remind && _currentLevel != null && flagLimit != null;
 
-  bool get runningLow => (isActive) ? currentLevel <= flagLimit : false;
+  bool get runningLow => (isActive) ? _currentLevel <= flagLimit : false;
+
+  int get currentLevel => (remind == true) ? _currentLevel ?? 0 : _currentLevel;
+  set currentLevel(int i) => _currentLevel = i;
 
   bool get isLowOnStock {
-    if (currentLevel == null || flagLimit == null || !remind) return false;
-    return currentLevel <= flagLimit;
+    if (_currentLevel == null || flagLimit == null || !remind) return false;
+    return _currentLevel <= flagLimit;
   }
 
   bool get isOutOfStock {
-    if (currentLevel == null || flagLimit == null || !remind) return false;
-    return currentLevel == 0;
+    if (_currentLevel == null || flagLimit == null || !remind) return false;
+    return _currentLevel == 0;
   }
 
   void takenAmount(int amountTaken) {
-    if (currentLevel == null) return;
-    (amountTaken > currentLevel)
-        ? currentLevel = 0
-        : currentLevel -= amountTaken;
+    if (_currentLevel == null) return;
+    (amountTaken > _currentLevel)
+        ? _currentLevel = 0
+        : _currentLevel -= amountTaken;
   }
 
   void handleReset() {
-    currentLevel = null;
+    _currentLevel = null;
     flagLimit = null;
   }
 
   loadFromJson(Map<String, dynamic> json) {
-    this.currentLevel = json['currentLevel'];
+    this._currentLevel = json['currentLevel'];
     this.flagLimit = json['flagLimit'];
     this.remind = json['remind'];
   }
 
   Map<String, dynamic> toJson() => {
-        'currentLevel': this.currentLevel,
+        'currentLevel': this._currentLevel,
         'flagLimit': this.flagLimit,
         'remind': this.remind,
       };
 
   void refillAdd(int addToStock) {
-    (currentLevel == null)
-        ? currentLevel = addToStock
-        : currentLevel += addToStock;
+    (_currentLevel == null)
+        ? _currentLevel = addToStock
+        : _currentLevel += addToStock;
   }
 
   void resetAt(int newLevel) {
-    currentLevel = newLevel;
+    _currentLevel = newLevel;
   }
 
   void remindOn() {

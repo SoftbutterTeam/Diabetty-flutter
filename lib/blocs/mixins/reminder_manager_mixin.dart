@@ -1,5 +1,7 @@
 import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:diabetty/services/reminder.service.dart';
 
@@ -15,6 +17,8 @@ abstract class ReminderManagerMixin<T extends Manager> {
    */
   @protected
   void updateListeners();
+  @protected
+  TherapyManager therapyManager;
 
   void takeReminder(Reminder reminder, DateTime takenAt) async {
     takenAt ??= DateTime.now();
@@ -22,13 +26,23 @@ abstract class ReminderManagerMixin<T extends Manager> {
     reminder.skippedAt = null;
     // update Push Notifcations
     reminderService.saveReminder(reminder);
+    Therapy therapy = therapyManager?.usersTherapies
+        ?.firstWhere((element) => element.id == reminder.therapyId);
+    if (therapy != null && therapy.stock != null)
+      therapy.stock.takenAmount(reminder.dose);
+    therapyManager?.updateListeners();
     updateListeners();
   }
 
   void unTakeReminder(Reminder reminder) async {
     reminder.takenAt = null;
     reminder.skippedAt = null;
+
     reminderService.saveReminder(reminder);
+    Therapy therapy = therapyManager?.usersTherapies
+        ?.firstWhere((element) => element.id == reminder.therapyId);
+    if (therapy != null && therapy.stock != null)
+      therapy.stock.refillAdd(reminder.dose);
     updateListeners();
   }
   /**
@@ -38,7 +52,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
      -> then calls updateListeners r
     */
 
-  void skipReminder(Reminder reminder) async {
+  skipReminder(Reminder reminder) async {
     reminder.takenAt = null;
     reminder.skippedAt = DateTime.now();
     print('skipped --here');
@@ -114,7 +128,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
     });
   }
 
-  Future<void> rescheduleAll(
+  Future<void> rescheduleAllReminders(
       List<Reminder> reminders, DateTime rescheduledTo) async {
     reminders.forEach((element) {
       if (element.takenAt == null) rescheduleReminder(element, rescheduledTo);

@@ -4,6 +4,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -43,11 +44,10 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   double curve = 15;
   double bottomCurve;
-
+  DayPlanManager dayPlanManager;
   @override
   Widget build(BuildContext context) {
-    DayPlanManager dayPlanManager =
-        Provider.of<DayPlanManager>(context, listen: true);
+    dayPlanManager = Provider.of<DayPlanManager>(context, listen: true);
     colorToFade = false ? Colors.green : Colors.grey;
     opacity = reminder.isComplete ? .3 : .3;
     var size = MediaQuery.of(context).size;
@@ -95,6 +95,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     int remStrengthType = reminder.strengthUnitindex;
     int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
 
+    Therapy therapy = dayPlanManager.therapyManager?.usersTherapies
+        ?.firstWhere((element) => element.id == reminder.therapyId);
     return ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: size.height * 0.25,
@@ -205,6 +207,48 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                     text(
                         "Advice: ${intakeAdvice[reminder.advices[0]].toLowerCase()}",
                         fontSize: 13.0),
+                  ],
+                ),
+              ),
+            if (therapy != null &&
+                therapy.stock != null &&
+                therapy.stock.remind &&
+                therapy.stock.isOutOfStock)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.assignment, size: 20), // ! needs an icon
+                    SizedBox(width: 20),
+                    text('0ut of stock',
+                        textColor: Colors.redAccent[700],
+                        fontFamily: fontMedium,
+                        maxLine: 2,
+                        fontSize: 11.0,
+                        overflow: TextOverflow.ellipsis)
+                  ],
+                ),
+              ),
+            if (therapy != null &&
+                therapy.stock != null &&
+                therapy.stock.remind &&
+                !therapy.stock.isOutOfStock &&
+                therapy.stock.isLowOnStock)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.assignment, size: 20),
+                    SizedBox(width: 20),
+                    text(
+                        'low on stock (${therapy.stock.currentLevel.toString()} left)',
+                        textColor: Colors.orange[900],
+                        fontFamily: fontMedium,
+                        maxLine: 2,
+                        fontSize: 11.0,
+                        overflow: TextOverflow.ellipsis),
                   ],
                 ),
               ),
