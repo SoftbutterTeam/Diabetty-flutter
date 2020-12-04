@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -8,6 +9,8 @@ import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/animated_transform_rotate.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_card.widget.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_mini.widget.dart';
+import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:diabetty/models/timeslot.model.dart' as Plan;
@@ -25,7 +28,7 @@ class TimeSlot extends StatefulWidget {
 }
 
 class _TimeSlotState extends State<TimeSlot>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with ReminderActionsMixin, TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool minimize;
   bool allComplete;
   AnimationController rotationController;
@@ -158,7 +161,9 @@ class _TimeSlotState extends State<TimeSlot>
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      _openActionSheet(context);
+                    },
                     child: Container(
                         padding: EdgeInsets.only(right: 13.0, left: 12),
                         color: Colors.transparent,
@@ -171,6 +176,35 @@ class _TimeSlotState extends State<TimeSlot>
               ),
             ),
           )),
+    );
+  }
+
+  _openActionSheet(BuildContext context) {
+    showActionSheet(context, widget.timeSlot.reminders.single);
+  }
+
+  CupertinoActionSheet addTherapyActionSheet(BuildContext context) {
+    return CupertinoActionSheet(
+      actions: [
+        CupertinoActionSheetAction(
+          child: text("Take", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Reschedule", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
+        CupertinoActionSheetAction(
+          child: text("Skip", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Container(color: Colors.white, child: Text('Cancel')),
+        onPressed: () {
+          Navigator.of(context).pop(context);
+        },
+      ),
     );
   }
 
@@ -207,6 +241,10 @@ class _TimeSlotState extends State<TimeSlot>
       ),
     );
   }
+
+  @override
+  // TODO: implement reminder
+  Reminder get reminder => throw UnimplementedError();
 }
 
 class TimeSlotDecor extends StatelessWidget {
