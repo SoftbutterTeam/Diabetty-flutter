@@ -180,7 +180,7 @@ class _TimeSlotState extends State<TimeSlot>
   }
 
   _openActionSheet(BuildContext context) {
-    showActionSheet(context, widget.timeSlot.reminders.single);
+    showActionSheet(context, widget.timeSlot.reminders);
   }
 
   CupertinoActionSheet addTherapyActionSheet(BuildContext context) {

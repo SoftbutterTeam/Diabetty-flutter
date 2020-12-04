@@ -7,6 +7,7 @@ import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/today/edit_dose.screen.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -290,7 +291,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           topLeft: Radius.circular(curve),
           topRight: Radius.circular(curve),
         ),
-      ), 
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -304,17 +305,65 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              GestureDetector(
+                onTap: () {
+                  //TODO navigate to therapy profile based upon reminder id
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: SvgPicture.asset(
+                    'assets/icons/infob/003-info.svg',
+                    // 'assets/icons/moreb/001-center-lines.svg',
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+              ),
               Icon(Icons.more_vert, color: Colors.transparent),
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      final actionsheet = editOrDelete(context);
+                      showCupertinoModalPopup(
+                          context: context, builder: (context) => actionsheet);
+                    },
                     // onTap: () => navigateTherapyProfile(context),
                     child: Icon(Icons.more_horiz)),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  CupertinoActionSheet editOrDelete(BuildContext context) {
+    return CupertinoActionSheet(
+      actions: [
+        CupertinoActionSheetAction(
+          child: text("Edit", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EditDosageScreen(
+                        reminder: reminder,
+                      )),
+            );
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: text("Delete", fontSize: 18.0, textColor: Colors.indigo),
+          onPressed: () {},
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: Container(color: Colors.white, child: Text('Cancel')),
+        onPressed: () {
+          Navigator.of(context).pop(context);
+        },
       ),
     );
   }
@@ -361,6 +410,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     showTakeActionPopup(context);
   }
 }
+
+
 
 class ReminderModalFooterButton extends StatelessWidget {
   const ReminderModalFooterButton({

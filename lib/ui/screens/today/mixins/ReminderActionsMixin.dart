@@ -218,34 +218,61 @@ mixin ReminderActionsMixin<T extends Widget> {
     );
   }
 
-  void showActionSheet(BuildContext context, Reminder reminder) => showCupertinoModalPopup(
+  void showRescheduleAllPicker(BuildContext context, List<Reminder> reminders) {
+    DateTime _dateTimeChange;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return TimerPicker(
+          onConfirm: () {
+            Navigator.of(context).pop(context);
+            getDayPlanManager(context)
+                .rescheduleAll(reminders, _dateTimeChange);
+          },
+          timepicker: CupertinoDatePicker(
+            use24hFormat: false,
+            mode: CupertinoDatePickerMode.dateAndTime,
+            minuteInterval: 1,
+            minimumDate: DateTime.now(),
+            initialDateTime: DateTime.now(),
+            onDateTimeChanged: (dateTimeChange) {
+              _dateTimeChange = dateTimeChange;
+            },
+          ),
+        );
+      },
+    );
+  }
+
+
+
+  void showActionSheet(BuildContext context, List<Reminder> reminders) => showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
+          DayPlanManager dayPlanManager = getDayPlanManager(context);
+          DateTime rescheduledTo;
           return CupertinoActionSheet(
-            message: const Text('Taken at?'),
+            message: const Text('All Reminders'),
             actions: <Widget>[
               CupertinoActionSheetAction(
                   onPressed: () {
+                    dayPlanManager.takeAllReminders(reminders);
                     Navigator.of(context).pop(context);
                   },
-                  child: Text('Now')),
-              if (!DateTime.now()
-                  .isBefore(reminder.rescheduledTime ?? reminder.time))
+                  child: Text('Take All')),
                 CupertinoActionSheetAction(
                     onPressed: () {
+                      dayPlanManager.skipAllReminders(reminders);
                       Navigator.of(context).pop(context);
                     },
-                    child: Text('On Time')),
+                    child: Text('Skip All')),
               CupertinoActionSheetAction(
                   onPressed: () {
+                    dayPlanManager.rescheduleAll(reminders, rescheduledTo);
                     Navigator.of(context).pop(context);
-                    showExactTimePicker(
-                      context,
-                      (DateTime choosenTime) {
-                      },
-                    );
+                    showRescheduleAllPicker(context, reminders);
                   },
-                  child: Text('Choose a Time')),
+                  child: Text('Reschedule All')),
             ],
             cancelButton: CupertinoActionSheetAction(
               onPressed: () => Navigator.of(context).pop(context),
