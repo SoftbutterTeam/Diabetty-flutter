@@ -48,6 +48,10 @@ class Router {
             pageBuilder: (_, a1, a2) => DashBoard(initIndex: 3),
             transitionDuration: Duration(seconds: 0));
 
+      case history:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => AddJournalScreenBuilder());
+
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
@@ -69,3 +73,4 @@ const String appsettings = '/settings';
 const String appearanceSettings = '/appearanceSettings';
 const String addJournal = '/diary/addjournal';
 const String aJournal = '/diary/journal';
+const String history = '/diary/history';

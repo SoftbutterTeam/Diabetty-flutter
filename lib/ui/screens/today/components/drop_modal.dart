@@ -102,12 +102,14 @@ class _DropModalState extends State<DropModal>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          DatePicker(DateTime.now().subtract(Duration(days: 14)),
-              daysCount: 21,
+          DatePicker(
+              DateTime.now().subtract(Duration(days: 14 + DateTime.now().day)),
+              daysCount: 28,
               initialSelectedDate: dayManager.currentDateStamp,
               selectionColor: Colors.deepOrange,
               selectedTextColor: Colors.white,
               controller: _controller,
+              width: size.width / 7.8,
               locale: 'en_gb',
               dateTextStyle: TextStyle(
                 fontFamily: 'Regular',
@@ -115,16 +117,19 @@ class _DropModalState extends State<DropModal>
                 fontSize: 17,
               ), onDateChange: (date) {
             dayManager.currentDateStamp = date;
+            dayManager.dayScreenSetState?.call();
           }),
           FlatButton(
               padding: EdgeInsets.zero,
               onPressed: () {
                 dayManager.currentDateStamp = DateTime.now();
-
-                _controller.animateToDate(
-                    dayManager.currentDateStamp.subtract(Duration(days: 2)));
+                //  _controller.animateToDate(
+                //     dayManager.currentDateStamp.subtract(Duration(days: 2)));
                 //print(_selectedValue);
+
                 setState(() {});
+                dayManager.dayScreenSetState?.call();
+                dayManager.dateAnimateFunction?.call();
               },
               child: Text('Today'))
         ],

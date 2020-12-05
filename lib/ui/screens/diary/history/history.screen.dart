@@ -1,9 +1,7 @@
 import 'dart:math';
 
-import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/components/background.dart';
@@ -12,30 +10,16 @@ import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 
-class DiaryScreenBuilder extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<DiaryBloc>(builder: (_, DiaryBloc diaryManager, __) {
-      diaryManager.resetAddJournalForm();
-      return DiaryScreen(
-        manager: diaryManager,
-      );
-    });
-  }
-}
-
-class DiaryScreen extends StatefulWidget {
+class HistoryScreen extends StatefulWidget {
   final DiaryBloc manager;
-  const DiaryScreen({Key key, this.manager}) : super(key: key);
+  const HistoryScreen({Key key, this.manager}) : super(key: key);
 
   @override
-  _DiaryScreenState createState() => _DiaryScreenState();
+  _HistoryScreenState createState() => _HistoryScreenState();
 }
 
-class _DiaryScreenState extends State<DiaryScreen> {
+class _HistoryScreenState extends State<HistoryScreen> {
   DiaryBloc manager;
 
   @override
@@ -58,7 +42,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double firstSectionHeight = 0.25;
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -73,7 +56,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
           border: Border(top: BorderSide(color: Colors.transparent, width: 1))),
       child: Column(
         children: [
-          Container(child: _buildViewHistoryButton(context)),
           Expanded(
             child: Container(
                 padding: EdgeInsets.only(top: 4),
@@ -85,65 +67,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
         ],
       ),
     );
-  }
-
-  Widget _buildViewHistoryButton(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    DayPlanManager dayPlanManager =
-        Provider.of<DayPlanManager>(context, listen: false);
-
-    return Container(
-        margin: EdgeInsets.only(top: 10),
-        child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: min(50, size.height * 0.07),
-              maxHeight: max(50, size.height * 0.08),
-            ),
-            child: GestureDetector(
-                onTap: () => dayPlanManager.generateHistory(),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        spreadRadius: 1,
-                        blurRadius: 0,
-                        offset: Offset(0, 0),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30), //?was 12, also like 10, 11
-                    ),
-                    //border: Border.all(color: Colors.black    54, width: 0.05),
-                  ),
-                  child: SizedBox(
-                    width: size.width * 0.85,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.history,
-                            color: Colors.deepOrange[700],
-                            size: 25,
-                          ),
-                          if (true)
-                            Container(
-                              padding: EdgeInsets.only(left: 5, bottom: 1),
-                              child: text(
-                                'Progress History',
-                                fontFamily: 'Regular',
-                                fontSize: 16.0,
-                                maxLine: 1,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ))));
   }
 
   void navigateToHistroyPage(BuildContext context) {
