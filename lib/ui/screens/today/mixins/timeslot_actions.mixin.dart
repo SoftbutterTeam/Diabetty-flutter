@@ -13,7 +13,7 @@ mixin TimeSlotActionsMixin<T extends Widget> {
   TimeSlot get timeSlot;
   DayPlanManager getDayPlanManager(BuildContext context) =>
       Provider.of<DayPlanManager>(context, listen: false);
-  void showTimeSlotActionSheet(BuildContext context, Reminder reminder) =>
+  void showTimeSlotActionSheet(BuildContext context, List<Reminder> reminder) =>
       showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
