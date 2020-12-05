@@ -81,14 +81,12 @@ class _TherapyScreenState extends State<TherapyScreen>
           therapies.sort((a, b) => a.name.compareTo(b.name));
           return Container(
             child: Scrollbar(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: therapies.length,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: therapies.length,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
@@ -98,12 +96,13 @@ class _TherapyScreenState extends State<TherapyScreen>
                                     manager: manager)),
                           );
                         },
-                        child: TherapyCard(
-                          therapy: therapies[index],
-                        ),
-                      );
-                    }),
-              ),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 26),
+                          child: TherapyCard(
+                            therapy: therapies[index],
+                          ),
+                        ));
+                  }),
             ),
           );
         });

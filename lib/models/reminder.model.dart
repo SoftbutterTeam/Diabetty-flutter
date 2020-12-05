@@ -21,6 +21,8 @@ class Reminder with DateMixin {
   double editedDose;
   bool doseEdited;
   DateTime skippedAt;
+  DateTime deletedAt;
+
   List<int> advices;
 
   DateTime get getDateTimeAs12hr {
@@ -75,6 +77,8 @@ class Reminder with DateMixin {
       !isSkipped &&
       rescheduledTime == null &&
       DateTime.now().compareTo(time) < 0;
+
+  bool get isDeleted => deletedAt != null;
 
   ReminderStatus get status {
     if (isComplete) return ReminderStatus.completed;
@@ -150,6 +154,8 @@ class Reminder with DateMixin {
       this.takenAt = DateTime.parse(json['takenAt']);
     if (json.containsKey('skippedAt'))
       this.skippedAt = DateTime.parse(json['skippedAt']);
+    if (json.containsKey('deletedAt'))
+      this.deletedAt = DateTime.parse(json['deletedAt']);
     if (json.containsKey('doseEdited')) this.doseEdited = json['doseEdited'];
   }
 
@@ -177,6 +183,8 @@ class Reminder with DateMixin {
       output['rescheduledTime'] = this.rescheduledTime.toString();
     if (this.editedDose != null) output['editedDose'] = this.editedDose;
     if (this.skippedAt != null) output['skippedAt'] = this.skippedAt.toString();
+    if (this.deletedAt != null) output['deletedAt'] = this.deletedAt.toString();
+
     if (this.advices != null) output['advices'] = this.advices;
     if (this.doseEdited != null) output['doseEdited'] = this.doseEdited;
     return output;

@@ -104,16 +104,21 @@ class _TherapyCardState extends State<TherapyCard>
                           maxLine: 2,
                           fontSize: 11.0,
                           overflow: TextOverflow.ellipsis),
-                    if (widget.therapy.stock.isOutOfStock)
+                    if (widget.therapy.stock != null &&
+                        widget.therapy.stock.remind &&
+                        widget.therapy.stock.isOutOfStock)
                       text('Out of Stock',
-                          textColor: Colors.red[900],
+                          textColor: Colors.redAccent[700],
                           fontFamily: fontMedium,
                           maxLine: 2,
                           fontSize: 11.0,
                           overflow: TextOverflow.ellipsis)
-                    else if (widget.therapy.stock.isLowOnStock)
-                      text('Low on Stock',
-                          textColor: Colors.black87,
+                    else if (widget.therapy.stock != null &&
+                        widget.therapy.stock.remind &&
+                        widget.therapy.stock.isLowOnStock)
+                      text(
+                          'Low on Stock (${widget.therapy.stock.currentLevel.toString()} left)',
+                          textColor: Colors.orange[900],
                           fontFamily: fontMedium,
                           maxLine: 2,
                           fontSize: 11.0,
@@ -142,6 +147,33 @@ class _TherapyCardState extends State<TherapyCard>
         ));
   }
 
+  String getLastTakenMessage() {
+    final dayManager = Provider.of<DayPlanManager>(context, listen: false);
+    if (widget.therapy.schedule == null ||
+        widget.therapy.schedule.reminderRules.isEmpty) return null;
+    List userRemindersLast =
+        List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
+            .where((element) =>
+                element.therapyId == widget.therapy.id && element.isComplete)
+            .toList();
+    for (int i = 1; i < 7 && userRemindersLast.isEmpty; i++) {
+      userRemindersLast.addAll(dayManager
+          .getFinalRemindersList(
+              date: DateTime.now().subtract(Duration(days: i)))
+          .where((element) =>
+              element.therapyId == widget.therapy.id && element.isComplete)
+          .toList());
+    }
+
+    userRemindersLast.sort((a, b) =>
+        (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
+
+    if (userRemindersLast.isEmpty) return null;
+    Reminder lastReminder = userRemindersLast.last;
+
+    return 'last taken: ${(lastReminder.rescheduledTime ?? lastReminder.time).shortenDayRepresent().toLowerCase()} ${(lastReminder.rescheduledTime ?? lastReminder.time).formatTime().toLowerCase()} ';
+  } //! it can return null!!!!!!!! Error handle it, for no last taken
+
   String getNextReminderMessage() {
     final dayManager = Provider.of<DayPlanManager>(context, listen: false);
     if (widget.therapy.schedule == null ||
@@ -149,20 +181,31 @@ class _TherapyCardState extends State<TherapyCard>
     List userRemindersNext =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
             .where((element) => element.therapyId == widget.therapy.id)
-            .toList();
+            .toList()
+              ..retainWhere((element) =>
+                  (element.rescheduledTime ?? element.time)
+                      .isSameDayAs(DateTime.now()) &&
+                  !element.isComplete &&
+                  !element.isSkipped);
     for (int i = 1; i < 7 && userRemindersNext.isEmpty; i++) {
       userRemindersNext.addAll(dayManager
           .getFinalRemindersList(date: DateTime.now().add(Duration(days: i)))
           .where((element) => element.therapyId == widget.therapy.id)
-          .toList());
+          .toList()
+            ..retainWhere((element) =>
+                (element.rescheduledTime ?? element.time)
+                    .isSameDayAs(DateTime.now().add(Duration(days: i))) &&
+                !element.isComplete &&
+                !element.isSkipped));
     }
 
-    userRemindersNext.sort((a, b) => a.time.compareTo(b.time));
+    userRemindersNext.sort((a, b) =>
+        (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
 
     if (userRemindersNext.isEmpty) return null;
     Reminder nextReminder = userRemindersNext.first;
 
-    return 'next: ${nextReminder.time.shortenDayRepresent().toLowerCase()} ${nextReminder.time.formatTime().toLowerCase()} ';
+    return 'next: ${(nextReminder.rescheduledTime ?? nextReminder.time).shortenDayRepresent().toLowerCase()} ${(nextReminder.rescheduledTime ?? nextReminder.time).formatTime().toLowerCase()} ';
 
     /***
      *? So this is an Example. When we have proper ReminderState checks, we can 

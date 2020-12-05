@@ -4,6 +4,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -44,11 +45,10 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   double curve = 15;
   double bottomCurve;
-
+  DayPlanManager dayPlanManager;
   @override
   Widget build(BuildContext context) {
-    DayPlanManager dayPlanManager =
-        Provider.of<DayPlanManager>(context, listen: true);
+    dayPlanManager = Provider.of<DayPlanManager>(context, listen: true);
     colorToFade = false ? Colors.green : Colors.grey;
     opacity = reminder.isComplete ? .3 : .3;
     var size = MediaQuery.of(context).size;
@@ -96,6 +96,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     int remStrengthType = reminder.strengthUnitindex;
     int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
 
+    Therapy therapy = dayPlanManager.therapyManager?.usersTherapies
+        ?.firstWhere((element) => element.id == reminder.therapyId);
     return ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: size.height * 0.25,
@@ -209,6 +211,48 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                   ],
                 ),
               ),
+            if (therapy != null &&
+                therapy.stock != null &&
+                therapy.stock.remind &&
+                therapy.stock.isOutOfStock)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.assignment, size: 20), // ! needs an icon
+                    SizedBox(width: 20),
+                    text('0ut of stock',
+                        textColor: Colors.redAccent[700],
+                        fontFamily: fontMedium,
+                        maxLine: 2,
+                        fontSize: 11.0,
+                        overflow: TextOverflow.ellipsis)
+                  ],
+                ),
+              ),
+            if (therapy != null &&
+                therapy.stock != null &&
+                therapy.stock.remind &&
+                !therapy.stock.isOutOfStock &&
+                therapy.stock.isLowOnStock)
+              Container(
+                padding: EdgeInsets.only(bottom: 3),
+                child: Row(
+                  children: [
+                    SizedBox(width: 15),
+                    Icon(Icons.assignment, size: 20),
+                    SizedBox(width: 20),
+                    text(
+                        'low on stock (${therapy.stock.currentLevel.toString()} left)',
+                        textColor: Colors.orange[900],
+                        fontFamily: fontMedium,
+                        maxLine: 2,
+                        fontSize: 11.0,
+                        overflow: TextOverflow.ellipsis),
+                  ],
+                ),
+              ),
             if (_buildReminderStatusDescription() != null)
               Container(
                 padding: EdgeInsets.only(bottom: 3),
@@ -306,9 +350,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () {
-                  //TODO navigate to therapy profile based upon reminder id
-                },
+                onTap: () => navigateToTherapy(context, reminder),
                 child: Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: SvgPicture.asset(
@@ -320,50 +362,17 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 ),
               ),
               Icon(Icons.more_vert, color: Colors.transparent),
-              Padding(
-                padding: EdgeInsets.only(right: 15.0),
-                child: GestureDetector(
-                    onTap: () {
-                      final actionsheet = editOrDelete(context);
-                      showCupertinoModalPopup(
-                          context: context, builder: (context) => actionsheet);
-                    },
-                    // onTap: () => navigateTherapyProfile(context),
-                    child: Icon(Icons.more_horiz)),
+              Container(
+                color: Colors.transparent,
+                child: Padding(
+                    padding: EdgeInsets.only(right: 15.0),
+                    child: GestureDetector(
+                        onTap: () => showReminderInfoMoreActionSheet(context),
+                        child: Icon(Icons.more_horiz))),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  CupertinoActionSheet editOrDelete(BuildContext context) {
-    return CupertinoActionSheet(
-      actions: [
-        CupertinoActionSheetAction(
-          child: text("Edit", fontSize: 18.0, textColor: Colors.indigo),
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => EditDosageScreen(
-                        reminder: reminder,
-                      )),
-            );
-          },
-        ),
-        CupertinoActionSheetAction(
-          child: text("Delete", fontSize: 18.0, textColor: Colors.indigo),
-          onPressed: () {},
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: Container(color: Colors.white, child: Text('Cancel')),
-        onPressed: () {
-          Navigator.of(context).pop(context);
-        },
       ),
     );
   }
@@ -410,8 +419,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     showTakeActionPopup(context);
   }
 }
-
-
 
 class ReminderModalFooterButton extends StatelessWidget {
   const ReminderModalFooterButton({

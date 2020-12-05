@@ -87,6 +87,12 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   }
 
   @override
+  void updateListeners() {
+    therapyManager?.updateListeners();
+    super.updateListeners();
+  }
+
+  @override
   Future<void> init() async {
     super.init();
     currentDateStamp = DateTime.now();
@@ -115,6 +121,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
           element.time.isSameDayAs(e.time));
     });
     finalReminders.addAll(fetchedReminders);
+    finalReminders.removeWhere((element) => element.isDeleted);
     return finalReminders;
   }
 
