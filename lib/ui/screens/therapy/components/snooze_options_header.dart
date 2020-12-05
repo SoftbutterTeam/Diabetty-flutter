@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 class SnoozeOptionsHeader extends StatefulWidget {
   final String text;
+  final Function saveFunction;
+  final Function backFunction;
 
-  SnoozeOptionsHeader({this.text});
+  SnoozeOptionsHeader({this.text, this.saveFunction, this.backFunction});
 
   @override
   _SnoozeOptionsHeaderState createState() => _SnoozeOptionsHeaderState();
@@ -25,7 +27,7 @@ class _SnoozeOptionsHeaderState extends State<SnoozeOptionsHeader> {
             Container(
               alignment: Alignment.centerLeft,
               child: FlatButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: widget.backFunction,
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
@@ -45,7 +47,7 @@ class _SnoozeOptionsHeaderState extends State<SnoozeOptionsHeader> {
             Container(
               alignment: Alignment.centerRight,
               child: FlatButton(
-                onPressed: () {},
+                onPressed: widget.saveFunction,
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,

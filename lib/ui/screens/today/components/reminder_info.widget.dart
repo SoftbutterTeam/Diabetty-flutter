@@ -8,6 +8,7 @@ import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/today/edit_dose.screen.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -348,6 +349,18 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              GestureDetector(
+                onTap: () => navigateToTherapy(context, reminder),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: SvgPicture.asset(
+                    'assets/icons/infob/003-info.svg',
+                    // 'assets/icons/moreb/001-center-lines.svg',
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+              ),
               Icon(Icons.more_vert, color: Colors.transparent),
               Container(
                 color: Colors.transparent,

@@ -1,11 +1,14 @@
 import 'dart:ui';
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
+import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile_screen2.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_info.widget.dart';
+import 'package:diabetty/ui/screens/today/edit_dose.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
@@ -18,12 +21,10 @@ mixin ReminderActionsMixin<T extends Widget> {
   @protected
   Reminder get reminder;
 
-  void navigateToTherapy(
-      BuildContext context, Reminder reminder, Duration snoozeFor) {
+  void navigateToTherapy(BuildContext context, Reminder reminder) {
     DayPlanManager dayPlanManager =
         Provider.of<DayPlanManager>(context, listen: false);
     TherapyManager therapyManager = dayPlanManager.therapyManager;
-
     Therapy therapy = therapyManager?.usersTherapies
         ?.firstWhere((element) => element.id == reminder.therapyId);
     if (therapy == null) return null;
@@ -33,6 +34,40 @@ mixin ReminderActionsMixin<T extends Widget> {
         builder: (context) =>
             TherapyProfileScreen2(therapy: therapy, manager: therapyManager),
       ),
+    );
+  }
+
+  void openTypeThing(BuildContext context, Reminder reminder, Size size, settingState) {
+    int s;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return IntakePopUp(
+          height: size.height,
+          width: size.width,
+          onPressed: () {
+            Navigator.of(context).pop(context);
+            reminder.doseTypeIndex = s;
+            settingState();
+          },
+          intakePicker: CupertinoPicker(
+            scrollController: FixedExtentScrollController(initialItem: 0),
+            itemExtent: 35,
+            backgroundColor: Colors.white,
+            onSelectedItemChanged: (int x) {
+              s = x;
+            },
+            children: new List<Widget>.generate(
+              unitTypes.length,
+              (int index) {
+                return new Center(
+                  child: new Text(unitTypes[index].plurarlUnits(3)),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -103,6 +138,13 @@ mixin ReminderActionsMixin<T extends Widget> {
                 ),
                 onPressed: () {
                   Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditDosageScreen(
+                              reminder: reminder,
+                            )),
+                  );
                 },
               ),
               CupertinoActionSheetAction(
@@ -226,34 +268,39 @@ mixin ReminderActionsMixin<T extends Widget> {
     );
   }
 
-  void showActionSheet(BuildContext context, Reminder reminder) =>
+  void showActionSheet(BuildContext context, List<Reminder> reminder) =>
       showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
+          DayPlanManager dayPlanManager = getDayPlanManager(context);
+          DateTime rescheduledTo;
           return CupertinoActionSheet(
-            message: const Text('Taken at?'),
+            message: const Text('All Reminders'),
             actions: <Widget>[
               CupertinoActionSheetAction(
                   onPressed: () {
+                    print(reminder);
+                    // dayPlanManager.takeAllReminders(reminder);
                     Navigator.of(context).pop(context);
                   },
-                  child: Text('Now')),
-              if (!DateTime.now()
-                  .isBefore(reminder.rescheduledTime ?? reminder.time))
-                CupertinoActionSheetAction(
-                    onPressed: () {
-                      Navigator.of(context).pop(context);
-                    },
-                    child: Text('On Time')),
+                  child: Text('Take All')),
               CupertinoActionSheetAction(
                   onPressed: () {
+                    // dayPlanManager.skipAllReminders(reminder);
+                    Navigator.of(context).pop(context);
+                  },
+                  child: Text('Skip All')),
+              CupertinoActionSheetAction(
+                  onPressed: () {
+                    // dayPlanManager.rescheduleAllReminders(
+                    //     reminder, rescheduledTo);
                     Navigator.of(context).pop(context);
                     showExactTimePicker(
                       context,
                       (DateTime choosenTime) {},
                     );
                   },
-                  child: Text('Choose a Time')),
+                  child: Text('Reschedule All')),
             ],
             cancelButton: CupertinoActionSheetAction(
               onPressed: () => Navigator.of(context).pop(context),

@@ -80,6 +80,8 @@ flutter:
     - assets/icons/navigation/more/
     - assets/icons/navigation/other/
     - assets/icons/navigation/x/
+    - assets/icons/infob/
+    - assets/icons/moreb/
 
 fonts:
   - family: Neue-Book
