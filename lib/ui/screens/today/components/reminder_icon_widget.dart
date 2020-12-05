@@ -87,13 +87,25 @@ class _RemIconWidgetState extends State<RemIconWidget> {
                     Container(
                       alignment: Alignment
                           .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
-                      child: _buildRelevantIcon(),
+                      child: ReminderStateIcon(
+                        reminder: widget.reminder,
+                      ),
                     ),
                 ],
               )),
         ),
       ),
     );
+  }
+}
+
+class ReminderStateIcon extends StatelessWidget {
+  final Reminder reminder;
+  final Widget onNull;
+  ReminderStateIcon({this.reminder, this.onNull});
+  @override
+  Widget build(BuildContext context) {
+    return _buildRelevantIcon() ?? onNull ?? SizedBox();
   }
 
   Container _buildCompletedIcon() {
@@ -208,7 +220,7 @@ class _RemIconWidgetState extends State<RemIconWidget> {
   }
 
   Widget _buildRelevantIcon() {
-    ReminderStatus status = widget.reminder.status;
+    ReminderStatus status = reminder.status;
     // print(status.toString() + " ---h");
     switch (status) {
       case ReminderStatus.completed:

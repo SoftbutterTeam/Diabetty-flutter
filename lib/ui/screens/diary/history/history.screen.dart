@@ -1,7 +1,11 @@
 import 'dart:math';
 
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/diary.bloc.dart';
+import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
+import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/components/background.dart';
@@ -10,6 +14,9 @@ import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:diabetty/extensions/index.dart';
+import 'package:diabetty/ui/screens/today/components/reminder_icon_widget.dart';
 
 class HistoryScreen extends StatefulWidget {
   final DiaryBloc manager;
@@ -61,7 +68,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 padding: EdgeInsets.only(top: 4),
                 child: Container(
                   margin: EdgeInsets.only(top: 5, left: 5, right: 5),
-                  child: _buildJournalCards(context),
+                  child: _buildHistory(context),
                 )),
           ),
         ],
@@ -69,96 +76,97 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  void navigateToHistroyPage(BuildContext context) {
-    Navigator.pushNamed(context, null);
+  Widget _buildHistory(BuildContext context) {
+    DayPlanManager dayPlanManager =
+        Provider.of<DayPlanManager>(context, listen: false);
+    print(
+      min(DateTime.now().difference(dayPlanManager.lastReminderDate).inDays + 2,
+          150),
+    );
+    return Scrollbar(
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        itemCount: min(
+            DateTime.now().difference(dayPlanManager.lastReminderDate).inDays +
+                2,
+            150),
+        addAutomaticKeepAlives: true,
+        itemBuilder: (context, index) {
+          Map<String, List<Reminder>> history =
+              dayPlanManager.generateDayHistory(
+                  DateTime.now().subtract(Duration(days: index)));
+
+          return _buildHistoryDay(
+              context, history, DateTime.now().subtract(Duration(days: index)));
+        },
+      ),
+    );
   }
 
-  Widget _buildJournalCards(BuildContext context) {
-    return StreamBuilder(
-        stream: manager.journalStream,
-        initialData: manager.usersJournals,
-        builder: (context, snapshot) {
-          if (manager.usersJournals == null || manager.usersJournals.isEmpty) {
-            return Container(
-              child: null,
-            );
-          }
-          List<Journal> journals = manager.usersJournals;
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            child: Scrollbar(
-              child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: journals.length,
-                  addAutomaticKeepAlives: true,
-                  itemBuilder: (context, index) => JournalCard2(
-                        journal: journals[index],
-                      )),
-            ),
-          );
-        });
-  }
+  Widget _buildHistoryDay(BuildContext context,
+      Map<String, List<Reminder>> history, DateTime dateTime) {
+    List<Widget> children = [];
+    history.forEach((key, value) {
+      children.add(_buildMedicationHistory(context, key, value));
+    });
 
-  // TODO: Remove this if it isn't going to be used in the diary screen anymore.
-  Widget _buildReportSection(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(left: 0, right: 10, bottom: 5),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      child: Column(
+        children: [
           Container(
-              alignment: Alignment.centerLeft,
-              child: _buildReportPercCircle(context)),
-          Container(child: _buildReportText(context))
-        ]));
+            child: Text(dateTime.shortenDateRepresent()),
+          )
+        ]..addAll(children),
+      ),
+    );
+  }
+
+  Widget _buildMedicationHistory(
+      BuildContext context, String therapyName, List<Reminder> reminders) {
+    if (reminders.isEmpty) return SizedBox();
+    return Container(
+        child: Column(
+      children: [
+        Text(therapyName.capitalize()),
+        ColumnBuilder(
+          itemCount: reminders.length,
+          itemBuilder: (context, index) {
+            return _buildRemindersHistoryField(context, reminders[index]);
+          },
+        ),
+      ],
+    ));
+  }
+
+  Widget _buildRemindersHistoryField(BuildContext context, Reminder reminder) {
+    return Container(
+        child: Row(
+      children: [
+        Text(reminder.dose.toString() +
+            ' ' +
+            unitTypes[reminder.doseTypeIndex].plurarlUnits(reminder.dose)),
+        if (reminder.takenAt != null)
+          Container(
+            child:
+                text(reminder.time.formatTime(), textColor: Colors.green[600]),
+          ),
+        Container(
+          child: ReminderStateIcon(
+              reminder: reminder, onNull: _buildQuestionIcon(context)),
+        )
+      ],
+    ));
+  }
+
+  Widget _buildQuestionIcon(BuildContext context) {
+    return Container(
+      width: 16,
+      height: 16,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.transparent,
+          border: Border.all(color: Colors.blue, width: 1)),
+      child: Center(child: null),
+    );
   }
 }
-
-//TODO: Remove this if we're not using the circle in the future.
-Widget _buildReportPercCircle(BuildContext context) {
-  var size = MediaQuery.of(context).size;
-  return SizedBox(
-    width: size.width,
-    child: Container(
-        margin: EdgeInsets.all(size.width * 0.04),
-        padding: EdgeInsets.all(size.width * 0.02),
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: appWhite,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2), // a 0.2 is dope
-              spreadRadius: 2,
-              blurRadius: 3,
-
-              offset: Offset(0, 0), // a 1 is dope
-            ),
-          ],
-        ),
-        child: new CustomPaint(
-            foregroundPainter: new MyPainter(
-                completeColor: Colors.deepOrange,
-                completePercent: 78,
-                lineColor: Colors.red.withOpacity(0.2),
-                width: 2),
-            child: Container(
-              alignment: Alignment.center,
-              child: Text(
-                '78%',
-                style: TextStyle(fontSize: 25, color: Colors.deepOrange),
-              ),
-            ))),
-  );
-}
-
-Widget _buildReportText(BuildContext context) {
-  return Expanded(
-    child: Container(
-        alignment: Alignment.centerRight,
-        child: Column(
-          children: [Text('last 4 weeks'), Text('3 late'), Text('3 missed')],
-        )),
-  );
-}
-
-// Navigator.pushNamed(context, appsettings);
