@@ -28,14 +28,14 @@ class _DashBoardState extends State<DashBoard> {
 
   var _pages = [
     DiaryScreenBuilder(),
-   Simple.DayPlanScreenBuilder(),
+    Simple.DayPlanScreenBuilder(),
     DrafttScreen(),
     TherapyScreenBuilder(),
   ];
 
   @override
   void initState() {
-    pageController = PageController(initialPage: pageIndex);
+    pageController = PageController(initialPage: pageIndex, keepPage: true);
     super.initState();
   }
 

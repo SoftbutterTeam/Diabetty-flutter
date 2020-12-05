@@ -79,6 +79,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     draggingIdle = true;
     manager = Provider.of<DayPlanManager>(context, listen: false);
     manager.reminderScrollKeys = {};
+    manager.dateChanges = StreamController();
     _dateController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 200),
@@ -99,11 +100,13 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         setState(() {});
       }
     });
+
+    manager.dayScreenSetState = setStateFunc;
+    /*manager.dateChanges?.stream?.listen((event) {
+      setState(() {});
+    });*/
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => manager.fadeAnimation?.addStatusListener(setStateFunc));
-    manager.pushAnimation?.addListener(() {
-      setState(() {});
-    });
     show = true;
     super.initState();
   }
@@ -120,6 +123,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     manager.fadeAnimation?.removeStatusListener(setStateFunc);
     //manager.fadeAnimation?.dispose();
     super.dispose();
+    manager.dateChanges?.close();
   }
 
   Widget _body(BuildContext context) {
@@ -129,62 +133,25 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     double heightOfCircleSpace = size.height * 0.35;
 
     return Background(
-      child: Builder(builder: (context) {
-        if (manager.getFinalRemindersList().isEmpty) {
-          return Container(
-            child: Text('no reminders'),
-            alignment: Alignment.center,
-          );
-        }
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            AnimatedBox(animation: _animation, shouldAnim: !circleMinimized),
-            if (false)
-              Container(
-                  color: Colors.white,
-                  child: CalendarStrip(
-                    startDate: DateTime.now().subtract(Duration(days: 14)),
-                    endDate: DateTime.now().add(Duration(days: 8)),
-                    onDateSelected: () {},
-                    onWeekSelected: () {},
-                    dateTileBuilder: null,
-                    iconColor: Colors.black87,
-                    monthNameWidget: null,
-                    markedDates: [],
-                    selectedDate: DateTime.now(),
-                    addSwipeGesture: true,
-                    containerDecoration: BoxDecoration(color: Colors.white),
-                  )),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(top: 5),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 1,
-                        blurRadius: 4,
-                        offset: Offset(0, -1),
-                      ),
-                    ],
-                    border: Border(
-                        top: BorderSide(
-                            color: (circleMinimized
-                                ? Colors.transparent //deepOrange
-                                : Colors.transparent),
-                            width: 1))),
-                child: Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: _buildRemindersList(context)),
-              ),
-            )
-          ],
-        );
-      }),
-    );
+        child: (manager.getFinalRemindersList().isEmpty)
+            ? Container(
+                child: Text('no reminders'),
+                alignment: Alignment.center,
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  AnimatedBox(animation: _animation, shouldAnim: true),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(top: 5),
+                      child: Container(
+                          margin: EdgeInsets.only(top: 5),
+                          child: _buildRemindersList(context)),
+                    ),
+                  )
+                ],
+              ));
   }
 
   //! onDoubleTap slows down a onTap

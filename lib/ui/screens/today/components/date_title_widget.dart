@@ -44,7 +44,7 @@ class _DateTitleWidgetState extends State<DateTitleWidget>
     super.build(context);
     return InkWell(
       child: Container(
-        width: widget.width,
+        width: widget.width - 3,
         margin: EdgeInsets.all(3.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(80.0)),

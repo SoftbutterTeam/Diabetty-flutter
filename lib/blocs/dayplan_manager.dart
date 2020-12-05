@@ -14,6 +14,8 @@ import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 
 class DayPlanManager extends Manager with ReminderManagerMixin {
+  Function dateAnimateFunction;
+
   DayPlanManager({
     @required this.appContext,
   });
@@ -29,6 +31,8 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
 
   TimeOfDay initalTime;
   TimeOfDay _choosenTime;
+
+  StreamController dateChanges = StreamController();
 
   TimeOfDay get choosenTime => _choosenTime ?? initalTime;
   set choosenTime(TimeOfDay time) =>
@@ -77,6 +81,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
       _currentDateStamp = null;
     else
       _currentDateStamp = value;
+    //dateChanges?.sink?.add(_currentDateStamp);
     notifyListeners();
   }
 
