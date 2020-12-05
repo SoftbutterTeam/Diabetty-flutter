@@ -46,7 +46,7 @@ mixin TimeSlotActionsMixin<T extends Widget> {
                     Navigator.of(context).pop(context);
 
                     getDayPlanManager(context)
-                        .skipAllReminders(timeSlot.reminders);
+                        .skipAllReminders(reminder);
                   },
                   child: Text('Skip All')),
             ],

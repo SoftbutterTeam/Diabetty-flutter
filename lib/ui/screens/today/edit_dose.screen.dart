@@ -3,7 +3,7 @@ import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
-import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
+import 'package:diabetty/ui/screens/today/components/input_field.dart';
 import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_option_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_options_header.dart';
@@ -76,7 +76,7 @@ class _EditDosageScreenState extends State<EditDosageScreen>
     return showDialog(
       context: context,
       builder: (context) => NoResponseErrorModal(
-        errorDescription: 'Please do not leave any field empty',
+        errorDescription: 'Please fill in the dosage field',
       ),
     );
   }
@@ -128,10 +128,16 @@ class _EditDosageScreenState extends State<EditDosageScreen>
         SizedBox(height: size.height * 0.02),
         Padding(
           padding: EdgeInsets.only(bottom: 5.0),
-          child: Text('Edit Dose'),
+          child: Text('Edit Dosage',
+              style: TextStyle(color: Colors.orange[800])),
         ),
         _buildInputDoseField(context),
         SizedBox(height: size.height * 0.01),
+        Padding(
+          padding: EdgeInsets.only(bottom: 5.0),
+          child: Text('Edit Dosage Type',
+              style: TextStyle(color: Colors.orange[800])),
+        ),
         _buildDoseTypeField(context, reminder, size),
       ],
     );
