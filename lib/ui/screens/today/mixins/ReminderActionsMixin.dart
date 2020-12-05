@@ -37,7 +37,8 @@ mixin ReminderActionsMixin<T extends Widget> {
     );
   }
 
-  void openTypeThing(BuildContext context, Reminder reminder, Size size, settingState) {
+  void openTypeThing(
+      BuildContext context, Reminder reminder, Size size, settingState) {
     int s;
     showCupertinoModalPopup(
       context: context,
@@ -258,7 +259,7 @@ mixin ReminderActionsMixin<T extends Widget> {
             mode: CupertinoDatePickerMode.dateAndTime,
             minuteInterval: 1,
             minimumDate: DateTime.now(),
-            initialDateTime: DateTime.now(),
+            initialDateTime: DateTime.now().add(Duration(minutes: 1)),
             onDateTimeChanged: (dateTimeChange) {
               _dateTimeChange = dateTimeChange;
             },

@@ -13,50 +13,51 @@ mixin TimeSlotActionsMixin<T extends Widget> {
   TimeSlot get timeSlot;
   DayPlanManager getDayPlanManager(BuildContext context) =>
       Provider.of<DayPlanManager>(context, listen: false);
-  void showTimeSlotActionSheet(BuildContext context, List<Reminder> reminder) =>
-      showCupertinoModalPopup(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoActionSheet(
-            message:
-                Text('${timeSlot.time.formatTime().toLowerCase()} Reminders'),
-            actions: <Widget>[
-              CupertinoActionSheetAction(
-                  onPressed: () {
-                    Navigator.of(context).pop(context);
+  void showTimeSlotActionSheet(BuildContext context, List<Reminder> reminder) {
+    DayPlanManager dayPlanManager = getDayPlanManager(context);
 
-                    getDayPlanManager(context)
-                        .takeAllReminders(timeSlot.reminders);
-                  },
-                  child: Text('Take All')),
-              CupertinoActionSheetAction(
-                  onPressed: () {
-                    Navigator.of(context).pop(context);
-                    showExactTimePicker(
-                      context,
-                      (DateTime choosenTime) {
-                        getDayPlanManager(context).rescheduleAllReminders(
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          message:
+              Text('${timeSlot.time.formatTime().toLowerCase()} Reminders'),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+
+                  dayPlanManager.takeAllReminders(timeSlot.reminders);
+                },
+                child: Text('Take All')),
+            CupertinoActionSheetAction(
+                onPressed: () {
+                  Navigator.pop(context);
+
+                  showExactTimePicker(
+                    context,
+                    (DateTime choosenTime) {
+                      if (choosenTime != null && choosenTime != timeSlot.time)
+                        dayPlanManager.rescheduleAllReminders(
                             timeSlot.reminders, choosenTime);
-                      },
-                    );
-                  },
-                  child: Text('Reschedule All')),
-              CupertinoActionSheetAction(
-                  onPressed: () {
-                    Navigator.of(context).pop(context);
-
-                    getDayPlanManager(context)
-                        .skipAllReminders(timeSlot.reminders);
-                  },
-                  child: Text('Skip All')),
-            ],
-            cancelButton: CupertinoActionSheetAction(
-              onPressed: () => Navigator.of(context).pop(context),
-              child: Container(color: Colors.white, child: Text('Cancel')),
-            ),
-          );
-        },
-      );
+                    },
+                  );
+                },
+                child: Text('Reschedule All')),
+            CupertinoActionSheetAction(
+                onPressed: () {
+                  dayPlanManager.skipAllReminders(timeSlot.reminders);
+                },
+                child: Text('Skip All')),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () => Navigator.of(context).pop(context),
+            child: Container(color: Colors.white, child: Text('Cancel')),
+          ),
+        );
+      },
+    );
+  }
 
   void showExactTimePicker(BuildContext context, Function function) {
     DateTime choosenTime;
@@ -66,15 +67,15 @@ mixin TimeSlotActionsMixin<T extends Widget> {
         return TimerPicker(
           onConfirm: () {
             function(choosenTime);
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,
             mode: CupertinoDatePickerMode.dateAndTime,
-            minimumDate: DateTime.now().subtract(Duration(days: 7)),
+            minimumDate: DateTime.now(),
             minuteInterval: 1,
-            initialDateTime: DateTime.now(),
-            maximumDate: DateTime.now(),
+            initialDateTime: DateTime.now().add(Duration(minutes: 1)),
+            maximumDate: DateTime.now().add(Duration(days: 7)),
             onDateTimeChanged: (dateTimeChange) {
               choosenTime = dateTimeChange;
             },
