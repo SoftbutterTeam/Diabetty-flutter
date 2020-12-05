@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 
 @optionalTypeArgs
 mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
-  Therapy get therapyForm => therapyForm;
+  Therapy get therapy => therapy;
 
   showEditStockDialog(BuildContext context, TherapyManager manager) {
     showDialog(
         context: context,
         builder: (context) =>
-            EditStockDialog(therapyForm: therapyForm, manager: manager));
+            EditStockDialog(therapyForm: therapy, manager: manager));
   }
 
   showWindow2(BuildContext context) {
@@ -37,7 +37,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             minuteInterval: 5,
             initialTimerDuration: Duration(minutes: 20),
             onTimerDurationChanged: (Duration changedtimer) {
-              therapyForm.schedule.setWindow = changedtimer;
+              therapy.schedule.setWindow = changedtimer;
             },
           ),
         );
@@ -65,7 +65,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             minuteInterval: 5,
             initialTimerDuration: Duration(minutes: 0),
             onTimerDurationChanged: (Duration changedtimer) {
-              therapyForm.medicationInfo.setMinRest = changedtimer;
+              therapy.medicationInfo.setMinRest = changedtimer;
             },
           ),
         );

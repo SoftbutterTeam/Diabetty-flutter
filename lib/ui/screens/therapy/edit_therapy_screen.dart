@@ -4,6 +4,7 @@ import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_option_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_options_header.dart';
+import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,13 +18,22 @@ class EditTherapyScreen extends StatefulWidget {
   _EditTherapyScreenState createState() => _EditTherapyScreenState();
 }
 
-class _EditTherapyScreenState extends State<EditTherapyScreen> {
+class _EditTherapyScreenState extends State<EditTherapyScreen> with EditTherapyModalsMixin{
   TextEditingController medicationNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return SnoozeOptionsBackground(
-        header: SnoozeOptionsHeader(text: 'save'), child: _body(context));
+        header: SnoozeOptionsHeader(
+          text: 'save',
+          backFunction: () {
+            Navigator.pop(context);
+          },
+          saveFunction: () {
+            Navigator.pop(context);
+          },
+        ),
+        child: _body(context));
   }
 
   Widget _body(BuildContext context) {
