@@ -147,12 +147,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
             unitTypes[reminder.doseTypeIndex].plurarlUnits(reminder.dose)),
         if (reminder.takenAt != null)
           Container(
-            child:
-                text(reminder.time.formatTime(), textColor: Colors.green[600]),
+            child: text(reminder.time.formatTime(),
+                textColor: Colors.green[600], fontSize: 15.0),
           ),
         Container(
           child: ReminderStateIcon(
-              reminder: reminder, onNull: _buildQuestionIcon(context)),
+              reminder: reminder,
+              onNull: _buildQuestionIcon(context),
+              size: 20.0),
         )
       ],
     ));

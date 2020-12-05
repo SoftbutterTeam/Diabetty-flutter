@@ -102,7 +102,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 class ReminderStateIcon extends StatelessWidget {
   final Reminder reminder;
   final Widget onNull;
-  ReminderStateIcon({this.reminder, this.onNull});
+  final double size;
+  ReminderStateIcon({this.reminder, this.onNull, this.size = 18});
   @override
   Widget build(BuildContext context) {
     return _buildRelevantIcon() ?? onNull ?? SizedBox();
@@ -110,8 +111,8 @@ class ReminderStateIcon extends StatelessWidget {
 
   Container _buildCompletedIcon() {
     return Container(
-      width: 16,
-      height: 16,
+      width: size - 2,
+      height: size - 2,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.greenAccent[700],
@@ -120,7 +121,7 @@ class ReminderStateIcon extends StatelessWidget {
         child: Icon(
           Icons.check,
           color: Colors.white,
-          size: 12,
+          size: size - 6,
         ),
       ),
     );
@@ -128,8 +129,8 @@ class ReminderStateIcon extends StatelessWidget {
 
   Container _buildLateIcon() {
     return Container(
-      width: 18,
-      height: 18,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
@@ -138,8 +139,8 @@ class ReminderStateIcon extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/icons/navigation/checkbox/tick.svg',
           color: Colors.orange[900], //Colors.white
-          height: 15,
-          width: 15,
+          height: size - 3,
+          width: size - 3,
         ),
       ),
     );
@@ -147,8 +148,8 @@ class ReminderStateIcon extends StatelessWidget {
 
   Container _buildSkippedIcon() {
     return Container(
-      width: 18,
-      height: 18,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.amber,
@@ -157,8 +158,8 @@ class ReminderStateIcon extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/icons/navigation/checkbox/tick.svg',
           color: Colors.white, //Colors.white
-          height: 15,
-          width: 15,
+          height: size - 3,
+          width: size - 3,
         ),
       ),
     );
@@ -166,8 +167,8 @@ class ReminderStateIcon extends StatelessWidget {
 
   Widget _buildActiveIcon() {
     return Container(
-      width: 18,
-      height: 18,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
@@ -176,8 +177,8 @@ class ReminderStateIcon extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/icons/navigation/checkbox/tick.svg',
           color: Colors.greenAccent[700], //Colors.white
-          height: 15,
-          width: 15,
+          height: size - 3,
+          width: size - 3,
         ),
       ),
     );
@@ -185,8 +186,8 @@ class ReminderStateIcon extends StatelessWidget {
 
   Container _buildSnoozedIcon() {
     return Container(
-      width: 15,
-      height: 15,
+      width: size - 3,
+      height: size - 3,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.amber,
@@ -195,7 +196,7 @@ class ReminderStateIcon extends StatelessWidget {
         child: Icon(
           Icons.access_time,
           color: Colors.white,
-          size: 12,
+          size: size - 6,
         ),
       ),
     );
@@ -203,8 +204,8 @@ class ReminderStateIcon extends StatelessWidget {
 
   Container _buildMissedIcon() {
     return Container(
-      width: 15,
-      height: 15,
+      width: size - 3,
+      height: size - 3,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.red,
@@ -213,7 +214,7 @@ class ReminderStateIcon extends StatelessWidget {
         child: Icon(
           Icons.close,
           color: Colors.white,
-          size: 12,
+          size: size - 6,
         ),
       ),
     );
