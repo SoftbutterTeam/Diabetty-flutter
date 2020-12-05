@@ -225,7 +225,7 @@ mixin ReminderActionsMixin<T extends Widget> {
         return TimerPicker(
           onConfirm: () {
             function(choosenTime);
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,

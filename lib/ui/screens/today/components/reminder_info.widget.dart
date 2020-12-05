@@ -220,7 +220,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 child: Row(
                   children: [
                     SizedBox(width: 15),
-                    Icon(Icons.assignment, size: 20), // ! needs an icon
+                    Icon(Icons.block,
+                        size: 20,
+                        color: Colors.redAccent[700]), // ! needs an icon
                     SizedBox(width: 20),
                     text('0ut of stock',
                         textColor: Colors.redAccent[700],
