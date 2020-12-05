@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/routes.dart';
 
 class DiaryScreenBuilder extends StatelessWidget {
   @override
@@ -100,7 +101,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
               maxHeight: max(50, size.height * 0.08),
             ),
             child: GestureDetector(
-                onTap: () => dayPlanManager.generateHistory(),
+                onTap: () {
+                  navigateToHistroyPage(context);
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -147,7 +150,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 
   void navigateToHistroyPage(BuildContext context) {
-    Navigator.pushNamed(context, null);
+    Navigator.pushNamed(context, history);
   }
 
   Widget _buildJournalCards(BuildContext context) {

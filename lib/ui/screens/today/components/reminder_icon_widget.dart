@@ -87,7 +87,9 @@ class _RemIconWidgetState extends State<RemIconWidget> {
                     Container(
                       alignment: Alignment
                           .topRight, // center bottom right   ------> this is the widget icon reminder thing you need to do.
-                      child: _buildRelevantIcon(),
+                      child: ReminderStateIcon(
+                        reminder: widget.reminder,
+                      ),
                     ),
                 ],
               )),
@@ -95,11 +97,22 @@ class _RemIconWidgetState extends State<RemIconWidget> {
       ),
     );
   }
+}
+
+class ReminderStateIcon extends StatelessWidget {
+  final Reminder reminder;
+  final Widget onNull;
+  final double size;
+  ReminderStateIcon({this.reminder, this.onNull, this.size = 18});
+  @override
+  Widget build(BuildContext context) {
+    return _buildRelevantIcon() ?? onNull ?? SizedBox();
+  }
 
   Container _buildCompletedIcon() {
     return Container(
-      width: 16,
-      height: 16,
+      width: size - 2,
+      height: size - 2,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.greenAccent[700],
@@ -108,7 +121,7 @@ class _RemIconWidgetState extends State<RemIconWidget> {
         child: Icon(
           Icons.check,
           color: Colors.white,
-          size: 12,
+          size: size - 6,
         ),
       ),
     );
@@ -116,8 +129,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 
   Container _buildLateIcon() {
     return Container(
-      width: 18,
-      height: 18,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
@@ -126,8 +139,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
         child: SvgPicture.asset(
           'assets/icons/navigation/checkbox/tick.svg',
           color: Colors.orange[900], //Colors.white
-          height: 15,
-          width: 15,
+          height: size - 3,
+          width: size - 3,
         ),
       ),
     );
@@ -135,8 +148,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 
   Container _buildSkippedIcon() {
     return Container(
-      width: 18,
-      height: 18,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.amber,
@@ -145,8 +158,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
         child: SvgPicture.asset(
           'assets/icons/navigation/checkbox/tick.svg',
           color: Colors.white, //Colors.white
-          height: 15,
-          width: 15,
+          height: size - 3,
+          width: size - 3,
         ),
       ),
     );
@@ -154,8 +167,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 
   Widget _buildActiveIcon() {
     return Container(
-      width: 18,
-      height: 18,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
@@ -164,8 +177,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
         child: SvgPicture.asset(
           'assets/icons/navigation/checkbox/tick.svg',
           color: Colors.greenAccent[700], //Colors.white
-          height: 15,
-          width: 15,
+          height: size - 3,
+          width: size - 3,
         ),
       ),
     );
@@ -173,8 +186,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 
   Container _buildSnoozedIcon() {
     return Container(
-      width: 15,
-      height: 15,
+      width: size - 3,
+      height: size - 3,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.amber,
@@ -183,7 +196,7 @@ class _RemIconWidgetState extends State<RemIconWidget> {
         child: Icon(
           Icons.access_time,
           color: Colors.white,
-          size: 12,
+          size: size - 6,
         ),
       ),
     );
@@ -191,8 +204,8 @@ class _RemIconWidgetState extends State<RemIconWidget> {
 
   Container _buildMissedIcon() {
     return Container(
-      width: 15,
-      height: 15,
+      width: size - 3,
+      height: size - 3,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.red,
@@ -201,14 +214,14 @@ class _RemIconWidgetState extends State<RemIconWidget> {
         child: Icon(
           Icons.close,
           color: Colors.white,
-          size: 12,
+          size: size - 6,
         ),
       ),
     );
   }
 
   Widget _buildRelevantIcon() {
-    ReminderStatus status = widget.reminder.status;
+    ReminderStatus status = reminder.status;
     // print(status.toString() + " ---h");
     switch (status) {
       case ReminderStatus.completed:

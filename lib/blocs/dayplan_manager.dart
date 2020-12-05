@@ -199,7 +199,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   }
 
   Map<String, GlobalKey> reminderScrollKeys = {};
-
+/*
   Map<DateTime, Map<String, List<Reminder>>> generateHistory() {
     List<Reminder> reminders = List.of(usersReminders);
     reminders.sort((Reminder a, Reminder b) =>
@@ -217,6 +217,27 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
       });
     }
     print(history[DateTime.now()].toString());
+    return history;
+  }
+*/
+  DateTime get lastReminderDate {
+    List<Reminder> reminders = List.of(usersReminders);
+    reminders.sort((Reminder a, Reminder b) =>
+        (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
+
+    print('last');
+    print(reminders.first.tojson());
+    return reminders.first.rescheduledTime ?? reminders.first.time;
+  }
+
+  Map<String, List<Reminder>> generateDayHistory(DateTime d) {
+    DateTime date = d.toSimpleDateTime();
+    Map<String, List<Reminder>> history = {};
+
+    getFinalRemindersList(date: date).forEach((element) {
+      history[element.name.toLowerCase()] ??= List();
+      history[element.name.toLowerCase()].add(element);
+    });
     return history;
   }
 }
