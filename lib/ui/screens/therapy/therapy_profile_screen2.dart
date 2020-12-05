@@ -37,12 +37,15 @@ class TherapyProfileScreen2 extends StatefulWidget {
 
 class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     with EditTherapyModalsMixin {
+  @override
+  Therapy get therapy => widget.therapy;
   Color textColor = Colors.orange[800];
 
   @override
   Widget build(BuildContext context) {
     return TherapyProfileBackground(
-        header: TherapyProfileHeader(therapy: widget.therapy), child: _body(context));
+        header: TherapyProfileHeader(therapy: widget.therapy),
+        child: _body(context));
   }
 
   Widget _body(BuildContext context) {

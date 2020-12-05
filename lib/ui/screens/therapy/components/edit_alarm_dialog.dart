@@ -22,6 +22,8 @@ class EditAlarmDialog extends StatefulWidget {
 
 class _EditAlarmDialogState extends State<EditAlarmDialog>
     with EditTherapyModalsMixin {
+  @override
+  Therapy get therapy => widget.therapyForm;
   bool alarmSound;
   bool vibration;
   bool snooze;

@@ -2,6 +2,7 @@ import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
+import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_option_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_options_header.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
@@ -18,8 +19,30 @@ class EditTherapyScreen extends StatefulWidget {
   _EditTherapyScreenState createState() => _EditTherapyScreenState();
 }
 
-class _EditTherapyScreenState extends State<EditTherapyScreen> with EditTherapyModalsMixin{
+class _EditTherapyScreenState extends State<EditTherapyScreen>
+    with EditTherapyModalsMixin {
   TextEditingController medicationNameController = TextEditingController();
+  Therapy newTherapy;
+  String name;
+  int type;
+  int appearance;
+  int intake;
+  Duration window;
+  Duration restDuration;
+
+  @override
+  Therapy get therapy => widget.therapy;
+
+  @override
+  void initState() {
+    super.initState();
+    newTherapy = Therapy().loadFromJson(therapy.toJson()); //TODO therapy = newTheraoyee
+    name = therapy.medicationInfo.name;
+    // type = therapy.medicationInfo.typeIndex;
+    appearance = therapy.medicationInfo.appearanceIndex;
+    window = therapy.schedule.window;
+    restDuration = therapy.medicationInfo.restDuration;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +51,39 @@ class _EditTherapyScreenState extends State<EditTherapyScreen> with EditTherapyM
           text: 'save',
           backFunction: () {
             Navigator.pop(context);
+            // _back();
           },
           saveFunction: () {
-            Navigator.pop(context);
+            _save();
           },
         ),
         child: _body(context));
+  }
+
+  _back() {
+    therapy.medicationInfo.name = name;
+    therapy.medicationInfo.typeIndex = type;
+    therapy.medicationInfo.appearanceIndex = appearance;
+    therapy.schedule.window = window;
+    therapy.medicationInfo.restDuration = restDuration;
+  }
+
+  _save() {
+    if (medicationNameController.text.isEmpty) {
+      return _showErrorModal(context);
+    } else {
+      therapy.medicationInfo.name = medicationNameController.text;
+      Navigator.pop(context);
+    }
+  }
+
+  Future _showErrorModal(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => NoResponseErrorModal(
+        errorDescription: 'Please do not leave medication name empty',
+      ),
+    );
   }
 
   Widget _body(BuildContext context) {
@@ -82,7 +132,9 @@ class _EditTherapyScreenState extends State<EditTherapyScreen> with EditTherapyM
   Widget _buildUnitField(BuildContext context) {
     return CustomTextField(
       stackIcons: null,
-      onTap: () {},
+      onTap: () {
+        _showUnits(context);
+      },
       placeholder: unitTypes[widget.therapy.medicationInfo.typeIndex],
       placeholderText: 'Type',
     );
@@ -91,7 +143,9 @@ class _EditTherapyScreenState extends State<EditTherapyScreen> with EditTherapyM
   Widget _buildAppearanceField(BuildContext context) {
     return CustomTextField(
       stackIcons: null,
-      onTap: () {},
+      onTap: () {
+        _showAppearance(context);
+      },
       placeholder: SvgPicture.asset(
         appearance_iconss[widget.therapy.medicationInfo.appearanceIndex],
         width: 25,
@@ -107,7 +161,9 @@ class _EditTherapyScreenState extends State<EditTherapyScreen> with EditTherapyM
         : 0;
     return CustomTextField(
       stackIcons: null,
-      onTap: () {},
+      onTap: () {
+        _showIntakeAdvice(context);
+      },
       placeholder: (remAdviceInd != 0)
           ? intakeAdvice[widget.therapy.medicationInfo.intakeAdvices[0]]
               .toLowerCase()
@@ -120,7 +176,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen> with EditTherapyM
     return CustomTextField(
       stackIcons: null,
       onTap: () {
-        print(widget.therapy.medicationInfo.restDuration);
+        _showMinRest(context);
       },
       placeholder: widget.therapy.medicationInfo.restDuration == null
           ? 'none'
@@ -133,11 +189,33 @@ class _EditTherapyScreenState extends State<EditTherapyScreen> with EditTherapyM
   Widget _buildWindowField() {
     return CustomTextField(
       stackIcons: null,
-      onTap: () {},
+      onTap: () {
+        _showWindow(context);
+      },
       placeholder: widget.therapy.schedule.window == null
           ? 'none'
           : prettyDuration(widget.therapy.schedule.window, abbreviated: false),
       placeholderText: 'Window',
     );
+  }
+
+  _showUnits(BuildContext context) {
+    showUnitPicker(context, newTherapy);
+  }
+
+  _showAppearance(BuildContext context) {
+    showAppearancePicker(context, newTherapy);
+  }
+
+  _showIntakeAdvice(BuildContext context) {
+    showIntakeAdvicePicker(context, newTherapy);
+  }
+
+  _showWindow(BuildContext context) {
+    showWindowPicker(context, newTherapy);
+  }
+
+  _showMinRest(BuildContext context) {
+    showMinRestPicker(context, newTherapy);
   }
 }

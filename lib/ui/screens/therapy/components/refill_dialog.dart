@@ -21,6 +21,8 @@ class RefillDialog extends StatefulWidget {
 
 class _RefillDialogState extends State<RefillDialog>
     with EditTherapyModalsMixin {
+        @override
+  Therapy get therapy => widget.therapyForm;
   TextEditingController addStockController = TextEditingController();
   bool _isFilled = false;
 

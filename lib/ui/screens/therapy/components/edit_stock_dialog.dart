@@ -21,6 +21,9 @@ class EditStockDialog extends StatefulWidget {
 
 class _EditStockDialogState extends State<EditStockDialog>
     with EditTherapyModalsMixin {
+
+        @override
+  Therapy get therapy => widget.therapyForm;
   TextEditingController currentLevelController;
   TextEditingController flagLimitController;
   bool _isFilled;
