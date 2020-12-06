@@ -171,7 +171,7 @@ class _TherapyCardState extends State<TherapyCard>
         (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
 
     if (userRemindersLast.isEmpty) return null;
-    Reminder lastReminder = userRemindersLast.last;
+    Reminder lastReminder = userRemindersLast.last; 
 
     return 'last taken: ${(lastReminder.takenAt).shortenDayRepresent().toLowerCase()} ${(lastReminder.takenAt).formatTime().toLowerCase()} ';
   } //! it can return null!!!!!!!! Error handle it, for no last taken

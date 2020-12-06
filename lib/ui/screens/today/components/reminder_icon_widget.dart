@@ -152,14 +152,19 @@ class ReminderStateIcon extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.amber,
+          color: Colors.amber, // if using clock.svg, change this to Colors.white
           border: Border.all(color: Colors.white, width: 1)),
       child: Center(
-        child: SvgPicture.asset(
-          'assets/icons/navigation/checkbox/tick.svg',
-          color: Colors.white, //Colors.white
-          height: size - 3,
-          width: size - 3,
+        // child: SvgPicture.asset(
+        //   'assets/icons/navigation/clock/clock.svg',
+        //   color: Colors.amber, //Colors.white
+        //   height: size - 3,
+        //   width: size - 3,
+        // ),
+       child: Icon(
+          Icons.skip_next,
+          color: Colors.white,
+          size: size - 6,
         ),
       ),
     );

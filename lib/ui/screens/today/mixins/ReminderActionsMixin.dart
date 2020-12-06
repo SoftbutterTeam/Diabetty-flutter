@@ -133,6 +133,15 @@ mixin ReminderActionsMixin<T extends Widget> {
       context: context,
       builder: (context) => CupertinoActionSheet(
             actions: [
+               CupertinoActionSheetAction(
+                child: Text(
+                  "View Profile",
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  navigateToTherapy(context, reminder);
+                },
+              ),
               CupertinoActionSheetAction(
                 child: Text(
                   "Edit Dose",

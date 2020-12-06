@@ -14,6 +14,7 @@ import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_icon_widget.dart';
@@ -48,10 +49,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _body(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.grey[50],
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
@@ -60,16 +60,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
               offset: Offset(0, -1),
             ),
           ],
-          border: Border(top: BorderSide(color: Colors.transparent, width: 1))),
+          border: Border(
+            top: BorderSide(color: Colors.transparent, width: 1),
+          )),
       child: Column(
         children: [
           Expanded(
             child: Container(
-                padding: EdgeInsets.only(top: 4),
                 child: Container(
-                  margin: EdgeInsets.only(top: 5, left: 5, right: 5),
-                  child: _buildHistory(context),
-                )),
+              child: _buildHistory(context),
+            )),
           ),
         ],
       ),
@@ -114,7 +114,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
       child: Column(
         children: [
           Container(
-            child: Text(dateTime.shortenDateRepresent()),
+            decoration: BoxDecoration(
+              border: Border(
+                  top: BorderSide(color: Colors.black26, width: 0.4),
+                  bottom: BorderSide(color: Colors.black26, width: 0.4)),
+            ),
+            padding: EdgeInsets.only(left: 25, bottom: 10, top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  dateTime.shortenDateRepresent(),
+                  style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
           )
         ]..addAll(children),
       ),
@@ -123,41 +140,74 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget _buildMedicationHistory(
       BuildContext context, String therapyName, List<Reminder> reminders) {
+    Size size = MediaQuery.of(context).size;
     if (reminders.isEmpty) return SizedBox();
     return Container(
-        child: Column(
-      children: [
-        Text(therapyName.capitalize()),
-        ColumnBuilder(
-          itemCount: reminders.length,
-          itemBuilder: (context, index) {
-            return _buildRemindersHistoryField(context, reminders[index]);
-          },
+        decoration: BoxDecoration(
+          color: Colors.white,
         ),
-      ],
-    ));
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: size.width * 0.06, bottom: 10, top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SvgPicture.asset(
+                    appearance_iconss[reminders[0].appearance],
+                    width: 25,
+                    height: 25,
+                  ),
+                  SizedBox(width: size.width * 0.05),
+                  Text(
+                    therapyName.capitalize(),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.0),
+                  ),
+                ],
+              ),
+            ),
+            ColumnBuilder(
+              itemCount: reminders.length,
+              itemBuilder: (context, index) {
+                return _buildRemindersHistoryField(context, reminders[index]);
+              },
+            ),
+          ],
+        ));
   }
 
   Widget _buildRemindersHistoryField(BuildContext context, Reminder reminder) {
+    Size size = MediaQuery.of(context).size;
     return Container(
+        margin: EdgeInsets.only(left: size.width * 0.17),
+        padding: EdgeInsets.only(right: 10, bottom: 10),
         child: Row(
-      children: [
-        Text(reminder.dose.toString() +
-            ' ' +
-            unitTypes[reminder.doseTypeIndex].plurarlUnits(reminder.dose)),
-        if (reminder.takenAt != null)
-          Container(
-            child: text(reminder.time.formatTime(),
-                textColor: Colors.green[600], fontSize: 15.0),
-          ),
-        Container(
-          child: ReminderStateIcon(
-              reminder: reminder,
-              onNull: _buildQuestionIcon(context),
-              size: 20.0),
-        )
-      ],
-    ));
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(reminder.dose.toString() +
+                ' ' +
+                unitTypes[reminder.doseTypeIndex].plurarlUnits(reminder.dose)),
+            Container(
+              child: Row(
+                children: [
+                  if (reminder.takenAt != null)
+                    Container(
+                      child: text(reminder.time.formatTime(),
+                          textColor: Colors.green[600], fontSize: 15.0),
+                    ),
+                  SizedBox(width: 10),
+                  ReminderStateIcon(
+                      reminder: reminder,
+                      onNull: _buildQuestionIcon(context),
+                      size: 20.0),
+                ],
+              ),
+            )
+          ],
+        ));
   }
 
   Widget _buildQuestionIcon(BuildContext context) {

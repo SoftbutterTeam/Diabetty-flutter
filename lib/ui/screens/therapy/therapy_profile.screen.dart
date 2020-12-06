@@ -26,6 +26,9 @@ class TherapyProfileScreen extends StatefulWidget {
 
 class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     with EditTherapyModalsMixin {
+
+          @override
+  Therapy get therapy => widget.therapy;
   final int count = 0;
   final Color textColor = Colors.orange[800];
 
