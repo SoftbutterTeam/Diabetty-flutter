@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
@@ -9,6 +10,7 @@ import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dar
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class EditTherapyScreen extends StatefulWidget {
   final Therapy therapy;
@@ -36,7 +38,8 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   @override
   void initState() {
     super.initState();
-    newTherapy = Therapy().loadFromJson(therapy.toJson()); //TODO therapy = newTheraoyee
+    newTherapy =
+        Therapy()..loadFromJson(therapy.toJson()); //TODO therapy = newTheraoyee
     name = therapy.medicationInfo.name;
     // type = therapy.medicationInfo.typeIndex;
     appearance = therapy.medicationInfo.appearanceIndex;
@@ -46,6 +49,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
 
   @override
   Widget build(BuildContext context) {
+    
     return SnoozeOptionsBackground(
         header: SnoozeOptionsHeader(
           text: 'save',
@@ -73,6 +77,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       return _showErrorModal(context);
     } else {
       therapy.medicationInfo.name = medicationNameController.text;
+      therapy.loadFromJson(newTherapy.toJson());
       Navigator.pop(context);
     }
   }
@@ -135,7 +140,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       onTap: () {
         _showUnits(context);
       },
-      placeholder: unitTypes[widget.therapy.medicationInfo.typeIndex],
+      placeholder: unitTypes[newTherapy.medicationInfo.typeIndex],
       placeholderText: 'Type',
     );
   }
@@ -147,7 +152,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
         _showAppearance(context);
       },
       placeholder: SvgPicture.asset(
-        appearance_iconss[widget.therapy.medicationInfo.appearanceIndex],
+        appearance_iconss[newTherapy.medicationInfo.appearanceIndex],
         width: 25,
         height: 25,
       ),
@@ -156,8 +161,8 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   }
 
   Widget _buildIntakeAdviceField() {
-    int remAdviceInd = widget.therapy.medicationInfo.intakeAdvices.isNotEmpty
-        ? widget.therapy.medicationInfo.intakeAdvices[0]
+    int remAdviceInd = newTherapy.medicationInfo.intakeAdvices.isNotEmpty
+        ? newTherapy.medicationInfo.intakeAdvices[0]
         : 0;
     return CustomTextField(
       stackIcons: null,
@@ -165,7 +170,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
         _showIntakeAdvice(context);
       },
       placeholder: (remAdviceInd != 0)
-          ? intakeAdvice[widget.therapy.medicationInfo.intakeAdvices[0]]
+          ? intakeAdvice[newTherapy.medicationInfo.intakeAdvices[0]]
               .toLowerCase()
           : intakeAdvice[0],
       placeholderText: 'Intake Advice',
@@ -178,9 +183,9 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       onTap: () {
         _showMinRest(context);
       },
-      placeholder: widget.therapy.medicationInfo.restDuration == null
+      placeholder: newTherapy.medicationInfo.restDuration == null
           ? 'none'
-          : prettyDuration(widget.therapy.medicationInfo.restDuration,
+          : prettyDuration(newTherapy.medicationInfo.restDuration,
               abbreviated: false),
       placeholderText: 'Minimum Rest Duration',
     );
@@ -192,9 +197,9 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       onTap: () {
         _showWindow(context);
       },
-      placeholder: widget.therapy.schedule.window == null
+      placeholder: newTherapy.schedule.window == null
           ? 'none'
-          : prettyDuration(widget.therapy.schedule.window, abbreviated: false),
+          : prettyDuration(newTherapy.schedule.window, abbreviated: false),
       placeholderText: 'Window',
     );
   }

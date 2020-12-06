@@ -352,12 +352,13 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () => navigateToTherapy(context, reminder),
+                onTap: () {},
                 child: Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: SvgPicture.asset(
                     'assets/icons/infob/003-info.svg',
                     // 'assets/icons/moreb/001-center-lines.svg',
+                    color: Colors.transparent,
                     width: 20,
                     height: 20,
                   ),

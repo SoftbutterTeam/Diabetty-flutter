@@ -92,6 +92,9 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
+            if (therapy.medicationInfo.intakeAdvices.isNotEmpty)
+            therapy.medicationInfo.intakeAdvices[0] = s;
+            else therapy.medicationInfo.intakeAdvices.add(s);
             setState(() {});
             Navigator.of(context).pop(context);
           },
@@ -120,7 +123,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   showAppearancePicker(BuildContext context, Therapy therapy) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    int s = 0;
+    int s;
     showCupertinoModalPopup(
         context: context,
         builder: (context) {

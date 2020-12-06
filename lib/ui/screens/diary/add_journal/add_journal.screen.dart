@@ -79,8 +79,11 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
           height: size.height * 0.20,
           alignment: Alignment.center,
           child: IntrinsicHeight(
-              child: JournalCard(
-            journal: newJournal,
+              child: IgnorePointer(
+            ignoring: true,
+            child: JournalCard(
+              journal: newJournal,
+            ),
           )),
         ),
         _buildPageTitle(),

@@ -225,8 +225,6 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     reminders.sort((Reminder a, Reminder b) =>
         (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
 
-    print('last');
-    print(reminders.first.tojson());
     return reminders.first.rescheduledTime ?? reminders.first.time;
   }
 
