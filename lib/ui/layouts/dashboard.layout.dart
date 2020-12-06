@@ -2,6 +2,7 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/diary/diary.screen.dart';
 import 'package:diabetty/ui/screens/draft_screen.dart';
+import 'package:diabetty/ui/screens/teams/team.screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.simple.screen.dart' as Simple;
 import 'package:diabetty/ui/screens/therapy/therapy.screen.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class DashBoard extends StatefulWidget {
   @override
-  DashBoard({Key key, this.initIndex = 1}) : super(key: key);
+  DashBoard({Key key, this.initIndex = 2}) : super(key: key);
   //! TODO default index should be 1, only changed for testings
   final int initIndex;
 
@@ -29,7 +30,7 @@ class _DashBoardState extends State<DashBoard> {
   var _pages = [
     DiaryScreenBuilder(),
     Simple.DayPlanScreenBuilder(),
-    DrafttScreen(),
+    TeamScreenBuilder(),
     TherapyScreenBuilder(),
   ];
 

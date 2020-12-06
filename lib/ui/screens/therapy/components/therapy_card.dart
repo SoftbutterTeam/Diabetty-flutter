@@ -31,7 +31,9 @@ class _TherapyCardState extends State<TherapyCard>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    String nextMessage = getNextReminderMessage();
+    String nextMessage = widget.therapy.isNeeded
+        ? getLastTakenMessage()
+        : getNextReminderMessage();
     var size = MediaQuery.of(context).size;
     return Container(
         margin: EdgeInsets.symmetric(vertical: 8),
@@ -171,7 +173,7 @@ class _TherapyCardState extends State<TherapyCard>
     if (userRemindersLast.isEmpty) return null;
     Reminder lastReminder = userRemindersLast.last;
 
-    return 'last taken: ${(lastReminder.rescheduledTime ?? lastReminder.time).shortenDayRepresent().toLowerCase()} ${(lastReminder.rescheduledTime ?? lastReminder.time).formatTime().toLowerCase()} ';
+    return 'last taken: ${(lastReminder.takenAt).shortenDayRepresent().toLowerCase()} ${(lastReminder.takenAt).formatTime().toLowerCase()} ';
   } //! it can return null!!!!!!!! Error handle it, for no last taken
 
   String getNextReminderMessage() {
