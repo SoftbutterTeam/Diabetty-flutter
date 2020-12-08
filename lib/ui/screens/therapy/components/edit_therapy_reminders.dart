@@ -7,6 +7,7 @@ import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/cupertino_text_field.dart'
     as custom;
@@ -16,8 +17,8 @@ import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/string_extension.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 
-class TherapyProfileReminder extends StatefulWidget {
-  const TherapyProfileReminder({
+class EditTherapyReminder extends StatefulWidget {
+  const EditTherapyReminder({
     Key key,
     this.rule,
     this.therapy,
@@ -27,10 +28,13 @@ class TherapyProfileReminder extends StatefulWidget {
   final Therapy therapy;
 
   @override
-  _TherapyProfileReminderState createState() => _TherapyProfileReminderState();
+  _EditTherapyReminderState createState() => _EditTherapyReminderState();
 }
 
-class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
+class _EditTherapyReminderState extends State<EditTherapyReminder>
+    with EditTherapyModalsMixin {
+  @override
+  Therapy get therapy => widget.therapy;
   @override
   dispose() {
     super.dispose();
@@ -51,9 +55,8 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
     var size = MediaQuery.of(context).size;
     List<Widget> weekDays = buildWeekWidgets(context);
     return custom.CupertinoTextField(
-      onTap: () => print(DateFormat("h:mm a")
-          .format(DateTime.now().applyTimeOfDay(widget.rule.time))
-          .toString()), //TODO click to show add reminder dialog with its attributes showing
+      onTap: () => showEditReminderModal(context,
+          therapy), //TODO click to show add reminder dialog with its attributes showing
       overflow: TextOverflow.clip,
       decoration: BoxDecoration(
         color: appWhite,

@@ -21,6 +21,7 @@ class Background extends StatelessWidget {
               colors: [Colors.orange[900], Colors.orange[600]])),
       height: size.height,
       child: SafeArea(
+        bottom: false,
         child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(

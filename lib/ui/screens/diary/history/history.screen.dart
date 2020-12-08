@@ -51,7 +51,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget _body(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.grey[50],
+          color: appWhite,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
@@ -115,6 +115,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           Container(
             decoration: BoxDecoration(
+              color: Colors.grey[50],
               border: Border(
                   top: BorderSide(color: Colors.black26, width: 0.4),
                   bottom: BorderSide(color: Colors.black26, width: 0.4)),
@@ -196,7 +197,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   if (reminder.takenAt != null)
                     Container(
                       child: text(reminder.time.formatTime(),
-                          textColor: Colors.green[600], fontSize: 15.0),
+                          textColor: Colors.green[600], fontSize: 13.0),
                     ),
                   SizedBox(width: 10),
                   ReminderStateIcon(
@@ -216,8 +217,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       height: 16,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.transparent,
-          border: Border.all(color: Colors.blue, width: 1)),
+          color: Colors.blue,
+          border: Border.all(color: Colors.blue[300], width: 1)),
       child: Center(child: null),
     );
   }
