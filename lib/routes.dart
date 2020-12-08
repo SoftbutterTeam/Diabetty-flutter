@@ -52,7 +52,7 @@ class Router {
 
       case history:
         return MaterialPageRoute(
-            builder: (BuildContext context) => HistoryScreen());
+            builder: (BuildContext context) => HistoryScreenBuilder());
 
       default:
         return MaterialPageRoute(

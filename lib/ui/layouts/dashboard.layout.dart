@@ -1,13 +1,19 @@
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/diary/diary.screen.dart';
-import 'package:diabetty/ui/screens/draft_screen.dart';
 import 'package:diabetty/ui/screens/teams/team.screen.dart';
-import 'package:diabetty/ui/screens/today/dayplan.screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.simple.screen.dart' as Simple;
 import 'package:diabetty/ui/screens/therapy/therapy.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/ui/constants/colors.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -118,6 +124,9 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
+    final dayManager = Provider.of<DayPlanManager>(context, listen: false);
+    final therapyManager = Provider.of<TherapyManager>(context, listen: false);
+    dayManager.therapyManager = therapyManager;
     return Container(
       color: app_background,
       child: _buildDashboard(),

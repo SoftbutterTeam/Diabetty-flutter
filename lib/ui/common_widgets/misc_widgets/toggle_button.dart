@@ -54,7 +54,7 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
               decoration: ShapeDecoration(
                 color: widget.backgroundColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(30),
                 ),
               ),
               child: Row(
@@ -89,7 +89,7 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
                 color: widget.buttonColor,
                 shadows: widget.shadows,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(30),
                 ),
               ),
               child: Text(

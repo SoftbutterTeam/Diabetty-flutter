@@ -1,16 +1,11 @@
 import 'dart:math';
-
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
-import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/components/background.dart';
-import 'package:diabetty/ui/screens/diary/components/journal_card2.dart';
-import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -18,9 +13,27 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_icon_widget.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
+
+class HistoryScreenBuilder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TherapyManager>(
+      builder: (_, TherapyManager therapyManager, __) =>
+          Consumer<DayPlanManager>(
+        builder: (_, DayPlanManager manager, __) {
+          manager.therapyManager = therapyManager;
+          return HistoryScreen(
+            manager: manager,
+          );
+        },
+      ),
+    );
+  }
+}
 
 class HistoryScreen extends StatefulWidget {
-  final DiaryBloc manager;
+  final DayPlanManager manager;
   const HistoryScreen({Key key, this.manager}) : super(key: key);
 
   @override
@@ -28,7 +41,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  DiaryBloc manager;
+  DayPlanManager manager;
 
   @override
   void initState() {
@@ -77,24 +90,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildHistory(BuildContext context) {
-    DayPlanManager dayPlanManager =
-        Provider.of<DayPlanManager>(context, listen: false);
     print(
-      min(DateTime.now().difference(dayPlanManager.lastReminderDate).inDays + 2,
-          150),
+      min(DateTime.now().difference(manager.lastReminderDate).inDays + 2, 150),
     );
     return Scrollbar(
       child: ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: min(
-            DateTime.now().difference(dayPlanManager.lastReminderDate).inDays +
-                2,
+            DateTime.now().difference(manager.lastReminderDate).inDays + 2,
             150),
         addAutomaticKeepAlives: true,
         itemBuilder: (context, index) {
-          Map<String, List<Reminder>> history =
-              dayPlanManager.generateDayHistory(
-                  DateTime.now().subtract(Duration(days: index)));
+          Map<String, List<Reminder>> history = manager.generateDayHistory(
+              DateTime.now().subtract(Duration(days: index)));
 
           return _buildHistoryDay(
               context, history, DateTime.now().subtract(Duration(days: index)));
@@ -143,14 +151,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
       BuildContext context, String therapyName, List<Reminder> reminders) {
     Size size = MediaQuery.of(context).size;
     if (reminders.isEmpty) return SizedBox();
+    reminders.sort((Reminder a, Reminder b) =>
+        (a.rescheduledTime ?? a.time).compareTo((b.rescheduledTime ?? b.time)));
     return Container(
+        padding: EdgeInsets.only(left: 3, right: 14),
         decoration: BoxDecoration(
           color: Colors.white,
         ),
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: size.width * 0.06, bottom: 10, top: 20),
+              padding:
+                  EdgeInsets.only(left: size.width * 0.06, bottom: 10, top: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -217,7 +229,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       height: 16,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.blue,
+          color: Colors.transparent,
           border: Border.all(color: Colors.blue[300], width: 1)),
       child: Center(child: null),
     );

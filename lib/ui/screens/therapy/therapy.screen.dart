@@ -18,16 +18,9 @@ import 'package:provider/provider.dart';
 class TherapyScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ValueNotifier<bool>>(
-      create: (_) => ValueNotifier<bool>(false),
-      child: Consumer<ValueNotifier<bool>>(
-        builder: (_, ValueNotifier<bool> isLoading, __) =>
-            Consumer<TherapyManager>(
-          builder: (_, TherapyManager manager, __) => TherapyScreen._(
-            isLoading: isLoading.value,
-            manager: manager,
-          ),
-        ),
+    return Consumer<TherapyManager>(
+      builder: (_, TherapyManager manager, __) => TherapyScreen._(
+        manager: manager,
       ),
     );
   }
@@ -35,10 +28,8 @@ class TherapyScreenBuilder extends StatelessWidget {
 
 class TherapyScreen extends StatefulWidget {
   @override
-  const TherapyScreen._({Key key, this.isLoading, this.manager})
-      : super(key: key);
+  const TherapyScreen._({Key key, this.manager}) : super(key: key);
   final TherapyManager manager;
-  final bool isLoading;
 
   @override
   _TherapyScreenState createState() => _TherapyScreenState(manager);
