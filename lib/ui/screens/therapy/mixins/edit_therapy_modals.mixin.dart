@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
@@ -16,10 +17,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   Therapy get therapy;
 
-  showEditReminderModal(BuildContext context, Therapy therapy) {
+  showEditReminderModal(BuildContext context, Therapy therapy, ReminderRule rule) {
     showDialog(
       context: context,
-      builder: (context) => EditReminderModal2(therapyForm: therapy),
+      builder: (context) => EditReminderModal2(therapyForm: therapy, rule: rule),
     );
   }
 

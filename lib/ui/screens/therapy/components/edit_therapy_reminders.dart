@@ -56,7 +56,7 @@ class _EditTherapyReminderState extends State<EditTherapyReminder>
     List<Widget> weekDays = buildWeekWidgets(context);
     return custom.CupertinoTextField(
       onTap: () => showEditReminderModal(context,
-          therapy), //TODO click to show add reminder dialog with its attributes showing
+          therapy, widget.rule), //TODO click to show add reminder dialog with its attributes showing
       overflow: TextOverflow.clip,
       decoration: BoxDecoration(
         color: appWhite,
