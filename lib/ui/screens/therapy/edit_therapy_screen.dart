@@ -6,6 +6,7 @@ import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_option_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_options_header.dart';
+import 'package:diabetty/ui/screens/therapy/edit_reminder.screen.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
@@ -25,12 +26,6 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
     with EditTherapyModalsMixin {
   TextEditingController medicationNameController = TextEditingController();
   Therapy newTherapy;
-  String name;
-  int type;
-  int appearance;
-  int intake;
-  Duration window;
-  Duration restDuration;
 
   @override
   Therapy get therapy => widget.therapy;
@@ -38,18 +33,12 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   @override
   void initState() {
     super.initState();
-    newTherapy =
-        Therapy()..loadFromJson(therapy.toJson()); //TODO therapy = newTheraoyee
-    name = therapy.medicationInfo.name;
-    // type = therapy.medicationInfo.typeIndex;
-    appearance = therapy.medicationInfo.appearanceIndex;
-    window = therapy.schedule.window;
-    restDuration = therapy.medicationInfo.restDuration;
+    newTherapy = Therapy()
+      ..loadFromJson(therapy.toJson()); //TODO therapy = newTheraoyee
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return SnoozeOptionsBackground(
         header: SnoozeOptionsHeader(
           text: 'save',
@@ -62,14 +51,6 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
           },
         ),
         child: _body(context));
-  }
-
-  _back() {
-    therapy.medicationInfo.name = name;
-    therapy.medicationInfo.typeIndex = type;
-    therapy.medicationInfo.appearanceIndex = appearance;
-    therapy.schedule.window = window;
-    therapy.medicationInfo.restDuration = restDuration;
   }
 
   _save() {
@@ -116,6 +97,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
         _buildIntakeAdviceField(),
         _buildWindowField(),
         _buildMinimumRestField(),
+        _buildReminderField(context),
       ],
     );
   }
@@ -201,6 +183,22 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
           ? 'none'
           : prettyDuration(newTherapy.schedule.window, abbreviated: false),
       placeholderText: 'Window',
+    );
+  }
+
+  Widget _buildReminderField(BuildContext context) {
+    return CustomTextField(
+      stackIcons: null,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => EditReminder(therapy: newTherapy)),
+        );
+      },
+      placeholder:
+          newTherapy.schedule.reminderRules.length.toString() + ' scheduled',
+      placeholderText: 'Reminder(s)',
     );
   }
 

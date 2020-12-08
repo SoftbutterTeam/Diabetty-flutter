@@ -2,7 +2,9 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
+import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/custom_timer_picker.dart';
+import 'package:diabetty/ui/screens/therapy/components/edit_reminder_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
@@ -13,6 +15,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 @optionalTypeArgs
 mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   Therapy get therapy;
+
+  showEditReminderModal(BuildContext context, Therapy therapy) {
+    showDialog(
+      context: context,
+      builder: (context) => EditReminderModal2(therapyForm: therapy),
+    );
+  }
 
   showEditStockDialog(BuildContext context, TherapyManager manager) {
     showDialog(
@@ -29,7 +38,8 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       context: context,
       builder: (context) {
         return CustomTimerPicker(
-          desciption: 'A period of time set between occurences of required medication.\nPlease select your window time-frame.',
+          desciption:
+              'A period of time set between occurences of required medication.\nPlease select your window time-frame.',
           height: height,
           width: width,
           onPressed: () {
@@ -40,7 +50,8 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
             minuteInterval: 5,
-            initialTimerDuration: therapy.medicationInfo.restDuration ?? Duration(minutes: 20),
+            initialTimerDuration:
+                therapy.medicationInfo.restDuration ?? Duration(minutes: 20),
             onTimerDurationChanged: (Duration changedtimer) {
               s = changedtimer;
             },
@@ -49,7 +60,6 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       },
     );
   }
-
 
   showWindowPicker(BuildContext context, Therapy therapy) {
     Duration s;
@@ -71,7 +81,8 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
             minuteInterval: 5,
-            initialTimerDuration: therapy.schedule.window ?? Duration(minutes: 20),
+            initialTimerDuration:
+                therapy.schedule.window ?? Duration(minutes: 20),
             onTimerDurationChanged: (Duration changedtimer) {
               s = changedtimer;
             },
@@ -93,8 +104,9 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             if (therapy.medicationInfo.intakeAdvices.isNotEmpty)
-            therapy.medicationInfo.intakeAdvices[0] = s;
-            else therapy.medicationInfo.intakeAdvices.add(s);
+              therapy.medicationInfo.intakeAdvices[0] = s;
+            else
+              therapy.medicationInfo.intakeAdvices.add(s);
             setState(() {});
             Navigator.of(context).pop(context);
           },

@@ -44,7 +44,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
       initialDate = timeSelected;
       reminder = ReminderRule();
       reminder.days = Days();
-      _isFilled = false;
+      _isFilled = ((dosageController.text.isNotEmpty && days.isADaySelected)) ? true : false;
       timeString = timeSelected.formatTime();
     } else {
       days = Days.fromDays(Days());
@@ -54,7 +54,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
       initialDate = timeSelected;
       reminder = ReminderRule();
       reminder.days = Days();
-      _isFilled = false;
+      _isFilled = ((dosageController.text.isNotEmpty && days.isADaySelected)) ? true : false;
       timeString = timeSelected.formatTime();
     }
   }
@@ -66,9 +66,9 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 8, 00);
     else
       return widget.therapyForm.schedule.reminderRules.last.time
-          .applyTimeOfDay()
-          .add(widget.therapyForm.medicationInfo.restDuration ??
-              Duration(hours: 4));
+          .applyTimeOfDay();
+          // .add(widget.therapyForm.medicationInfo.restDuration ??
+          //     Duration(hours: 4))
   }
 
   @override
@@ -105,7 +105,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CupertinoButton(
-              child: Text('Cancel',
+              child: Text('cancel',
                   style: TextStyle(
                     color: CupertinoColors.destructiveRed,
                   )),
@@ -118,7 +118,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
                 vertical: 5.0,
               )),
           CupertinoButton(
-              child: Text('Submit',
+              child: Text('save',
                   style: TextStyle(
                     color: _isFilled ? Colors.indigo : Colors.black26,
                   )),
