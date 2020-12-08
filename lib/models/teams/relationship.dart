@@ -6,6 +6,6 @@ class Relationship {
   String inviteCode;
   String createdBy;
 
-
-  Relationship(this.supporter)
+  Relationship(this.id, this.supporter, this.recipient, this.status,
+      this.inviteCode, this.createdBy);
 }

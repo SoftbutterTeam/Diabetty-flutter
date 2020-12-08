@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'package:diabetty/models/journal/journal.model.dart';
-import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/journal.service.dart';
-import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/system/app_context.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 
 class DiaryBloc extends Manager with JournalActionsMixin {

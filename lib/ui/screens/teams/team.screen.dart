@@ -1,23 +1,12 @@
 import 'dart:math';
-
-import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/blocs/team_manager.dart';
-import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/ThemeColor.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/toggle_button.dart';
-import 'package:diabetty/ui/constants/colors.dart';
-import 'package:diabetty/ui/screens/diary/components/background.dart';
-import 'package:diabetty/ui/screens/diary/components/journal_card2.dart';
-import 'package:diabetty/ui/screens/today/components/my_painter.dart';
+import 'package:diabetty/ui/screens/teams/components/background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-import 'package:diabetty/routes.dart';
 
 class TeamScreenBuilder extends StatelessWidget {
   @override
