@@ -14,9 +14,10 @@ import 'package:diabetty/extensions/datetime_extension.dart';
 
 class EditReminderModal2 extends StatefulWidget {
   final Therapy therapyForm;
+  final ReminderRule rule;
   final TherapyManager manager;
 
-  EditReminderModal2({this.therapyForm, this.manager});
+  EditReminderModal2({this.therapyForm, this.manager, this.rule});
   @override
   _EditReminderModal2State createState() => _EditReminderModal2State();
 }
@@ -36,9 +37,9 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
     super.initState();
     final rules = widget.therapyForm?.schedule?.reminderRules;
     if (rules != null) {
-      days = Days.fromDays(rules.isNotEmpty ? rules.last.days : Days());
+      days = Days.fromDays(rules.isNotEmpty ? widget.rule.days : Days());
       dosageController = TextEditingController(
-          text: (rules.length == 0) ? '' : rules.last.dose.toString());
+          text: (rules.length == 0) ? '' : rules.last.dose.toString()); //TODO use widget.rule
       timeSelected = getInitialTime();
 
       initialDate = timeSelected;
