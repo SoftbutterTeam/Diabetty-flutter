@@ -16,6 +16,29 @@ class TherapyRepository {
 
   final Firestore _db = Firestore.instance;
 
+  Future<void> setTherapy(Therapy therapy) async {
+    Map<String, dynamic> therapyData = Map();
+    if (therapy.userId == null) return null;
+
+    therapyData = therapy.toJson();
+
+    print('ahhhhhhh');
+    print(therapyData);
+
+    // therapy.
+    await _db
+        .collection('users')
+        .document(therapy.userId)
+        .collection('therapies')
+        .document(therapy.id)
+        .setData(therapyData)
+        .catchError((e) {
+      print('error');
+      print(e);
+    });
+    return true;
+  }
+
   //Dont know if this is ever going to be used
   Future<DataResult<dynamic>> getTherapy(String uid, String therapyid) async {
     try {

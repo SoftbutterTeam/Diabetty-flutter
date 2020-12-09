@@ -92,8 +92,7 @@ class _TherapyScreenState extends State<TherapyScreen>
                             context,
                             MaterialPageRoute(
                                 builder: (context) => TherapyProfileScreen2(
-                                    therapy: therapies[index],
-                                    manager: manager)),
+                                    therapy: therapies[index],)),
                           );
                         },
                         child: Container(
