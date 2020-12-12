@@ -34,6 +34,7 @@ class UserRepository {
       }
     } catch (e) {
       //print(e);
+      return false;
     }
   }
 
@@ -41,6 +42,9 @@ class UserRepository {
   Future<void> updateUser(User user) async {
     String documentId = user.uid;
     Map<String, dynamic> userData = user.toJson();
+
+    DateTime timeNow = DateTime.now();
+    userData['updatedAt'] = timeNow;
     await _db
         .collection('users')
         .document(documentId)
@@ -51,13 +55,46 @@ class UserRepository {
     return true;
   }
 
+  Future<DataResult<dynamic>> searchUserbyPhone(String phoneno) async {
+    try {
+      var result = await _db
+          .collection("users")
+          .where("phoneNumber", isEqualTo: phoneno)
+          .getDocuments();
+      if (result.documents.length == 0) {
+        return null;
+      } else if (result.documents.length > 1) {
+        result.documents.sort((DocumentSnapshot a, DocumentSnapshot b) {
+          if (a['updatedAt'] == null) {
+            return 1;
+          }
+          if (b['updatedAt'] == null) {
+            return -1;
+          }
+          return DateTime.parse(a['updatedAt']).compareTo(a['updatedAt']);
+        });
+      }
+      var data = Map<String, dynamic>.from(result.documents.first.data);
+      data['id'] = result.documents.first.documentID;
+
+      return DataResult(data: data);
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> createUser(User user) async {
     Map<String, dynamic> userData = user.toJson();
+
     if (user.uid == null) {
       //print('no user id given in repo');
       return false;
     }
+    DateTime timeNow = DateTime.now();
+    userData['createdAt'] = timeNow;
+    userData['updatedAt'] = timeNow;
     //print(userData.toString());
+
     await _db
         .collection('users')
         .document(user.uid)

@@ -5,7 +5,7 @@ import 'package:diabetty/services/authentication/auth_service/auth_service.dart'
 import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:diabetty/services/authentication/auth_service/mock_auth_service.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
-import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/foundation.dart';

@@ -34,4 +34,22 @@ class UserService {
   Future<bool> isEmailUnique(email) async {
     return _userRepository.isEmailUnique(email);
   }
+
+  Future<String> findUidByPhone(String phoneno) async {
+    DataResult dataResult = await _userRepository.searchUserbyPhone(phoneno);
+    if (dataResult == null) return null;
+    User user = User();
+    var data = Map<String, dynamic>.from(dataResult.data);
+    user.loadFromJson(data);
+    return user.uid;
+  }
+
+  Future<User> findUserByPhone(String phoneno) async {
+    DataResult dataResult = await _userRepository.searchUserbyPhone(phoneno);
+    if (dataResult == null) return null;
+    User user = User();
+    var data = Map<String, dynamic>.from(dataResult.data);
+    user.loadFromJson(data);
+    return user;
+  }
 }

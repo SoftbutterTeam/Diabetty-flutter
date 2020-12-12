@@ -1,0 +1,68 @@
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:flutter/material.dart';
+
+class SubPageHeader extends StatefulWidget {
+  final String text;
+  final Function saveFunction;
+  final Function backFunction;
+
+  SubPageHeader({this.text, this.saveFunction, this.backFunction});
+
+  @override
+  _SubPageHeaderState createState() => _SubPageHeaderState();
+}
+
+class _SubPageHeaderState extends State<SubPageHeader> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              child: FlatButton(
+                onPressed: widget.backFunction,
+                color: Colors.transparent,
+                disabledTextColor: Colors.grey,
+                disabledColor: Colors.transparent,
+                padding: EdgeInsets.only(left: 5),
+                child: Align(
+                  child: Icon(Icons.arrow_back_ios,
+                      color: Colors.orange[800], size: 15),
+                  alignment: Alignment.centerLeft,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                  alignment: Alignment.center,
+                  child: subHeadingText("", Colors.black87)),
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: FlatButton(
+                onPressed: widget.saveFunction,
+                color: Colors.transparent,
+                disabledTextColor: Colors.grey,
+                disabledColor: Colors.transparent,
+                padding: EdgeInsets.only(right: 5),
+                child: Align(
+                  child: Text(widget.text,
+                      style: TextStyle(
+                          color: Colors.orange[800],
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.w400)),
+                  alignment: Alignment.centerRight,
+                ),
+              ),
+            )
+          ],
+        ));
+  }
+}

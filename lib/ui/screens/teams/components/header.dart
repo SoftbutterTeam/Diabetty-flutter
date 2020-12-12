@@ -2,16 +2,17 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/screens/teams/team_actions_mixins.dart';
 import 'package:flutter/material.dart';
 
-class DiaryHeader extends StatefulWidget {
-  const DiaryHeader({Key key}) : super(key: key);
+class TeamHeader extends StatefulWidget {
+  const TeamHeader({Key key}) : super(key: key);
 
   @override
-  _DiaryHeaderState createState() => _DiaryHeaderState();
+  _TeamHeaderState createState() => _TeamHeaderState();
 }
 
-class _DiaryHeaderState extends State<DiaryHeader> with DateMixin {
+class _TeamHeaderState extends State<TeamHeader> with TeamsActionsMixin {
   @override
   void initState() {
     super.initState();
@@ -53,7 +54,9 @@ class _DiaryHeaderState extends State<DiaryHeader> with DateMixin {
                 Container(
                   alignment: Alignment.centerRight,
                   child: FlatButton(
-                    onPressed: () => Navigator.pushNamed(context, addJournal),
+                    onPressed: () {
+                      showAddTeamActions(context);
+                    },
                     color: Colors.transparent,
                     disabledTextColor: Colors.grey,
                     disabledColor: Colors.transparent,

@@ -25,7 +25,7 @@ class Background extends StatelessWidget {
         child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(
-                child: header ?? DiaryHeader(),
+                child: header ?? TeamHeader(),
                 preferredSize: Size.fromHeight(50)),
             body: Container(
               decoration: BoxDecoration(

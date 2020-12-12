@@ -7,11 +7,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class TeamScreenBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TeamScreen();
+    return Consumer<TeamManager>(
+        builder: (_, TeamManager manager, __) => TeamScreen(
+              manager: manager,
+            ));
   }
 }
 
@@ -77,16 +81,21 @@ class _TeamScreenState extends State<TeamScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      color: Colors.transparent,
-      child: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return _buildRelationshipCard(context);
-        },
-      ),
-    );
+    print(manager.usersContracts.length);
+    return StreamBuilder<Object>(
+        stream: manager.relationStream,
+        builder: (context, snapshot) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            color: Colors.transparent,
+            child: ListView.builder(
+              itemCount: manager.usersContracts.length,
+              itemBuilder: (context, index) {
+                return _buildRelationshipCard(context);
+              },
+            ),
+          );
+        });
   }
 
   Widget _buildRelationshipCard(BuildContext context) {

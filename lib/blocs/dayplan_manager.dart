@@ -5,7 +5,8 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/repositories/user.repository.dart';
-import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/services/reminder.service.dart';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -31,8 +32,6 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
 
   TimeOfDay initalTime;
   TimeOfDay _choosenTime;
-
-  StreamController dateChanges = StreamController();
 
   TimeOfDay get choosenTime => _choosenTime ?? initalTime;
   set choosenTime(TimeOfDay time) =>
@@ -104,6 +103,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     if (uid != null) {
       try {
         usersReminders = await reminderService.getReminders(uid, local: true);
+        cleanOutReminders();
       } catch (e) {}
       this._reminderStream().listen((event) async {
         usersReminders = event ?? usersReminders;
@@ -111,6 +111,14 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         if (event.isNotEmpty) updateListeners();
       });
     }
+  }
+
+  Future<void> cleanOutReminders() async {
+    await usersReminders.forEach((reminder) async {
+      if ((reminder.rescheduledTime ?? reminder.time)
+          .isBefore(DateTime.now().subtract(Duration(days: 244))))
+        await reminderService.deleteReminder(reminder);
+    });
   }
 
   List<Reminder> getFinalRemindersList({DateTime date}) {
@@ -199,27 +207,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   }
 
   Map<String, GlobalKey> reminderScrollKeys = {};
-/*
-  Map<DateTime, Map<String, List<Reminder>>> generateHistory() {
-    List<Reminder> reminders = List.of(usersReminders);
-    reminders.sort((Reminder a, Reminder b) =>
-        (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
-    DateTime lastDate = reminders.last.rescheduledTime ?? reminders.last.time;
-    Map<DateTime, Map<String, List<Reminder>>> history = {};
-    for (DateTime i = DateTime.now();
-        !i.isSameDayAs(lastDate.subtract(Duration(days: 1)));
-        i.subtract(Duration(days: 1))) {
-      history[i] ??= {};
 
-      getFinalRemindersList(date: i).forEach((element) {
-        history[i][element.name.toLowerCase()] ??= List();
-        history[i][element.name.toLowerCase()].add(element);
-      });
-    }
-    print(history[DateTime.now()].toString());
-    return history;
-  }
-*/
   DateTime get lastReminderDate {
     List<Reminder> reminders = List.of(usersReminders);
     reminders.sort((Reminder a, Reminder b) =>

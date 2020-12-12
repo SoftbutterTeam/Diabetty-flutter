@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';

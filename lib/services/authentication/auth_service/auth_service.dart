@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:diabetty/models/user.model.dart' as UserModel;
 
 import 'package:apple_sign_in/apple_sign_in.dart';
-import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 

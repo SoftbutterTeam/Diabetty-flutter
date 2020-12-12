@@ -79,7 +79,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     draggingIdle = true;
     manager = Provider.of<DayPlanManager>(context, listen: false);
     manager.reminderScrollKeys = {};
-    manager.dateChanges = StreamController();
     _dateController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 200),
@@ -123,7 +122,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     manager.fadeAnimation?.removeStatusListener(setStateFunc);
     //manager.fadeAnimation?.dispose();
     super.dispose();
-    manager.dateChanges?.close();
   }
 
   Widget _body(BuildContext context) {

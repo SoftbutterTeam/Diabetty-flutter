@@ -2,7 +2,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;

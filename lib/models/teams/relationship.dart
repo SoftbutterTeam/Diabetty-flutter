@@ -1,11 +1,64 @@
-class Relationship {
+class Contract {
   String id;
-  String supporter;
-  String recipient;
+  String supporterId;
+  String supporteeId;
   String status;
-  String inviteCode;
-  String createdBy;
+  Permissions permissions;
 
-  Relationship(this.id, this.supporter, this.recipient, this.status,
-      this.inviteCode, this.createdBy);
+  Contract({
+    this.id,
+    this.supporterId,
+    this.supporteeId,
+    this.status,
+    this.permissions,
+  }) {
+    permissions ??= new Permissions();
+  }
+
+  loadFromJson(Map<String, dynamic> json) {
+    this.id ??= json['id'];
+    this.supporterId = json['supporterId'];
+    this.supporteeId = json['supporteeId'];
+    this.status = json['status'];
+    this.permissions = Permissions.fromJson(json['permissions']);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'supporterId': this.supporterId,
+        'supporteeId': this.supporteeId,
+        'status': this.status,
+        'permissions': this.permissions.toJson(),
+      };
+}
+
+class Permissions {
+  bool readTherapy = false;
+  bool readDayPlan = true;
+  bool readHistroy = false;
+  bool readDiary = false;
+
+  Permissions(
+      {this.readTherapy = false,
+      this.readDayPlan = true,
+      this.readHistroy = false,
+      this.readDiary = false});
+
+  Permissions.fromJson(dynamic json) {
+    loadFromJson(json);
+  }
+
+  loadFromJson(dynamic jsonMap) {
+    Map<String, dynamic> json = Map<String, dynamic>.from(jsonMap);
+    this.readTherapy = json['readTherapy'];
+    this.readDayPlan = json['readDayPlan'];
+    this.readHistroy = json['readHistory'];
+    this.readDiary = json['readDiary'];
+  }
+
+  Map<String, dynamic> toJson() => {
+        'readTherapy': this.readTherapy,
+        'readDayPlan': this.readDayPlan,
+        'readHistory': this.readHistroy,
+        'readDiary': this.readDiary,
+      };
 }

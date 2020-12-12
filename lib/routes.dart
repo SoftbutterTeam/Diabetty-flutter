@@ -4,6 +4,7 @@ import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart'
 import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
 import 'package:diabetty/ui/layouts/dashboard.layout.dart';
 import 'package:diabetty/ui/screens/others/settings_screens/settings_screen.dart';
+import 'package:diabetty/ui/screens/teams/support/support_friend.screen.dart';
 import 'package:diabetty/ui/screens/therapy/add_medication.screen.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
 import 'package:diabetty/ui/screens/diary/history/history.screen.dart';
@@ -45,6 +46,10 @@ class Router {
         return PageRouteBuilder(
             pageBuilder: (_, a1, a2) => DashBoard(initIndex: 1),
             transitionDuration: Duration(seconds: 0));
+      case team:
+        return PageRouteBuilder(
+            pageBuilder: (_, a1, a2) => DashBoard(initIndex: 2),
+            transitionDuration: Duration(seconds: 0));
       case therapy:
         return PageRouteBuilder(
             pageBuilder: (_, a1, a2) => DashBoard(initIndex: 3),
@@ -53,6 +58,9 @@ class Router {
       case history:
         return MaterialPageRoute(
             builder: (BuildContext context) => HistoryScreenBuilder());
+      case supportFriend:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => SupportScreenBuilder());
 
       default:
         return MaterialPageRoute(
@@ -76,3 +84,5 @@ const String appearanceSettings = '/appearanceSettings';
 const String addJournal = '/diary/addjournal';
 const String aJournal = '/diary/journal';
 const String history = '/diary/history';
+const String team = '/dashboard/team';
+const String supportFriend = '/team/supportFriend';

@@ -47,14 +47,29 @@ class ReminderRepository {
     }
   }
 
+  Future<void> deleteReminder(Reminder reminder) async {
+    Map<String, dynamic> reminderData = Map();
+    if (reminder.userId == null) return null;
+
+    // reminder.
+    await _db
+        .collection('users')
+        .document(reminder.userId)
+        .collection('reminders')
+        .document(reminder.id)
+        .delete()
+        .catchError((e) {
+      print('error');
+      print(e);
+    });
+    return true;
+  }
+
   Future<void> setReminder(Reminder reminder) async {
     Map<String, dynamic> reminderData = Map();
     if (reminder.userId == null) return null;
 
     reminderData = reminder.tojson();
-
-    print('ahhhhhhh');
-    print(reminderData);
 
     // reminder.
     await _db

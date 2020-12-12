@@ -15,11 +15,18 @@ class ReminderService {
 
   Future<void> saveReminder(Reminder reminder) async {
     try {
-      print('aaah');
       reminderRepo.setReminder(reminder);
     } catch (e) {
       print(e);
-      print('herrrrre');
+      return null;
+    }
+  }
+
+  Future<void> deleteReminder(Reminder reminder) async {
+    try {
+      reminderRepo.deleteReminder(reminder);
+    } catch (e) {
+      print(e);
       return null;
     }
   }

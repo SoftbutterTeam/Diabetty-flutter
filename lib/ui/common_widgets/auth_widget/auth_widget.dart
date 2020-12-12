@@ -1,6 +1,6 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/ui/layouts/dashboard.layout.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/link_accounts/link_accounts.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';

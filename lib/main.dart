@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/diary.bloc.dart';
+import 'package:diabetty/blocs/team_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart' as routerthing;
@@ -8,7 +9,7 @@ import 'package:diabetty/services/authentication/auth_service/auth_service.dart'
 import 'package:diabetty/services/authentication/auth_service_adapter.dart';
 import 'package:diabetty/services/authentication/firebase_email_api/email_secure_store.dart';
 import 'package:diabetty/services/authentication/firebase_email_api/firebase_email_link_handler.dart';
-import 'package:diabetty/system/app_context.dart';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget_builder.dart';
 import 'package:diabetty/ui/common_widgets/auth_widget/email_link_error_presenter.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
     DiaryBloc diaryBloc = DiaryBloc(appContext: appContext)..init();
     DayPlanManager dayPlanManager = DayPlanManager(appContext: appContext)
       ..init();
+    TeamManager teamManager = TeamManager(appContext: appContext)..init();
     return MultiProvider(
         providers: [
           // ignore: todo
@@ -83,6 +85,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<DiaryBloc>(
             create: (_) => diaryBloc,
+          ),
+          ChangeNotifierProvider<TeamManager>(
+            create: (_) => teamManager,
           ),
           Provider<EmailSecureStore>(
             create: (_) => EmailSecureStore(

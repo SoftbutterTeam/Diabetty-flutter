@@ -2,6 +2,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/routes.dart';
+import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +41,9 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: FlatButton(
-                    onPressed: () => null, //print('yeye'),
+                    onPressed: () =>
+                        Provider.of<AuthService>(context, listen: false)
+                            .signOut(), //print('yeye'),
                     color: Colors.transparent,
                     disabledTextColor: Colors.grey,
                     disabledColor: Colors.transparent,
