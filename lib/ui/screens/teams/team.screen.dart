@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:diabetty/blocs/team_manager.dart';
+import 'package:diabetty/blocs/app_context.dart';
+
 import 'package:diabetty/ui/common_widgets/ThemeColor.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/toggle_button.dart';
 import 'package:diabetty/ui/screens/teams/components/background.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/models/teams/relationship.dart';
 
 class TeamScreenBuilder extends StatelessWidget {
   @override
@@ -91,88 +94,11 @@ class _TeamScreenState extends State<TeamScreen> {
             child: ListView.builder(
               itemCount: manager.usersContracts.length,
               itemBuilder: (context, index) {
-                return _buildRelationshipCard(context);
+                return RelationCard(contract: manager.usersContracts[index]);
               },
             ),
           );
         });
-  }
-
-  Widget _buildRelationshipCard(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Container(
-        margin: EdgeInsets.symmetric(vertical: 8),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-              minHeight: min(70, size.height * 0.07),
-              maxHeight: max(70, size.height * 0.08),
-              minWidth: size.width * 0.8,
-              maxWidth: size.width * 0.95),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                /* BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1, 
-                  blurRadius: 4, 
-                  offset: Offset(0, -1), 
-                ),*/
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: Offset(0, 0),
-                ),
-              ],
-              borderRadius: BorderRadius.all(
-                Radius.circular(12), //?was 12, also like 10, 11
-              ),
-              //border: Border.all(color: Colors.black54, width: 0.05),
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 15, right: 20),
-                  child:
-                      CircleAvatar(backgroundColor: Colors.white, child: null),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: Container(
-                    height: max(6, size.height * 0.02),
-                    width: 1.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.orange[800],
-                    ),
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [],
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/navigation/essentials/next.svg',
-                          height: 15,
-                          width: 15,
-                          color: Colors.orange[800],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ));
   }
 
   ThemeColor lightMode = ThemeColor(
@@ -207,6 +133,257 @@ class _TeamScreenState extends State<TeamScreen> {
           onToggleCallback: (index) {
             setState(() {});
           },
+        ));
+  }
+}
+
+class RelationCard extends StatelessWidget {
+  const RelationCard({
+    Key key,
+    this.contract,
+  }) : super(key: key);
+
+  final Contract contract;
+
+  @override
+  Widget build(BuildContext context) {
+    AppContext appcontext = Provider.of<AppContext>(context, listen: false);
+    if (contract.supporteeId == appcontext.user.uid) {
+      if (contract.acceptedAt == null)
+        return _buildRequestCard(context);
+      else
+        return _buildSupporterCard(context);
+    } else {
+      if (contract.acceptedAt == null)
+        return _buildPendingCard(context);
+      else
+        return _buildSupporteeCard(context);
+    }
+  }
+
+  Widget _buildPendingCard(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return RelationDecor(
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 15, right: 20),
+            child: CircleAvatar(backgroundColor: Colors.white, child: null),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: Container(
+              height: max(6, size.height * 0.02),
+              width: 1.5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.orange[800],
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [],
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(right: 25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/navigation/essentials/next.svg',
+                    height: 15,
+                    width: 15,
+                    color: Colors.orange[800],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Widget _buildSupporteeCard(BuildContext context) {
+  var size = MediaQuery.of(context).size;
+  return RelationDecor(
+    child: Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 15, right: 20),
+          child: CircleAvatar(backgroundColor: Colors.white, child: null),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Container(
+            height: max(6, size.height * 0.02),
+            width: 1.5,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.orange[800],
+            ),
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [],
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(right: 25.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/navigation/essentials/next.svg',
+                  height: 15,
+                  width: 15,
+                  color: Colors.orange[800],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildSupporterCard(BuildContext context) {
+  var size = MediaQuery.of(context).size;
+  return RelationDecor(
+    child: Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 15, right: 20),
+          child: CircleAvatar(backgroundColor: Colors.white, child: null),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Container(
+            height: max(6, size.height * 0.02),
+            width: 1.5,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.orange[800],
+            ),
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [],
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(right: 25.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/navigation/essentials/next.svg',
+                  height: 15,
+                  width: 15,
+                  color: Colors.orange[800],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildRequestCard(BuildContext context) {
+  var size = MediaQuery.of(context).size;
+  return RelationDecor(
+    child: Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 15, right: 20),
+          child: CircleAvatar(backgroundColor: Colors.white, child: null),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Container(
+            height: max(6, size.height * 0.02),
+            width: 1.5,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.orange[800],
+            ),
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [],
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(right: 25.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/navigation/essentials/next.svg',
+                  height: 15,
+                  width: 15,
+                  color: Colors.orange[800],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class RelationDecor extends StatelessWidget {
+  const RelationDecor({Key key, this.child}) : super(key: key);
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+        margin: EdgeInsets.symmetric(vertical: 8),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+              minHeight: min(70, size.height * 0.07),
+              maxHeight: max(70, size.height * 0.08),
+              minWidth: size.width * 0.8,
+              maxWidth: size.width * 0.95),
+          child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  /* BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1, 
+                blurRadius: 4, 
+                offset: Offset(0, -1), 
+              ),*/
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: Offset(0, 0),
+                  ),
+                ],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12), //?was 12, also like 10, 11
+                ),
+                //border: Border.all(color: Colors.black54, width: 0.05),
+              ),
+              child: child),
         ));
   }
 }

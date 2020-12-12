@@ -4,6 +4,7 @@ class Contract {
   String supporteeId;
   String status;
   Permissions permissions;
+  DateTime acceptedAt;
 
   Contract({
     this.id,
@@ -21,6 +22,8 @@ class Contract {
     this.supporteeId = json['supporteeId'];
     this.status = json['status'];
     this.permissions = Permissions.fromJson(json['permissions']);
+    this.acceptedAt =
+        json['acceptedAt'] == null ? null : DateTime.parse(json['accepted']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -28,6 +31,7 @@ class Contract {
         'supporteeId': this.supporteeId,
         'status': this.status,
         'permissions': this.permissions.toJson(),
+        'acceptedAt': this.acceptedAt.toString(),
       };
 }
 
