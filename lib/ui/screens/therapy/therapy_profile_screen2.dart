@@ -4,6 +4,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
@@ -27,9 +28,8 @@ import 'package:provider/provider.dart';
 
 class TherapyProfileScreen2 extends StatefulWidget {
   final Therapy therapy;
-  final TherapyManager manager;
   final BuildContext context;
-  TherapyProfileScreen2({this.context, this.therapy, this.manager});
+  TherapyProfileScreen2({this.context, this.therapy});
 
   @override
   _TherapyProfileScreen2State createState() => _TherapyProfileScreen2State();
@@ -39,12 +39,12 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     with EditTherapyModalsMixin {
   @override
   Therapy get therapy => widget.therapy;
+  TherapyManager manager;
   Color textColor = Colors.orange[800];
 
   @override
   Widget build(BuildContext context) {
-    TherapyManager therapyManager =
-        Provider.of<TherapyManager>(context, listen: true);
+    manager = Provider.of<TherapyManager>(context, listen: true);
     return TherapyProfileBackground(
         header: TherapyProfileHeader(therapy: widget.therapy),
         child: _body(context));
@@ -67,6 +67,13 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildBody(Size size) {
     Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    if (widget.therapy.schedule != null ||
+        widget.therapy.schedule.reminderRules.isNotEmpty) {
+      widget.therapy.schedule.reminderRules
+        ..sort((ReminderRule a, ReminderRule b) =>
+            a.time.applyTimeOfDay().compareTo(b.time.applyTimeOfDay()));
+    }
+
     List<Widget> reminderRulesList = (widget.therapy.schedule == null ||
             widget.therapy.schedule.reminderRules.isEmpty)
         ? List()
@@ -494,8 +501,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         context: context,
         builder: (context) => BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: RefillDialog(
-                  manager: widget.manager, therapyForm: widget.therapy),
+              child:
+                  RefillDialog(manager: manager, therapyForm: widget.therapy),
             ) //TODO complete this modal
         );
   }
@@ -506,7 +513,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         builder: (context) => BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: EditStockDialog(
-                  manager: widget.manager, therapyForm: widget.therapy),
+                  manager: manager, therapyForm: widget.therapy),
             ) //TODO complete this modal
         );
   }
@@ -517,7 +524,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         builder: (context) => BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: EditAlarmDialog(
-                  manager: widget.manager, therapyForm: widget.therapy),
+                  manager: manager, therapyForm: widget.therapy),
             ) //TODO complete this modal
         );
   }

@@ -31,8 +31,7 @@ mixin ReminderActionsMixin<T extends Widget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            TherapyProfileScreen2(therapy: therapy, manager: therapyManager),
+        builder: (context) => TherapyProfileScreen2(therapy: therapy),
       ),
     );
   }
@@ -133,7 +132,7 @@ mixin ReminderActionsMixin<T extends Widget> {
       context: context,
       builder: (context) => CupertinoActionSheet(
             actions: [
-               CupertinoActionSheetAction(
+              CupertinoActionSheetAction(
                 child: Text(
                   "View Profile",
                 ),

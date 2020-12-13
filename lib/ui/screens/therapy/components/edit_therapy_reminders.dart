@@ -55,8 +55,11 @@ class _EditTherapyReminderState extends State<EditTherapyReminder>
     var size = MediaQuery.of(context).size;
     List<Widget> weekDays = buildWeekWidgets(context);
     return custom.CupertinoTextField(
-      onTap: () => showEditReminderModal(context,
-          therapy, widget.rule), //TODO click to show add reminder dialog with its attributes showing
+      onTap: () => showEditReminderModal(
+          context,
+          therapy,
+          widget
+              .rule), //TODO click to show add reminder dialog with its attributes showing
       overflow: TextOverflow.clip,
       decoration: BoxDecoration(
         color: appWhite,
@@ -65,9 +68,22 @@ class _EditTherapyReminderState extends State<EditTherapyReminder>
         borderRadius: BorderRadius.circular(0),
       ),
       prefix: Padding(
-        padding: EdgeInsets.only(left: 15.0),
+        padding: EdgeInsets.only(left: 18.0),
         child: Row(
           children: [
+            GestureDetector(
+              onTap: () {
+                _deleteRule(manager);
+              },
+              child: Container(
+                padding: EdgeInsets.only(right: 5),
+                child: Icon(
+                  CupertinoIcons.clear_circled,
+                  color: Colors.red,
+                  size: 23,
+                ),
+              ),
+            ),
             Container(
               width: size.width * 0.4,
               child: Row(
@@ -210,14 +226,14 @@ class _EditTherapyReminderState extends State<EditTherapyReminder>
     // add spaces where ever too
   }
 
-  // _deleteRule(TherapyManager manager) {
-  //   manager.therapyForm.reminderRules
-  //       .removeWhere((element) => element.id == widget.rule.id);
-  //   //*  that should delete it  e.g.  element == widget.rule
-  //   //* if not use element.uid == widget.rule.uid
-  //   //* dont worry I already generate the uids
-  //   manager.updateListeners();
-  // }
+  _deleteRule(TherapyManager manager) {
+    therapy.schedule.reminderRules
+        .removeWhere((element) => element.id == widget.rule.id);
+    //*  that should delete it  e.g.  element == widget.rule
+    //* if not use element.uid == widget.rule.uid
+    //* dont worry I already generate the uids
+    manager.updateListeners();
+  }
 
   buildWeekWidgets(BuildContext context) {
     Text emptyClause = Text('-', style: textstyle);

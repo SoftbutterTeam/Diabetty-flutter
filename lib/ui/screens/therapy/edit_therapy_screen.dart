@@ -26,6 +26,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
     with EditTherapyModalsMixin {
   TextEditingController medicationNameController = TextEditingController();
   Therapy newTherapy;
+  TherapyManager manager;
 
   @override
   Therapy get therapy => widget.therapy;
@@ -39,6 +40,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
 
   @override
   Widget build(BuildContext context) {
+    manager = Provider.of<TherapyManager>(context, listen: true);
     return SnoozeOptionsBackground(
         header: SnoozeOptionsHeader(
           text: 'save',
@@ -59,6 +61,8 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
     } else {
       therapy.medicationInfo.name = medicationNameController.text;
       therapy.loadFromJson(newTherapy.toJson());
+      saveTherapy(newTherapy);
+      manager.updateListeners();
       Navigator.pop(context);
     }
   }

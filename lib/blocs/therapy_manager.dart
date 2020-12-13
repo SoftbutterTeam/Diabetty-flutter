@@ -19,6 +19,8 @@ class TherapyManager extends Manager {
 
   AddTherapyForm therapyForm;
 
+  Therapy therapy;
+
   Stream<List<Therapy>> _therapyStream() => therapyService.therapyStream(uid);
 
   Stream<List<Therapy>> get therapyStream => this._therapyStream();
@@ -42,6 +44,7 @@ class TherapyManager extends Manager {
         usersTherapies.forEach((element) {
           print(element.toJson());
         });
+        // updateListeners();
         // usersTherapies ??= List();
       });
     }

@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
+import 'package:diabetty/models/therapy/sub_models/schedule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
@@ -12,17 +13,15 @@ import 'package:intl/intl.dart';
 import 'package:diabetty/extensions/timeofday_extension.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 
-class EditReminderModal2 extends StatefulWidget {
+class AddReminderModal3 extends StatefulWidget {
   final Therapy therapyForm;
-  final ReminderRule rule;
-  final TherapyManager manager;
 
-  EditReminderModal2({this.therapyForm, this.manager, this.rule});
+  AddReminderModal3({this.therapyForm});
   @override
-  _EditReminderModal2State createState() => _EditReminderModal2State();
+  _AddReminderModal3State createState() => _AddReminderModal3State();
 }
 
-class _EditReminderModal2State extends State<EditReminderModal2> {
+class _AddReminderModal3State extends State<AddReminderModal3> {
   ReminderRule reminder;
   bool _isFilled;
   int lastTapped;
@@ -35,46 +34,32 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
   @override
   void initState() {
     super.initState();
-    final rules = widget.therapyForm?.schedule?.reminderRules;
-    if (rules != null) {
-      days = Days.fromDays(rules.isNotEmpty ? widget.rule.days : Days());
-      dosageController = TextEditingController(
-          text: (widget.rule.dose == null)
-              ? ''
-              : widget.rule.dose.toString()); //TODO use widget.rule
-      timeSelected = getInitialTime();
-
-      initialDate = timeSelected;
-      reminder = ReminderRule();
-      reminder.days = Days();
-      _isFilled = ((dosageController.text.isNotEmpty && days.isADaySelected))
-          ? true
-          : false;
-      timeString = timeSelected.formatTime();
-    } else {
-      days = Days.fromDays(Days());
-      dosageController = TextEditingController();
-      timeSelected = getInitialTime();
-
-      initialDate = timeSelected;
-      reminder = ReminderRule();
-      reminder.days = Days();
-      _isFilled = ((dosageController.text.isNotEmpty && days.isADaySelected))
-          ? true
-          : false;
-      timeString = timeSelected.formatTime();
-    }
+    final rules = widget.therapyForm.schedule.reminderRules;
+    days = Days.fromDays(rules.isNotEmpty ? rules.last.days : Days());
+    dosageController = TextEditingController(
+        text: (rules.length == 0) ? '' : rules.last.dose.toString());
+    timeSelected = getInitialTime();
+    initialDate = timeSelected;
+    reminder = ReminderRule();
+    reminder.days = Days();
+    reminder.dose = dosageController.text != ''
+        ? int.parse(dosageController.text)
+        : reminder.dose;
+    _isFilled = ((dosageController.text.isNotEmpty && days.isADaySelected))
+        ? true
+        : false;
+    timeString = timeSelected.formatTime();
   }
 
   DateTime getInitialTime() {
-    if (widget.therapyForm.schedule == null ||
-        widget.therapyForm.schedule.reminderRules == null)
+    if (widget.therapyForm.schedule.reminderRules.isEmpty)
       return DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 8, 00);
     else
-      return widget.rule.time.applyTimeOfDay();
-    // .add(widget.therapyForm.medicationInfo.restDuration ??
-    //     Duration(hours: 4))
+      return widget.therapyForm.schedule.reminderRules.last.time
+          .applyTimeOfDay()
+          .add(widget.therapyForm.medicationInfo.restDuration ??
+              Duration(hours: 0));
   }
 
   @override
@@ -123,14 +108,14 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
                   )),
               onPressed: () {
                 Navigator.of(context).pop(context);
-                print(initialDate);
+                //print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
                 vertical: 5.0,
               )),
           CupertinoButton(
-              child: Text('save',
+              child: Text('add',
                   style: TextStyle(
                     color: _isFilled ? Colors.indigo : Colors.black26,
                   )),
@@ -183,7 +168,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
     setState(() {
       timeString = hourAndMin;
     });
-    print(hourAndMin);
+    //print(hourAndMin);
     Navigator.of(context).pop(context);
   }
 
@@ -197,9 +182,9 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
               _updateTime();
               allFieldsFilled();
             } else {
-              print('naw way fam');
+              //print('naw way fam');
             }
-            print(timeSelected);
+            //print(timeSelected);
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,
@@ -209,7 +194,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
             onDateTimeChanged: (dateTimeChange) {
               timeSelected = dateTimeChange;
               setState(() {});
-              print(initialDate);
+              //print(initialDate);
             },
           ),
         );
@@ -283,7 +268,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
         });
         break;
     }
-    print(v);
+    //print(v);
     setState(() => lastTapped = v);
   }
 
@@ -313,16 +298,19 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
   }
 
   _handleSubmit() {
-    widget.rule.days = days;
+    reminder.days = days;
     var doseStringToDouble = int.parse(dosageController.text);
-    widget.rule.dose = doseStringToDouble;
-    widget.rule.time = TimeOfDay.fromDateTime(timeSelected);
+    reminder.dose = doseStringToDouble;
+    reminder.time = TimeOfDay.fromDateTime(timeSelected);
     final TherapyManager manager =
         Provider.of<TherapyManager>(context, listen: false);
 
-    // manager.therapyForm.reminderRules.add(reminder);
+    widget.therapyForm.schedule.reminderRules.add(reminder);
+
+    // manager.therapy.schedule.reminderRules.add(reminder);
+    
     manager.updateListeners();
-    print(manager.therapyForm.reminderRules.length);
+    //print(manager.therapyForm.reminderRules.length);
     Navigator.of(context).pop(context);
   }
 

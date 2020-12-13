@@ -5,6 +5,19 @@ import 'package:diabetty/repositories/therapy.repository.dart';
 class TherapyService {
   TherapyRepository therapyRepo = TherapyRepository();
 
+
+    Future<void> saveTherapy(Therapy therapy) async {
+    try {
+      
+      therapyRepo.setTherapy(therapy);
+      
+    } catch (e) {
+      print(e);
+      
+      return null;
+    }
+  }
+
   Future<bool> addTherapy(Therapy therapy) async {
     try {
       //print(therapy.name);

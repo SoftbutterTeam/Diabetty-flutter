@@ -2,8 +2,10 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
+import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal_3.dart';
 import 'package:diabetty/ui/screens/therapy/components/custom_timer_picker.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_reminder_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
@@ -16,11 +18,31 @@ import 'package:flutter_svg/flutter_svg.dart';
 @optionalTypeArgs
 mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   Therapy get therapy;
+  TherapyService therapyService = TherapyService();
 
-  showEditReminderModal(BuildContext context, Therapy therapy, ReminderRule rule) {
+  Future<void> saveTherapy(Therapy therapy) {
+    if (therapy.id == null || therapy.userId == null) 
+      return null;
+      try {
+      therapyService.saveTherapy(therapy);
+      } catch (e){
+        print(e);
+      }
+  }
+
+  showEditReminderModal(
+      BuildContext context, Therapy therapy, ReminderRule rule) {
     showDialog(
       context: context,
-      builder: (context) => EditReminderModal2(therapyForm: therapy, rule: rule),
+      builder: (context) =>
+          EditReminderModal2(therapyForm: therapy, rule: rule),
+    );
+  }
+
+  showEditReminderModal2(BuildContext context, Therapy therapy) {
+    showDialog(
+      context: context,
+      builder: (context) => AddReminderModal3(therapyForm: therapy),
     );
   }
 
