@@ -40,6 +40,7 @@ class TeamManager extends Manager {
           if (event == null || event.documents.isEmpty)
             return usersContracts ??= List();
           usersContracts = await teamService.getContracts(uid);
+          updateListeners();
         });
       } catch (e) {}
     }
