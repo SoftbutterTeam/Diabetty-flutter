@@ -52,9 +52,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Background(
-      child: _body(context),
-    );
+    return _body(context);
   }
 
   Widget _body(BuildContext context) {
@@ -74,7 +72,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
           border: Border(top: BorderSide(color: Colors.transparent, width: 1))),
       child: Column(
         children: [
-          Container(child: _buildViewHistoryButton(context)),
           Expanded(
             child: Container(
                 padding: EdgeInsets.only(top: 4),

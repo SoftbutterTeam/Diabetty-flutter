@@ -38,7 +38,7 @@ class TeamManager extends Manager {
         usersContracts = await teamService.getContracts(uid, local: true);
         relationStream.listen((event) async {
           if (event == null || event.documents.isEmpty)
-            return usersContracts = List();
+            return usersContracts ??= List();
           usersContracts = await teamService.getContracts(uid);
         });
       } catch (e) {}
@@ -68,5 +68,16 @@ class TeamManager extends Manager {
   void shareSupportInviteToApp() {
     Share.share('check out my website https://example.com',
         subject: 'Look what I made!');
+  }
+
+  void deleteContract(Contract contract) {
+    teamService.deleteContract(contract);
+    usersContracts.remove(contract);
+  }
+
+  void acceptContract(Contract contract) {
+    contract.acceptedAt = DateTime.now();
+    teamService.updateContract(contract);
+    updateListeners();
   }
 }

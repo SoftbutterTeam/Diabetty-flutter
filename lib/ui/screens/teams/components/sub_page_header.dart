@@ -27,7 +27,10 @@ class _SubPageHeaderState extends State<SubPageHeader> {
             Container(
               alignment: Alignment.centerLeft,
               child: FlatButton(
-                onPressed: widget.backFunction,
+                onPressed: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  widget.backFunction.call();
+                },
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
@@ -47,7 +50,10 @@ class _SubPageHeaderState extends State<SubPageHeader> {
             Container(
               alignment: Alignment.centerRight,
               child: FlatButton(
-                onPressed: widget.saveFunction,
+                onPressed: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  widget.saveFunction.call();
+                },
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,

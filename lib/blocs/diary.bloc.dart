@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:diabetty/models/journal/journal.model.dart';
+import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/journal.service.dart';
 import 'package:diabetty/blocs/app_context.dart';
@@ -53,4 +54,8 @@ class DiaryBloc extends Manager with JournalActionsMixin {
   @override
   // TODO: implement journal
   Journal get journal => throw UnimplementedError();
+
+  Future<void> saveJournalEntry(JournalEntry journalNotes) async {
+    //journalService.addJournal(journalNotes);
+  }
 }

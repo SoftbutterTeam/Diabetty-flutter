@@ -128,7 +128,9 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         .where((element) =>
             (element.rescheduledTime ?? element.time).isSameDayAs(date))
         .toList();
+    fetchedReminders ??= List();
     finalReminders.removeWhere((element) {
+      if (fetchedReminders.isEmpty) return false;
       return fetchedReminders.any((e) =>
           element.reminderRuleId == e.reminderRuleId &&
           element.time.isSameDayAs(e.time));
@@ -212,7 +214,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     List<Reminder> reminders = List.of(usersReminders);
     reminders.sort((Reminder a, Reminder b) =>
         (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
-
+    if (reminders.isEmpty) return null;
     return reminders.first.rescheduledTime ?? reminders.first.time;
   }
 

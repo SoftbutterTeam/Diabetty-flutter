@@ -103,7 +103,8 @@ class _DropModalState extends State<DropModal>
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           DatePicker(
-              DateTime.now().subtract(Duration(days: 14 + DateTime.now().day)),
+              DateTime.now()
+                  .subtract(Duration(days: 13 + DateTime.now().weekday)),
               daysCount: 28,
               initialSelectedDate: dayManager.currentDateStamp,
               selectionColor: Colors.deepOrange,

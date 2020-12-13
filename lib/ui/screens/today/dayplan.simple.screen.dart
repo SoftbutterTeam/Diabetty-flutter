@@ -76,6 +76,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   List<TimeSlot> timeSlots;
   @override
   void initState() {
+    timeSlots = List();
     draggingIdle = true;
     manager = Provider.of<DayPlanManager>(context, listen: false);
     manager.reminderScrollKeys = {};
@@ -93,6 +94,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     manager.minController = _minController;
 
     _subscription = manager.reminderStream.listen((event) {
+      if (timeSlots == null) return;
       bool cond = timeSlots.any((element) => !element.reminders.every((el) =>
           element.time.isAtSameMomentAs(el.rescheduledTime ?? el.time)));
       if (cond) {
@@ -125,10 +127,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   Widget _body(BuildContext context) {
-    //print(_minAnimationRotate.value.toString() + "ds");
-
     Size size = MediaQuery.of(context).size;
-    double heightOfCircleSpace = size.height * 0.35;
 
     return Background(
         child: (manager.getFinalRemindersList().isEmpty)
@@ -152,10 +151,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               ));
   }
 
-  //! onDoubleTap slows down a onTap
-
   Widget _buildRemindersList(BuildContext context) {
-    timeSlots = manager.sortRemindersByTimeSlots();
+    timeSlots = manager.sortRemindersByTimeSlots() ?? List();
 
     if (timeSlots.length == 0) return Container();
     var size = MediaQuery.of(context).size;
@@ -163,6 +160,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       child: ListView.builder(
         addAutomaticKeepAlives: true,
         physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.only(top: 10),
         scrollDirection: Axis.vertical,
         itemCount: timeSlots.length,
         itemBuilder: (context, index) {

@@ -27,6 +27,8 @@ class TeamRepository {
     return true;
   }
 
+  //*accidently wrote the same thing twice, how banter
+/*
   Future<bool> updateContract(Contract contract) async {
     Map<String, dynamic> contractData = contract.toJson();
 
@@ -49,7 +51,7 @@ class TeamRepository {
         dr.documentID, contract.supporterId, contract.supporteeId);
     return true;
   }
-
+*/
   Future<bool> createRelationship(String contractid, user1, user2) async {
     Map<String, dynamic> contractIdMap = {
       'contractId': contractid,
@@ -149,6 +151,77 @@ class TeamRepository {
         .document(uid)
         .collection('relations')
         .snapshots();
+  }
+
+  Future<void> updateContract(Contract contract) async {
+    // reminder.
+    Map<String, dynamic> contractData = Map();
+    if (contract.id == null) return null;
+
+    contractData = contract.toJson();
+    contractData['updatedAt'] = DateTime.now();
+    await _db
+        .collection('contracts')
+        .document(contract.id)
+        .updateData(contractData)
+        .catchError((e) {
+      print('error');
+      print(e);
+    });
+
+    await updateRelation(contract.supporterId, contract.supporteeId);
+    await updateRelation(contract.supporteeId, contract.supporterId);
+
+    return;
+  }
+
+  Future<void> deleteContract(Contract contract) async {
+    // reminder.
+    await _db
+        .collection('contracts')
+        .document(contract.id)
+        .delete()
+        .catchError((e) {
+      print('error');
+      print(e);
+    });
+
+    await deleteRelation(contract.supporterId, contract.supporteeId);
+    await deleteRelation(contract.supporteeId, contract.supporterId);
+
+    return;
+  }
+
+  Future<void> deleteRelation(String relationId, String uid) async {
+    // reminder.
+    await _db
+        .collection('users')
+        .document(uid)
+        .collection('relations')
+        .document(relationId)
+        .delete()
+        .catchError((e) {
+      print('error');
+      print(e);
+    });
+
+    return;
+  }
+
+  Future<void> updateRelation(String relationId, String uid) async {
+    Map<String, dynamic> contractData = Map();
+    contractData['updatedAt'] = DateTime.now();
+    // reminder.
+    await _db
+        .collection('users')
+        .document(uid)
+        .collection('relations')
+        .document(relationId)
+        .updateData(contractData)
+        .catchError((e) {
+      print('error');
+      print(e);
+    });
   }
 }
 

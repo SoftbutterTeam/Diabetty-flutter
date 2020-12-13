@@ -6,6 +6,7 @@ class JournalEntry {
   String journalId;
   String type;
   double recordEntry;
+  String title;
   String notes;
   DateTime createdAt;
   int reportUnitsIndex;
@@ -17,6 +18,7 @@ class JournalEntry {
       this.type,
       this.createdAt,
       this.recordEntry,
+      this.title,
       this.notes,
       this.reportUnitsIndex}) {
     this.id = this.id ?? generateUID();
@@ -34,6 +36,7 @@ class JournalEntry {
     this.type = json['type'];
     this.createdAt = json['createdAt'];
     this.recordEntry = json['recordEntry'];
+    this.title = json['title'];
     this.notes = json['notes'];
     this.reportUnitsIndex = json['reportUnitsIndex'];
   }
@@ -44,6 +47,7 @@ class JournalEntry {
         'journalId': this.journalId,
         'type': this.type,
         'recordEntry': this.recordEntry,
+        'title': this.title,
         'notes': this.notes,
         'createdAt': this.createdAt,
         'reportUnitsIndex': this.reportUnitsIndex

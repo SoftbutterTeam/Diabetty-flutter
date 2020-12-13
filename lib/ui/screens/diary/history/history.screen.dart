@@ -56,13 +56,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Background(
-      child: _body(context),
-    );
+    return _body(context);
   }
 
   Widget _body(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
           color: appWhite,
           boxShadow: [
@@ -90,14 +89,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildHistory(BuildContext context) {
-    print(
-      min(DateTime.now().difference(manager.lastReminderDate).inDays + 2, 150),
-    );
     return Scrollbar(
       child: ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: min(
-            DateTime.now().difference(manager.lastReminderDate).inDays + 2,
+            DateTime.now()
+                    .difference(manager.lastReminderDate ?? DateTime.now())
+                    .inDays +
+                2,
             150),
         addAutomaticKeepAlives: true,
         itemBuilder: (context, index) {

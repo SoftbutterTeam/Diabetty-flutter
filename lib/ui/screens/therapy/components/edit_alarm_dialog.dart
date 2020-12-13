@@ -100,56 +100,55 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
   Padding _buildSnoozeRow(Size size) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SnoozeOptionScreen(
-                      selectedRepeatRadioTile: reoccurringTimes,
-                      selectedMinuteRadioTile: reoccurringMin)),
-            ),
-            child: Container(
-              width: size.width * 0.4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 2.0),
-                    child: text("Reoccurring",
-                        fontSize: 16.0, fontFamily: fontBold),
-                  ),
-                  text(
-                      (snooze)
-                          ? reoccurringMin.toString() +
-                              " min ," +
-                              reoccurringTimes.toString() +
-                              " times"
-                          : "off",
-                      fontSize: 14.0),
-                ],
-              ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SnoozeOptionScreen(
+                    selectedRepeatRadioTile: reoccurringTimes,
+                    selectedMinuteRadioTile: reoccurringMin)),
+          ),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2.0),
+                  child:
+                      text("Reoccurring", fontSize: 16.0, fontFamily: fontBold),
+                ),
+                text(
+                    (snooze)
+                        ? reoccurringMin.toString() +
+                            " min ," +
+                            reoccurringTimes.toString() +
+                            " times"
+                        : "off",
+                    fontSize: 14.0),
+              ],
             ),
           ),
-          SizedBox(width: size.width * 0.1),
-          Container(
-            margin: EdgeInsets.only(right: 15),
-            height: 25,
-            width: 2,
-            color: Colors.orange[800],
-          ),
-          CupertinoSwitch(
-            value: snooze,
-            onChanged: (val) {
-              snooze = val;
-              setState(() {});
-            },
-            activeColor: Colors.orange[800],
-          ),
-        ],
-      ),
+        ),
+        Row(
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 15),
+              height: 25,
+              width: 2,
+              color: Colors.orange[800],
+            ),
+            CupertinoSwitch(
+              value: snooze,
+              onChanged: (val) {
+                snooze = val;
+                setState(() {});
+              },
+              activeColor: Colors.orange[800],
+            ),
+          ],
+        ),
+      ]),
     );
   }
 
@@ -160,7 +159,6 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: size.width * 0.4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -173,21 +171,22 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
               ],
             ),
           ),
-          SizedBox(width: size.width * 0.1),
-          Container(
-            margin: EdgeInsets.only(right: 15),
-            height: 25,
-            width: 2,
-            color: Colors.orange[800],
-          ),
-          CupertinoSwitch(
-            value: vibration,
-            onChanged: (val) {
-              vibration = val;
-              setState(() {});
-            },
-            activeColor: Colors.orange[800],
-          ),
+          Row(children: [
+            Container(
+              margin: EdgeInsets.only(right: 15),
+              height: 25,
+              width: 2,
+              color: Colors.orange[800],
+            ),
+            CupertinoSwitch(
+              value: vibration,
+              onChanged: (val) {
+                vibration = val;
+                setState(() {});
+              },
+              activeColor: Colors.orange[800],
+            ),
+          ]),
         ],
       ),
     );
@@ -200,7 +199,6 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            width: size.width * 0.4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -213,21 +211,24 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
               ],
             ),
           ),
-          SizedBox(width: size.width * 0.1),
-          Container(
-            margin: EdgeInsets.only(right: 15),
-            height: 25,
-            width: 2,
-            color: Colors.orange[800],
-          ),
-          CupertinoSwitch(
-            value: alarmSound,
-            onChanged: (val) {
-              alarmSound = val;
-              setState(() {});
-            },
-            activeColor: Colors.orange[800],
-          ),
+          Row(
+            children: [
+              Container(
+                margin: EdgeInsets.only(right: 15),
+                height: 25,
+                width: 2,
+                color: Colors.orange[800],
+              ),
+              CupertinoSwitch(
+                value: alarmSound,
+                onChanged: (val) {
+                  alarmSound = val;
+                  setState(() {});
+                },
+                activeColor: Colors.orange[800],
+              ),
+            ],
+          )
         ],
       ),
     );

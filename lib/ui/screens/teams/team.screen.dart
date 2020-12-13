@@ -1,10 +1,13 @@
 import 'dart:math';
 import 'package:diabetty/blocs/team_manager.dart';
 import 'package:diabetty/blocs/app_context.dart';
+import 'package:diabetty/services/team.service.dart';
 
 import 'package:diabetty/ui/common_widgets/ThemeColor.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/toggle_button.dart';
 import 'package:diabetty/ui/screens/teams/components/background.dart';
+import 'package:diabetty/ui/screens/teams/relations_actions_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,7 +35,7 @@ class TeamScreen extends StatefulWidget {
 
 class _TeamScreenState extends State<TeamScreen> {
   TeamManager manager;
-
+  bool initialValue = true;
   @override
   void initState() {
     manager = widget.manager;
@@ -55,6 +58,7 @@ class _TeamScreenState extends State<TeamScreen> {
     Size size = MediaQuery.of(context).size;
     double firstSectionHeight = 0.25;
     return Container(
+      padding: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -68,16 +72,11 @@ class _TeamScreenState extends State<TeamScreen> {
           border: Border(top: BorderSide(color: Colors.transparent, width: 1))),
       child: Column(
         children: [
-          Container(child: _buildPageIndicator(context)),
           Expanded(
               child: Container(
-                  padding: EdgeInsets.only(top: 4),
-                  child: PageView(
-                    children: [
-                      _buildBody(context),
-                      Container(color: Colors.blue)
-                    ],
-                  ))),
+            padding: EdgeInsets.only(top: 4),
+            child: _buildBody(context),
+          )),
         ],
       ),
     );
@@ -119,25 +118,9 @@ class _TeamScreenState extends State<TeamScreen> {
       ),
     ],
   );
-
-  Widget _buildPageIndicator(context) {
-    return Container(
-        height: 60,
-        alignment: Alignment.center,
-        child: AnimatedToggle(
-          values: ['Light', 'Dark'],
-          textColor: lightMode.textColor,
-          backgroundColor: lightMode.toggleBackgroundColor,
-          buttonColor: lightMode.toggleButtonColor,
-          shadows: lightMode.shadow,
-          onToggleCallback: (index) {
-            setState(() {});
-          },
-        ));
-  }
 }
 
-class RelationCard extends StatelessWidget {
+class RelationCard extends StatelessWidget with RelationActionsMixin {
   const RelationCard({
     Key key,
     this.contract,
@@ -184,7 +167,15 @@ class RelationCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [],
+            children: [
+              text(
+                  (contract.supportee.displayName.isEmpty
+                          ? contract.supportee.name
+                          : contract.supportee.displayName)
+                      .toLowerCase(),
+                  fontSize: 15.0),
+              text('pending response...', fontSize: 13.0)
+            ],
           ),
           Expanded(
             child: Padding(
@@ -192,12 +183,15 @@ class RelationCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SvgPicture.asset(
-                    'assets/icons/navigation/essentials/next.svg',
-                    height: 15,
-                    width: 15,
-                    color: Colors.orange[800],
-                  ),
+                  GestureDetector(
+                    onTap: () => unSendContractPopup(context),
+                    child: SizedBox(
+                        child: Container(
+                            padding: EdgeInsets.all(2),
+                            color: Colors.transparent,
+                            child: Icon(Icons.more_horiz,
+                                size: 25, color: Colors.black87))),
+                  )
                 ],
               ),
             ),
@@ -206,12 +200,11 @@ class RelationCard extends StatelessWidget {
       ),
     );
   }
-}
 
-Widget _buildSupporteeCard(BuildContext context) {
-  var size = MediaQuery.of(context).size;
-  return RelationDecor(
-    child: Row(
+  Widget _buildSupporteeCard(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return RelationDecor(
+        child: Row(
       children: [
         Padding(
           padding: EdgeInsets.only(left: 15, right: 20),
@@ -231,7 +224,15 @@ Widget _buildSupporteeCard(BuildContext context) {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [],
+          children: [
+            text(
+                (contract.supportee.displayName.isEmpty
+                        ? contract.supportee.name
+                        : contract.supportee.displayName)
+                    .toLowerCase(),
+                fontSize: 15.0),
+            text('supportee', fontSize: 13.0)
+          ],
         ),
         Expanded(
           child: Padding(
@@ -239,25 +240,27 @@ Widget _buildSupporteeCard(BuildContext context) {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SvgPicture.asset(
-                  'assets/icons/navigation/essentials/next.svg',
-                  height: 15,
-                  width: 15,
-                  color: Colors.orange[800],
-                ),
+                GestureDetector(
+                  onTap: () => stopSupportPopup(context),
+                  child: SizedBox(
+                      child: Container(
+                          padding: EdgeInsets.all(2),
+                          color: Colors.transparent,
+                          child: Icon(Icons.more_horiz,
+                              size: 25, color: Colors.black87))),
+                )
               ],
             ),
           ),
         ),
       ],
-    ),
-  );
-}
+    ));
+  }
 
-Widget _buildSupporterCard(BuildContext context) {
-  var size = MediaQuery.of(context).size;
-  return RelationDecor(
-    child: Row(
+  Widget _buildSupporterCard(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return RelationDecor(
+        child: Row(
       children: [
         Padding(
           padding: EdgeInsets.only(left: 15, right: 20),
@@ -277,7 +280,15 @@ Widget _buildSupporterCard(BuildContext context) {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [],
+          children: [
+            text(
+                (contract.supporter.displayName.isEmpty
+                        ? contract.supporter.name
+                        : contract.supporter.displayName)
+                    .toLowerCase(),
+                fontSize: 15.0),
+            text('supporter', fontSize: 13.0)
+          ],
         ),
         Expanded(
           child: Padding(
@@ -285,65 +296,77 @@ Widget _buildSupporterCard(BuildContext context) {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SvgPicture.asset(
-                  'assets/icons/navigation/essentials/next.svg',
-                  height: 15,
-                  width: 15,
-                  color: Colors.orange[800],
-                ),
+                GestureDetector(
+                  onTap: () => editOrDeleteContractPopup(context),
+                  child: SizedBox(
+                      child: Container(
+                          padding: EdgeInsets.all(2),
+                          color: Colors.transparent,
+                          child: Icon(Icons.more_horiz,
+                              size: 25, color: Colors.black87))),
+                )
               ],
             ),
           ),
         ),
       ],
-    ),
-  );
-}
+    ));
+  }
 
-Widget _buildRequestCard(BuildContext context) {
-  var size = MediaQuery.of(context).size;
-  return RelationDecor(
-    child: Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 15, right: 20),
-          child: CircleAvatar(backgroundColor: Colors.white, child: null),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 20.0),
-          child: Container(
-            height: max(6, size.height * 0.02),
-            width: 1.5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.orange[800],
-            ),
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [],
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(right: 25.0),
+  Widget _buildRequestCard(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return GestureDetector(
+        onTap: () => acceptOrDeclinePopup(context),
+        child: RelationDecor(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/navigation/essentials/next.svg',
-                  height: 15,
-                  width: 15,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 15, right: 20),
+              child: CircleAvatar(backgroundColor: Colors.white, child: null),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: Container(
+                height: max(6, size.height * 0.02),
+                width: 1.5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
                   color: Colors.orange[800],
                 ),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                text(
+                    (contract.supporter.displayName.isEmpty
+                            ? contract.supporter.name
+                            : contract.supporter.displayName)
+                        .toLowerCase(),
+                    fontSize: 15.0),
+                text('new invitation, accept?', fontSize: 13.0)
               ],
             ),
-          ),
-        ),
-      ],
-    ),
-  );
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(right: 25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      child: Container(
+                          padding: EdgeInsets.all(2),
+                          color: Colors.transparent,
+                          child: null),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )));
+  }
 }
 
 class RelationDecor extends StatelessWidget {
@@ -354,6 +377,7 @@ class RelationDecor extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
+        color: Colors.transparent,
         margin: EdgeInsets.symmetric(vertical: 8),
         child: ConstrainedBox(
           constraints: BoxConstraints(

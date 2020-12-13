@@ -1,3 +1,5 @@
+import 'package:diabetty/models/user.model.dart';
+
 class Contract {
   String id;
   String supporterId;
@@ -5,6 +7,8 @@ class Contract {
   String status;
   Permissions permissions;
   DateTime acceptedAt;
+  User supporter;
+  User supportee;
 
   Contract({
     this.id,
@@ -23,7 +27,7 @@ class Contract {
     this.status = json['status'];
     this.permissions = Permissions.fromJson(json['permissions']);
     this.acceptedAt =
-        json['acceptedAt'] == null ? null : DateTime.parse(json['accepted']);
+        json['acceptedAt'] == null ? null : DateTime.parse(json['acceptedAt']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -31,7 +35,8 @@ class Contract {
         'supporteeId': this.supporteeId,
         'status': this.status,
         'permissions': this.permissions.toJson(),
-        'acceptedAt': this.acceptedAt.toString(),
+        'acceptedAt':
+            this.acceptedAt != null ? this.acceptedAt.toString() : null,
       };
 }
 

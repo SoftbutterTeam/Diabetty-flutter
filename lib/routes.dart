@@ -8,7 +8,7 @@ import 'package:diabetty/ui/screens/teams/support/support_friend.screen.dart';
 import 'package:diabetty/ui/screens/therapy/add_medication.screen.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
 import 'package:diabetty/ui/screens/diary/history/history.screen.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Router {
@@ -16,26 +16,26 @@ class Router {
     final Map arguments = settings.arguments as Map;
     switch (settings.name) {
       case login:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (BuildContext context) => LoginScreenBuilder());
       case register:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (BuildContext context) => RegisterScreenBuilder());
       case addmedication:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (BuildContext context) => AddMedicationScreenBuilder());
       case therapyprofile:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             settings: settings,
             builder: (BuildContext context) => TherapyProfileScreen());
       case appsettings:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (BuildContext context) => SettingsScreen());
       case addJournal:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (BuildContext context) => AddJournalScreenBuilder());
       case aJournal:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (BuildContext context) =>
                 JournalScreen(journal: arguments['journal']));
       case diary:
@@ -56,10 +56,10 @@ class Router {
             transitionDuration: Duration(seconds: 0));
 
       case history:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (BuildContext context) => HistoryScreenBuilder());
       case supportFriend:
-        return MaterialPageRoute(
+        return CupertinoPageRoute(
             builder: (BuildContext context) => SupportScreenBuilder());
 
       default:

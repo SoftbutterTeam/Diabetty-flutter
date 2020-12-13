@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/routes.dart';
 
+import 'package:diabetty/models/teams/relationship.dart';
+
 @optionalTypeArgs
 mixin TeamsActionsMixin<T extends Widget> {
   void invitePopupModal(BuildContext context) => showGeneralDialog(
