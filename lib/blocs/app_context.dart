@@ -14,8 +14,8 @@ class AppContext {
   User _firebaseUser;
   User get firebaseUser => _firebaseUser;
 
-  UserModel.User _user;
-  UserModel.User get user => _user;
+  UserModel.User user;
+  // UserModel.User get user => _user;
 
   AppContext(this.authService);
 
@@ -33,7 +33,7 @@ class AppContext {
   /// but it will cause a reset all the time
 
   Future<void> init() async {
-    authService.onAuthStateChanged.listen((firebaseUser) async {
+    authService?.onAuthStateChanged?.listen((firebaseUser) async {
       //print(' - onAuthStateChange: $firebaseUser');
 
       _firebaseUser = firebaseUser;
@@ -43,8 +43,8 @@ class AppContext {
         await fetchUser(toSinkUserChange: true);
       } else {
         //print(" -- no user");
-        _user = null;
-        _onUserChanged.sink.add(_user);
+        user = null;
+        _onUserChanged.sink.add(user);
       }
       //print(systemManagerBlocs);
       systemManagerBlocs.forEach((element) async {
@@ -56,26 +56,26 @@ class AppContext {
   Future<UserModel.User> fetchUser({bool toSinkUserChange = false}) async {
     isFetching = true;
     //print("isFetching: turned on");
-    _firebaseUser = (await authService.currentUser());
+    _firebaseUser = (await authService?.currentUser());
 
     if (_firebaseUser != null) {
       try {
         if (_firebaseUser.uid != null)
-          _user = await _userService.fetchUser(_firebaseUser.uid);
-        _user.uid = _firebaseUser.uid;
-        if (toSinkUserChange) _onUserChanged.sink.add(_user);
+          user = await _userService.fetchUser(_firebaseUser.uid);
+        user.uid = _firebaseUser.uid;
+        if (toSinkUserChange) _onUserChanged.sink.add(user);
         isFetching = false;
         //print("isFetching: turned off");
-        return _user;
+        return user;
       } catch (exception, stackTrace) {
         //print("problem: $exception");
-        _user = null;
+        user = null;
         if (toSinkUserChange) _onUserChanged.addError(exception, stackTrace);
         isFetching = false;
 
         //print("isFetching: turned off");
 
-        return _user;
+        return user;
       }
     } else {
       isFetching = false;
@@ -87,14 +87,14 @@ class AppContext {
   Future<UserModel.User> lazyFetchUser() async {
     Duration waitforfetchTime = Duration(seconds: 1);
 
-    if (_user != null && _user.uid == _firebaseUser.uid) return _user;
+    if (user != null && user.uid == _firebaseUser.uid) return user;
 
     if (isFetching) {
       await Future.delayed(waitforfetchTime);
       return await lazyFetchUser();
     }
 
-    return _user;
+    return user;
   }
 
   void dispose() {

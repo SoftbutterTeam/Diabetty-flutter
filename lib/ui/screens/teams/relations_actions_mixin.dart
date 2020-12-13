@@ -1,10 +1,12 @@
 import 'dart:ui';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/team_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
+import 'package:diabetty/ui/layouts/dashboard.layout.dart';
 import 'package:diabetty/ui/screens/teams/invite_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
@@ -26,6 +28,18 @@ import 'package:diabetty/models/teams/relationship.dart';
 mixin RelationActionsMixin<T extends Widget> {
   @protected
   Contract get contract;
+
+  void navigateToSupporteeDashboard(BuildContext context) {
+    AppContext appContext = new AppContext(null);
+    appContext.user = contract.supportee;
+    Navigator.push(
+        context,
+        new CupertinoPageRoute(
+            builder: (BuildContext context) => DashBoard(
+                  initIndex: 0,
+                  appContext: appContext,
+                )));
+  }
 
   void acceptOrDeclinePopup(BuildContext context) {
     TeamManager teamManager = Provider.of<TeamManager>(context, listen: false);

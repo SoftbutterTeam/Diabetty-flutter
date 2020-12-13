@@ -43,7 +43,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   @override
   Widget build(BuildContext context) {
-        TherapyManager therapyManager =
+    TherapyManager therapyManager =
         Provider.of<TherapyManager>(context, listen: true);
     return TherapyProfileBackground(
         header: TherapyProfileHeader(therapy: widget.therapy),
@@ -556,7 +556,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     );
   }
 
-    String getLastTakenMessage() {
+  String getLastTakenMessage() {
     final dayManager = Provider.of<DayPlanManager>(context, listen: false);
     if (widget.therapy.schedule == null ||
         widget.therapy.schedule.reminderRules.isEmpty) return null;
@@ -578,7 +578,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
 
     if (userRemindersLast.isEmpty) return null;
-    Reminder lastReminder = userRemindersLast.last; 
+    Reminder lastReminder = userRemindersLast.last;
 
     return '${(lastReminder.takenAt).shortenDayRepresent().toLowerCase()} ${(lastReminder.takenAt).formatTime().toLowerCase()} ';
   } //! it can return null!!!!!!!! Error handle it, for no last taken
