@@ -92,7 +92,7 @@ class _DashBoardState extends State<DashBoard> {
                 fit: BoxFit.fitHeight,
               )),
           title: Text("today")),
-      if  (widget.appContext == null)
+      if (widget.appContext == null)
         BottomNavigationBarItem(
             icon: SvgPicture.asset(
               sos_icon,
