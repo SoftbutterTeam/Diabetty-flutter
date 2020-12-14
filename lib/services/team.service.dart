@@ -40,6 +40,8 @@ class TeamService {
               await UserService().fetchUser(contract.supporteeId);
         print('contrrr');
         print(contract.supportee);
+        print('contrrrww24124124124');
+        print(contract.supporter);
       }
       print('here2');
 
