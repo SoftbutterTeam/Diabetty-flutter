@@ -124,7 +124,7 @@ class _JournalNoteState extends State<JournalNote> {
                                   color: Colors.black45, fontSize: 18),
                               hintText: "write notes here..."),
                           onChanged: (str) => {journalNotes.notes},
-                          maxLines: 300, // line limit extendable later
+                          maxLines: 50, // line limit extendable later
                           controller: _contentController,
                           focusNode: _contentFocus,
                           style: TextStyle(color: Colors.black87, fontSize: 18),
