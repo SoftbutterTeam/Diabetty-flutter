@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
+import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +22,11 @@ class JournalNote extends StatefulWidget {
 
 class _JournalNoteState extends State<JournalNote> {
   JournalEntry journalNotes;
+  bool leftAlign;
+  bool centerAlign;
+  bool rightAlign;
+  bool bold;
+  bool underlined;
 
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
@@ -32,7 +40,11 @@ class _JournalNoteState extends State<JournalNote> {
     journalNotes = widget.journalEntry ?? new JournalEntry();
     _titleController.text = (journalNotes.title ?? "").capitalize();
     _contentController.text = (journalNotes.notes ?? "").capitalize();
-
+    leftAlign = true;
+    centerAlign = false;
+    rightAlign = false;
+    bold = false;
+    underlined = false;
     super.initState();
   }
 
@@ -40,7 +52,7 @@ class _JournalNoteState extends State<JournalNote> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return SubPageBackground(
-      child: _body(context),
+      child: _body(context, size),
       header: SubPageHeader(
         text: 'save',
         backFunction: () {
@@ -57,7 +69,161 @@ class _JournalNoteState extends State<JournalNote> {
     );
   }
 
-  Widget _body(BuildContext ctx) {
+  Widget _body(BuildContext context, Size size) {
+    return Column(
+      children: [
+        _buildDate(),
+        _buildTextFormatter(),
+        _buildTextInput(size)
+      ],
+    );
+  }
+
+  Container _buildTextInput(Size size) {
+    return Container(
+          width: size.width * 0.95,
+          height: size.height * 0.7,
+          decoration: BoxDecoration(
+            color: appWhite,
+            border: Border.all(color: Colors.black26, width: 0.3),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), //was 20
+              topRight: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+            ),
+          ),
+          child: Scrollbar(
+            controller: scrollController,
+            child: TextField(
+              textAlign: (leftAlign)
+                  ? TextAlign.left
+                  : (centerAlign) ? TextAlign.center : TextAlign.right,
+              keyboardType: TextInputType.text,
+              decoration: new InputDecoration(
+                  contentPadding: EdgeInsets.all(15),
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.black45, fontSize: 15),
+                  hintText: "write notes here..."),
+              onChanged: (str) => {journalNotes.notes},
+              maxLines: 50, // line limit extendable later
+              controller: _contentController,
+              focusNode: _contentFocus,
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: 15,
+                  fontWeight: (bold) ? FontWeight.w600 : FontWeight.normal,
+                  decoration: (underlined)
+                      ? TextDecoration.underline
+                      : TextDecoration.none),
+              cursorColor: Colors.deepOrange,
+            ),
+          ));
+  }
+
+  Padding _buildTextFormatter() {
+    return Padding(
+        padding: EdgeInsets.only(bottom: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(Icons.format_align_left,
+                  color: (leftAlign) ? Colors.orange : Colors.black54),
+              onPressed: () {
+                leftAlign = true;
+                centerAlign = false;
+                rightAlign = false;
+                setState(() {});
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.format_align_center,
+                  color: (centerAlign) ? Colors.orange : Colors.black54),
+              onPressed: () {
+                leftAlign = false;
+                centerAlign = true;
+                rightAlign = false;
+                setState(() {});
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.format_align_right,
+                  color: (rightAlign) ? Colors.orange : Colors.black54),
+              onPressed: () {
+                leftAlign = false;
+                centerAlign = false;
+                rightAlign = true;
+                setState(() {});
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.format_bold,
+                  color: (bold) ? Colors.orange : Colors.black54),
+              onPressed: () {
+                bold = !bold;
+                setState(() {});
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.format_underlined,
+                  color: (underlined) ? Colors.orange : Colors.black54),
+              onPressed: () {
+                underlined = !underlined;
+                setState(() {});
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.clear, color: Colors.black54),
+              onPressed: () {
+                _contentController.clear();
+              },
+            ),
+          ],
+        ),
+      );
+  }
+
+  Column _buildDate() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 25.0, bottom: 5),
+          child: Row(
+            children: [
+              Text(
+                DateTime.now().shortenDayRepresent2(),
+                style: TextStyle(
+                    fontSize: 30.0,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 25.0, bottom: 10),
+          child: Row(
+            children: [
+              Text(
+                DateTime.now().shortenDayRepresent3(),
+                style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _body2(BuildContext ctx) {
     return Container(
         color: Colors.transparent,
         padding: EdgeInsets.only(left: 16, right: 16, top: 12),
@@ -65,6 +231,13 @@ class _JournalNoteState extends State<JournalNote> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              Text(
+                DateTime.now().shortenDayRepresent2(),
+                style: TextStyle(
+                    fontSize: 13.0,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w500),
+              ),
               Flexible(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5),
