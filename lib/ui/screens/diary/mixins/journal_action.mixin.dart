@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/routes.dart';
@@ -8,13 +9,17 @@ import 'package:diabetty/ui/screens/diary/a_journal/journal_add_record.modal.dar
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 @optionalTypeArgs
 mixin JournalActionsMixin<T extends Widget> {
   @protected
   Journal get journal;
 
-  void navigateToJournal(context) {
+  Future<void> navigateToJournal(context) async {
+    journal.journalEntries =
+        await Provider.of<DiaryBloc>(context, listen: false)
+            .fetchJournalEntries(journal);
     Navigator.pushNamed(context, aJournal, arguments: {'journal': journal});
   }
 

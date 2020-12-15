@@ -12,6 +12,8 @@ class JournalEntry {
   DateTime createdAt;
   int reportUnitsIndex;
 
+  get isNotesType => notes != null;
+
   JournalEntry(
       {this.userId,
       this.id,

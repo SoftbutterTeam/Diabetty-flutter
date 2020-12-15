@@ -6,6 +6,7 @@ class Journal {
   String name;
   int reportUnitsIndex;
   List<JournalEntry> journalEntries;
+  DateTime updatedAt;
   Journal(
       {this.userId,
       this.id,
@@ -18,7 +19,7 @@ class Journal {
     this.userId = json['userId'];
     this.name = json['name'];
     this.reportUnitsIndex = json['reportUnitsIndex'];
-    this.journalEntries = journalEntriesFromJson(json['journalEntries']);
+    this.updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() => {
@@ -26,7 +27,6 @@ class Journal {
         'userId': this.userId,
         'name': this.name,
         'reportUnitsIndex': this.reportUnitsIndex,
-        'journalEntries': mapJson(this.journalEntries),
       };
 
   List<JournalEntry> journalEntriesFromJson(List<dynamic> json) {
@@ -38,41 +38,5 @@ class Journal {
       journalEntries.add(journalEntry);
     }
     return journalEntries;
-  }
-
-  List<Map<String, dynamic>> mapJson(List list) {
-    List jsonList = List<Map<String, dynamic>>();
-    if (list == null || list.isEmpty) return jsonList;
-    list.map((item) => jsonList.add(item.toJson())).toList();
-    jsonList.toList();
-    return jsonList;
-  }
-
-  dummyJournalData() {
-    JournalEntry journalEntry1 = new JournalEntry(
-        userId: this.userId,
-        journalId: this.id,
-        recordEntry: 1,
-        reportUnitsIndex: this.reportUnitsIndex,
-        createdAt: DateTime.now());
-
-    JournalEntry journalEntry2 = new JournalEntry(
-        userId: this.userId,
-        journalId: this.id,
-        recordEntry: 4,
-        reportUnitsIndex: this.reportUnitsIndex,
-        createdAt: DateTime.now());
-
-    JournalEntry journalEntry3 = new JournalEntry(
-        userId: this.userId,
-        journalId: this.id,
-        recordEntry: 69,
-        reportUnitsIndex: this.reportUnitsIndex,
-        createdAt: DateTime.now());
-
-    this.journalEntries = List()
-      ..add(journalEntry1)
-      ..add(journalEntry2)
-      ..add(journalEntry3);
   }
 }
