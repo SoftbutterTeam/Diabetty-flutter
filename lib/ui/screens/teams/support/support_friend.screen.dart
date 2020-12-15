@@ -92,10 +92,16 @@ class _SupportScreenState extends State<SupportScreen> {
   Widget _buildBody(Size size) {
     return Column(
       children: [
-        SizedBox(height: min(50, size.height * 0.02)),
+        SizedBox(height: min(50, size.height * 0.03)),
+        Text('Please enter desired supporters number',
+            style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w500,
+                color: Colors.orange[800])),
+        SizedBox(height: min(50, size.height * 0.01)),
         _buildPhoneNo(context),
         SizedBox(height: min(50, size.height * 0.02)),
-        _buildSupportNameField(),
+        // _buildSupportNameField(),
       ],
     );
   }
@@ -139,7 +145,6 @@ class _SupportScreenState extends State<SupportScreen> {
           selectorTextStyle: TextStyle(color: Colors.black),
           initialValue: number,
           textFieldController: controller,
-          inputBorder: OutlineInputBorder(),
         ),
       ),
     );
