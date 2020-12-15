@@ -32,11 +32,12 @@ class JournalEntryService {
     }
   }
 
-  Future<List<JournalEntry>> getjournalEntrys(String uid,
+  Future<List<JournalEntry>> getjournalEntrys(String uid, String journalId,
       {bool local: false}) async {
     try {
       final journalEntrys =
-          (await journalEntryRepo.getAllEntrys(uid, local: local)).data;
+          (await journalEntryRepo.getAllEntrys(uid, journalId, local: local))
+              .data;
       if (journalEntrys == null) {
         return List();
       }
@@ -51,9 +52,9 @@ class JournalEntryService {
     }
   }
 
-  Stream<List<JournalEntry>> journalEntryStream(String uid) {
+  Stream<List<JournalEntry>> journalEntriesStream(String uid, journalId) {
     return journalEntryRepo
-        .onStateChanged(uid)
+        .onStateChanged(uid, journalId)
         .map(_journalEntryListFromSnapshop);
   }
 

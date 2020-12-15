@@ -15,6 +15,8 @@ class JournalEntryRepository {
     await _db
         .collection('users')
         .document(entry.userId)
+        .collection('journals')
+        .document(entry.journalId)
         .collection('journalEntries')
         .document(entry.id)
         .updateData(entryData)
@@ -24,7 +26,8 @@ class JournalEntryRepository {
     return true;
   }
 
-  Future<DataResult<List<Map<String, dynamic>>>> getAllEntrys(String userId,
+  Future<DataResult<List<Map<String, dynamic>>>> getAllEntrys(
+      String userId, String journalId,
       {bool local}) async {
     try {
       Source source = local ? Source.cache : Source.server;
@@ -32,7 +35,36 @@ class JournalEntryRepository {
       var result = await _db
           .collection("users")
           .document(userId)
+          .collection('journals')
+          .document(journalId)
           .collection('journalEntries')
+          .getDocuments(source: source);
+
+      var data = (result.documents.map((e) {
+        var json = Map<String, dynamic>.from(e.data)..['id'] = e.documentID;
+        return json;
+      }).toList());
+      //print(data.map((e) => e.toString()));
+      return DataResult<List<Map<String, dynamic>>>(data: data);
+    } catch (exception, stackTrace) {
+      //print('HELLLO');
+      return DataResult(exception: exception, stackTrace: stackTrace);
+    }
+  }
+
+  Future<DataResult<List<Map<String, dynamic>>>> getLatestEntrys(
+      String userId, String journalId,
+      {bool local}) async {
+    try {
+      Source source = local ? Source.cache : Source.server;
+
+      var result = await _db
+          .collection("users")
+          .document(userId)
+          .collection('journals')
+          .document(journalId)
+          .collection('journalEntries')
+//          .orderBy('date', descending: true)
           .getDocuments(source: source);
 
       var data = (result.documents.map((e) {
@@ -55,6 +87,8 @@ class JournalEntryRepository {
     await _db
         .collection('users')
         .document(entry.userId)
+        .collection('journals')
+        .document(entry.journalId)
         .collection('journalEntries')
         .document(entry.id)
         .delete()
@@ -72,6 +106,8 @@ class JournalEntryRepository {
     await _db
         .collection('users')
         .document(entry.userId)
+        .collection('journals')
+        .document(entry.journalId)
         .collection('journalEntries')
         .document(entry.id)
         .setData(entryData)
@@ -82,10 +118,12 @@ class JournalEntryRepository {
     return true;
   }
 
-  Stream<QuerySnapshot> onStateChanged(String uid) {
+  Stream<QuerySnapshot> onStateChanged(String uid, String journalId) {
     return _db
         .collection('users')
         .document(uid)
+        .collection('journals')
+        .document(journalId)
         .collection('journalEntries')
         .snapshots();
   }

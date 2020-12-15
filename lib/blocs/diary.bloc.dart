@@ -4,6 +4,7 @@ import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/journal.service.dart';
 import 'package:diabetty/blocs/app_context.dart';
+import 'package:diabetty/services/journalentry.service.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
@@ -11,6 +12,7 @@ import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 class DiaryBloc extends Manager with JournalActionsMixin {
   DiaryBloc({@required this.appContext});
   JournalService journalService = JournalService();
+  JournalEntryService journalEntryService = JournalEntryService();
 
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
@@ -19,6 +21,9 @@ class DiaryBloc extends Manager with JournalActionsMixin {
   String get uid => this.appContext.user?.uid;
 
   Stream<List<Journal>> get journalStream => journalService.journalStream(uid);
+  Stream<List<JournalEntry>> getJournalEntriesStream(String journalId) =>
+      journalEntryService.journalEntriesStream(uid, journalId);
+
   Journal newJournal;
 
   @override
@@ -55,7 +60,12 @@ class DiaryBloc extends Manager with JournalActionsMixin {
   // TODO: implement journal
   Journal get journal => throw UnimplementedError();
 
-  Future<void> saveJournalEntry(JournalEntry journalNotes) async {
-    //journalService.addJournal(journalNotes);
+  Future<List<JournalEntry>> fetchJournalEntries(String journalId) async {
+    try {
+      return await journalEntryService.getjournalEntrys(uid, journalId,
+          local: true);
+    } catch (e) {
+      print(e);
+    }
   }
 }
