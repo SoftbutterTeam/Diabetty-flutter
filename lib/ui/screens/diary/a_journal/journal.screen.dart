@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/journal_add_record.modal.dart';
+import 'package:provider/provider.dart';
 
 class JournalScreen extends StatefulWidget {
   final Journal journal;
@@ -26,6 +27,8 @@ class JournalScreen extends StatefulWidget {
 class _JournalScreenState extends State<JournalScreen>
     with JournalActionsMixin {
   Journal journal;
+  DiaryBloc manager;
+
   @override
   void initState() {
     journal = widget.journal;
@@ -38,9 +41,15 @@ class _JournalScreenState extends State<JournalScreen>
   }
 
   Widget build(BuildContext context) {
+    manager = Provider.of<DiaryBloc>(context, listen: false);
+
     return JournalBackground(
       header: JournalHeader(journal: journal),
-      child: _body(context),
+      child: StreamBuilder(
+          stream: manager.getJournalEntriesStream(journal),
+          builder: (context, snapshot) {
+            return _body(context);
+          }),
     );
   }
 
@@ -102,7 +111,6 @@ class _JournalScreenState extends State<JournalScreen>
   }
 
   Widget _buildJournalCards(BuildContext context) {
-    this.journal.dummyJournalData();
     return (journal.journalEntries.isNotEmpty)
         ? ListView.builder(
             itemCount: journal.journalEntries.length,

@@ -21,8 +21,10 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
   String get uid => this.appContext.user?.uid;
 
   Stream<List<Journal>> get journalStream => journalService.journalStream(uid);
-  Stream<List<JournalEntry>> getJournalEntriesStream(String journalId) =>
-      journalEntryService.journalEntriesStream(uid, journalId);
+  Stream<List<JournalEntry>> getJournalEntriesStream(Journal journal) =>
+      journalEntryService.journalEntriesStream(uid, journal)
+        ..listen(
+            (event) => event != null ? journal.journalEntries = event : null);
 
   Journal newJournal;
 
@@ -60,9 +62,9 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
   // TODO: implement journal
   Journal get journal => throw UnimplementedError();
 
-  Future<List<JournalEntry>> fetchJournalEntries(String journalId) async {
+  Future<List<JournalEntry>> fetchJournalEntries(Journal journal) async {
     try {
-      return await journalEntryService.getjournalEntrys(uid, journalId,
+      return await journalEntryService.getjournalEntrys(uid, journal.id,
           local: true);
     } catch (e) {
       print(e);
