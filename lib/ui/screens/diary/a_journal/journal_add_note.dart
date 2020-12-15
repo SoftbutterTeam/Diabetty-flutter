@@ -73,14 +73,20 @@ class _JournalAddNoteState extends State<JournalAddNote> {
 
   Widget _body(BuildContext context) {
     return Column(
-      children: [_buildDate(), _buildTextFormatter(), _buildTextInput(context)],
+      children: [
+        _buildDate(),
+        _buildTextFormatter(),
+        Flexible(child: _buildTextInput(context)),
+      ],
     );
   }
 
   Widget _buildTextInput(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Container(
         width: size.width * 0.95,
+        padding: EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
           color: appWhite,
           border: Border.all(color: Colors.black26, width: 0.3),
