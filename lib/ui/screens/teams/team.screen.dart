@@ -55,8 +55,6 @@ class _TeamScreenState extends State<TeamScreen> {
   }
 
   Widget _body(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double firstSectionHeight = 0.25;
     return Container(
       padding: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(

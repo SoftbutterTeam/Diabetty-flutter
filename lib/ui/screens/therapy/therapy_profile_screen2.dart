@@ -206,9 +206,18 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildSilentColumn(size),
-              _buildRefillColumn(size),
-              _buildTakeColumn(size),
+              Flexible(
+                flex: 1,
+                child: _buildSilentColumn(size),
+              ),
+              Flexible(
+                flex: 1,
+                child: _buildRefillColumn(size),
+              ),
+              Flexible(
+                flex: 1,
+                child: _buildTakeColumn(size),
+              )
             ],
           ),
         )));
