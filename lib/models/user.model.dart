@@ -2,16 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   String uid;
-  String name = "";
-  String displayName = "";
+  String name;
+  String displayName;
   String email;
   String phoneNumber;
 
   User({
     this.uid,
-    this.name = "",
+    this.name,
     this.email,
-    this.displayName = "",
+    this.displayName,
     this.phoneNumber,
   });
   User.fromUserAccount(User another) {
@@ -45,12 +45,12 @@ class User {
       if (json.containsKey('displayName'))
         this.displayName = json['displayName'];
       // if (json.containsKey('id')) this.documentId = json['id'];
-      if (json.containsKey('name')) this.name = json['name'] ?? "";
+      if (json.containsKey('name')) this.name = json['name'];
       if (json.containsKey('email')) this.email = json['email'];
       if (json.containsKey('phone_number'))
         this.phoneNumber = json['phone_number'];
       if (json.containsKey('displayName'))
-        this.displayName = json['displayName'] ?? "";
+        this.displayName = json['displayName'];
       return true;
     } catch (e) {
       //print(e);
