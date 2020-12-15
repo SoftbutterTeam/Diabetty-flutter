@@ -122,7 +122,7 @@ class _JournalScreenState extends State<JournalScreen>
             SizedBox(height: size.height * 0.01),
             Center(
                 child: Text(
-              'add note',
+              'Note',
               style: style,
             )),
           ],
@@ -206,7 +206,7 @@ class _JournalScreenState extends State<JournalScreen>
           SizedBox(height: size.height * 0.01),
           Center(
             child: Text(
-              'add journal entry',
+              'Record',
               style: style,
             ),
           )

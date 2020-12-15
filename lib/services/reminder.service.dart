@@ -5,14 +5,6 @@ import 'package:diabetty/models/reminder.model.dart';
 class ReminderService {
   ReminderRepository reminderRepo = ReminderRepository();
 
-  Future<void> updateReminder(Reminder reminder) async {
-    try {
-      reminderRepo.updateReminder(reminder);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   Future<void> saveReminder(Reminder reminder) async {
     try {
       reminderRepo.setReminder(reminder);

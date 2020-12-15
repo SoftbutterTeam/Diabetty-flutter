@@ -62,8 +62,6 @@ abstract class ReminderManagerMixin<T extends Manager> {
      -> then calls updateListeners r
     */
 
-  
-
   skipReminder(Reminder reminder, {update = true}) async {
     reminder.takenAt = null;
     reminder.skippedAt = DateTime.now();
