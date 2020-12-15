@@ -19,7 +19,7 @@ class Journal {
     this.userId = json['userId'];
     this.name = json['name'];
     this.reportUnitsIndex = json['reportUnitsIndex'];
-    this.updatedAt = json['updatedAt'];
+    this.updatedAt = DateTime.parse(json['updatedAt']);
   }
 
   Map<String, dynamic> toJson() => {

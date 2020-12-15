@@ -58,6 +58,19 @@ extension DateTimeExtension on DateTime {
           this.year, this.month, this.day, this.hour, minuteRoundUp);
   }
 
+  String lessShortDateRepresent() {
+    String dayOfWeek;
+    if (this.isSameDayAs(DateTime.now()))
+      dayOfWeek = "Today, ";
+    else if (this.isSameDayAs(DateTime.now().add(Duration(days: 1))))
+      dayOfWeek = "Tomorrow, ";
+    else if (this.isSameDayAs(DateTime.now().subtract(Duration(days: 1))))
+      dayOfWeek = "Yesterday, ";
+    else
+      dayOfWeek = DateFormat("EEEE, ").format(this);
+    return dayOfWeek + DateFormat("d MMMM").format(this);
+  }
+
   String shortenDateRepresent() {
     String dayOfWeek;
     if (this.isSameDayAs(DateTime.now()))

@@ -36,13 +36,13 @@ class TeamManager extends Manager {
     if (uid != null) {
       try {
         usersContracts = await teamService.getContracts(uid, local: true);
-        relationStream.listen((event) async {
-          if (event == null || event.documents.isEmpty)
-            return usersContracts ??= List();
-          usersContracts = await teamService.getContracts(uid);
-          updateListeners();
-        });
       } catch (e) {}
+      relationStream.listen((event) async {
+        if (event == null || event.documents.isEmpty)
+          return usersContracts ??= List();
+        usersContracts = await teamService.getContracts(uid);
+        updateListeners();
+      });
     }
   }
 

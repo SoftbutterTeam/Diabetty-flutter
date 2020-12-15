@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/repositories/journal.repository.dart';
 import 'package:diabetty/repositories/journalEntry.repository.dart';
@@ -52,9 +53,9 @@ class JournalEntryService {
     }
   }
 
-  Stream<List<JournalEntry>> journalEntriesStream(String uid, journalId) {
+  Stream<List<JournalEntry>> journalEntriesStream(String uid, Journal journal) {
     return journalEntryRepo
-        .onStateChanged(uid, journalId)
+        .onStateChanged(uid, journal.id)
         .map(_journalEntryListFromSnapshop);
   }
 

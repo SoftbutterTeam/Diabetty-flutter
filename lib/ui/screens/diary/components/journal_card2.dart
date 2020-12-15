@@ -87,7 +87,10 @@ class JournalCard2 extends StatelessWidget with JournalActionsMixin {
                               fontFamily: fontMedium,
                               fontSize: 17.0,
                               overflow: TextOverflow.ellipsis),
-                          text('Tuesday 15 December',
+                          text(
+                              journal.updatedAt
+                                  .lessShortDateRepresent()
+                                  .capitalizeBegins(),
                               textColor: Colors.black45,
                               fontFamily: fontMedium,
                               fontSize: 12.0,
