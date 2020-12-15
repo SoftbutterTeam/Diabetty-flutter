@@ -172,10 +172,6 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
       onTap: () {},
       placeholder: _getMinRestMessage(),
       placeholderText: 'Minimum Rest Duration',
-      // placeholderTextStyle: TextStyle(
-      //   fontSize: textSizeLargeMedium - 4,
-      //   color: Colors.grey[700],
-      // ),
     );
   }
 

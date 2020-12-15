@@ -1,15 +1,30 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:diabetty/models/reminder.model.dart';
-import 'package:diabetty/repositories/team.repository.dart';
+import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ReminderRepository {
+class JournalEntryRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   final Firestore _db = Firestore.instance;
 
-  Future<DataResult<List<Map<String, dynamic>>>> getAllReminders(String userId,
+  Future<void> updateEntry(JournalEntry entry) async {
+    Map<String, dynamic> entryData = Map();
+    entryData = entry.toJson();
+    // entry.
+    await _db
+        .collection('users')
+        .document(entry.userId)
+        .collection('journalEntries')
+        .document(entry.id)
+        .updateData(entryData)
+        .catchError((e) {
+      print(e);
+    });
+    return true;
+  }
+
+  Future<DataResult<List<Map<String, dynamic>>>> getAllEntrys(String userId,
       {bool local}) async {
     try {
       Source source = local ? Source.cache : Source.server;
@@ -17,7 +32,7 @@ class ReminderRepository {
       var result = await _db
           .collection("users")
           .document(userId)
-          .collection('reminders')
+          .collection('journalEntries')
           .getDocuments(source: source);
 
       var data = (result.documents.map((e) {
@@ -32,16 +47,16 @@ class ReminderRepository {
     }
   }
 
-  Future<void> deleteReminder(Reminder reminder) async {
-    Map<String, dynamic> reminderData = Map();
-    if (reminder.userId == null) return null;
+  Future<void> deleteEntry(JournalEntry entry) async {
+    Map<String, dynamic> entryData = Map();
+    if (entry.userId == null) return null;
 
-    // reminder.
+    // entry.
     await _db
         .collection('users')
-        .document(reminder.userId)
-        .collection('reminders')
-        .document(reminder.id)
+        .document(entry.userId)
+        .collection('journalEntries')
+        .document(entry.id)
         .delete()
         .catchError((e) {
       print('error');
@@ -50,19 +65,16 @@ class ReminderRepository {
     return true;
   }
 
-  Future<void> setReminder(Reminder reminder) async {
-    Map<String, dynamic> reminderData = Map();
-    if (reminder.userId == null) return null;
-
-    reminderData = reminder.tojson();
-
-    // reminder.
+  Future<void> setEntry(JournalEntry entry) async {
+    Map<String, dynamic> entryData = Map();
+    if (entry.userId == null) return null;
+    entryData = entry.toJson();
     await _db
         .collection('users')
-        .document(reminder.userId)
-        .collection('reminders')
-        .document(reminder.id)
-        .setData(reminderData)
+        .document(entry.userId)
+        .collection('journalEntries')
+        .document(entry.id)
+        .setData(entryData)
         .catchError((e) {
       print('error');
       print(e);
@@ -71,12 +83,10 @@ class ReminderRepository {
   }
 
   Stream<QuerySnapshot> onStateChanged(String uid) {
-    //print('hererehere' + uid);
-
     return _db
         .collection('users')
         .document(uid)
-        .collection('reminders')
+        .collection('journalEntries')
         .snapshots();
   }
 }
