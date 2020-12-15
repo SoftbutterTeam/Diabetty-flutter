@@ -68,12 +68,37 @@ class _JournalScreenState extends State<JournalScreen>
               child: Container(
                 width: size.width,
                 margin: EdgeInsets.only(top: 5, left: 5, right: 5),
-                child: _buildJournalCards(context),
+                child: _buildJournalCards2(context),
               ),
             ),
           ),
           _buildJournalFooter(size)
         ]);
+  }
+
+    Widget _buildJournalCards2(BuildContext context) {
+    this.journal.dummyJournalData();
+    return (journal.journalEntries.isNotEmpty)
+        ? GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+            ),
+            itemCount: journal.journalEntries.length,
+            itemBuilder: (context, index) {
+              return JournalEntryCard(
+                journal: this.journal,
+                journalEntry: this.journal.journalEntries[index],
+              );
+            },
+          )
+        : SizedBox(
+            height: 300,
+            child: Container(
+              child: text('Add one bruddah'),
+            ),
+          );
   }
 
   Widget _buildJournalCards(BuildContext context) {
