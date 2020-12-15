@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:diabetty/blocs/mixins/journalentry_manager.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
@@ -9,10 +10,9 @@ import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 
-class DiaryBloc extends Manager with JournalActionsMixin {
+class DiaryBloc extends Manager with journalEntryManagerMixin {
   DiaryBloc({@required this.appContext});
   JournalService journalService = JournalService();
-  JournalEntryService journalEntryService = JournalEntryService();
 
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
