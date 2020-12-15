@@ -5,7 +5,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetty/extensions/string_extension.dart';
+import 'package:diabetty/extensions/index.dart';
 import 'package:flutter_svg/svg.dart';
 
 class JournalCard2 extends StatelessWidget with JournalActionsMixin {
@@ -86,6 +86,11 @@ class JournalCard2 extends StatelessWidget with JournalActionsMixin {
                               textColor: Colors.black,
                               fontFamily: fontMedium,
                               fontSize: 17.0,
+                              overflow: TextOverflow.ellipsis),
+                          text('Tuesday 15 December',
+                              textColor: Colors.black45,
+                              fontFamily: fontMedium,
+                              fontSize: 12.0,
                               overflow: TextOverflow.ellipsis),
                         ]),
                     Expanded(
