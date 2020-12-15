@@ -50,6 +50,13 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
             children: [
               _buildTimeField(context),
               _buildInputField(context),
+              Text(
+                'units',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              ),
               _buildCancelAndSubmitButtons(),
             ],
           ),
@@ -93,15 +100,21 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
   Widget _buildInputField(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
+      margin: EdgeInsets.only(bottom: 10),
       height: size.height * 0.045,
       width: size.width * 0.5,
       child: CupertinoTextField(
         keyboardType: TextInputType.number,
         enableInteractiveSelection: false,
         controller: inputController,
-        padding: EdgeInsets.only(left: 10, top: 3, bottom: 3),
+        padding: EdgeInsets.only(top: 10),
+        textAlign: TextAlign.center,
         maxLength: 3,
         maxLengthEnforced: true,
+        decoration: BoxDecoration(
+          color: Color(0xfff7f7f7),
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
     );
   }
