@@ -22,6 +22,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
   JournalEntry journalRecord;
 
   ScrollController scrollController = ScrollController();
+  TextEditingController inputController = TextEditingController();
 
   bool edit;
   int reportUnitIndex;
@@ -48,6 +49,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
           child: Column(
             children: [
               _buildTimeField(context),
+              _buildInputField(context),
               _buildCancelAndSubmitButtons(),
             ],
           ),
@@ -80,9 +82,26 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
               ),
         readOnly: true,
         decoration: BoxDecoration(
-          color: Color(0xfff7f7f7),
+          color: Colors.white,
+          //  Color(0xfff7f7f7)
           borderRadius: BorderRadius.circular(10),
         ),
+      ),
+    );
+  }
+
+  Widget _buildInputField(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height * 0.045,
+      width: size.width * 0.5,
+      child: CupertinoTextField(
+        keyboardType: TextInputType.number,
+        enableInteractiveSelection: false,
+        controller: inputController,
+        padding: EdgeInsets.only(left: 10, top: 3, bottom: 3),
+        maxLength: 3,
+        maxLengthEnforced: true,
       ),
     );
   }
