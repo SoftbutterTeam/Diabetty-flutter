@@ -12,7 +12,7 @@ import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:diabetty/ui/screens/diary/components/journal_add_note.dart';
+import 'package:diabetty/ui/screens/diary/a_journal/journal_add_record.modal.dart';
 
 class JournalScreen extends StatefulWidget {
   final Journal journal;
@@ -77,7 +77,6 @@ class _JournalScreenState extends State<JournalScreen>
   }
 
   Widget _buildJournalCards(BuildContext context) {
-    //TODO not needed
     this.journal.dummyJournalData();
     return (journal.journalEntries.isNotEmpty)
         ? ListView.builder(
@@ -170,38 +169,49 @@ class _JournalScreenState extends State<JournalScreen>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildAddNoteColumn(size, decorationStyle, style),
-              _buildAddJournalEntryColumn(size, decorationStyle, style),
+              Flexible(
+                  flex: 1,
+                  child: _buildAddNoteColumn(size, decorationStyle, style)),
+              Flexible(
+                flex: 1,
+                child:
+                    _buildAddJournalEntryColumn(size, decorationStyle, style),
+              )
             ],
           ),
         )));
   }
 
-  Column _buildAddJournalEntryColumn(
+  Widget _buildAddJournalEntryColumn(
       Size size, BoxDecoration decorationStyle, TextStyle style) {
-    return Column(
-      children: [
-        Container(
-          height: size.height * 0.08,
-          width: size.width * 0.16,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: Colors.orange[100]),
-          child: Center(
-            child: Icon(
-              Icons.library_add,
-              color: Colors.orange[800],
-              size: 35,
+    return GestureDetector(
+      onTap: () {
+        showAddRecordPopupModal(context);
+      },
+      child: Column(
+        children: [
+          Container(
+            height: size.height * 0.08,
+            width: size.width * 0.16,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle, color: Colors.orange[100]),
+            child: Center(
+              child: Icon(
+                Icons.library_add,
+                color: Colors.orange[800],
+                size: 35,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: size.height * 0.01),
-        Center(
-          child: Text(
-            'add journal entry',
-            style: style,
-          ),
-        )
-      ],
+          SizedBox(height: size.height * 0.01),
+          Center(
+            child: Text(
+              'add journal entry',
+              style: style,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -66,8 +66,8 @@ class TeamManager extends Manager {
     return null;
   }
 
-  void shareSupportInviteToApp() {
-    Share.share('check out my website https://example.com',
+  void shareSupportInviteToApp() async {
+    await Share.share('check out my website https://example.com',
         subject: 'Look what I made!');
   }
 

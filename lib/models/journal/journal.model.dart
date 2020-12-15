@@ -14,7 +14,7 @@ class Journal {
       this.journalEntries});
 
   loadFromJson(Map<String, dynamic> json) {
-    this.id = json['id'];
+    this.id ??= json['id'];
     this.userId = json['userId'];
     this.name = json['name'];
     this.reportUnitsIndex = json['reportUnitsIndex'];
@@ -52,7 +52,6 @@ class Journal {
     JournalEntry journalEntry1 = new JournalEntry(
         userId: this.userId,
         journalId: this.id,
-        type: 'record',
         recordEntry: 1,
         reportUnitsIndex: this.reportUnitsIndex,
         createdAt: DateTime.now());
@@ -60,7 +59,6 @@ class Journal {
     JournalEntry journalEntry2 = new JournalEntry(
         userId: this.userId,
         journalId: this.id,
-        type: 'record',
         recordEntry: 4,
         reportUnitsIndex: this.reportUnitsIndex,
         createdAt: DateTime.now());
@@ -68,7 +66,6 @@ class Journal {
     JournalEntry journalEntry3 = new JournalEntry(
         userId: this.userId,
         journalId: this.id,
-        type: 'record',
         recordEntry: 69,
         reportUnitsIndex: this.reportUnitsIndex,
         createdAt: DateTime.now());

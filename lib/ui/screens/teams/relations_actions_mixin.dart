@@ -80,6 +80,7 @@ mixin RelationActionsMixin<T extends Widget> {
         builder: (context) => CupertinoActionSheet(
               actions: [
                 CupertinoActionSheetAction(
+                  isDestructiveAction: true,
                   child: Text("Unsend"),
                   onPressed: () {
                     Navigator.of(context).pop(context);
@@ -104,6 +105,7 @@ mixin RelationActionsMixin<T extends Widget> {
         builder: (context) => CupertinoActionSheet(
               actions: [
                 CupertinoActionSheetAction(
+                  isDestructiveAction: true,
                   child: Text("Delete"),
                   onPressed: () {
                     Navigator.of(context).pop(context);
@@ -136,6 +138,7 @@ mixin RelationActionsMixin<T extends Widget> {
                   },
                 ),
                 CupertinoActionSheetAction(
+                  isDestructiveAction: true,
                   child: Text("Remove"),
                   onPressed: () {
                     Navigator.of(context).pop(context);
@@ -157,55 +160,65 @@ mixin RelationActionsMixin<T extends Widget> {
   void stopSupportPopup(BuildContext context) {
     TeamManager teamManager = Provider.of<TeamManager>(context, listen: false);
     showCupertinoModalPopup(
-        context: context,
-        builder: (context) => CupertinoActionSheet(
-              actions: [
-                CupertinoActionSheetAction(
-                  child: Text("Stop Supporting"),
-                  onPressed: () {
-                    Navigator.of(context).pop(context);
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text("View"),
+            onPressed: () {
+              Navigator.of(context).pop(context);
+              navigateToSupporteeDashboard(context);
+            },
+          ),
+          CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            child: Text("Stop Supporting"),
+            onPressed: () {
+              Navigator.of(context).pop(context);
 
-                    areYouSurePopup(context, () {
-                      teamManager.deleteContract(contract);
-                    });
-                  },
-                ),
-              ],
-              cancelButton: CupertinoActionSheetAction(
-                child: Container(color: Colors.white, child: Text('Cancel')),
-                onPressed: () {
-                  Navigator.of(context).pop(context);
-                },
-              ),
-            ));
+              areYouSurePopup(context, () {
+                teamManager.deleteContract(contract);
+              });
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Container(color: Colors.white, child: Text('Cancel')),
+          onPressed: () {
+            Navigator.of(context).pop(context);
+          },
+        ),
+      ),
+    );
   }
 
   void areYouSurePopup(BuildContext context, Function func) {
     showCupertinoModalPopup(
-        context: context,
-        builder: (context) => CupertinoActionSheet(
-              message: Text('Are you sure?'),
-              actions: [
-                CupertinoActionSheetAction(
-                  child: Text("Yes"),
-                  onPressed: () {
-                    func.call();
-                    Navigator.of(context).pop(context);
-                  },
-                ),
-                CupertinoActionSheetAction(
-                  child: Text("No"),
-                  onPressed: () {
-                    Navigator.of(context).pop(context);
-                  },
-                ),
-              ],
-              cancelButton: CupertinoActionSheetAction(
-                child: Container(color: Colors.white, child: Text('Cancel')),
-                onPressed: () {
-                  Navigator.of(context).pop(context);
-                },
-              ),
-            ));
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        message: Text('Are you sure?'),
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text("Yes"),
+            onPressed: () {
+              func.call();
+              Navigator.of(context).pop(context);
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text("No"),
+            onPressed: () {
+              Navigator.of(context).pop(context);
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Container(color: Colors.white, child: Text('Cancel')),
+          onPressed: () {
+            Navigator.of(context).pop(context);
+          },
+        ),
+      ),
+    );
   }
 }

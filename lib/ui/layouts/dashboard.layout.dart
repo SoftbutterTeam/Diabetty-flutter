@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/team_manager.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/diary/diary_parent.screen.dart';
@@ -143,6 +144,7 @@ class _DashBoardState extends State<DashBoard> {
       DayPlanManager dayPlanManager =
           DayPlanManager(appContext: widget.appContext)..init();
 
+      dayPlanManager.therapyManager = therapyManager;
       return MultiProvider(
           providers: [
             // ignore: todo

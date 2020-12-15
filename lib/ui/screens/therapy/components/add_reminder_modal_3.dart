@@ -95,7 +95,7 @@ class _AddReminderModal3State extends State<AddReminderModal3> {
     );
   }
 
-  Expanded _buildCancelAndSubmitButtons() {
+  Widget _buildCancelAndSubmitButtons() {
     return Expanded(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -308,7 +308,7 @@ class _AddReminderModal3State extends State<AddReminderModal3> {
     widget.therapyForm.schedule.reminderRules.add(reminder);
 
     // manager.therapy.schedule.reminderRules.add(reminder);
-    
+
     manager.updateListeners();
     //print(manager.therapyForm.reminderRules.length);
     Navigator.of(context).pop(context);

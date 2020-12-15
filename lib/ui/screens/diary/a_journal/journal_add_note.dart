@@ -11,16 +11,17 @@ import 'package:diabetty/ui/screens/teams/components/sub_page_background.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:provider/provider.dart';
 
-class JournalNote extends StatefulWidget {
+class JournalAddNote extends StatefulWidget {
   final JournalEntry journalEntry;
+  final Journal journal;
 
-  JournalNote({this.journalEntry});
+  JournalAddNote({this.journal, this.journalEntry});
 
   @override
-  _JournalNoteState createState() => _JournalNoteState();
+  _JournalAddNoteState createState() => _JournalAddNoteState();
 }
 
-class _JournalNoteState extends State<JournalNote> {
+class _JournalAddNoteState extends State<JournalAddNote> {
   JournalEntry journalNotes;
   bool leftAlign;
   bool centerAlign;
@@ -37,7 +38,8 @@ class _JournalNoteState extends State<JournalNote> {
   final _titleFocus = FocusNode();
   @override
   void initState() {
-    journalNotes = widget.journalEntry ?? new JournalEntry();
+    journalNotes = widget.journalEntry ??
+        new JournalEntry.generated(journal: widget.journal);
     _titleController.text = (journalNotes.title ?? "").capitalize();
     _contentController.text = (journalNotes.notes ?? "").capitalize();
     leftAlign = true;
