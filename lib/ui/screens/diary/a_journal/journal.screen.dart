@@ -84,7 +84,7 @@ class _JournalScreenState extends State<JournalScreen>
               child: Container(
                 width: size.width,
                 margin: EdgeInsets.only(top: 5, left: 5, right: 5),
-                child: _buildJournalCards(context),
+                child: _buildJournalCards2(context),
               ),
             ),
           ),
@@ -228,7 +228,7 @@ class _JournalScreenState extends State<JournalScreen>
       ),
       borderData: FlBorderData(
         show: true,
-        border: const Border(
+        border:  Border(
           bottom: BorderSide(
             color: Colors.deepOrange[800],
             width: 1,
@@ -335,6 +335,7 @@ class _JournalScreenState extends State<JournalScreen>
               return JournalEntryCard(
                 journal: this.journal,
                 journalEntry: this.journal.journalEntries[index],
+                index: index,
               );
             },
           )

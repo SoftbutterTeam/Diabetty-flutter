@@ -1,15 +1,17 @@
 import 'dart:math';
 
+import 'package:diabetty/constants/journal_constants.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
+import 'package:diabetty/extensions/index.dart';
 import 'package:flutter/material.dart';
 
 class JournalEntryCard extends StatefulWidget with JournalActionsMixin {
   final JournalEntry journalEntry;
   final Journal journal;
-  final int index;
-  const JournalEntryCard({Key key, this.journal, this.journalEntry, this.index})
+  int index;
+  JournalEntryCard({Key key, this.journal, this.journalEntry, this.index})
       : super(key: key);
 
   @override
@@ -17,11 +19,14 @@ class JournalEntryCard extends StatefulWidget with JournalActionsMixin {
 }
 
 class _JournalEntryCardState extends State<JournalEntryCard> {
-      @override
-      void initState() { 
-        super.initState();
-        widget.journalEntry.recordNo = widget.index + 1;
-      }
+  int number;
+
+  @override
+  void initState() {
+    super.initState();
+    widget?.journalEntry?.recordNo = widget.index + 1;
+    number = widget.index;
+  }
 
   @override
   Widget build2(BuildContext context) {
@@ -57,9 +62,12 @@ class _JournalEntryCardState extends State<JournalEntryCard> {
         ));
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    if (number == 0) {
+      number++;
+    }
     return Container(
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: ConstrainedBox(
@@ -86,9 +94,92 @@ class _JournalEntryCardState extends State<JournalEntryCard> {
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(13)),
               ),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: Text(widget.journalEntry?.recordEntry.toString() ?? ''),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: Text(
+                          "Record " + number.toString(),
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: Container(
+                      height: 1,
+                      width: size.width * 0.1,
+                      color: Colors.orange[800],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 15),
+                        child: Text(
+                          (widget.journalEntry?.recordEntry.toString() ?? '') +
+                              ' ' +
+                              report_measurements[(widget.journal == null ||
+                                      widget.journal.reportUnitsIndex == null)
+                                  ? 0
+                                  : widget.journal.reportUnitsIndex],
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          (widget.journalEntry?.date
+                                  ?.shortenDateRepresent() ??
+                              ''),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 10.0, bottom: 10),
+                          child: Container(
+                            height: size.height * 0.1,
+                            width: size.width * 0.1,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.orange[100],
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.orange[800],
+                              size: 25,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

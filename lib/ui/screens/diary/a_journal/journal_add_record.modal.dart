@@ -188,7 +188,8 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
                     color: true ? Colors.indigo : Colors.black26,
                   )),
               onPressed: () {
-                if (true) {
+                if (inputController.text.isNotEmpty) {
+                  journalRecord.recordEntry = double.parse(inputController.text) ;
                   Provider.of<DiaryBloc>(context, listen: false)
                       .saveJournalEntry(journalRecord);
                   //_handleSubmit();
