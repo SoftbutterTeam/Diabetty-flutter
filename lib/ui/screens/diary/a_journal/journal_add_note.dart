@@ -113,7 +113,9 @@ class _JournalAddNoteState extends State<JournalAddNote> {
                 disabledBorder: InputBorder.none,
                 hintStyle: TextStyle(color: Colors.black45, fontSize: 15),
                 hintText: "write notes here..."),
-            onChanged: (str) => {journalNotes.notes},
+            onChanged: (str) {
+              journalNotes.notes = str;
+            },
             maxLines: 50, // line limit extendable later
             controller: _contentController,
             focusNode: _contentFocus,

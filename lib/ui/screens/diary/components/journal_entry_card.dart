@@ -25,7 +25,7 @@ class _JournalEntryCardState extends State<JournalEntryCard> {
   void initState() {
     super.initState();
     widget?.journalEntry?.recordNo = widget.index + 1;
-    number = widget.index;
+    number = widget?.journalEntry?.recordNo;
   }
 
   @override
@@ -65,10 +65,13 @@ class _JournalEntryCardState extends State<JournalEntryCard> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    if (number == 0) {
-      number++;
-    }
+
+    if (widget.journalEntry.isNotesType)
     return Container(
+      //TODO note thing
+    );
+
+    else return Container(
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -145,8 +148,7 @@ class _JournalEntryCardState extends State<JournalEntryCard> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 10),
                         child: Text(
-                          (widget.journalEntry?.date
-                                  ?.shortenDateRepresent() ??
+                          (widget.journalEntry?.date?.shortenDateRepresent() ??
                               ''),
                           style: TextStyle(
                             fontSize: 12,
