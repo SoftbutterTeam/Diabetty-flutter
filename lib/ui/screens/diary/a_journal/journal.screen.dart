@@ -33,7 +33,7 @@ class _JournalScreenState extends State<JournalScreen>
     with JournalActionsMixin, SingleTickerProviderStateMixin {
   Journal journal;
   DiaryBloc manager;
-  bool chartMinimized ;
+  bool chartMinimized;
   bool draggingIdle;
   double dragSensitivity = 3;
 
@@ -132,7 +132,7 @@ class _JournalScreenState extends State<JournalScreen>
                   Container(
                     width: size.width,
                     margin: EdgeInsets.only(top: 5, left: 5, right: 5),
-                    child: _buildJournalCards(context),
+                    child: _buildJournalCards2(context),
                   ),
                 ],
               ),
@@ -179,14 +179,20 @@ class _JournalScreenState extends State<JournalScreen>
     );
   }
 
-  Widget _buildJournalCards(BuildContext context) {
+  Widget _buildJournalCards2(BuildContext context) {
     return (journal.journalEntries.isNotEmpty)
-        ? ListView.builder(
+        ? GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+            ),
             itemCount: journal.journalEntries.length,
             itemBuilder: (context, index) {
               return JournalEntryCard(
                 journal: this.journal,
                 journalEntry: this.journal.journalEntries[index],
+                index: index,
               );
             },
           )
@@ -194,8 +200,7 @@ class _JournalScreenState extends State<JournalScreen>
             height: 300,
             child: Container(
               child: null,
-            ),
-          );
+            ));
   }
 
   GestureDetector _buildAddNoteColumn(
