@@ -206,8 +206,8 @@ class _JournalScreenState extends State<JournalScreen>
         show: true,
         border: const Border(
           bottom: BorderSide(
-            color: Color(0xff4e4965),
-            width: 4,
+            color: Colors.deepOrange[800],
+            width: 1,
           ),
           left: BorderSide(
             color: Colors.transparent,
@@ -263,7 +263,7 @@ class _JournalScreenState extends State<JournalScreen>
         FlSpot(13, 3.9),
       ],
       isCurved: true,
-      curveSmoothness: 0.2,
+      curveSmoothness: 0.15,
       colors: [
         const Color(0xffaa4cfc),
       ],
