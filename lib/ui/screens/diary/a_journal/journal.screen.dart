@@ -33,14 +33,14 @@ class _JournalScreenState extends State<JournalScreen>
     with JournalActionsMixin, SingleTickerProviderStateMixin {
   Journal journal;
   DiaryBloc manager;
-  bool chartMinimized = true;
+  bool chartMinimized ;
   bool draggingIdle;
   double dragSensitivity = 3;
 
   @override
   void initState() {
     draggingIdle = true;
-
+    chartMinimized = true;
     journal = widget.journal;
     super.initState();
   }
