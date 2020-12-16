@@ -45,8 +45,8 @@ class JournalEntry {
     this.id ??= json['id'];
     this.userId = json['userId'];
     this.journalId = json['journalId'];
-    this.createdAt = json['date'];
-    this.createdAt = json['createdAt'];
+    this.date = DateTime.parse(json['date']);
+    this.createdAt = DateTime.parse(json['createdAt']);
     this.recordEntry = json['recordEntry'];
     this.title = json['title'];
     this.notes = json['notes'];
@@ -60,8 +60,8 @@ class JournalEntry {
         'recordEntry': this.recordEntry,
         'title': this.title,
         'notes': this.notes,
-        'createdAt': this.createdAt,
-        'date': this.date,
+        'createdAt': this.createdAt.toString(),
+        'date': this.date.toString(),
         'reportUnitsIndex': this.reportUnitsIndex
       };
 }
