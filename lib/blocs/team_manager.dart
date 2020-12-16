@@ -20,7 +20,7 @@ class TeamManager extends Manager {
 
   String get uid => this.appContext.user?.uid;
 
-  List<Contract> usersContracts = List();
+  List<Contract> usersContracts;
   Stream<QuerySnapshot> get relationStream => teamService.relationsStream(uid);
 
   @override
@@ -36,18 +36,20 @@ class TeamManager extends Manager {
     if (uid != null) {
       try {
         usersContracts = await teamService.getContracts(uid, local: true);
+        print(usersContracts.length.toString() + " hererer");
       } catch (e) {}
       relationStream.listen((event) async {
         if (event == null || event.documents.isEmpty)
-          return usersContracts ??= List();
-        usersContracts = await teamService.getContracts(uid);
-        updateListeners();
+          return;
+        else {
+          usersContracts = await teamService.getContracts(
+            uid,
+          );
+          print(usersContracts.length.toString() + " hererer");
+          updateListeners();
+        }
       });
     }
-  }
-
-  Future<void> cleanOutReminders() async {
-    // delete ones without confirmation, created more than a week ago.
   }
 
   // Returns reason is fail ,null if pass

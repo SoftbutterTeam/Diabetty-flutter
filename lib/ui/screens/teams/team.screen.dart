@@ -81,21 +81,15 @@ class _TeamScreenState extends State<TeamScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    print(manager.usersContracts.length);
-    return StreamBuilder<Object>(
-        stream: manager.relationStream,
-        builder: (context, snapshot) {
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            color: Colors.transparent,
-            child: ListView.builder(
-              itemCount: manager.usersContracts.length,
-              itemBuilder: (context, index) {
-                return RelationCard(contract: manager.usersContracts[index]);
-              },
-            ),
-          );
-        });
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        color: Colors.transparent,
+        child: ListView.builder(
+          itemCount: manager.usersContracts.length,
+          itemBuilder: (context, index) {
+            return RelationCard(contract: manager.usersContracts[index]);
+          },
+        ));
   }
 
   ThemeColor lightMode = ThemeColor(

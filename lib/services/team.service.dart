@@ -30,7 +30,7 @@ class TeamService {
 
         return contract..loadFromJson(json);
       }).toList();
-      print('here1');
+
       for (var contract in contractList) {
         if (contract.supporteeId == uid)
           contract.supporter =
@@ -47,7 +47,7 @@ class TeamService {
 
       return contractList;
     } catch (e) {
-      print('here');
+      print('hereError');
 
       print(e);
       return List();
