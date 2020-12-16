@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:diabetty/blocs/diary.bloc.dart';
+import 'package:diabetty/constants/journal_constants.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
@@ -119,7 +120,10 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
             ),
           ),
           Text(
-            'units',
+            report_measurements[(widget.journal == null ||
+                    widget.journal.reportUnitsIndex == null)
+                ? 0
+                : widget.journal.reportUnitsIndex],
             style: TextStyle(
               fontSize: 16,
               color: Colors.black,
@@ -156,6 +160,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
                   )),
               onPressed: () {
                 if (true) {
+                  print(widget.journal.reportUnitsIndex.toString());
                   //_handleSubmit();
                 }
               },

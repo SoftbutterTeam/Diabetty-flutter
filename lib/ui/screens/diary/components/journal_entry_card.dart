@@ -12,7 +12,7 @@ class JournalEntryCard extends StatelessWidget with JournalActionsMixin {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build2(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
         margin: EdgeInsets.symmetric(vertical: 10),
@@ -34,6 +34,44 @@ class JournalEntryCard extends StatelessWidget with JournalActionsMixin {
                     offset: Offset(0, -1),
                   ),
                 ],
+                borderRadius: BorderRadius.all(Radius.circular(13)),
+              ),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(journalEntry?.recordEntry.toString() ?? ''),
+              ),
+            ),
+          ),
+        ));
+  }
+
+    @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+              minHeight: 60,
+              maxHeight: max(60, size.height * 0.14),
+              minWidth: size.width * 0.8,
+              maxWidth: size.width * 0.9),
+          child: IntrinsicHeight(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: Offset(0, -1),
+                  ),
+                ],
+                border: Border.all(
+                  color: Colors.black26,
+                  width: 0.1,
+                ),
                 borderRadius: BorderRadius.all(Radius.circular(13)),
               ),
               child: Container(

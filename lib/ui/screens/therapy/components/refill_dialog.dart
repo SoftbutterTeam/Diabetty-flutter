@@ -139,7 +139,7 @@ class _RefillDialogState extends State<RefillDialog>
         children: [
           CupertinoButton(
               child: Text(
-                'Cancel',
+                'cancel',
                 style: TextStyle(
                   color: CupertinoColors.destructiveRed,
                 ),
@@ -153,7 +153,7 @@ class _RefillDialogState extends State<RefillDialog>
               )),
           CupertinoButton(
               child: Text(
-                'Reset',
+                'reset',
                 style: TextStyle(
                   color: _isFilled ? Colors.indigo : Colors.black26,
                 ),
@@ -167,7 +167,7 @@ class _RefillDialogState extends State<RefillDialog>
               )),
           CupertinoButton(
             child: Text(
-              'Submit',
+              'add',
               style: TextStyle(
                 color: _isFilled ? Colors.indigo : Colors.black26,
               ),
