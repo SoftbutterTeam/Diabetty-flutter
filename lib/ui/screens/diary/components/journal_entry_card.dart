@@ -68,6 +68,10 @@ class JournalEntryCard extends StatelessWidget with JournalActionsMixin {
                     offset: Offset(0, -1),
                   ),
                 ],
+                border: Border.all(
+                  color: Colors.black26,
+                  width: 0.1,
+                ),
                 borderRadius: BorderRadius.all(Radius.circular(13)),
               ),
               child: Container(

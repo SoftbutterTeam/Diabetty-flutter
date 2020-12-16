@@ -86,7 +86,6 @@ class _JournalScreenState extends State<JournalScreen>
   }
 
     Widget _buildJournalCards2(BuildContext context) {
-    this.journal.dummyJournalData();
     return (journal.journalEntries.isNotEmpty)
         ? GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
