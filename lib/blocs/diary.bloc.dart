@@ -38,7 +38,9 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
     //print('Diary Init is runnning');
     authService = appContext.authService;
     if (uid != null) {
-      usersJournals = await journalService.getJournals(uid, local: true);
+      try {
+        usersJournals = await journalService.getJournals(uid, local: true);
+      } catch (e) {}
       this.journalStream.listen((event) async {
         usersJournals = event;
         usersJournals ??= List();

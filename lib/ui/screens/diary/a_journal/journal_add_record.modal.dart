@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
@@ -47,16 +49,11 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
         child: Container(
           width: size.width * 0.8,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildTimeField(context),
               _buildInputField(context),
-              Text(
-                'units',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
               _buildCancelAndSubmitButtons(),
             ],
           ),
@@ -99,22 +96,36 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
 
   Widget _buildInputField(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      height: size.height * 0.045,
-      width: size.width * 0.5,
-      child: CupertinoTextField(
-        keyboardType: TextInputType.number,
-        enableInteractiveSelection: false,
-        controller: inputController,
-        padding: EdgeInsets.only(top: 10),
-        textAlign: TextAlign.center,
-        maxLength: 3,
-        maxLengthEnforced: true,
-        decoration: BoxDecoration(
-          color: Color(0xfff7f7f7),
-          borderRadius: BorderRadius.circular(10),
-        ),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+            height: max(size.height * 0.045, 40),
+            width: size.width * 0.5,
+            child: CupertinoTextField(
+              keyboardType: TextInputType.number,
+              enableInteractiveSelection: false,
+              controller: inputController,
+              padding: EdgeInsets.only(top: 10),
+              textAlign: TextAlign.center,
+              maxLength: 3,
+              maxLengthEnforced: true,
+              decoration: BoxDecoration(
+                color: Color(0xfff7f7f7),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          Text(
+            'units',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
     );
   }
