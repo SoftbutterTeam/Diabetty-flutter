@@ -5,11 +5,23 @@ import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
 
-class JournalEntryCard extends StatelessWidget with JournalActionsMixin {
+class JournalEntryCard extends StatefulWidget with JournalActionsMixin {
   final JournalEntry journalEntry;
   final Journal journal;
-  const JournalEntryCard({Key key, this.journal, this.journalEntry})
+  final int index;
+  const JournalEntryCard({Key key, this.journal, this.journalEntry, this.index})
       : super(key: key);
+
+  @override
+  _JournalEntryCardState createState() => _JournalEntryCardState();
+}
+
+class _JournalEntryCardState extends State<JournalEntryCard> {
+      @override
+      void initState() { 
+        super.initState();
+        widget.journalEntry.recordNo = widget.index + 1;
+      }
 
   @override
   Widget build2(BuildContext context) {
@@ -38,7 +50,7 @@ class JournalEntryCard extends StatelessWidget with JournalActionsMixin {
               ),
               child: Container(
                 alignment: Alignment.centerLeft,
-                child: Text(journalEntry?.recordEntry.toString() ?? ''),
+                child: Text(widget.journalEntry?.recordEntry.toString() ?? ''),
               ),
             ),
           ),
@@ -76,7 +88,7 @@ class JournalEntryCard extends StatelessWidget with JournalActionsMixin {
               ),
               child: Container(
                 alignment: Alignment.centerLeft,
-                child: Text(journalEntry?.recordEntry.toString() ?? ''),
+                child: Text(widget.journalEntry?.recordEntry.toString() ?? ''),
               ),
             ),
           ),

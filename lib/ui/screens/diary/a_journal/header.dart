@@ -44,8 +44,13 @@ class JournalHeader extends StatelessWidget {
             Expanded(
               child: Container(
                   alignment: Alignment.center,
-                  child: subHeadingText(
-                      journal?.name?.capitalize(), Colors.black87)),
+                  child: Text(
+                    journal?.name?.capitalize(), style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 19.7
+                    ),
+                  )),
             ),
             Container(
               alignment: Alignment.centerRight,

@@ -98,13 +98,14 @@ class _JournalScreenState extends State<JournalScreen>
               return JournalEntryCard(
                 journal: this.journal,
                 journalEntry: this.journal.journalEntries[index],
+                index: index,
               );
             },
           )
         : SizedBox(
             height: 300,
             child: Container(
-              child: text('Add one bruddah'),
+              child: null,
             ),
           );
   }

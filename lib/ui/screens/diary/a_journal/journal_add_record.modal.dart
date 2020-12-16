@@ -30,6 +30,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
   bool edit;
   int reportUnitIndex;
   String timeString;
+  String recordNum;
   @override
   void initState() {
     edit = widget.journalEntry != null ? true : false;
@@ -37,6 +38,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
         new JournalEntry.generated(journal: widget.journal);
     reportUnitIndex = widget.journal.reportUnitsIndex;
     super.initState();
+    recordNum = widget.journalEntry?.recordNo?.toString();
   }
 
   @override
@@ -48,7 +50,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
           minHeight: size.height * 0.35,
         ),
         child: Container(
-          width: size.width * 0.8,
+          width: size.width * 0.75,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,32 +70,56 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
     return Container(
       margin: EdgeInsets.only(top: 20, bottom: 15),
       height: size.height * 0.045,
-      width: size.width * 0.5,
-      child: CupertinoTextField(
-        textAlign: TextAlign.center,
-        enableInteractiveSelection: false,
-        onTap: () {
-          // _showTimePicker();
-        },
-        placeholder: journalRecord.date.shortenDateRepresent(),
-        placeholderStyle: (timeString == 'Time')
-            ? TextStyle(
-                fontSize: 16,
-                color: Colors.grey[700],
-              )
-            : TextStyle(
-                fontSize: 16,
+      width: size.width * 0.7,
+      child: Column(
+        children: [
+          Text(
+            (edit) ? recordNum : '',
+            style: TextStyle(
+              fontSize: 16.0,
+              color: Colors.black,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 2.0),
+            child: Text(
+             journalRecord.date.shortenDateRepresent(),
+              style: TextStyle(
+                fontSize: 16.0,
                 color: Colors.black,
               ),
-        readOnly: true,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          //  Color(0xfff7f7f7)
-          borderRadius: BorderRadius.circular(10),
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
+  // CupertinoTextField(
+  //       textAlign: TextAlign.center,
+  //       enableInteractiveSelection: false,
+  //       onTap: () {
+  //         // _showTimePicker();
+  //       },
+  //       placeholder: (edit)
+  //           ? recordNum + ' ' + journalRecord.date.shortenDateRepresent()
+  //           : journalRecord.date.shortenDateRepresent(),
+  //       placeholderStyle: (timeString == 'Time')
+  //           ? TextStyle(
+  //               fontSize: 16,
+  //               color: Colors.grey[700],
+  //             )
+  //           : TextStyle(
+  //               fontSize: 16,
+  //               color: Colors.black,
+  //             ),
+  //       readOnly: true,
+  //       decoration: BoxDecoration(
+  //         color: Colors.white,
+  //         //  Color(0xfff7f7f7)
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //     ),
 
   Widget _buildInputField(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -102,7 +128,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: EdgeInsets.only(bottom: 10, top: 10),
             height: max(size.height * 0.045, 40),
             width: size.width * 0.5,
             child: CupertinoTextField(
@@ -119,14 +145,17 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
               ),
             ),
           ),
-          Text(
-            report_measurements[(widget.journal == null ||
-                    widget.journal.reportUnitsIndex == null)
-                ? 0
-                : widget.journal.reportUnitsIndex],
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: Text(
+              report_measurements[(widget.journal == null ||
+                      widget.journal.reportUnitsIndex == null)
+                  ? 0
+                  : widget.journal.reportUnitsIndex],
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
             ),
           ),
         ],
@@ -160,7 +189,8 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
                   )),
               onPressed: () {
                 if (true) {
-                  print(widget.journal.reportUnitsIndex.toString());
+                  Provider.of<DiaryBloc>(context, listen: false)
+                      .saveJournalEntry(journalRecord);
                   //_handleSubmit();
                 }
               },

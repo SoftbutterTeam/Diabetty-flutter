@@ -11,6 +11,7 @@ class JournalEntry {
   DateTime date;
   DateTime createdAt;
   int reportUnitsIndex;
+  int recordNo;
 
   get isNotesType => notes != null;
 
@@ -23,7 +24,8 @@ class JournalEntry {
       this.title,
       this.notes,
       this.date,
-      this.reportUnitsIndex}) {
+      this.reportUnitsIndex,
+      this.recordNo}) {
     //this.id = this.id; ?? generateUID();
   }
 
