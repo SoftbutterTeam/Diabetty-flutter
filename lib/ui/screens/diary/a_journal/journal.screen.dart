@@ -240,11 +240,11 @@ class _JournalScreenState extends State<JournalScreen>
         FlSpot(13, 1.8),
       ],
       isCurved: true,
-      curveSmoothness: 10,
       colors: [
         const Color(0xff4af699),
       ],
       barWidth: 2,
+      curveSmoothness: 0.1,
       isStrokeCapRound: true,
       dotData: FlDotData(
         show: false,
@@ -263,7 +263,7 @@ class _JournalScreenState extends State<JournalScreen>
         FlSpot(13, 3.9),
       ],
       isCurved: true,
-      curveSmoothness: 2,
+      curveSmoothness: 0.2,
       colors: [
         const Color(0xffaa4cfc),
       ],
