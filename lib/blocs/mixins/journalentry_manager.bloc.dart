@@ -14,6 +14,7 @@ abstract class journalEntryManagerMixin<T extends Manager> {
   TherapyManager therapyManager;
 
   void saveJournalEntry(JournalEntry journalEntry, {update = true}) async {
+    journalEntry.createdAt ??= DateTime.now();
     journalEntry.date ??= DateTime.now();
     await journalEntryService.savejournalEntry(journalEntry);
     if (update) updateListeners();
