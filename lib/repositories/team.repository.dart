@@ -110,7 +110,7 @@ class TeamRepository {
 
   Future<DataResult<List<Map<String, dynamic>>>> getAllContracts(String userId,
       {bool local = false}) async {
-    Source source = local ? Source.cache : Source.server;
+    Source source = local ? Source.cache : Source.serverAndCache;
     try {
       var relations = await _db
           .collection("users")

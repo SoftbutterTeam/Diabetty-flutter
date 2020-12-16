@@ -60,7 +60,7 @@ class TherapyRepository {
   Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(String userId,
       {bool local}) async {
     try {
-      Source source = local ? Source.cache : Source.server;
+      Source source = local ? Source.cache : Source.serverAndCache;
 
       var result = await _db
           .collection("users")

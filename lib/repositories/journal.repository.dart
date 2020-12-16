@@ -49,7 +49,7 @@ class JournalRepository {
 
   Future<DataResult<List<Map<String, dynamic>>>> getAllJournals(String userId,
       {bool local = false}) async {
-    Source source = local ? Source.cache : Source.server;
+    Source source = local ? Source.cache : Source.serverAndCache;
     try {
       var result = await _db
           .collection("users")

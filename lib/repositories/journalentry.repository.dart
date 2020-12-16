@@ -11,7 +11,7 @@ class JournalEntryRepository {
   Future<void> updateEntry(JournalEntry entry) async {
     Map<String, dynamic> entryData = Map();
     entryData = entry.toJson();
-    entryData['updatedAt'] = DateTime.now().toString();
+    entryData['updatedAt'] = DateTime.now();
     Map<String, dynamic> json = Map<String, dynamic>();
     json['updateAt'] = DateTime.now().toString();
     await _db
@@ -38,7 +38,7 @@ class JournalEntryRepository {
       String userId, String journalId,
       {bool local}) async {
     try {
-      Source source = local ? Source.cache : Source.server;
+      Source source = local ? Source.cache : Source.serverAndCache;
 
       var result = await _db
           .collection("users")
@@ -64,7 +64,7 @@ class JournalEntryRepository {
       String userId, String journalId,
       {bool local}) async {
     try {
-      Source source = local ? Source.cache : Source.server;
+      Source source = local ? Source.cache : Source.serverAndCache;
 
       var result = await _db
           .collection("users")
@@ -91,7 +91,7 @@ class JournalEntryRepository {
     Map<String, dynamic> entryData = Map();
     if (entry.userId == null) return null;
     Map<String, dynamic> json = Map<String, dynamic>();
-    json['updateAt'] = DateTime.now().toString();
+    json['updateAt'] = DateTime.now();
     await _db
         .collection('users')
         .document(entry.userId)
@@ -117,7 +117,7 @@ class JournalEntryRepository {
     Map<String, dynamic> entryData = Map();
     if (entry.userId == null) return null;
     entryData = entry.toJson();
-    entryData['updatedAt'] = DateTime.now().toString();
+    entryData['updatedAt'] = DateTime.now();
     Map<String, dynamic> json = Map<String, dynamic>();
     json['updateAt'] = DateTime.now().toString();
     await _db

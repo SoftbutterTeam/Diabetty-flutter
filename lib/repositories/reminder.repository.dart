@@ -12,7 +12,7 @@ class ReminderRepository {
   Future<DataResult<List<Map<String, dynamic>>>> getAllReminders(String userId,
       {bool local}) async {
     try {
-      Source source = local ? Source.cache : Source.server;
+      Source source = local ? Source.cache : Source.serverAndCache;
 
       var result = await _db
           .collection("users")
