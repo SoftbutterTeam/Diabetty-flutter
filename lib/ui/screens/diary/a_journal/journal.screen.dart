@@ -99,7 +99,7 @@ class _JournalScreenState extends State<JournalScreen>
         : SizedBox(
             height: 300,
             child: Container(
-              child: text('Add one bruddah'),
+              child: null,
             ),
           );
   }
