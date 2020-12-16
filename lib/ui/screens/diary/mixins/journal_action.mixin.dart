@@ -43,13 +43,13 @@ mixin JournalActionsMixin<T extends Widget> {
         context: context,
         barrierColor: Colors.black12, //black12 white
         pageBuilder: (context, anim1, anim2) => Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 25),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            elevation: 3,
-            child:
-                JournalAddRecord(journal: journal, journalEntry: journalEntry)),
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 3,
+          child: JournalAddRecord(journal: journal, journalEntry: journalEntry),
+        ),
         transitionBuilder: _transitionBuilderStyle1(),
         transitionDuration: Duration(milliseconds: 250),
       );
