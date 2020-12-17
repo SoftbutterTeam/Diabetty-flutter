@@ -110,7 +110,7 @@ extension DateTimeExtension on DateTime {
     return dayOfWeek;
   }
 
-  String shortenDayRepresent2() {
+  String justDayRepresent() {
     String dayOfWeek;
     if (this.isSameDayAs(DateTime.now()))
       dayOfWeek = DateFormat("EEEE").format(this);
@@ -123,7 +123,7 @@ extension DateTimeExtension on DateTime {
     return dayOfWeek;
   }
 
-  String shortenDayRepresent3() {
+  String monthYearRepresent() {
     String dayOfWeek;
     if (this.isSameDayAs(DateTime.now()))
       dayOfWeek = DateFormat("MMMM d").format(this);

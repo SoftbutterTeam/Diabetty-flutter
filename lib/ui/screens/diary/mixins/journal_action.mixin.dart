@@ -92,25 +92,61 @@ mixin JournalActionsMixin<T extends Widget> {
         );
       };
 
-  void _showTimePicker(BuildContext context) {
-    DateTime timeSelected;
+  void showEditNotesActionSheet(
+          BuildContext context, JournalEntry journalNote) =>
+      showCupertinoModalPopup(
+          context: context,
+          builder: (context) => CupertinoActionSheet(
+                actions: [
+                  CupertinoActionSheetAction(
+                    child: Text("Change Date"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      showDatePicker(context, (DateTime choosenTime) {
+                        journalNote.date = choosenTime;
+                        if (journalNote.id != null)
+                          Provider.of<DiaryBloc>(context, listen: false)
+                              .saveJournalEntry(journalNote);
+                      });
+                    },
+                  ),
+                  if (journalNote.id != null)
+                    CupertinoActionSheetAction(
+                      isDefaultAction: true,
+                      child: Text("Delete"),
+                      onPressed: () {
+                        Navigator.of(context).pop(context);
+                        if (journalNote.id != null)
+                          Provider.of<DiaryBloc>(context, listen: false)
+                              .deletejournalEntry(journalNote);
+                        Navigator.of(context).pop(context);
+                      },
+                    ),
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  child: Container(color: Colors.white, child: Text('Cancel')),
+                  onPressed: () {
+                    Navigator.of(context).pop(context);
+                  },
+                ),
+              ));
+
+  void showDatePicker(BuildContext context, Function function) {
+    DateTime choosenTime;
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
         return TimerPicker(
           onConfirm: () {
-            if (timeSelected.minute % 5 == 0) {
-            } else {}
+            function(choosenTime);
+            Navigator.pop(context);
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,
-            mode: CupertinoDatePickerMode.time,
-            minuteInterval: 5,
-            initialDateTime: timeSelected,
+            mode: CupertinoDatePickerMode.date,
+            initialDateTime: DateTime.now(),
             onDateTimeChanged: (dateTimeChange) {
-              timeSelected = dateTimeChange;
-              // setState(() {});
-              //print(initialDate);
+              choosenTime = dateTimeChange;
             },
           ),
         );
