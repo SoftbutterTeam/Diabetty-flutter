@@ -93,45 +93,44 @@ mixin JournalActionsMixin<T extends Widget> {
       };
 
   void showEditNotesActionSheet(
-          BuildContext context, JournalEntry journalNote) =>
-      showCupertinoModalPopup(
-          context: context,
-          builder: (context) => CupertinoActionSheet(
-                actions: [
-                  CupertinoActionSheetAction(
-                    child: Text("Change Date"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showDatePicker(context, (DateTime choosenTime) {
-                        journalNote.date = choosenTime;
-                        if (journalNote.id != null)
-                          Provider.of<DiaryBloc>(context, listen: false)
-                              .saveJournalEntry(journalNote);
-                      });
-                    },
-                  ),
-                  if (journalNote.id != null)
-                    CupertinoActionSheetAction(
-                      isDefaultAction: true,
-                      child: Text("Delete"),
-                      onPressed: () {
-                        Navigator.of(context).pop(context);
-                        if (journalNote.id != null)
-                          Provider.of<DiaryBloc>(context, listen: false)
-                              .deletejournalEntry(journalNote);
-                        Navigator.of(context).pop(context);
-                      },
-                    ),
-                ],
-                cancelButton: CupertinoActionSheetAction(
-                  child: Container(color: Colors.white, child: Text('Cancel')),
+      BuildContext context, JournalEntry journalNote) {
+    DiaryBloc diaryBloc = Provider.of<DiaryBloc>(context, listen: false);
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                  child: Text("Change Date"),
                   onPressed: () {
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
+                    showDatePicker(context, (DateTime choosenTime) {
+                      journalNote.date = choosenTime;
+                      diaryBloc.updateListeners();
+                    }, journalNote.date);
                   },
                 ),
-              ));
+                if (journalNote.id != null)
+                  CupertinoActionSheetAction(
+                    isDefaultAction: true,
+                    child: Text("Delete"),
+                    onPressed: () {
+                      Navigator.of(context).pop(context);
+                      if (journalNote.id != null)
+                        diaryBloc.deletejournalEntry(journalNote);
+                      Navigator.of(context).pop(context);
+                    },
+                  ),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                child: Container(color: Colors.white, child: Text('Cancel')),
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+              ),
+            ));
+  }
 
-  void showDatePicker(BuildContext context, Function function) {
+  void showDatePicker(BuildContext context, Function function, DateTime date) {
     DateTime choosenTime;
     showCupertinoModalPopup(
       context: context,
@@ -144,7 +143,7 @@ mixin JournalActionsMixin<T extends Widget> {
           timepicker: CupertinoDatePicker(
             use24hFormat: false,
             mode: CupertinoDatePickerMode.date,
-            initialDateTime: DateTime.now(),
+            initialDateTime: date,
             onDateTimeChanged: (dateTimeChange) {
               choosenTime = dateTimeChange;
             },

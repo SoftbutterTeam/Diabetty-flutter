@@ -33,6 +33,7 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
     super.dispose();
   }
 
+  updateListeners() => super.updateListeners();
   Future<void> init() async {
     super.init();
     //print('Diary Init is runnning');

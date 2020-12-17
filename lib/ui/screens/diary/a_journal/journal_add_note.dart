@@ -54,6 +54,7 @@ class _JournalAddNoteState extends State<JournalAddNote>
     super.initState();
   }
 
+  DiaryBloc manager;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -205,6 +206,8 @@ class _JournalAddNoteState extends State<JournalAddNote>
   }
 
   Column _buildDate() {
+    manager = Provider.of<DiaryBloc>(context, listen: true);
+
     return Column(
       children: [
         Padding(
