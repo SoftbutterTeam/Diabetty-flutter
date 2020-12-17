@@ -23,13 +23,15 @@ mixin JournalActionsMixin<T extends Widget> {
     Navigator.pushNamed(context, aJournal, arguments: {'journal': journal});
   }
 
-  void navigateToAddJournalNote(context, {JournalEntry entry}) {
+  void navigateToAddJournalNote(context,
+      {JournalEntry entry, bool readOnly = false}) {
     Navigator.push(
       context,
       CupertinoPageRoute(
         builder: (context) => JournalAddNote(
           journalEntry: entry,
           journal: journal,
+          readOnly: readOnly,
         ),
       ),
     );
@@ -119,7 +121,7 @@ mixin JournalActionsMixin<T extends Widget> {
                 ),
                 if (journalNote.id != null)
                   CupertinoActionSheetAction(
-                    isDefaultAction: true,
+                    isDestructiveAction: true,
                     child: Text("Delete"),
                     onPressed: () {
                       Navigator.of(context).pop(context);
