@@ -92,13 +92,21 @@ mixin JournalActionsMixin<T extends Widget> {
         );
       };
 
-  void showEditNotesActionSheet(
-      BuildContext context, JournalEntry journalNote) {
+  void showEditNotesActionSheet(BuildContext context, JournalEntry journalNote,
+      bool readOnly, Function readOnlyStFunc) {
     DiaryBloc diaryBloc = Provider.of<DiaryBloc>(context, listen: false);
     showCupertinoModalPopup(
         context: context,
         builder: (context) => CupertinoActionSheet(
               actions: [
+                if (readOnly)
+                  CupertinoActionSheetAction(
+                    child: Text("Edit Notes"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      readOnlyStFunc.call();
+                    },
+                  ),
                 CupertinoActionSheetAction(
                   child: Text("Change Date"),
                   onPressed: () {
