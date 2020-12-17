@@ -15,8 +15,9 @@ import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 class JournalAddNote extends StatefulWidget {
   final JournalEntry journalEntry;
   final Journal journal;
+  final bool readOnly;
 
-  JournalAddNote({this.journal, this.journalEntry});
+  JournalAddNote({this.journal, this.journalEntry, this.readOnly = false});
 
   @override
   _JournalAddNoteState createState() => _JournalAddNoteState();
@@ -37,10 +38,13 @@ class _JournalAddNoteState extends State<JournalAddNote>
   final _contentFocus = FocusNode();
   final _titleFocus = FocusNode();
 
+  bool readOnly;
+
   ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
+    readOnly = widget.readOnly;
     journal = widget.journal;
     journalNotes = widget.journalEntry ??
         new JournalEntry.generated(journal: widget.journal);
@@ -54,23 +58,26 @@ class _JournalAddNoteState extends State<JournalAddNote>
     super.initState();
   }
 
+  DiaryBloc manager;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return SubPageBackground(
       child: _body(context),
       header: SubPageHeader(
-        text: 'save',
+        text: readOnly ? "" : 'save',
         backFunction: () {
           Navigator.pop(context);
           // _back();
         },
-        saveFunction: () async {
-          Provider.of<DiaryBloc>(context, listen: false)
-              .saveJournalEntry(journalNotes);
+        saveFunction: readOnly
+            ? () {}
+            : () async {
+                Provider.of<DiaryBloc>(context, listen: false)
+                    .saveJournalEntry(journalNotes);
 
-          Navigator.pop(context);
-        },
+                Navigator.pop(context);
+              },
       ),
     );
   }
@@ -109,6 +116,7 @@ class _JournalAddNoteState extends State<JournalAddNote>
                 : (centerAlign) ? TextAlign.center : TextAlign.right,
             keyboardType: TextInputType.multiline,
             maxLengthEnforced: true,
+            readOnly: readOnly,
             decoration: new InputDecoration(
                 contentPadding: EdgeInsets.all(15),
                 border: InputBorder.none,
@@ -117,7 +125,7 @@ class _JournalAddNoteState extends State<JournalAddNote>
                 errorBorder: InputBorder.none,
                 disabledBorder: InputBorder.none,
                 hintStyle: TextStyle(color: Colors.black45, fontSize: 15),
-                hintText: "write notes here..."),
+                hintText: readOnly ? "" : "write notes here..."),
             onChanged: (str) {
               journalNotes.notes = str;
             },
@@ -160,20 +168,21 @@ class _JournalAddNoteState extends State<JournalAddNote>
             ),
             child: TextField(
               keyboardType: TextInputType.text,
+              readOnly: readOnly,
               maxLengthEnforced: true,
               textAlign: (leftAlign)
-                  ? TextAlign.left
+                  ? TextAlign.center
                   : (centerAlign) ? TextAlign.center : TextAlign.right,
               decoration: new InputDecoration(
                   contentPadding:
-                      EdgeInsets.only(left: 15, right: 15, bottom: 5),
+                      EdgeInsets.only(left: 15, right: 15, bottom: 0),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   errorBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.black45, fontSize: 15),
-                  hintText: "write title here..."),
+                  hintText: readOnly ? "" : "write title here..."),
               onChanged: (str) {
                 journalNotes.title = str;
               },
@@ -196,7 +205,11 @@ class _JournalAddNoteState extends State<JournalAddNote>
               color: Colors.black54,
             ),
             onPressed: () {
-              showEditNotesActionSheet(context, journalNotes);
+              showEditNotesActionSheet(context, journalNotes, readOnly, () {
+                setState(() {
+                  readOnly = false;
+                });
+              });
             },
           ),
         ],
@@ -205,6 +218,8 @@ class _JournalAddNoteState extends State<JournalAddNote>
   }
 
   Column _buildDate() {
+    manager = Provider.of<DiaryBloc>(context, listen: true);
+
     return Column(
       children: [
         Padding(
