@@ -234,51 +234,46 @@ class _JournalEntryCardState extends State<JournalEntryCard> {
                         color: Colors.orange[800],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 15),
-                          child: Text(
-                            (widget.journalEntry?.recordEntry.toString() ??
-                                    '') +
-                                ' ' +
-                                report_measurements[(widget.journal == null ||
-                                        widget.journal.reportUnitsIndex == null)
-                                    ? 0
-                                    : widget.journal.reportUnitsIndex],
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 10),
-                          child: Text(
-                            (widget.journalEntry?.date
-                                    ?.shortenDateRepresent() ??
-                                ''),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
+                    Container(
+                      height: size.height * 0.07,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(right: 10.0, bottom: 10),
-                            child: Container(
+                            padding: EdgeInsets.only(top: 8, bottom: 15),
+                            child: Text(
+                              (widget.journalEntry?.recordEntry.toString() ??
+                                      '') +
+                                  ' ' +
+                                  report_measurements[(widget.journal == null ||
+                                          widget.journal.reportUnitsIndex == null)
+                                      ? 0
+                                      : widget.journal.reportUnitsIndex],
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                             Text(
+                              (widget.journalEntry?.date
+                                      ?.shortenDateRepresent() ??
+                                  ''),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Container(
                               height: size.height * 0.1,
                               width: size.width * 0.1,
                               decoration: BoxDecoration(
@@ -288,11 +283,11 @@ class _JournalEntryCardState extends State<JournalEntryCard> {
                               child: Icon(
                                 Icons.edit,
                                 color: Colors.orange[800],
-                                size: 25,
+                                size: 20,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
