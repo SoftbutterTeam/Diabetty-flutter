@@ -13,6 +13,8 @@ import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:diabetty/models/journal/journal_entry.model.dart';
+
 import 'package:diabetty/ui/screens/diary/a_journal/journal_add_record.modal.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:fl_chart/src/chart/line_chart/line_chart.dart';
@@ -77,11 +79,12 @@ class _JournalScreenState extends State<JournalScreen>
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           _buildSwipeFunctions(
-            child: SizedBox(
+            child: Container(
+              alignment: Alignment.bottomCenter,
               width: size.width,
               height: chartMinimized
                   ? size.height * 0.00000000000001
-                  : size.height * 0.25,
+                  : size.height * 0.27,
               child: FittedBox(
                 clipBehavior: Clip.none,
                 alignment: Alignment.topCenter,
@@ -90,7 +93,10 @@ class _JournalScreenState extends State<JournalScreen>
                   width: size.width,
                   height: size.height * 0.25,
                   padding: EdgeInsets.only(top: 10),
-                  child: JournalLineChart(journal: widget.journal),
+                  child: ((widget.journal.journalEntries
+                          .where((element) => !element.isNotesType)).isNotEmpty)
+                      ? JournalLineChart(journal: widget.journal)
+                      : null,
                 ),
               ),
             ),
@@ -112,7 +118,9 @@ class _JournalScreenState extends State<JournalScreen>
                       top: BorderSide(color: Colors.transparent, width: 1))),
               child: Column(
                 children: [
-                  if (!noChart)
+                  if (!noChart &&
+                      (widget.journal.journalEntries
+                          .where((element) => !element.isNotesType)).isNotEmpty)
                     SizedBox(
                       child: AnimatedScaleButton(
                         onTap: () {
@@ -427,12 +435,24 @@ class _JournalLineChartState extends State<JournalLineChart> {
           margin: 10,
           getTitles: (value) {
             switch (value.toInt()) {
-              case 2:
+              case 1:
                 return 'jan';
-              case 7:
+              case 2:
                 return 'feb';
+
+              case 4:
+                return 'apr';
+
+              case 6:
+                return 'jun';
+
+              case 8:
+                return 'aug';
+              case 10:
+                return 'oct';
+
               case 12:
-                return 'mar';
+                return 'dec';
             }
             return '';
           },
@@ -446,14 +466,20 @@ class _JournalLineChartState extends State<JournalLineChart> {
           ),
           getTitles: (value) {
             switch (value.toInt()) {
+              case 0:
+                return '0';
               case 1:
-                return '100';
+                return '1';
               case 2:
-                return '200';
+                return '2';
               case 3:
-                return '300';
+                return '3';
               case 4:
-                return '400';
+                return '4';
+              case 5:
+                return '5';
+              case 6:
+                return '6';
             }
             return '';
           },
@@ -488,22 +514,22 @@ class _JournalLineChartState extends State<JournalLineChart> {
   }
 
   List<LineChartBarData> linesBarData1() {
+    List<JournalEntry> records = List.of(widget.journal.journalEntries);
+    records.removeWhere((element) => element.isNotesType);
+    records.removeWhere((element) =>
+        element.date.isBefore(DateTime.now().subtract(Duration(days: 360))));
+    records.sort((a, b) => b.date.compareTo(a.date));
+    JournalEntry first = records.first;
+    JournalEntry last = records.last;
+    records.forEach((element) {
+      return print(element.toJson());
+    });
+    if (records.isEmpty) return [];
+
     final LineChartBarData lineChartBarData1 = LineChartBarData(
-      spots: [
-        FlSpot(1, 1),
-        FlSpot(2, 1.2),
-        FlSpot(3, 2.8),
-        FlSpot(4, 1.2),
-        FlSpot(5, 1.2),
-        FlSpot(6, 1.2),
-        FlSpot(7, 1.2),
-        FlSpot(8, 1.2),
-        FlSpot(9, 1.2),
-        FlSpot(10, 2.8),
-        FlSpot(11, 1.2),
-        FlSpot(12, 2.6),
-        FlSpot(13, 3.9),
-      ],
+      spots: records
+          .map((e) => FlSpot(e.date.month.toDouble(), e.recordEntry))
+          .toList(),
       isCurved: true,
       curveSmoothness: 0.15,
       colors: [

@@ -95,7 +95,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
               child: null,
             );
           }
-          List<Journal> journals = manager.usersJournals;
+          List<Journal> journals = manager.usersJournals
+            ..sort(
+                (Journal a, Journal b) => b.updatedAt.compareTo(a.updatedAt));
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: Scrollbar(

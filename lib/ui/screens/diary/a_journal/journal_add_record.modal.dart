@@ -206,6 +206,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
                       double.parse(inputController.text);
                   Provider.of<DiaryBloc>(context, listen: false)
                       .saveJournalEntry(journalRecord);
+                  Navigator.of(context).pop(context);
                   //_handleSubmit();
                 }
               },
