@@ -37,8 +37,10 @@ mixin JournalActionsMixin<T extends Widget> {
     );
   }
 
+  
+
   void showAddRecordPopupModal(BuildContext context,
-          {JournalEntry journalEntry}) =>
+          {JournalEntry journalEntry, bool readOnly = false, int number}) =>
       showGeneralDialog(
         barrierDismissible: true,
         barrierLabel: '',
@@ -50,7 +52,7 @@ mixin JournalActionsMixin<T extends Widget> {
             borderRadius: BorderRadius.circular(15.0),
           ),
           elevation: 3,
-          child: JournalAddRecord(journal: journal, journalEntry: journalEntry),
+          child: JournalAddRecord(journal: journal, journalEntry: journalEntry, readOnly: readOnly,  number: number),
         ),
         transitionBuilder: _transitionBuilderStyle1(),
         transitionDuration: Duration(milliseconds: 250),

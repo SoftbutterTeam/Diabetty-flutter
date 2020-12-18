@@ -5,8 +5,8 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/add_journal/add_journal_background.dart';
 import 'package:diabetty/ui/screens/diary/add_journal/header.dart';
-import 'package:diabetty/ui/screens/diary/components/CustomTextField.dart';
-import 'package:diabetty/ui/screens/diary/components/InputTextField.dart';
+import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
+import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
 import 'package:diabetty/ui/screens/diary/components/journal_card.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
@@ -62,13 +62,27 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
             isValid: newJournal.name != '' && newJournal.name != null),
         child: Container(
           color: Colors.white,
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          // padding: EdgeInsets.symmetric(horizontal: 20),
           child: SingleChildScrollView(
               scrollDirection: Axis.vertical, child: _body(context)),
         ));
   }
 
-  Widget _body(BuildContext context) {
+    Widget _body(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 15.0),
+          child: _buildJournalNameField(),
+        ),
+        _buildReportUnitsField(),
+      ],
+    );
+  }
+
+  Widget _body2(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -95,7 +109,8 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
 
   InputTextField _buildJournalNameField() {
     return InputTextField(
-      stackIcons: _stackedHeartIcons(true),
+      // stackIcons: _stackedHeartIcons(true),
+      stackIcons: null,
       controller: textEditingController,
       placeholder: "Journal's Name...",
       initalName: '',
@@ -108,7 +123,8 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
 
   Widget _buildReportUnitsField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      // stackIcons: _stackedHeartIcons(true),
+      stackIcons: null,
       onTap: () => showReportUnitsPopup(context),
       placeholder: report_measurements[newJournal.reportUnitsIndex ?? 0],
       placeholderText: 'Report Measurements',

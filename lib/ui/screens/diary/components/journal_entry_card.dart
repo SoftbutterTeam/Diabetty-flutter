@@ -22,6 +22,10 @@ class _JournalEntryCardState extends State<JournalEntryCard>
     with JournalActionsMixin {
   int number;
   Journal journal;
+
+  @override
+  JournalEntry get journalEntry => widget.journalEntry;
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +42,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
         onTap: () => navigateToAddJournalNote(context,
             entry: widget.journalEntry, readOnly: true),
         child: Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: ConstrainedBox(
               constraints: BoxConstraints(
                   minHeight: 60,
@@ -95,7 +99,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                         children: [
                           Padding(
                             padding:
-                                EdgeInsets.only(top: 8.0, left: 2, right: 2),
+                                EdgeInsets.only(top: 8.0, left: 5, right: 5),
                             child: Container(
                               height: size.height * 0.07,
                               child: Text(
@@ -162,118 +166,138 @@ class _JournalEntryCardState extends State<JournalEntryCard>
             ),
       );
     else
-      return Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: 60,
-                maxHeight: max(60, size.height * 0.14),
-                minWidth: size.width * 0.8,
-                maxWidth: size.width * 0.9),
-            child: IntrinsicHeight(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 4,
-                      offset: Offset(0, -1),
-                    ),
-                  ],
-                  border: Border.all(
-                    color: Colors.black26,
-                    width: 0.1,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(13)),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 10),
-                          child: Text(
-                            "record " + number.toString(),
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Center(
-                      child: Container(
-                        height: 1,
-                        width: size.width * 0.1,
-                        color: Colors.orange[800],
+      return GestureDetector(
+        onTap: () => showAddRecordPopupModal(context,
+            journalEntry: widget.journalEntry, readOnly: true, number: number),
+        child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: 60,
+                  maxHeight: max(60, size.height * 0.14),
+                  minWidth: size.width * 0.8,
+                  maxWidth: size.width * 0.9),
+              child: IntrinsicHeight(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: Offset(0, -1),
                       ),
+                    ],
+                    border: Border.all(
+                      color: Colors.black26,
+                      width: 0.1,
                     ),
-                    Container(
-                      height: size.height * 0.07,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    borderRadius: BorderRadius.all(Radius.circular(13)),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 8, bottom: 15),
+                            padding:
+                                EdgeInsets.only(top: 10, bottom: 10, left: 15),
                             child: Text(
-                              (widget.journalEntry?.recordEntry.toString() ??
-                                      '') +
-                                  ' ' +
-                                  report_measurements[(widget.journal == null ||
-                                          widget.journal.reportUnitsIndex ==
-                                              null)
-                                      ? 0
-                                      : widget.journal.reportUnitsIndex],
+                              "record " + number.toString(),
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 16.0,
                                 color: Colors.black,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      Padding(
+                        padding: EdgeInsets.only(left: 15.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              (widget.journalEntry?.date?.formatShortShort() ??
-                                  ''),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.black,
-                              ),
-                            ),
                             Container(
-                              height: size.height * 0.1,
+                              height: 1,
                               width: size.width * 0.1,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.orange[100],
-                              ),
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.orange[800],
-                                size: 20,
+                              color: Colors.orange[800],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: size.height * 0.07,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 25, left: 15),
+                              child: Text(
+                                (widget.journalEntry?.recordEntry.toString() ??
+                                        '') +
+                                    ' ' +
+                                    report_measurements[(widget.journal ==
+                                                null ||
+                                            widget.journal.reportUnitsIndex ==
+                                                null)
+                                        ? 0
+                                        : widget.journal.reportUnitsIndex],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                (widget.journalEntry?.date
+                                        ?.formatShortShort() ??
+                                    ''),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => showAddRecordPopupModal(context,
+                                    journalEntry: widget.journalEntry,
+                                    readOnly: false,
+                                    number: number),
+                                child: Container(
+                                  height: size.height * 0.1,
+                                  width: size.width * 0.1,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.orange[100],
+                                  ),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.orange[800],
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ));
+            )),
+      );
   }
 }
