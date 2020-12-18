@@ -122,7 +122,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                             children: [
                               Text(
                                 (widget.journalEntry?.date
-                                        ?.shortenDateRepresentShort() ??
+                                        ?.formatShortShort() ??
                                     ''),
                                 style: TextStyle(
                                   fontSize: 12,
@@ -246,8 +246,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              (widget.journalEntry?.date
-                                      ?.shortenDateRepresent() ??
+                              (widget.journalEntry?.date?.formatShortShort() ??
                                   ''),
                               style: TextStyle(
                                 fontSize: 12,

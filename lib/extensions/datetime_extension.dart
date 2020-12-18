@@ -43,6 +43,21 @@ extension DateTimeExtension on DateTime {
     return dayOfWeek + this.formatTime();
   }
 
+  String formatShortShort() {
+    String dayOfWeek;
+    if (this.isSameDayAs(this))
+      return "Today";
+    else if (this.isSameDayAs(this.add(Duration(days: 1))))
+      return "Tomorrow";
+    else if (this.isSameDayAs(this.subtract(Duration(days: 1))))
+      return "Yesterday";
+
+    dayOfWeek =
+        DateFormat("d MMM ${DateTime.now().year == this.year ? "" : "y"}")
+            .format(this);
+    return dayOfWeek;
+  }
+
   DateTime roundToNearest(int roundToMins) {
     var minute = this.minute;
 
