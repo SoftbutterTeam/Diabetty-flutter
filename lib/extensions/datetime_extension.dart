@@ -94,6 +94,7 @@ extension DateTimeExtension on DateTime {
       dayOfWeek = "Yesterday, ";
     else
       dayOfWeek = DateFormat("EE, ").format(this);
+
     return dayOfWeek + DateFormat("d MMM").format(this);
   }
 

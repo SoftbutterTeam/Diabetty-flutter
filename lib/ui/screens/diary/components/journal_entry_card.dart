@@ -21,9 +21,7 @@ class JournalEntryCard extends StatefulWidget with JournalActionsMixin {
 class _JournalEntryCardState extends State<JournalEntryCard>
     with JournalActionsMixin {
   int number;
-
-  @override
-  Journal get journal => widget.journal;
+  Journal journal;
 
   @override
   JournalEntry get journalEntry => widget.journalEntry;
@@ -31,55 +29,20 @@ class _JournalEntryCardState extends State<JournalEntryCard>
   @override
   void initState() {
     super.initState();
-    widget?.journalEntry?.recordNo = widget.index + 1;
+    widget?.journalEntry?.recordNo = widget.index;
     number = widget?.journalEntry?.recordNo;
-  }
-
-  @override
-  Widget build2(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-              minHeight: 60,
-              maxHeight: max(60, size.height * 0.14),
-              minWidth: size.width * 0.8,
-              maxWidth: size.width * 0.9),
-          child: IntrinsicHeight(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: Offset(0, -1),
-                  ),
-                ],
-                borderRadius: BorderRadius.all(Radius.circular(13)),
-              ),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: Text(widget.journalEntry?.recordEntry.toString() ?? ''),
-              ),
-            ),
-          ),
-        ));
+    journal = widget.journal;
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
     if (widget.journalEntry.isNotesType)
       return GestureDetector(
-        onTap: () {
-          navigateToAddJournalNote(context , entry: journalEntry);
-        },
+        onTap: () => navigateToAddJournalNote(context,
+            entry: widget.journalEntry, readOnly: true),
         child: Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: ConstrainedBox(
               constraints: BoxConstraints(
                   minHeight: 60,
@@ -113,8 +76,9 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                             padding: EdgeInsets.only(top: 10, bottom: 10),
                             child: Text(
                               // "Notes " + number.toString(),
-                              widget?.journalEntry?.title ??
-                                  "Notes " + number.toString(),
+                              (widget?.journalEntry?.title ??
+                                      "note " + number.toString())
+                                  .toLowerCase(),
                               style: TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.black,
@@ -135,7 +99,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                         children: [
                           Padding(
                             padding:
-                                EdgeInsets.only(top: 8.0, left: 2, right: 2),
+                                EdgeInsets.only(top: 8.0, left: 5, right: 5),
                             child: Container(
                               height: size.height * 0.07,
                               child: Text(
@@ -162,7 +126,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                             children: [
                               Text(
                                 (widget.journalEntry?.date
-                                        ?.shortenDateRepresent() ??
+                                        ?.shortenDateRepresentShort() ??
                                     ''),
                                 style: TextStyle(
                                   fontSize: 12,
@@ -170,17 +134,23 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                                 ),
                               ),
                               Icon(Icons.ac_unit, color: Colors.transparent),
-                              Container(
-                                height: size.height * 0.1,
-                                width: size.width * 0.1,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.orange[100],
-                                ),
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Colors.orange[800],
-                                  size: 20,
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () => navigateToAddJournalNote(context,
+                                    entry: widget.journalEntry,
+                                    readOnly: false),
+                                child: Container(
+                                  height: size.height * 0.1,
+                                  width: size.width * 0.1,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.orange[100],
+                                  ),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.orange[800],
+                                    size: 20,
+                                  ),
                                 ),
                               ),
                             ],
@@ -196,67 +166,74 @@ class _JournalEntryCardState extends State<JournalEntryCard>
             ),
       );
     else
-      return Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: 60,
-                maxHeight: max(60, size.height * 0.14),
-                minWidth: size.width * 0.8,
-                maxWidth: size.width * 0.9),
-            child: IntrinsicHeight(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 4,
-                      offset: Offset(0, -1),
+      return GestureDetector(
+        onTap: () => showAddRecordPopupModal(context,
+            journalEntry: widget.journalEntry, readOnly: true, number: number),
+        child: Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: 60,
+                  maxHeight: max(60, size.height * 0.14),
+                  minWidth: size.width * 0.8,
+                  maxWidth: size.width * 0.9),
+              child: IntrinsicHeight(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: Offset(0, -1),
+                      ),
+                    ],
+                    border: Border.all(
+                      color: Colors.black26,
+                      width: 0.1,
                     ),
-                  ],
-                  border: Border.all(
-                    color: Colors.black26,
-                    width: 0.1,
+                    borderRadius: BorderRadius.all(Radius.circular(13)),
                   ),
-                  borderRadius: BorderRadius.all(Radius.circular(13)),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 10),
-                          child: Text(
-                            "Record " + number.toString(),
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsets.only(top: 10, bottom: 10, left: 15),
+                            child: Text(
+                              "record " + number.toString(),
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Center(
-                      child: Container(
-                        height: 1,
-                        width: size.width * 0.1,
-                        color: Colors.orange[800],
+                        ],
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.0, left: 2, right: 2),
-                      child: Container(
+                      Padding(
+                        padding: EdgeInsets.only(left: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 1,
+                              width: size.width * 0.1,
+                              color: Colors.orange[800],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
                         height: size.height * 0.07,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(bottom: 15),
+                              padding: EdgeInsets.only(bottom: 25, left: 15),
                               child: Text(
                                 (widget.journalEntry?.recordEntry.toString() ??
                                         '') +
@@ -268,7 +245,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                                         ? 0
                                         : widget.journal.reportUnitsIndex],
                                 style: TextStyle(
-                                  fontSize: 13.0,
+                                  fontSize: 14,
                                   color: Colors.black54,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -277,44 +254,50 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                           ],
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              (widget.journalEntry?.date
-                                      ?.shortenDateRepresent() ??
-                                  ''),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.black,
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                (widget.journalEntry?.date
+                                        ?.shortenDateRepresent() ??
+                                    ''),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                            Container(
-                              height: size.height * 0.1,
-                              width: size.width * 0.1,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.orange[100],
+                              GestureDetector(
+                                onTap: () => showAddRecordPopupModal(context,
+                                    journalEntry: widget.journalEntry,
+                                    readOnly: false,
+                                    number: number),
+                                child: Container(
+                                  height: size.height * 0.1,
+                                  width: size.width * 0.1,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.orange[100],
+                                  ),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.orange[800],
+                                    size: 20,
+                                  ),
+                                ),
                               ),
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.orange[800],
-                                size: 20,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ));
+            )),
+      );
   }
 }

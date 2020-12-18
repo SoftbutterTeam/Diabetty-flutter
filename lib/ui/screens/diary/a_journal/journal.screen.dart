@@ -36,12 +36,19 @@ class _JournalScreenState extends State<JournalScreen>
   bool chartMinimized;
   bool draggingIdle;
   double dragSensitivity = 3;
-
+  bool noChart;
   @override
   void initState() {
     draggingIdle = true;
-    chartMinimized = true;
+
     journal = widget.journal;
+    chartMinimized =
+        (journal.reportUnitsIndex == 0 || journal.reportUnitsIndex == null)
+            ? true
+            : true;
+    noChart =
+        (journal.reportUnitsIndex == 0 || journal.reportUnitsIndex == null);
+    print(journal.reportUnitsIndex);
     super.initState();
   }
 
@@ -105,30 +112,31 @@ class _JournalScreenState extends State<JournalScreen>
                       top: BorderSide(color: Colors.transparent, width: 1))),
               child: Column(
                 children: [
-                  SizedBox(
-                    child: AnimatedScaleButton(
-                      onTap: () {
-                        print('clicked');
-                        setState(() {
-                          chartMinimized = !chartMinimized;
-                        });
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        alignment: Alignment.center,
-                        child: RotatedBox(
-                          quarterTurns: chartMinimized ? 1 : 3,
-                          child: SvgPicture.asset(
-                            'assets/icons/navigation/essentials/next.svg',
-                            height: 18,
-                            width: 18,
-                            color: Colors.orange[800],
+                  if (!noChart)
+                    SizedBox(
+                      child: AnimatedScaleButton(
+                        onTap: () {
+                          print('clicked');
+                          setState(() {
+                            chartMinimized = !chartMinimized;
+                          });
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          alignment: Alignment.center,
+                          child: RotatedBox(
+                            quarterTurns: chartMinimized ? 1 : 3,
+                            child: SvgPicture.asset(
+                              'assets/icons/navigation/essentials/next.svg',
+                              height: 18,
+                              width: 18,
+                              color: Colors.orange[800],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
                   Expanded(
                     child: Container(
                       width: size.width,
@@ -182,19 +190,27 @@ class _JournalScreenState extends State<JournalScreen>
   }
 
   Widget _buildJournalCards2(BuildContext context) {
+    int recordCount = 0;
+    int notesCount = 0;
     return (journal.journalEntries.isNotEmpty)
         ? GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
+              mainAxisSpacing: 7,
+              crossAxisSpacing: 7,
             ),
             itemCount: journal.journalEntries.length,
             itemBuilder: (context, index) {
+              if (!journal.journalEntries[index].isNotesType)
+                recordCount++;
+              else
+                notesCount++;
               return JournalEntryCard(
                 journal: this.journal,
                 journalEntry: this.journal.journalEntries[index],
-                index: index,
+                index: (!journal.journalEntries[index].isNotesType)
+                    ? recordCount
+                    : notesCount,
               );
             },
           )
@@ -281,11 +297,13 @@ class _JournalScreenState extends State<JournalScreen>
               Flexible(
                   flex: 1,
                   child: _buildAddNoteColumn(size, decorationStyle, style)),
-              Flexible(
-                flex: 1,
-                child:
-                    _buildAddJournalEntryColumn(size, decorationStyle, style),
-              )
+              if (journal.reportUnitsIndex != 0 &&
+                  journal.reportUnitsIndex != null)
+                Flexible(
+                  flex: 1,
+                  child:
+                      _buildAddJournalEntryColumn(size, decorationStyle, style),
+                )
             ],
           ),
         )));

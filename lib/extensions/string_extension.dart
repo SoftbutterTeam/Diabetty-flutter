@@ -12,7 +12,7 @@ extension StringExtension on String {
         .trimLeft();
   }
 
-  String plurarlUnits(var num) {
+  String plurarlUnits(int num) {
     if (num != 1 &&
         this.substring(this.length - 3, this.length).contains("(s)"))
       return this.replaceAll(new RegExp(r'[()]'), '');

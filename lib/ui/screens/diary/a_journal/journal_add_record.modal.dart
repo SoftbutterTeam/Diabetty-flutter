@@ -37,8 +37,9 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
     journalRecord = widget.journalEntry ??
         new JournalEntry.generated(journal: widget.journal);
     reportUnitIndex = widget.journal.reportUnitsIndex;
-    super.initState();
+
     recordNum = widget.journalEntry?.recordNo?.toString();
+    super.initState();
   }
 
   @override
@@ -50,7 +51,8 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
           minHeight: size.height * 0.35,
         ),
         child: Container(
-          width: size.width * 0.75,
+          width: size.width * 0.8,
+          padding: EdgeInsets.only(bottom: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,7 +85,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
           Padding(
             padding: EdgeInsets.only(top: 2.0),
             child: Text(
-             journalRecord.date.shortenDateRepresent(),
+              journalRecord.date.shortenDateRepresent(),
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.black,
@@ -148,10 +150,11 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
           Padding(
             padding: EdgeInsets.only(top: 10.0),
             child: Text(
-              report_measurements[(widget.journal == null ||
-                      widget.journal.reportUnitsIndex == null)
-                  ? 0
-                  : widget.journal.reportUnitsIndex],
+              ((widget.journal == null ||
+                          journalRecord.reportUnitsIndex == null)
+                      ? 'units'
+                      : report_measurements[journalRecord.reportUnitsIndex])
+                  .plurarlUnits((journalRecord.recordEntry ?? 2)),
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
@@ -166,7 +169,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
   Widget _buildCancelAndSubmitButtons() {
     return Expanded(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CupertinoButton(
@@ -189,7 +192,8 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
                   )),
               onPressed: () {
                 if (inputController.text.isNotEmpty) {
-                  journalRecord.recordEntry = double.parse(inputController.text) ;
+                  journalRecord.recordEntry =
+                      double.parse(inputController.text);
                   Provider.of<DiaryBloc>(context, listen: false)
                       .saveJournalEntry(journalRecord);
                   //_handleSubmit();
