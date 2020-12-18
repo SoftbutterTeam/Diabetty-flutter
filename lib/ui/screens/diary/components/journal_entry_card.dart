@@ -229,27 +229,50 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                       ),
                       Container(
                         height: size.height * 0.07,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        child: Column(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 25, left: 15),
-                              child: Text(
-                                (widget.journalEntry?.recordEntry.toString() ??
-                                        '') +
-                                    ' ' +
-                                    report_measurements[(widget.journal ==
-                                                null ||
-                                            widget.journal.reportUnitsIndex ==
-                                                null)
-                                        ? 0
-                                        : widget.journal.reportUnitsIndex],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.w500,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(bottom: 10, left: 15, top: 10),
+                                  child: Text(
+                                    (widget.journalEntry?.recordEntry
+                                                .toString() ??
+                                            '') +
+                                        ' ' +
+                                        report_measurements[(widget.journal ==
+                                                    null ||
+                                                widget.journal
+                                                        .reportUnitsIndex ==
+                                                    null)
+                                            ? 0
+                                            : widget.journal.reportUnitsIndex],
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 15.0, top: 5),
+                                  child: Text(
+                                    (widget.journalEntry?.date
+                                            ?.formatShortShort() ??
+                                        ''),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -261,13 +284,17 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text(
-                                (widget.journalEntry?.date
-                                        ?.formatShortShort() ??
-                                    ''),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black,
+                              Container(
+                                height: size.height * 0.1,
+                                width: size.width * 0.1,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.orange[100],
+                                ),
+                                child: Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.orange[800],
+                                  size: 20,
                                 ),
                               ),
                               GestureDetector(
