@@ -116,9 +116,9 @@ extension DateTimeExtension on DateTime {
     if (this.isSameDayAs(DateTime.now()))
       dayOfWeek = DateFormat("EEEE").format(this);
     else if (this.isSameDayAs(DateTime.now().add(Duration(days: 1))))
-      dayOfWeek = "EEEE";
+      dayOfWeek = DateFormat("EEEE").format(this);
     else if (this.isSameDayAs(DateTime.now().subtract(Duration(days: 1))))
-      dayOfWeek = "EEEE";
+      dayOfWeek = DateFormat("EEEE").format(this);
     else
       dayOfWeek = DateFormat("EEEE").format(this);
     return dayOfWeek;
@@ -129,9 +129,9 @@ extension DateTimeExtension on DateTime {
     if (this.isSameDayAs(DateTime.now()))
       dayOfWeek = DateFormat("MMMM d").format(this);
     else if (this.isSameDayAs(DateTime.now().add(Duration(days: 1))))
-      dayOfWeek = "MMMM d";
+      dayOfWeek = DateFormat("MMMM d").format(this);
     else if (this.isSameDayAs(DateTime.now().subtract(Duration(days: 1))))
-      dayOfWeek = "MMMM d";
+      dayOfWeek = DateFormat("MMMM d").format(this);
     else
       dayOfWeek = DateFormat("MMMM d").format(this);
     return dayOfWeek;

@@ -14,8 +14,10 @@ import 'package:provider/provider.dart';
 class JournalAddRecord extends StatefulWidget {
   final JournalEntry journalEntry;
   final Journal journal;
+  final bool readOnly;
+  final int number;
 
-  JournalAddRecord({this.journal, this.journalEntry});
+  JournalAddRecord({this.journal, this.journalEntry, this.readOnly, this.number});
 
   @override
   _JournalAddRecordState createState() => _JournalAddRecordState();
@@ -26,19 +28,24 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
 
   ScrollController scrollController = ScrollController();
   TextEditingController inputController = TextEditingController();
-
+  bool readOnly;
   bool edit;
   int reportUnitIndex;
   String timeString;
   String recordNum;
+  int number;
   @override
   void initState() {
+    readOnly = widget.readOnly;
     edit = widget.journalEntry != null ? true : false;
     journalRecord = widget.journalEntry ??
         new JournalEntry.generated(journal: widget.journal);
     reportUnitIndex = widget.journal.reportUnitsIndex;
-
-    recordNum = widget.journalEntry?.recordNo?.toString();
+    inputController.text = widget.journalEntry != null
+        ? widget.journalEntry.recordEntry.toString()
+        : '';
+    recordNum = widget?.journalEntry?.recordNo?.toString();
+    number = widget.number;
     super.initState();
   }
 
@@ -76,7 +83,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
       child: Column(
         children: [
           Text(
-            (edit) ? recordNum : '',
+            (edit) ? number.toString() : '',
             style: TextStyle(
               fontSize: 16.0,
               color: Colors.black,
@@ -135,6 +142,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
             width: size.width * 0.5,
             child: CupertinoTextField(
               keyboardType: TextInputType.number,
+              readOnly: readOnly,
               enableInteractiveSelection: false,
               controller: inputController,
               padding: EdgeInsets.only(top: 10),
@@ -154,7 +162,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
                           journalRecord.reportUnitsIndex == null)
                       ? 'units'
                       : report_measurements[journalRecord.reportUnitsIndex])
-                  .plurarlUnits((journalRecord.recordEntry ?? 2)),
+                  .plurarlUnits((journalRecord?.recordEntry?.toInt() ?? 2)),
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
@@ -186,12 +194,14 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
                 vertical: 5.0,
               )),
           CupertinoButton(
-              child: Text(edit ? 'save' : 'add',
+              child: Text(readOnly ? '' : edit ? 'save' : 'add',
                   style: TextStyle(
                     color: true ? Colors.indigo : Colors.black26,
                   )),
               onPressed: () {
-                if (inputController.text.isNotEmpty) {
+                if (readOnly) {
+                  null;
+                } else if (inputController.text.isNotEmpty) {
                   journalRecord.recordEntry =
                       double.parse(inputController.text);
                   Provider.of<DiaryBloc>(context, listen: false)

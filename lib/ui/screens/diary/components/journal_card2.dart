@@ -59,11 +59,12 @@ class JournalCard2 extends StatelessWidget with JournalActionsMixin {
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Container(
-                          child: Icon(
-                            Icons.assessment,
-                            color: Colors.orange[800],
-                            size: 40.0,
-                          ),
+                          child: SvgPicture.asset(
+                              'assets/icons/navigation/essentials/diary.svg',
+                              height: 25,
+                              width: 25,
+                              color: Colors.orange[800],
+                            ),
                         ),
                       ),
                     ),
