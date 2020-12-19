@@ -17,7 +17,8 @@ class JournalAddRecord extends StatefulWidget {
   final bool readOnly;
   final int number;
 
-  JournalAddRecord({this.journal, this.journalEntry, this.readOnly, this.number});
+  JournalAddRecord(
+      {this.journal, this.journalEntry, this.readOnly, this.number});
 
   @override
   _JournalAddRecordState createState() => _JournalAddRecordState();
@@ -74,32 +75,39 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
     );
   }
 
-  Container _buildTimeField(BuildContext context) {
+  IntrinsicHeight _buildTimeField(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.only(top: 20, bottom: 15),
-      height: size.height * 0.045,
-      width: size.width * 0.7,
-      child: Column(
-        children: [
-          Text(
-            (edit) ? number.toString() : '',
-            style: TextStyle(
-              fontSize: 16.0,
-              color: Colors.black,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 2.0),
-            child: Text(
-              journalRecord.date.shortenDateRepresent(),
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.black,
+    return IntrinsicHeight(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: size.height * 0.052,
+        ),
+        child: Container(
+          margin: EdgeInsets.only(top: 20, bottom: 15),
+          width: size.width * 0.7,
+          child: Column(
+            children: [
+              Text(
+                (edit) ? 'record ' + number.toString() : '',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.only(top: 5.0),
+                child: Text(
+                  journalRecord.date.shortenDateRepresent(),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -164,7 +172,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
                       : report_measurements[journalRecord.reportUnitsIndex])
                   .plurarlUnits((journalRecord?.recordEntry?.toInt() ?? 2)),
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.0,
                 color: Colors.black,
               ),
             ),
