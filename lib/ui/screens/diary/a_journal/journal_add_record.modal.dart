@@ -4,6 +4,7 @@ import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/constants/journal_constants.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
+import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,9 @@ class JournalAddRecord extends StatefulWidget {
   _JournalAddRecordState createState() => _JournalAddRecordState();
 }
 
-class _JournalAddRecordState extends State<JournalAddRecord> {
+class _JournalAddRecordState extends State<JournalAddRecord>
+    with JournalActionsMixin {
+  Journal journal;
   JournalEntry journalRecord;
 
   ScrollController scrollController = ScrollController();
@@ -83,20 +86,38 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
           minHeight: size.height * 0.052,
         ),
         child: Container(
-          margin: EdgeInsets.only(top: 20, bottom: 15),
+          margin: EdgeInsets.only(top: 20, bottom: 10),
           width: size.width * 0.7,
           child: Column(
             children: [
-              Text(
-                (edit) ? 'record ' + number.toString() : '',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Icon(Icons.more_horiz,
+                        color: Colors.transparent, size: 25),
+                  ),
+                  Text(
+                    (edit) ? 'no. ' + number.toString() : '',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: GestureDetector(
+                        onTap: () =>
+                            (edit) ? showEditRecordActionSheet(context, journalRecord) : null,
+                        child: Icon(Icons.more_horiz,
+                            color: (edit) ? Colors.black : Colors.transparent, size: 25)),
+                  ),
+                ],
               ),
               Padding(
-                padding: EdgeInsets.only(top: 5.0),
+                padding: EdgeInsets.only(top: 10.0),
                 child: Text(
                   journalRecord.date.shortenDateRepresent(),
                   style: TextStyle(
@@ -145,9 +166,9 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 10, top: 10),
+            margin: EdgeInsets.only(bottom: 10, top: 30),
             height: max(size.height * 0.045, 40),
-            width: size.width * 0.5,
+            width: size.width * 0.3,
             child: CupertinoTextField(
               keyboardType: TextInputType.number,
               readOnly: readOnly,
@@ -155,12 +176,15 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
               controller: inputController,
               padding: EdgeInsets.only(top: 10),
               textAlign: TextAlign.center,
-              maxLength: 3,
+              maxLength: 5,
               maxLengthEnforced: true,
               decoration: BoxDecoration(
-                color: Color(0xfff7f7f7),
-                borderRadius: BorderRadius.circular(10),
-              ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: Colors.orange[800],
+                    width: 0.5,
+                  )),
             ),
           ),
           Padding(
@@ -204,7 +228,7 @@ class _JournalAddRecordState extends State<JournalAddRecord> {
           CupertinoButton(
               child: Text(readOnly ? '' : edit ? 'save' : 'add',
                   style: TextStyle(
-                    color: true ? Colors.indigo : Colors.black26,
+                    color: true ? Colors.orange[800] : Colors.black26,
                   )),
               onPressed: () {
                 if (readOnly) {

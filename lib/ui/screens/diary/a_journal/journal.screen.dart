@@ -508,7 +508,7 @@ class _JournalLineChartState extends State<JournalLineChart> {
           showTitles: true,
           reservedSize: 22,
           getTextStyles: (value) => TextStyle(
-            color: Colors.deepOrange[900],
+            color: Colors.orange[800],
             fontSize: 13,
           ),
           margin: 10,

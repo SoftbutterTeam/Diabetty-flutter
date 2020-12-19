@@ -37,8 +37,6 @@ mixin JournalActionsMixin<T extends Widget> {
     );
   }
 
-  
-
   void showAddRecordPopupModal(BuildContext context,
           {JournalEntry journalEntry, bool readOnly = false, int number}) =>
       showGeneralDialog(
@@ -52,7 +50,11 @@ mixin JournalActionsMixin<T extends Widget> {
             borderRadius: BorderRadius.circular(15.0),
           ),
           elevation: 3,
-          child: JournalAddRecord(journal: journal, journalEntry: journalEntry, readOnly: readOnly,  number: number),
+          child: JournalAddRecord(
+              journal: journal,
+              journalEntry: journalEntry,
+              readOnly: readOnly,
+              number: number),
         ),
         transitionBuilder: _transitionBuilderStyle1(),
         transitionDuration: Duration(milliseconds: 250),
@@ -95,6 +97,34 @@ mixin JournalActionsMixin<T extends Widget> {
           ),
         );
       };
+
+  void showEditRecordActionSheet(
+      BuildContext context, JournalEntry journalRecord) {
+    DiaryBloc diaryBloc = Provider.of<DiaryBloc>(context, listen: false);
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+              actions: [
+                if (journalRecord.id != null)
+                  CupertinoActionSheetAction(
+                    isDestructiveAction: true,
+                    child: Text("Delete"),
+                    onPressed: () {
+                      Navigator.of(context).pop(context);
+                      if (journalRecord.id != null)
+                        diaryBloc.deletejournalEntry(journalRecord);
+                      Navigator.of(context).pop(context);
+                    },
+                  ),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                child: Container(color: Colors.white, child: Text('Cancel')),
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+              ),
+            ));
+  }
 
   void showEditNotesActionSheet(BuildContext context, JournalEntry journalNote,
       bool readOnly, Function readOnlyStFunc) {
