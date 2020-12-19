@@ -13,7 +13,7 @@ class JournalEntryRepository {
     entryData = entry.toJson();
     entryData['updatedAt'] = DateTime.now();
     Map<String, dynamic> json = Map<String, dynamic>();
-    json['updateAt'] = DateTime.now().toString();
+    json['updatedAt'] = DateTime.now().toString();
     await _db
         .collection('users')
         .document(entry.userId)
@@ -91,7 +91,7 @@ class JournalEntryRepository {
     Map<String, dynamic> entryData = Map();
     if (entry.userId == null) return null;
     Map<String, dynamic> json = Map<String, dynamic>();
-    json['updateAt'] = DateTime.now();
+    json['updatedAt'] = DateTime.now();
     await _db
         .collection('users')
         .document(entry.userId)
@@ -119,7 +119,7 @@ class JournalEntryRepository {
     entryData = entry.toJson();
     entryData['updatedAt'] = DateTime.now();
     Map<String, dynamic> json = Map<String, dynamic>();
-    json['updateAt'] = DateTime.now().toString();
+    json['updatedAt'] = DateTime.now().toString();
     await _db
         .collection('users')
         .document(entry.userId)

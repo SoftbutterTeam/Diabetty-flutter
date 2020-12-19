@@ -73,6 +73,7 @@ class _JournalAddNoteState extends State<JournalAddNote>
         saveFunction: readOnly
             ? () {}
             : () async {
+                journalNotes.notes ??= '';
                 Provider.of<DiaryBloc>(context, listen: false)
                     .saveJournalEntry(journalNotes);
 

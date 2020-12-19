@@ -45,11 +45,11 @@ extension DateTimeExtension on DateTime {
 
   String formatShortShort() {
     String dayOfWeek;
-    if (this.isSameDayAs(this))
+    if (this.isSameDayAs(DateTime.now()))
       return "Today";
-    else if (this.isSameDayAs(this.add(Duration(days: 1))))
+    else if (this.isSameDayAs(DateTime.now().add(Duration(days: 1))))
       return "Tomorrow";
-    else if (this.isSameDayAs(this.subtract(Duration(days: 1))))
+    else if (this.isSameDayAs(DateTime.now().subtract(Duration(days: 1))))
       return "Yesterday";
 
     dayOfWeek =

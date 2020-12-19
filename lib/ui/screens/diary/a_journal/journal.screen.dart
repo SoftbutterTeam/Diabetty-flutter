@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/animated_scale_button.dart';
@@ -83,12 +85,12 @@ class _JournalScreenState extends State<JournalScreen>
               alignment: Alignment.bottomCenter,
               width: size.width,
               height: chartMinimized
-                  ? size.height * 0.00000000000001
+                  ? size.height * 0.000000000000001
                   : size.height * 0.27,
               child: FittedBox(
                 clipBehavior: Clip.none,
                 alignment: Alignment.topCenter,
-                fit: BoxFit.none,
+                fit: chartMinimized ? BoxFit.cover : BoxFit.none,
                 child: Container(
                   width: size.width,
                   height: size.height * 0.25,
@@ -199,7 +201,15 @@ class _JournalScreenState extends State<JournalScreen>
 
   Widget _buildJournalCards2(BuildContext context) {
     int recordCount = 0;
+    int totalRecords = 0;
+
+    this.journal.journalEntries.forEach((element) {
+      if (!element.isNotesType) totalRecords++;
+    });
+
+    int totalNotes = this.journal.journalEntries.length - recordCount;
     int notesCount = 0;
+    this.journal.journalEntries.sort((a, b) => b.date.compareTo(a.date));
     return (journal.journalEntries.isNotEmpty)
         ? GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -217,8 +227,8 @@ class _JournalScreenState extends State<JournalScreen>
                 journal: this.journal,
                 journalEntry: this.journal.journalEntries[index],
                 index: (!journal.journalEntries[index].isNotesType)
-                    ? recordCount
-                    : notesCount,
+                    ? totalRecords - recordCount + 1
+                    : totalNotes - notesCount + 1,
               );
             },
           )
@@ -364,50 +374,119 @@ class JournalLineChart extends StatefulWidget {
 }
 
 class _JournalLineChartState extends State<JournalLineChart> {
+  JournalEntry first;
+  JournalEntry last;
+  List<JournalEntry> records;
+  double minX;
+  double maxX;
+  double minY;
+  double maxY;
+  double intervals;
+  List<FlSpot> recordsMapped;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
+  void calculateParameters() {
+    records = List.of(widget.journal.journalEntries);
+    records.removeWhere((element) => element.isNotesType);
+    records.removeWhere((element) =>
+        element.date.isBefore(DateTime.now().subtract(Duration(days: 360))));
+    records.sort((a, b) => b.date.compareTo(a.date));
+    first = records.first;
+    last = records.last;
+
+    recordsMapped = records
+        .map((e) => FlSpot(
+            (e.date.isBefore(first.date) && e.date.month > first.date.month)
+                ? (e.date.month.toDouble() - 12) +
+                    calculateDays(e.date) +
+                    (calculateTime(e.date) * calculateDays(e.date) / e.date.day)
+                : (e.date.month.toDouble()) +
+                    calculateDays(e.date) +
+                    (calculateTime(e.date) *
+                        calculateDays(e.date) /
+                        e.date.day),
+            e.recordEntry))
+        .toList();
+
+    maxX = records.first.date.month + 1.0;
+    //todo
+    minX = max(
+        (last.date.isBefore(first.date) && last.date.month > first.date.month)
+            ? (last.date.month.toDouble() - 12)
+            : (last.date.month.toDouble()),
+        maxX - 6);
+
+    List<FlSpot> tRecordsMapped = List.of(recordsMapped);
+    tRecordsMapped.sort((a, b) => a.y.compareTo(b.y));
+
+    minY = (tRecordsMapped.first.y * 0.8).round().toDouble();
+    maxY = (tRecordsMapped.last.y * 1.2).round().toDouble();
+
+    intervals = max(((maxY - minY) ~/ 4).toDouble(), 1);
+    print("${maxY} ${minY} ${maxX} ${minX} ${intervals}");
+  }
+
+  double calculateDays(DateTime date) {
+    switch (date.month) {
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+      case 8:
+      case 10:
+      case 12:
+        return date.day / 31;
+      case 2:
+        return date.day / 27;
+      default:
+        return date.day / 30;
+    }
+  }
+
+  double calculateTime(DateTime date) {
+    return (date.hour * 60 + date.minute) / (24 * 60);
+  }
+
   @override
   Widget build(BuildContext context) {
+    calculateParameters();
     bool isShowingMainData = true;
-    return AspectRatio(
-      aspectRatio: 1.4,
-      child: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          gradient: LinearGradient(
-            colors: [
-              Colors.white,
-              Colors.white,
-            ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        gradient: LinearGradient(
+          colors: [
+            Colors.white,
+            Colors.white,
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
         ),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0, left: 6.0),
-                    child: LineChart(
-                      sampleData1(),
-                      swapAnimationDuration: const Duration(milliseconds: 250),
-                    ),
+      ),
+      child: Stack(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16.0, left: 6.0),
+                  child: LineChart(
+                    sampleData1(),
+                    swapAnimationDuration: const Duration(milliseconds: 250),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -434,24 +513,31 @@ class _JournalLineChartState extends State<JournalLineChart> {
           ),
           margin: 10,
           getTitles: (value) {
-            switch (value.toInt()) {
+            switch ((value.toInt() % 12)) {
               case 1:
                 return 'jan';
               case 2:
                 return 'feb';
-
+              case 3:
+                return 'mar';
               case 4:
                 return 'apr';
-
+              case 5:
+                return 'may';
               case 6:
                 return 'jun';
-
+              case 7:
+                return 'jul';
               case 8:
                 return 'aug';
+              case 9:
+                return 'sep';
               case 10:
                 return 'oct';
+              case 11:
+                return 'nov';
 
-              case 12:
+              case 0:
                 return 'dec';
             }
             return '';
@@ -464,24 +550,12 @@ class _JournalLineChartState extends State<JournalLineChart> {
             fontWeight: FontWeight.bold,
             fontSize: 12,
           ),
+          interval: intervals,
           getTitles: (value) {
+            print(value);
             switch (value.toInt()) {
-              case 0:
-                return '0';
-              case 1:
-                return '1';
-              case 2:
-                return '2';
-              case 3:
-                return '3';
-              case 4:
-                return '4';
-              case 5:
-                return '5';
-              case 6:
-                return '6';
             }
-            return '';
+            return value.toInt().toString();
           },
           margin: 8,
           reservedSize: 20,
@@ -505,32 +579,24 @@ class _JournalLineChartState extends State<JournalLineChart> {
           ),
         ),
       ),
-      minX: 0,
-      maxX: 14,
-      maxY: 4,
-      minY: 0,
+      minX: minX,
+      maxX: maxX,
+      maxY: maxY,
+      minY: minY,
       lineBarsData: linesBarData1(),
     );
   }
 
   List<LineChartBarData> linesBarData1() {
-    List<JournalEntry> records = List.of(widget.journal.journalEntries);
-    records.removeWhere((element) => element.isNotesType);
-    records.removeWhere((element) =>
-        element.date.isBefore(DateTime.now().subtract(Duration(days: 360))));
-    records.sort((a, b) => b.date.compareTo(a.date));
-    JournalEntry first = records.first;
-    JournalEntry last = records.last;
-    records.forEach((element) {
-      return print(element.toJson());
+    recordsMapped.forEach((element) {
+      return print('${element.x} ${element.y} ');
     });
     if (records.isEmpty) return [];
 
     final LineChartBarData lineChartBarData1 = LineChartBarData(
-      spots: records
-          .map((e) => FlSpot(e.date.month.toDouble(), e.recordEntry))
-          .toList(),
-      isCurved: true,
+      spots: recordsMapped,
+      isCurved: false,
+      //todo
       curveSmoothness: 0.15,
       colors: [
         Colors.deepOrange[600],
