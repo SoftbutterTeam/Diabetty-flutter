@@ -204,7 +204,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                             padding:
                                 EdgeInsets.only(top: 10, bottom: 10, left: 15),
                             child: Text(
-                              "record " + number.toString(),
+                              "no. " + number.toString(),
                               style: TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.black,
@@ -235,8 +235,8 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding:
-                                      EdgeInsets.only(bottom: 10, left: 15, top: 10),
+                                  padding: EdgeInsets.only(
+                                      bottom: 10, left: 15, top: 10),
                                   child: Text(
                                     (widget.journalEntry?.recordEntry
                                                 .toString() ??
