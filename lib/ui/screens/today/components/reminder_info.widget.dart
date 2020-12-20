@@ -392,22 +392,38 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ReminderModalFooterButton(
-                text2: "Skip",
-                assetName: 'assets/icons/navigation/x/close.svg',
-                onTap: () {
-                  skipReminder(context, reminder);
-                  Navigator.of(context).pop(context);
-                }),
+              text2: (reminder.skippedAt != null) ? "Un-Skip" : "Skip",
+              assetName: (reminder.skippedAt != null)
+                  ? 'assets/icons/navigation/clock/redo.svg'
+                  : 'assets/icons/navigation/x/close.svg',
+              onTap: () => (reminder.skippedAt != null)
+                  ? unSkipReminder(context)
+                  : skipReminder(context, reminder),
+            ),
             ReminderModalFooterButton(
-                text2: "Take",
-                assetName: 'assets/icons/navigation/checkbox/tick_outline2.svg',
-                onTap: () => _takenActionSheet(context)),
+                text2: (reminder.takenAt != null) ? "Un-Take" : "Take",
+                assetName: (reminder.takenAt != null)
+                    ? 'assets/icons/navigation/clock/redo.svg'
+                    : 'assets/icons/navigation/checkbox/tick_outline2.svg',
+                onTap: () => (reminder.takenAt != null)
+                    ? _unTakeAction(context)
+                    : _takenActionSheet(context)),
             ReminderModalFooterButton(
-                text2: "Snooze",
+                text2: (reminder.isSnoozed) ? "Snoozed" : "Snooze",
                 assetName: 'assets/icons/navigation/clock/wall-clock.svg',
                 onTap: () => _snoozeActionSheet(context)),
           ],
         ));
+  }
+
+  void _unTakeAction(BuildContext context) {
+    Provider.of<DayPlanManager>(context, listen: false)
+        .unTakeReminder(reminder);
+  }
+
+  void unSkipReminder(BuildContext context) {
+    Provider.of<DayPlanManager>(context, listen: false)
+        .unSkipReminder(reminder);
   }
 
   void _snoozeActionSheet(BuildContext context) {

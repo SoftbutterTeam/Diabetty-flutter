@@ -372,7 +372,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     return showDialog(
         context: context,
         builder: (context) => EditStockDialog(
-            manager: widget.manager,
+            // manager: widget.manager,
             therapyForm: widget.therapy) //TODO complete this modal
         );
   }

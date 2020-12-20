@@ -126,6 +126,7 @@ mixin ReminderActionsMixin<T extends Widget> {
   void skipReminder(BuildContext context, Reminder reminder) {
     DayPlanManager dayPlanManager = getDayPlanManager(context);
     dayPlanManager.skipReminder(reminder);
+    Navigator.pop(context);
   }
 
   void showReminderInfoMoreActionSheet(context) => showCupertinoModalPopup(

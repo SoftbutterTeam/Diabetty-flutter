@@ -79,6 +79,23 @@ abstract class ReminderManagerMixin<T extends Manager> {
     */
   }
 
+  unSkipReminder(Reminder reminder, {update = true}) async {
+    reminder.takenAt = null;
+    reminder.skippedAt = null;
+    print('unskipped --here');
+    reminderService.saveReminder(reminder);
+    // update Push Notifcations
+    if (update) updateListeners();
+
+    /**
+     Calls the Service Code.
+     -> reminder.cancelled -> true
+     -> if Reminder is not Stored, Save.
+     -> then calls updateListeners 
+
+    */
+  }
+
   Future<void> snoozeReminder(Reminder reminder, Duration snoozeFor) async {
     reminder.rescheduledTime =
         (reminder.rescheduledTime ?? reminder.time).add(snoozeFor);

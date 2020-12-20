@@ -501,27 +501,38 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     }
   }
 
-  Future showRefillDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) => BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child:
-                  RefillDialog(manager: manager, therapyForm: widget.therapy),
-            ) //TODO complete this modal
-        );
-  }
+  //   Future showRefillDialog(BuildContext context) {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (context) => BackdropFilter(
+  //             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+  //             child:
+  //                 RefillDialog(manager: manager, therapyForm: widget.therapy),
+  //           ) //TODO complete this modal
+  //       );
+  // }
 
-  Future showEditStockDialog2(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) => BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: EditStockDialog(
-                  manager: manager, therapyForm: widget.therapy),
-            ) //TODO complete this modal
-        );
-  }
+  // Future showRefillDialog2(BuildContext context) {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (context) => BackdropFilter(
+  //             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+  //             child:
+  //                 RefillDialog(manager: manager, therapyForm: widget.therapy),
+  //           ) //TODO complete this modal
+  //       );
+  // }
+
+  // Future showEditStockDialog2(BuildContext context) {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (context) => BackdropFilter(
+  //             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+  //             child: EditStockDialog(
+  //                 manager: manager, therapyForm: widget.therapy),
+  //           ) //TODO complete this modal
+  //       );
+  // }
 
   Future showEditAlarmDialog2(BuildContext context) {
     return showDialog(

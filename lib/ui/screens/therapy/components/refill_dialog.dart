@@ -9,19 +9,19 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RefillDialog extends StatefulWidget {
   final Therapy therapyForm;
-  final TherapyManager manager;
 
-  RefillDialog({this.therapyForm, this.manager});
+  RefillDialog({this.therapyForm});
   @override
   _RefillDialogState createState() => _RefillDialogState();
 }
 
 class _RefillDialogState extends State<RefillDialog>
     with EditTherapyModalsMixin {
-        @override
+  @override
   Therapy get therapy => widget.therapyForm;
   TextEditingController addStockController = TextEditingController();
   bool _isFilled = false;
@@ -29,20 +29,23 @@ class _RefillDialogState extends State<RefillDialog>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return AlertDialog(
-      contentPadding: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      content: Container(
-        height: size.height * 0.30,
-        width: size.width * 0.85,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildStockLevelField(size),
-            SizedBox(height: size.height * 0.04),
-            _buildNotifyWhenField(size),
-            _buildButtons(),
-          ],
+    return IntrinsicHeight(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: size.height * 0.35,
+        ),
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            width: size.width * 0.8,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildStockLevelField(size),
+              SizedBox(height: size.height * 0.04),
+              _buildNotifyWhenField(size),
+              _buildButtons(),
+            ],
+          ),
         ),
       ),
     );
@@ -186,13 +189,15 @@ class _RefillDialogState extends State<RefillDialog>
   }
 
   _reset() {
+    var manager = Provider.of<TherapyManager>(context, listen: false);
     addStockController.clear();
     _isFilled = false;
     setState(() {});
-    widget.manager.updateListeners();
+    manager.updateListeners();
   }
 
   _handleSubmit() {
+    var manager = Provider.of<TherapyManager>(context, listen: false);
     int addStockControllerToInt = int.parse(addStockController.text);
 
     if (widget.therapyForm.stock != null) {
@@ -202,7 +207,7 @@ class _RefillDialogState extends State<RefillDialog>
     }
 
     setState(() {});
-    widget.manager.updateListeners();
+    manager.updateListeners();
     Navigator.of(context).pop(context);
     print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
   }

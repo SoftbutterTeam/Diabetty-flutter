@@ -9,20 +9,19 @@ import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditStockDialog extends StatefulWidget {
   final Therapy therapyForm;
-  final TherapyManager manager;
 
-  EditStockDialog({this.therapyForm, this.manager});
+  EditStockDialog({this.therapyForm});
   @override
   _EditStockDialogState createState() => _EditStockDialogState();
 }
 
 class _EditStockDialogState extends State<EditStockDialog>
     with EditTherapyModalsMixin {
-
-        @override
+  @override
   Therapy get therapy => widget.therapyForm;
   TextEditingController currentLevelController;
   TextEditingController flagLimitController;
@@ -57,19 +56,22 @@ class _EditStockDialogState extends State<EditStockDialog>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return AlertDialog(
-      contentPadding: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      content: Container(
-        height: size.height * 0.36,
-        width: size.width * 0.85,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildStockLevelField(size),
-            _buildNotifyWhenField(size),
-            _buildButtons(),
-          ],
+    return IntrinsicHeight(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: size.height * 0.35,
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          width: size.width * 0.85,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildStockLevelField(size),
+              _buildNotifyWhenField(size),
+              _buildButtons(),
+            ],
+          ),
         ),
       ),
     );
@@ -251,15 +253,17 @@ class _EditStockDialogState extends State<EditStockDialog>
   }
 
   _reset() {
+    var manager = Provider.of<TherapyManager>(context, listen: false);
     currentLevelController.clear();
     flagLimitController.clear();
     widget.therapyForm.stock.handleReset();
     _isFilled = false;
     setState(() {});
-    widget.manager.updateListeners();
+    manager.updateListeners();
   }
 
   _handleSubmit() {
+    var manager = Provider.of<TherapyManager>(context, listen: false);
     widget.therapyForm.stock = Stock();
     int currentLevelControllerToInt = int.parse(currentLevelController.text);
     int flagLimitControllerToInt = int.parse(flagLimitController.text);
@@ -272,7 +276,7 @@ class _EditStockDialogState extends State<EditStockDialog>
     }
 
     setState(() {});
-    widget.manager.updateListeners();
+    manager.updateListeners();
     Navigator.of(context).pop(context);
     print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
   }

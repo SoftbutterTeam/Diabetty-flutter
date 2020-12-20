@@ -86,15 +86,13 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return AlertDialog(
-      contentPadding: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      content: IntrinsicHeight(
+    return IntrinsicHeight(
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: size.height * 0.35,
           ),
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             width: size.width * 0.8,
             child: Column(
               children: [
@@ -106,8 +104,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   Expanded _buildCancelAndSubmitButtons() {

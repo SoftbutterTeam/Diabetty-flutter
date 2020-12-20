@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
@@ -11,6 +13,7 @@ import 'package:diabetty/ui/screens/therapy/components/edit_reminder_modal.dart'
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
+import 'package:diabetty/ui/screens/therapy/components/refill_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,38 +23,133 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   Therapy get therapy;
   TherapyService therapyService = TherapyService();
 
+  _transitionBuilderStyle1() =>
+      (BuildContext context, Animation<double> anim1, anim2, Widget child) {
+        bool isReversed = anim1.status == AnimationStatus.reverse;
+        double animValue = isReversed ? 0 : anim1.value;
+        var size = MediaQuery.of(context).size;
+        return SafeArea(
+          child: BackdropFilter(
+            filter:
+                ImageFilter.blur(sigmaX: 8 * animValue, sigmaY: 8 * animValue),
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(bottom: size.height * .1),
+              child: FadeTransition(
+                opacity: anim1,
+                child: Stack(
+                  children: [
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 10, left: 10),
+                      child: GestureDetector(
+                        onTapDown: (TapDownDetails tp) =>
+                            Navigator.of(context).pop(context),
+                        child: Icon(
+                          Icons.cancel,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                    child,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      };
+
   Future<void> saveTherapy(Therapy therapy) {
-    if (therapy.id == null || therapy.userId == null) 
-      return null;
-      try {
+    if (therapy.id == null || therapy.userId == null) return null;
+    try {
       therapyService.saveTherapy(therapy);
-      } catch (e){
-        print(e);
-      }
+    } catch (e) {
+      print(e);
+    }
   }
 
-  showEditReminderModal(
-      BuildContext context, Therapy therapy, ReminderRule rule) {
-    showDialog(
-      context: context,
-      builder: (context) =>
-          EditReminderModal2(therapyForm: therapy, rule: rule),
-    );
-  }
-
-  showEditReminderModal2(BuildContext context, Therapy therapy) {
-    showDialog(
-      context: context,
-      builder: (context) => AddReminderModal3(therapyForm: therapy),
-    );
-  }
-
-  showEditStockDialog(BuildContext context, TherapyManager manager) {
-    showDialog(
+  void showEditReminderModal(
+          BuildContext context, Therapy therapy, ReminderRule rule) =>
+      showGeneralDialog(
+        barrierDismissible: true,
+        barrierLabel: '',
         context: context,
-        builder: (context) =>
-            EditStockDialog(therapyForm: therapy, manager: manager));
+        barrierColor: Colors.black12, //black12 white
+        pageBuilder: (context, anim1, anim2) => Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 3,
+          child: EditReminderModal2(therapyForm: therapy, rule: rule),
+        ),
+        transitionBuilder: _transitionBuilderStyle1(),
+        transitionDuration: Duration(milliseconds: 250),
+      );
+
+  // showEditReminderModal2(BuildContext context, Therapy therapy) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AddReminderModal3(therapyForm: therapy),
+  //   );
+  // }
+
+  void showRefillDialog(BuildContext context) {
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      barrierColor: Colors.black12, //black12 white
+      pageBuilder: (context, anim1, anim2) => Dialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: 25),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 3,
+        child: RefillDialog(therapyForm: therapy),
+      ),
+      transitionBuilder: _transitionBuilderStyle1(),
+      transitionDuration: Duration(milliseconds: 250),
+    );
   }
+
+  void showEditReminderModal2(BuildContext context, Therapy therapy) =>
+      showGeneralDialog(
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        barrierColor: Colors.black12, //black12 white
+        pageBuilder: (context, anim1, anim2) => Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 3,
+          child: AddReminderModal3(therapyForm: therapy),
+        ),
+        transitionBuilder: _transitionBuilderStyle1(),
+        transitionDuration: Duration(milliseconds: 250),
+      );
+
+  void showEditStockDialog2(BuildContext context) =>
+      showGeneralDialog(
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        barrierColor: Colors.black12, //black12 white
+        pageBuilder: (context, anim1, anim2) => Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 3,
+          child: EditStockDialog(therapyForm: therapy),
+        ),
+        transitionBuilder: _transitionBuilderStyle1(),
+        transitionDuration: Duration(milliseconds: 250),
+      );
 
   showMinRestPicker(BuildContext context, Therapy therapy) {
     Duration s;
