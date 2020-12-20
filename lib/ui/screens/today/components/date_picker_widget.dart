@@ -61,26 +61,27 @@ class DatePicker extends StatefulWidget {
 
   /// Locale for the calendar default: en_us
   final String locale;
+  final DayPlanManager dayManager;
 
-  DatePicker(
-    this.startDate, {
-    Key key,
-    this.width = 60,
-    this.height = 80,
-    this.controller,
-    this.monthTextStyle = defaultMonthTextStyle,
-    this.dayTextStyle = defaultDayTextStyle,
-    this.dateTextStyle = defaultDateTextStyle,
-    this.selectedTextColor = Colors.white,
-    this.selectionColor = AppColors.defaultSelectionColor,
-    this.deactivatedColor = AppColors.defaultDeactivatedColor,
-    this.initialSelectedDate,
-    this.activeDates,
-    this.inactiveDates,
-    this.daysCount = 500,
-    this.onDateChange,
-    this.locale = "en_US",
-  }) : assert(
+  DatePicker(this.startDate,
+      {Key key,
+      this.width = 60,
+      this.height = 80,
+      this.controller,
+      this.monthTextStyle = defaultMonthTextStyle,
+      this.dayTextStyle = defaultDayTextStyle,
+      this.dateTextStyle = defaultDateTextStyle,
+      this.selectedTextColor = Colors.white,
+      this.selectionColor = AppColors.defaultSelectionColor,
+      this.deactivatedColor = AppColors.defaultDeactivatedColor,
+      this.initialSelectedDate,
+      this.activeDates,
+      this.inactiveDates,
+      this.daysCount = 500,
+      this.onDateChange,
+      this.locale = "en_US",
+      this.dayManager})
+      : assert(
             activeDates == null || inactiveDates == null,
             "Can't "
             "provide both activated and deactivated dates List at the same time.");
@@ -114,11 +115,9 @@ class _DatePickerState extends State<DatePicker> {
     if (widget.controller != null) {
       widget.controller.setDatePickerState(this);
     }
-    final DayPlanManager dayManager =
-        Provider.of<DayPlanManager>(context, listen: false);
     pageController =
         new PageController(initialPage: _calculatePageIndex(_currentDate));
-    dayManager.dateAnimateFunction = animateToPage;
+    widget.dayManager.dateAnimateFunction = animateToPage;
     this.selectedDateStyle =
         createTextStyle(widget.dateTextStyle, widget.selectedTextColor);
     createTextStyle(widget.dateTextStyle, widget.selectedTextColor);
@@ -148,10 +147,8 @@ class _DatePickerState extends State<DatePicker> {
   }
 
   animateToPage() {
-    final DayPlanManager dayManager =
-        Provider.of<DayPlanManager>(context, listen: false);
     pageController.animateToPage(
-        _calculatePageIndex(dayManager.currentDateStamp),
+        _calculatePageIndex(widget.dayManager.currentDateStamp),
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut);
   }
@@ -179,8 +176,7 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    _currentDate =
-        Provider.of<DayPlanManager>(context, listen: false).currentDateStamp;
+    _currentDate = widget.dayManager.currentDateStamp;
     List<List<Widget>> listOChildren = [[]];
     for (var i = 0; i < widget.daysCount; i++) {
       if (listOChildren.last.length < 7) {

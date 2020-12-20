@@ -21,7 +21,7 @@ import 'package:diabetty/blocs/app_context.dart';
 
 class DashBoard extends StatefulWidget {
   @override
-  DashBoard({Key key, this.initIndex = 0, this.appContext}) : super(key: key);
+  DashBoard({Key key, this.initIndex = 1, this.appContext}) : super(key: key);
   //! TODO default index should be 1, only changed for testings
   final int initIndex;
   final AppContext appContext;

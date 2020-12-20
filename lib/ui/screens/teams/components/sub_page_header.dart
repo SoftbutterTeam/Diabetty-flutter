@@ -5,8 +5,9 @@ class SubPageHeader extends StatefulWidget {
   final String text;
   final Function saveFunction;
   final Function backFunction;
+  final Color color;
 
-  SubPageHeader({this.text, this.saveFunction, this.backFunction});
+  SubPageHeader({this.text, this.saveFunction, this.backFunction, this.color});
 
   @override
   _SubPageHeaderState createState() => _SubPageHeaderState();
@@ -29,15 +30,15 @@ class _SubPageHeaderState extends State<SubPageHeader> {
               child: FlatButton(
                 onPressed: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  widget.backFunction.call();
+                  widget.backFunction?.call();
                 },
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
-                padding: EdgeInsets.only(left: 5),
+                padding: EdgeInsets.only(left: 0),
                 child: Align(
                   child: Icon(Icons.arrow_back_ios,
-                      color: Colors.orange[800], size: 15),
+                      color: widget.color ?? Colors.orange[800], size: 15),
                   alignment: Alignment.centerLeft,
                 ),
               ),
@@ -52,14 +53,14 @@ class _SubPageHeaderState extends State<SubPageHeader> {
               child: FlatButton(
                 onPressed: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  widget.saveFunction.call();
+                  widget.saveFunction?.call();
                 },
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(right: 5),
                 child: Align(
-                  child: Text(widget.text,
+                  child: Text(widget.text ?? '',
                       style: TextStyle(
                           color: Colors.orange[800],
                           fontSize: 17.0,

@@ -5,8 +5,9 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/services/authentication/auth_service/user.service.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
+import 'package:flutter/material.dart';
 
-class AppContext {
+class AppContext extends ChangeNotifier {
   AuthService authService;
 
   UserService _userService = new UserService();
@@ -50,6 +51,7 @@ class AppContext {
       systemManagerBlocs.forEach((element) async {
         await element.init();
       });
+      notifyListeners();
     });
   }
 
