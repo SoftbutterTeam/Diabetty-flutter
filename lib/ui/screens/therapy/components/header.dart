@@ -41,9 +41,8 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: FlatButton(
-                    onPressed: () =>
-                        Provider.of<AuthService>(context, listen: false)
-                            .signOut(), //print('yeye'),
+                    onPressed: () => Navigator.pushNamed(context, appsettings),
+                    //print('yeye'),
                     color: Colors.transparent,
                     disabledTextColor: Colors.grey,
                     disabledColor: Colors.transparent,

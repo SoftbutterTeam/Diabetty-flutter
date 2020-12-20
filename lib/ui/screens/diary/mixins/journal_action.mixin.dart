@@ -22,6 +22,7 @@ mixin JournalActionsMixin<T extends Widget> {
             .fetchJournalEntries(journal);
     Navigator.pushNamed(context, aJournal, arguments: {'journal': journal});
   }
+   
 
   void navigateToAddJournalNote(context,
       {JournalEntry entry, bool readOnly = false}) {
@@ -105,6 +106,16 @@ mixin JournalActionsMixin<T extends Widget> {
         context: context,
         builder: (context) => CupertinoActionSheet(
               actions: [
+                CupertinoActionSheetAction(
+                  child: Text("Change Date"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    showDatePicker(context, (DateTime choosenTime) {
+                      journalRecord.date = choosenTime;
+                      diaryBloc.updateListeners();
+                    }, journalRecord.date);
+                  },
+                ),
                 if (journalRecord.id != null)
                   CupertinoActionSheetAction(
                     isDestructiveAction: true,

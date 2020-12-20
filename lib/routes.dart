@@ -3,7 +3,7 @@ import 'package:diabetty/ui/screens/diary/add_journal/add_journal.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';
 import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
 import 'package:diabetty/ui/layouts/dashboard.layout.dart';
-import 'package:diabetty/ui/screens/others/settings_screens/settings_screen.dart';
+import 'package:diabetty/ui/screens/others/settings_screens/settings.screen.dart';
 import 'package:diabetty/ui/screens/teams/support/support_friend.screen.dart';
 import 'package:diabetty/ui/screens/therapy/add_medication.screen.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
@@ -65,8 +65,8 @@ class Router {
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-                  body: Center(
-                      child: Text('No route defined for ${settings.name}')),
+                  body:
+                      Center(child: Text('No page found for ${settings.name}')),
                 ));
     }
   }

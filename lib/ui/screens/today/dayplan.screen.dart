@@ -110,6 +110,18 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       setState(() {});
     });
     show = true;
+
+    String id = manager.usersReminders
+        .firstWhere((element) =>
+            !element.isComplete &&
+            !element.isDeleted &&
+            !element.isSkipped &&
+            !element.isMissed)
+        ?.id;
+
+    if (id != null) {
+      Scrollable.ensureVisible(manager.reminderScrollKeys[id].currentContext);
+    }
   }
 
   void setStateFunc(AnimationStatus status) {

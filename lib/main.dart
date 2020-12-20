@@ -24,6 +24,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:diabetty/utils/application_state_reset_timer.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 GoogleSignIn _googleSignIn = new GoogleSignIn(
   scopes: <String>[

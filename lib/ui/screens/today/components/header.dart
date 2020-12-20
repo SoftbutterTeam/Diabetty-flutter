@@ -70,7 +70,9 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
         dayManager.pushAnimation.forward();
         return child;
       },
-      pageBuilder: (_, __, ___) => DropModal(),
+      pageBuilder: (_, __, ___) => DropModal(
+        manager: dayManager,
+      ),
     );
   }
 

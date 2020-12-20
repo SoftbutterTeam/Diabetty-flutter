@@ -62,6 +62,7 @@ dependencies:
   calendar_strip: ^1.0.6
   share: 0.6.5+4
   intl_phone_number_input:
+  flutter_local_notifications: ^3.0.2
 
 dev_dependencies:
   flutter_test:

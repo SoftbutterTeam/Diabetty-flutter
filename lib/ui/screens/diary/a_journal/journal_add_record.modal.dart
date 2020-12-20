@@ -55,6 +55,7 @@ class _JournalAddRecordState extends State<JournalAddRecord>
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<DiaryBloc>(context, listen: true);
     var size = MediaQuery.of(context).size;
     return IntrinsicHeight(
       child: ConstrainedBox(
@@ -109,10 +110,12 @@ class _JournalAddRecordState extends State<JournalAddRecord>
                   Padding(
                     padding: EdgeInsets.only(right: 20.0),
                     child: GestureDetector(
-                        onTap: () =>
-                            (edit) ? showEditRecordActionSheet(context, journalRecord) : null,
+                        onTap: () => (edit)
+                            ? showEditRecordActionSheet(context, journalRecord)
+                            : null,
                         child: Icon(Icons.more_horiz,
-                            color: (edit) ? Colors.black : Colors.transparent, size: 25)),
+                            color: (edit) ? Colors.black : Colors.transparent,
+                            size: 25)),
                   ),
                 ],
               ),

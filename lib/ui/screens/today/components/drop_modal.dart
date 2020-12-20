@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 class DropModal extends StatefulWidget {
   final double height;
   final Widget child;
+  final DayPlanManager manager;
 
-  const DropModal({Key key, this.height = 0.11, this.child}) : super(key: key);
+  const DropModal({Key key, this.height = 0.11, this.child, this.manager})
+      : super(key: key);
 
   @override
   _DropModalState createState() => _DropModalState();
@@ -24,7 +26,7 @@ class _DropModalState extends State<DropModal>
 
   @override
   void initState() {
-    final manager = Provider.of<DayPlanManager>(context, listen: false);
+    final manager = widget.manager;
     _selectedValue = manager.currentDateStamp;
     super.initState();
   }
@@ -36,9 +38,8 @@ class _DropModalState extends State<DropModal>
   Widget build(BuildContext context) {
     super.build(context);
     Size size = MediaQuery.of(context).size;
-    final DayPlanManager dayManager =
-        Provider.of<DayPlanManager>(context, listen: false);
-    _controller = dayManager.dateController;
+
+    _controller = widget.manager.dateController;
 
     return Dialog(
       elevation: 0,
@@ -53,7 +54,7 @@ class _DropModalState extends State<DropModal>
             preferredSize: Size.fromHeight(50),
             child: GestureDetector(
                 onTap: () {
-                  dayManager.pushAnimation.reverse();
+                  widget.manager.pushAnimation.reverse();
                   Navigator.of(context).pop(context);
                 },
                 child: Container(
@@ -67,7 +68,7 @@ class _DropModalState extends State<DropModal>
             Expanded(
                 child: GestureDetector(
                     onPanStart: (value) {
-                      dayManager.pushAnimation.reverse();
+                      widget.manager.pushAnimation.reverse();
                       Navigator.of(context).pop(context);
                     },
                     child: Container(color: Colors.transparent))),
@@ -79,8 +80,6 @@ class _DropModalState extends State<DropModal>
 
   Widget _buildModal(BuildContext context, Widget child) {
     Size size = MediaQuery.of(context).size;
-    final DayPlanManager dayManager =
-        Provider.of<DayPlanManager>(context, listen: false);
 
     var container = Container(
       padding: EdgeInsets.only(top: 12),
@@ -105,8 +104,9 @@ class _DropModalState extends State<DropModal>
           DatePicker(
               DateTime.now()
                   .subtract(Duration(days: 13 + DateTime.now().weekday)),
+              dayManager: widget.manager,
               daysCount: 28,
-              initialSelectedDate: dayManager.currentDateStamp,
+              initialSelectedDate: widget.manager.currentDateStamp,
               selectionColor: Colors.deepOrange,
               selectedTextColor: Colors.white,
               controller: _controller,
@@ -117,20 +117,20 @@ class _DropModalState extends State<DropModal>
                 color: Colors.black87,
                 fontSize: 17,
               ), onDateChange: (date) {
-            dayManager.currentDateStamp = date;
-            dayManager.dayScreenSetState?.call();
+            widget.manager.currentDateStamp = date;
+            widget.manager.dayScreenSetState?.call();
           }),
           FlatButton(
               padding: EdgeInsets.zero,
               onPressed: () {
-                dayManager.currentDateStamp = DateTime.now();
+                widget.manager.currentDateStamp = DateTime.now();
                 //  _controller.animateToDate(
                 //     dayManager.currentDateStamp.subtract(Duration(days: 2)));
                 //print(_selectedValue);
 
                 setState(() {});
-                dayManager.dayScreenSetState?.call();
-                dayManager.dateAnimateFunction?.call();
+                widget.manager.dayScreenSetState?.call();
+                widget.manager.dateAnimateFunction?.call();
               },
               child: Text('Today'))
         ],

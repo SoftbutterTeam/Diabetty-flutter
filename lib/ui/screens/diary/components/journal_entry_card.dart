@@ -222,8 +222,8 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                               children: [
                                 SvgPicture.asset(
                                   'assets/icons/navigation/essentials/line-chart.svg',
-                                  height: 35,
-                                  width: 35,
+                                  height: 30,
+                                  width: 30,
                                   color: Colors.orange[800],
                                 ),
                               ],
