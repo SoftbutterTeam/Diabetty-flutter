@@ -14,6 +14,15 @@ class JournalService {
     }
   }
 
+  Future<bool> deleteJournal(Journal journal) async {
+    try {
+      await journalRepo.deleteJournal(journal);
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<Journal>> getJournals(String uid, {bool local = false}) async {
     final journals = (await journalRepo.getAllJournals(uid, local: local)).data;
     if (journals == null) {
