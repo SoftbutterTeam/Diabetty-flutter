@@ -2,15 +2,23 @@ import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/string_extension.dart';
 
-class JournalHeader extends StatelessWidget {
+class JournalHeader extends StatefulWidget {
   final Journal journal;
   final bool isValid;
   const JournalHeader({Key key, this.isValid = false, this.journal})
       : super(key: key);
+
+  @override
+  _JournalHeaderState createState() => _JournalHeaderState();
+}
+
+class _JournalHeaderState extends State<JournalHeader> with JournalActionsMixin{
+  Journal journal;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +53,7 @@ class JournalHeader extends StatelessWidget {
               child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    journal?.name?.capitalize(), style: TextStyle(
+                    widget.journal?.name?.capitalize(), style: TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.w400,
                       fontSize: 19.7
@@ -55,19 +63,17 @@ class JournalHeader extends StatelessWidget {
             Container(
               alignment: Alignment.centerRight,
               child: FlatButton(
-                onPressed: () {
-                  if (isValid) {
-                    //  diaryManager.submitNewJournal(diaryManager.newJournal);
-                    Navigator.of(context).pop(context);
-                  }
-                },
+                onPressed: () => print('hi'),
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(right: 5),
                 child: Align(
-                  child: Text(isValid ? 'Create' : ''),
-                  alignment: Alignment.centerRight,
+                  child: Icon(
+                    Icons.more_horiz,
+                    size: 25,
+                  ),
+                  alignment: Alignment.centerLeft,
                 ),
               ),
             )
