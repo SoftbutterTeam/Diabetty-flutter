@@ -17,7 +17,7 @@ import 'package:diabetty/ui/screens/others/auth_screens/common_widgets/rounded_p
 import 'package:validators/validators.dart' as validator;
 
 import 'package:diabetty/ui/screens/others/auth_screens/register/components/or_divider.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/register/components/social_icon.dart';
+import 'package:diabetty/ui/screens/others/auth_screens/login/components/social_icon.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -85,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
       await widget.manager
-          .createAccount("test", "test user", "admin@123.com", "adminn");
+          .createAccount("test", "test user", "admin@123.com", "", "adminn");
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
@@ -93,10 +93,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<void> _registerWithEmailandPassword(BuildContext context,
-      String displayName, String name, String email, String password) async {
+  Future<void> _registerWithEmailandPassword(
+      BuildContext context,
+      String displayName,
+      String name,
+      String email,
+      String mobile,
+      String password) async {
     try {
-      await widget.manager.createAccount(displayName, name, email, password);
+      await widget.manager
+          .createAccount(displayName, name, email, mobile, password);
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
@@ -156,6 +162,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onSaved: (String value) =>
                 createAccountForm.email = value.trim().toLowerCase(),
           ),
+          RoundedInputField(
+            keyboardType: TextInputType.phone,
+            hintText: 'Mobile No',
+            icon: Icons.local_phone,
+            //icon: Icons.email,
+            validator: (String value) =>
+                false ? 'Please enter a valid Phone number' : _formSave(),
+            onSaved: (String value) =>
+                createAccountForm.mobile = value.trim().toLowerCase(),
+          ),
           RoundedPasswordField(
             onChanged: (value) {},
             formKey: _registerKey,
@@ -171,6 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           LoadingButton(
               isLoading: widget.isLoading,
               child: RoundedButton(
+                color: Colors.deepOrange,
                 text: "Create Account",
                 press: () {
                   if (_registerKey.currentState.validate()) {
@@ -180,6 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         createAccountForm.displayName,
                         createAccountForm.name,
                         createAccountForm.email,
+                        createAccountForm.mobile,
                         createAccountForm.password);
                   }
                 },
@@ -224,31 +242,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Background(
-      child: Container(
-        child: Column(
-          children: [
-            SingleChildScrollView(
+    return Container(
+      padding: EdgeInsets.only(top: size.height * 0.1),
+      child: Column(
+        //  mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: size.height * 0.05),
+                  SizedBox(height: size.height * 0.05, width: double.maxFinite),
                   _buildCreateAccountForm(context),
-                  SizedBox(height: size.height * 0.01),
-                  OrDivider(),
-                  _buildSocialLogins(context),
+                  SizedBox(height: size.height * 0.3),
                 ],
               ),
             ),
-            Expanded(
-              child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: _buildAlreadyHaveAccount(context)),
-            ),
-            SizedBox(height: size.height * 0.03),
-          ],
-        ),
+          ),
+          _buildAlreadyHaveAccount(context),
+          SizedBox(height: size.height * 0.03),
+        ],
       ),
     );
   }

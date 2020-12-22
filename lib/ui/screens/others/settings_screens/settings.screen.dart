@@ -35,9 +35,9 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Widget build(BuildContext context) {
     appContext = Provider.of<AppContext>(context, listen: true);
-    print(appContext.user.toJson());
-    print('yyyyyyyy');
-    print(appContext.user.displayName + 'yy');
+    if (appContext.user == null) {
+      return SizedBox();
+    }
     return Scaffold(
       body: Stack(children: [
         _body(context),

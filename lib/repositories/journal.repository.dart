@@ -7,6 +7,7 @@ class JournalRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   final Firestore _db = Firestore.instance;
+
   //!TODO increase db.settings cache at the end
   Future<void> createJournal(Journal journal) async {
     if (journal.userId == null)
