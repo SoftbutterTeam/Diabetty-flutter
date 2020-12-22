@@ -24,6 +24,12 @@ class _JournalHeaderState extends State<JournalHeader>
   Journal journal;
 
   @override
+  void initState() {
+    journal = widget.journal;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final diaryManager = Provider.of<DiaryBloc>(context, listen: false);
     return Container(

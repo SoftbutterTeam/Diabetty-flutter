@@ -75,7 +75,7 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
   }
 
   void deleteJournal(Journal journal) async {
-    journalService.deleteJournal(journal);
+    await journalService.deleteJournal(journal);
 
     updateListeners();
   }

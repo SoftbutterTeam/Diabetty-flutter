@@ -2,6 +2,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/blocs/app_context.dart';
+import 'package:diabetty/models/reminder.model.dart';
 import 'dart:async';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
@@ -107,6 +108,26 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     /*manager.dateChanges?.stream?.listen((event) {
       setState(() {});
     });*/
+    List<Reminder> reminders = manager.getFinalRemindersList();
+    String id;
+    print(reminders.length);
+    if (reminders.isNotEmpty) {
+      id = reminders
+          .firstWhere(
+              (element) =>
+                  !element.isComplete &&
+                  !element.isDeleted &&
+                  !element.isSkipped &&
+                  !element.isMissed,
+              orElse: () => reminders.first)
+          ?.id;
+    }
+
+    if (id != null) {
+      Scrollable.ensureVisible(manager.reminderScrollKeys[id].currentContext,
+          duration: Duration(milliseconds: 500));
+    }
+
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => manager.fadeAnimation?.addStatusListener(setStateFunc));
     show = true;
