@@ -2,26 +2,16 @@ import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/string_extension.dart';
 
-class JournalHeader extends StatefulWidget {
+class JournalHeader extends StatelessWidget with JournalActionsMixin{
   final Journal journal;
   final bool isValid;
-  const JournalHeader({Key key, this.isValid = true, this.journal})
+  const JournalHeader({Key key, this.isValid = false, this.journal})
       : super(key: key);
-
-  @override
-  _JournalHeaderState createState() => _JournalHeaderState();
-}
-
-class _JournalHeaderState extends State<JournalHeader>
-    with JournalActionsMixin {
-  Journal journal;
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +46,11 @@ class _JournalHeaderState extends State<JournalHeader>
               child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    journal?.name?.capitalize(),
-                    style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 19.7),
+                    journal?.name?.capitalize(), style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 19.7
+                    ),
                   )),
             ),
             Container(
@@ -75,9 +65,8 @@ class _JournalHeaderState extends State<JournalHeader>
                   child: Icon(
                     Icons.more_horiz,
                     size: 25,
-                    color: Colors.black87,
                   ),
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.centerLeft,
                 ),
               ),
             )

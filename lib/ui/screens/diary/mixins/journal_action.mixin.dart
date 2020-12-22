@@ -6,6 +6,7 @@ import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/journal_add_note.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/journal_add_record.modal.dart';
+import 'package:diabetty/ui/screens/diary/components/edit_journal_title.modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -194,6 +195,7 @@ mixin JournalActionsMixin<T extends Widget> {
                   child: Text("Edit Title"),
                   onPressed: () {
                     Navigator.pop(context);
+                    showEditTitleModal(context, journal);
                   },
                 ),
                 CupertinoActionSheetAction(
@@ -238,6 +240,27 @@ mixin JournalActionsMixin<T extends Widget> {
         );
       },
     );
+  }
+
+  void showEditTitleModal(BuildContext context, Journal journal) {
+      showGeneralDialog(
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        barrierColor: Colors.black12, //black12 white
+        pageBuilder: (context, anim1, anim2) => Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 3,
+          child: EditJournalTitle(
+            journal: journal,
+          ),
+        ),
+        transitionBuilder: _transitionBuilderStyle1(),
+        transitionDuration: Duration(milliseconds: 250),
+      );
   }
 
   void areYouSurePopup(BuildContext context, Function func) {
