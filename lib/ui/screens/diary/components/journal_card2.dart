@@ -21,7 +21,7 @@ class JournalCard2 extends StatelessWidget with JournalActionsMixin {
         color: Colors.deepOrange,
         fontWeight: FontWeight.bold);
     return Container(
-        margin: EdgeInsets.symmetric(vertical: 8),
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         child: ConstrainedBox(
             constraints: BoxConstraints(
                 minHeight: min(70, size.height * 0.07),
