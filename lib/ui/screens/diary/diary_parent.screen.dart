@@ -31,15 +31,15 @@ class DiaryParentScreen extends StatefulWidget {
 
 class _DiaryParentScreenState extends State<DiaryParentScreen> {
   PageController pageController;
-  bool initialValue;
+  bool toggleValue;
   @override
   void initState() {
-    initialValue = true;
-    pageController = PageController(initialPage: initialValue ? 0 : 1);
+    toggleValue = true;
+    pageController = PageController(initialPage: toggleValue ? 0 : 1);
     pageController.addListener(() {
-      bool original = initialValue;
-      initialValue = pageController.page < 0.5 ? true : false;
-      if (original != initialValue) {
+      bool original = toggleValue;
+      toggleValue = pageController.page.round() == 0 ? true : false;
+      if (original != toggleValue) {
         setState(() {});
       }
     });
@@ -122,12 +122,12 @@ class _DiaryParentScreenState extends State<DiaryParentScreen> {
           backgroundColor: lightMode.toggleBackgroundColor,
           buttonColor: lightMode.toggleButtonColor,
           shadows: lightMode.shadow,
-          initialValue: initialValue,
+          initialValue: toggleValue,
           onToggleCallback: (index) {
             pageController.animateToPage(index,
                 duration: Duration(milliseconds: 300),
                 curve: Curves.bounceInOut);
-            initialValue = index == 0 ? true : false;
+            toggleValue = index == 0 ? true : false;
             setState(() {});
           },
         ));
