@@ -2,14 +2,16 @@ import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/string_extension.dart';
 
 class JournalHeader extends StatelessWidget {
   final Journal journal;
   final bool isValid;
-  const JournalHeader({Key key, this.isValid = false, this.journal})
+  const JournalHeader({Key key, this.isValid = true, this.journal})
       : super(key: key);
 
   @override
@@ -45,11 +47,11 @@ class JournalHeader extends StatelessWidget {
               child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    journal?.name?.capitalize(), style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 19.7
-                    ),
+                    journal?.name?.capitalize(),
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 19.7),
                   )),
             ),
             Container(
@@ -58,7 +60,7 @@ class JournalHeader extends StatelessWidget {
                 onPressed: () {
                   if (isValid) {
                     //  diaryManager.submitNewJournal(diaryManager.newJournal);
-                    Navigator.of(context).pop(context);
+
                   }
                 },
                 color: Colors.transparent,
@@ -66,7 +68,11 @@ class JournalHeader extends StatelessWidget {
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(right: 5),
                 child: Align(
-                  child: Text(isValid ? 'Create' : ''),
+                  child: Icon(
+                    Icons.more_horiz,
+                    size: 25,
+                    color: Colors.black87,
+                  ),
                   alignment: Alignment.centerRight,
                 ),
               ),
