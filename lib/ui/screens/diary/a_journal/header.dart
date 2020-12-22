@@ -66,7 +66,7 @@ class _JournalHeaderState extends State<JournalHeader>
             Container(
               alignment: Alignment.centerRight,
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () => showEditJournalActionSheet(context),
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
