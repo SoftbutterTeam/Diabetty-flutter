@@ -58,7 +58,7 @@ class AppContext extends ChangeNotifier {
   Future<UserModel.User> fetchUser({bool toSinkUserChange = false}) async {
     isFetching = true;
     //print("isFetching: turned on");
-    _firebaseUser = (await authService?.currentUser());
+    _firebaseUser ??= (await authService?.currentUser());
 
     if (_firebaseUser != null) {
       try {
@@ -80,6 +80,7 @@ class AppContext extends ChangeNotifier {
         return user;
       }
     } else {
+      print('this bs is running');
       isFetching = false;
       //print("isFetching: turned off");
       return null;

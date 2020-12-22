@@ -97,7 +97,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       setState(() {});
     });
     show = true;
-    print('yyy');
     String id = manager
         .getFinalRemindersList(date: manager.currentDateStamp)
         .firstWhere((element) =>
@@ -108,9 +107,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         ?.id;
 
     print(id);
-    print('yyy');
-    print('yyy ' + id);
-    if (id != null) {
+
+    if (id != null && id != '') {
       Scrollable.ensureVisible(manager.reminderScrollKeys[id].currentContext);
     }
     super.initState();

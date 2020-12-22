@@ -29,12 +29,18 @@ class RegisterManager {
     return await _signIn(auth.signInWithGoogle);
   }
 
-  Future<void> createAccount(
-      String displayName, String name, String email, String password) async {
+  Future<void> createAccount(String displayName, String name, String email,
+      String mobile, String password) async {
     try {
       isLoading.value = true;
-      var result = await auth.createUserWithEmailAndPassword(email, password,
-          UserModel.User(displayName: displayName, email: email, name: name));
+      var result = await auth.createUserWithEmailAndPassword(
+          email,
+          password,
+          UserModel.User(
+              displayName: displayName,
+              email: email,
+              name: name,
+              phoneNumber: mobile));
       return result;
     } catch (e) {
       isLoading.value = false;

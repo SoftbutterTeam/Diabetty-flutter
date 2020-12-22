@@ -30,7 +30,7 @@ class SocalIcon extends StatelessWidget {
             width: size != null ? 1 : 1, //* was 2
             color: kPrimaryLightColor,
           ),
-          shape: BoxShape.circle,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: SvgPicture.asset(
           iconSrc,

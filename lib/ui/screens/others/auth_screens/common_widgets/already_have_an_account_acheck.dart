@@ -23,7 +23,7 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
                 login
                     ? "Don’t have an Account ? "
                     : "Already have an Account ? ",
-                style: TextStyle(color: kPrimaryColor),
+                style: TextStyle(color: kPrimaryColor, fontSize: 15),
               ),
               Text(
                 login ? "Get Started" : "Log in",

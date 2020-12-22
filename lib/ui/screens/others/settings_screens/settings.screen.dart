@@ -35,9 +35,9 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Widget build(BuildContext context) {
     appContext = Provider.of<AppContext>(context, listen: true);
-    print(appContext.user.toJson());
-    print('yyyyyyyy');
-    print(appContext.user.displayName + 'yy');
+    if (appContext.user == null) {
+      return SizedBox();
+    }
     return Scaffold(
       body: Stack(children: [
         _body(context),
@@ -103,9 +103,11 @@ class _SettingsScreenState extends State<SettingsScreen>
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 5),
                       child: text(
-                          (appContext.user.displayName.isEmpty
-                                  ? appContext.user.name
-                                  : appContext.user.displayName)
+                          ((appContext.user.displayName == null ||
+                                          appContext.user.displayName.isEmpty
+                                      ? appContext.user.name
+                                      : appContext.user.displayName) ??
+                                  '')
                               .capitalize(),
                           fontSize: 14.0,
                           textColor: Colors.white),

@@ -164,6 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
           LoadingButton(
               isLoading: widget.isLoading,
               child: RoundedButton(
+                color: Colors.deepOrange,
                 text: "Login",
                 press: () {
                   if (_loginKey.currentState.validate()) {
@@ -184,29 +185,33 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildSocialLogins(BuildContext context) {
-    return (Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SocalIcon(
-          key: LoginScreen.facebookButtonKey,
-          iconSrc: facebook_social,
-          color: Colors.lightBlue[700],
-          press: widget.isLoading ? null : () => _signInWithFacebook(context),
-        ),
-        SocalIcon(
-          key: LoginScreen.anonymousButtonKey,
-          iconSrc: apple_social,
-          color: Colors.lightBlue[700],
-          press: widget.isLoading ? null : () => _signInAnonymously(context),
-        ),
-        SocalIcon(
-          key: LoginScreen.googleButtonKey,
-          size: 60,
-          iconSrc: google_social,
-          press: widget.isLoading ? null : () => _signInWithGoogle(context),
-        ),
-      ],
-    ));
+    return Container(
+        padding: EdgeInsets.only(top: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SocalIcon(
+              key: LoginScreen.facebookButtonKey,
+              iconSrc: facebook_social,
+              color: Colors.lightBlue[700],
+              press:
+                  widget.isLoading ? null : () => _signInWithFacebook(context),
+            ),
+            SocalIcon(
+              key: LoginScreen.anonymousButtonKey,
+              iconSrc: apple_social,
+              color: Colors.lightBlue[700],
+              press:
+                  widget.isLoading ? null : () => _signInAnonymously(context),
+            ),
+            SocalIcon(
+              key: LoginScreen.googleButtonKey,
+              size: 60,
+              iconSrc: google_social,
+              press: widget.isLoading ? null : () => _signInWithGoogle(context),
+            ),
+          ],
+        ));
   }
 
   Widget _buildAlreadyHaveAccount(BuildContext context) {

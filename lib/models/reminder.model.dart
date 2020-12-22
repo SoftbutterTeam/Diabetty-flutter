@@ -81,11 +81,11 @@ class Reminder with DateMixin {
   bool get isDeleted => deletedAt != null;
 
   ReminderStatus get status {
+    if (isSkipped) return ReminderStatus.skipped;
     if (isComplete) return ReminderStatus.completed;
     if (isSnoozed) return ReminderStatus.snoozed;
     if (isMissed) return ReminderStatus.missed;
     if (isActive) return ReminderStatus.active;
-    if (isSkipped) return ReminderStatus.skipped;
     if (isLate) return ReminderStatus.isLate;
     if (isIdle) return ReminderStatus.idle;
     return null;

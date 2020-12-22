@@ -18,8 +18,8 @@ class LoadingButton extends StatelessWidget {
           child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Container(
+                  color: Colors.deepOrange,
                   padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-                  color: kPrimaryColor,
                   child: Theme(
                     data: Theme.of(context).copyWith(accentColor: Colors.white),
                     child: Center(
