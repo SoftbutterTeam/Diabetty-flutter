@@ -103,9 +103,11 @@ class _SettingsScreenState extends State<SettingsScreen>
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 5),
                       child: text(
-                          (appContext.user.displayName.isEmpty
-                                  ? appContext.user.name
-                                  : appContext.user.displayName)
+                          ((appContext.user.displayName == null ||
+                                          appContext.user.displayName.isEmpty
+                                      ? appContext.user.name
+                                      : appContext.user.displayName) ??
+                                  '')
                               .capitalize(),
                           fontSize: 14.0,
                           textColor: Colors.white),

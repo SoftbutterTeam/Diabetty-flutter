@@ -125,8 +125,9 @@ mixin ReminderActionsMixin<T extends Widget> {
 
   void skipReminder(BuildContext context, Reminder reminder) {
     DayPlanManager dayPlanManager = getDayPlanManager(context);
-    dayPlanManager.skipReminder(reminder);
     Navigator.pop(context);
+
+    dayPlanManager.skipReminder(reminder);
   }
 
   void showReminderInfoMoreActionSheet(context) => showCupertinoModalPopup(
@@ -194,17 +195,19 @@ mixin ReminderActionsMixin<T extends Widget> {
             actions: <Widget>[
               CupertinoActionSheetAction(
                   onPressed: () {
-                    dayPlanManager.takeReminder(reminder, DateTime.now());
                     Navigator.of(context).pop(context);
+
+                    dayPlanManager.takeReminder(reminder, DateTime.now());
                   },
                   child: Text('Now')),
               if (!DateTime.now()
                   .isBefore(reminder.rescheduledTime ?? reminder.time))
                 CupertinoActionSheetAction(
                     onPressed: () {
+                      Navigator.of(context).pop(context);
+
                       dayPlanManager.takeReminder(
                           reminder, reminder.rescheduledTime ?? reminder.time);
-                      Navigator.of(context).pop(context);
                     },
                     child: Text('On Time')),
               CupertinoActionSheetAction(

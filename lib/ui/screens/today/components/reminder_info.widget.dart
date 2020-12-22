@@ -430,10 +430,6 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     showSnoozeActionSheet(context, this.reminder);
   }
 
-  void _skipActionSheet(BuildContext context) {
-    skipReminder(context, this.reminder);
-  }
-
   void _takenActionSheet(BuildContext context) {
     showTakeActionPopup(context);
   }

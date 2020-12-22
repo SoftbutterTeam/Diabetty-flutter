@@ -123,13 +123,17 @@ class _DayPlanScreenState extends State<DayPlanScreen>
           ?.id;
     }
 
-    if (id != null) {
-      Scrollable.ensureVisible(manager.reminderScrollKeys[id].currentContext,
-          duration: Duration(milliseconds: 500));
-    }
+    print(id);
+    print('yyy');
 
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => manager.fadeAnimation?.addStatusListener(setStateFunc));
+    WidgetsBinding.instance.addPostFrameCallback((_) => () {
+          manager.fadeAnimation?.addStatusListener(setStateFunc);
+          if (id != null && manager.reminderScrollKeys[id] != null) {
+            Scrollable.ensureVisible(
+                manager.reminderScrollKeys[id].currentContext,
+                duration: Duration(milliseconds: 500));
+          }
+        });
     show = true;
     super.initState();
   }
