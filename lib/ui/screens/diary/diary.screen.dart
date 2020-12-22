@@ -76,7 +76,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             child: Container(
                 padding: EdgeInsets.only(top: 4),
                 child: Container(
-                  margin: EdgeInsets.only(top: 5, left: 5, right: 5),
+                  margin: EdgeInsets.only(top: 5),
                   child: _buildJournalCards(context),
                 )),
           ),
@@ -99,7 +99,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
             ..sort(
                 (Journal a, Journal b) => b.updatedAt.compareTo(a.updatedAt));
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
             child: Scrollbar(
               child: ListView.builder(
                   physics: BouncingScrollPhysics(),
