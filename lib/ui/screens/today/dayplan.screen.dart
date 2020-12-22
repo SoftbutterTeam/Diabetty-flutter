@@ -1,30 +1,17 @@
-import 'dart:math';
-
-import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
-import 'package:diabetty/models/reminder.model.dart';
-import 'package:diabetty/ui/constants/icons.dart';
-import 'dart:async';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
-import 'package:diabetty/ui/screens/others/error_screens/drafterror.screen.dart';
-import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
-import 'package:diabetty/ui/screens/today/components/circle_list.dart';
 import 'package:diabetty/ui/screens/today/components/circle_plan.dart';
-import 'package:diabetty/ui/screens/today/components/my_painter.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 //*swtich versions. animation differences*/
     as SlotWidget;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
-import 'components/reminder_icon_widget.dart';
 
 class DayPlanScreenBuilder extends StatelessWidget {
   @override
@@ -89,9 +76,9 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   @override
   void initState() {
     draggingIdle = true;
+    print('yyy');
 
     manager.reminderScrollKeys = {};
-    super.initState();
     _dateController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 200),
@@ -110,8 +97,9 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       setState(() {});
     });
     show = true;
-
-    String id = manager.usersReminders
+    print('yyy');
+    String id = manager
+        .getFinalRemindersList(date: manager.currentDateStamp)
         .firstWhere((element) =>
             !element.isComplete &&
             !element.isDeleted &&
@@ -119,9 +107,13 @@ class _DayPlanScreenState extends State<DayPlanScreen>
             !element.isMissed)
         ?.id;
 
+    print(id);
+    print('yyy');
+    print('yyy ' + id);
     if (id != null) {
       Scrollable.ensureVisible(manager.reminderScrollKeys[id].currentContext);
     }
+    super.initState();
   }
 
   void setStateFunc(AnimationStatus status) {
