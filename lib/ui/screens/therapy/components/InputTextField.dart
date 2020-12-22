@@ -50,11 +50,14 @@ class _InputTextFieldState extends State<InputTextField> {
           controller: widget.controller,
           decoration: BoxDecoration(
             color: appWhite,
-            border: Border.symmetric(
-              vertical: BorderSide(
-                  color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+            border: Border(
+              bottom: BorderSide(
+                  color: Colors.grey[200],
+                  width: 1.2,
+                  style: BorderStyle.solid),
             ),
           ),
+          // r
           prefix: Container(
             padding: EdgeInsets.only(left: 17),
             child: this.widget.stackIcons,

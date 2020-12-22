@@ -1,3 +1,4 @@
+import 'package:diabetty/ui/common_widgets/misc_widgets/animated_scale_button.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
@@ -31,15 +32,16 @@ class ProfileCustomTextField extends StatelessWidget {
       onSubmitted: onSubmitted,
       decoration: BoxDecoration(
         color: appWhite,
-        border: Border.all(
-            color: Colors.black54, width: 0.1, style: BorderStyle.solid),
-        borderRadius: BorderRadius.circular(0),
+        border: Border(
+          bottom: BorderSide(
+              color: Colors.grey[200], width: 1.2, style: BorderStyle.solid),
+        ),
       ),
       prefix: Container(
           padding: EdgeInsets.only(left: 18),
           child: stackIcons ?? singleIcon),
-      suffix: Container(
-        padding: EdgeInsets.only(right: 15),
+ suffix: Container(
+        padding: EdgeInsets.only(right: 33),
         child: Row(
           children: [
             Padding(
@@ -47,6 +49,19 @@ class ProfileCustomTextField extends StatelessWidget {
                 child: (placeholder is String)
                     ? text((placeholder), fontSize: textSizeMedium2)
                     : placeholder),
+            AnimatedScaleButton(
+              onTap: () {},
+              size: 21,
+              child: Container(
+                color: Colors.transparent,
+                child: Icon(
+                  (placeholderText == "Set Strength & Units")
+                      ? Icons.arrow_drop_down
+                      : CupertinoIcons.right_chevron,
+                  size: 20,
+                ),
+              ),
+            ),
           ],
         ),
       ),

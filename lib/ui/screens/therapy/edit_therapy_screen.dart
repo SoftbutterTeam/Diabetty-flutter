@@ -4,6 +4,7 @@ import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
+import 'package:diabetty/ui/screens/therapy/components/profile_custom_textfield.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_option_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_options_header.dart';
 import 'package:diabetty/ui/screens/therapy/edit_reminder.screen.dart';
@@ -96,11 +97,20 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       children: [
         SizedBox(height: size.height * 0.02),
         _buildMedicationNameField(),
-        _buildUnitField(context),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: _buildUnitField(context),
+        ),
         _buildAppearanceField(context),
-        _buildIntakeAdviceField(),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: _buildIntakeAdviceField(),
+        ),
         _buildWindowField(),
-        _buildMinimumRestField(),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: _buildMinimumRestField(),
+        ),
         _buildReminderField(context),
       ],
     );
@@ -121,7 +131,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   }
 
   Widget _buildUnitField(BuildContext context) {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: null,
       onTap: () {
         _showUnits(context);
@@ -132,7 +142,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   }
 
   Widget _buildAppearanceField(BuildContext context) {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: null,
       onTap: () {
         _showAppearance(context);
@@ -150,7 +160,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
     int remAdviceInd = newTherapy.medicationInfo.intakeAdvices.isNotEmpty
         ? newTherapy.medicationInfo.intakeAdvices[0]
         : 0;
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: null,
       onTap: () {
         _showIntakeAdvice(context);
@@ -164,7 +174,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   }
 
   Widget _buildMinimumRestField() {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: null,
       onTap: () {
         _showMinRest(context);
@@ -178,7 +188,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   }
 
   Widget _buildWindowField() {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: null,
       onTap: () {
         _showWindow(context);
@@ -191,7 +201,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   }
 
   Widget _buildReminderField(BuildContext context) {
-    return CustomTextField(
+    return ProfileCustomTextField(
       stackIcons: null,
       onTap: () {
         Navigator.push(

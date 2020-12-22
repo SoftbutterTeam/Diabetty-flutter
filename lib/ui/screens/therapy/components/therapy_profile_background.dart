@@ -14,11 +14,12 @@ class TherapyProfileBackground extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      color: appWhite,
+      color: Colors.orange[800],
       child: Container(
         width: double.maxFinite,
         height: size.height,
         child: SafeArea(
+          bottom: true,
           child: Scaffold(
               resizeToAvoidBottomPadding: true,
               backgroundColor: Colors.transparent,

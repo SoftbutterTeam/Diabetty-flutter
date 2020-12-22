@@ -15,10 +15,10 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
         alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          color: Colors.orange[800],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,7 +33,7 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
                 padding: EdgeInsets.only(left: 5),
                 child: Align(
                   child: Icon(Icons.arrow_back_ios,
-                      color: Colors.orange[800], size: 15),
+                      color: Colors.white, size: 15),
                   alignment: Alignment.centerLeft,
                 ),
               ),
@@ -60,7 +60,7 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
                 child: Align(
                   child: Text("edit",
                       style: TextStyle(
-                          color: Colors.orange[800],
+                          color: Colors.white,
                           fontSize: 17.0,
                           fontWeight: FontWeight.w400)),
                   alignment: Alignment.centerRight,

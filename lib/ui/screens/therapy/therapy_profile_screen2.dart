@@ -40,7 +40,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   @override
   Therapy get therapy => widget.therapy;
   TherapyManager manager;
-  Color textColor = Colors.orange[800];
+  Color textColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
     return Column(
       children: [
-        Padding(padding: EdgeInsets.only(top: 15), child: _buildStockField()),
+        Padding(padding: EdgeInsets.only(top: 25, bottom: 5), child: _buildStockField()),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -119,34 +119,28 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
               ),
             ),
           ),
-        Padding(
-          padding: EdgeInsets.only(top: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              text(
-                "more info",
-                fontSize: 16.0,
-                textColor: Colors.grey[600],
-              )
-            ],
-          ),
-        ),
-        Padding(padding: EdgeInsets.only(top: 10), child: _buildWindowField()),
-        _buildMinRestField(),
+        // Padding(
+        //   padding: EdgeInsets.only(top: 10.0),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       text(
+        //         "more info",
+        //         fontSize: 16.0,
+        //         textColor: Colors.grey[600],
+        //       )
+        //     ],
+        //   ),
+        // ),
+        // Padding(padding: EdgeInsets.only(top: 10), child: _buildWindowField()),
+        // _buildMinRestField(),
       ],
     );
   }
 
   Widget _buildStockField() {
-    return CustomTextField(
-      stackIcons: _icons(
-          color: (widget.therapy.stock == null ||
-                  widget.therapy.stock.currentLevel == null)
-              ? Colors.blueGrey
-              : (widget.therapy.stock.isLowOnStock)
-                  ? Colors.red
-                  : Colors.blueGrey),
+    return ProfileCustomTextField(
+      stackIcons: null,
       onTap: () => showEditStockDialog2(context),
       placeholder: _getStockMessage(),
       placeholderText: 'Stock',
@@ -225,7 +219,10 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         Container(
           height: size.height * 0.08,
           width: size.width * 0.16,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: textColor),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.orange[800],
+          ),
           child: Center(
             child: Icon(
               Icons.check,
@@ -240,7 +237,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
               fontFamily: 'Regular',
               fontSize: 15.0,
               overflow: TextOverflow.ellipsis,
-              textColor: textColor),
+              textColor: Colors.orange[800]),
         ),
       ],
     );
@@ -259,7 +256,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             child: Center(
               child: Icon(
                 CupertinoIcons.volume_up,
-                color: textColor,
+                color: Colors.orange[800],
                 size: 35,
               ),
             ),
@@ -271,7 +268,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
               fontFamily: 'Regular',
               fontSize: 15.0,
               overflow: TextOverflow.ellipsis,
-              textColor: textColor),
+              textColor: Colors.orange[800]),
         ),
       ],
     );
@@ -292,7 +289,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             child: Center(
               child: Icon(
                 Icons.add,
-                color: textColor,
+                color: Colors.orange[800],
                 size: 35,
               ),
             ),
@@ -303,7 +300,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                 fontFamily: 'Regular',
                 fontSize: 15.0,
                 overflow: TextOverflow.ellipsis,
-                textColor: textColor),
+                textColor: Colors.orange[800]),
           ),
         ],
       ),
@@ -318,7 +315,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
       height: size.height * 0.20,
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(
-          color: appWhite,
+          color: Colors.orange[800],
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),

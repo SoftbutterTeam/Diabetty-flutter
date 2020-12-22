@@ -63,9 +63,10 @@ class _EditTherapyReminderState extends State<EditTherapyReminder>
       overflow: TextOverflow.clip,
       decoration: BoxDecoration(
         color: appWhite,
-        border: Border.all(
-            color: Colors.black54, width: 0.1, style: BorderStyle.solid),
-        borderRadius: BorderRadius.circular(0),
+        border: Border(
+          bottom: BorderSide(
+              color: Colors.grey[200], width: 1.2, style: BorderStyle.solid),
+        ),
       ),
       prefix: Padding(
         padding: EdgeInsets.only(left: 18.0),
