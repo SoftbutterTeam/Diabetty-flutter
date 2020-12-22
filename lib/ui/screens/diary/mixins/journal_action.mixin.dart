@@ -184,8 +184,7 @@ mixin JournalActionsMixin<T extends Widget> {
             ));
   }
 
-  void showEditJournalActionSheet(
-      BuildContext context, JournalEntry journalNote) {
+  void showEditJournalActionSheet(BuildContext context) {
     DiaryBloc diaryBloc = Provider.of<DiaryBloc>(context, listen: false);
     showCupertinoModalPopup(
         context: context,
@@ -203,6 +202,7 @@ mixin JournalActionsMixin<T extends Widget> {
                   onPressed: () {
                     Navigator.pop(context);
                     areYouSurePopup(context, () {
+                      diaryBloc.deleteJournal(journal);
                       Navigator.pushReplacementNamed(context, diary);
                     });
                   },

@@ -28,6 +28,23 @@ class JournalRepository {
     return;
   }
 
+  Future<void> deleteJournal(Journal journal) async {
+    if (journal.userId == null)
+      journal.userId = (await _firebaseAuth.currentUser()).uid;
+
+    await _db
+        .collection('users')
+        .document(journal.userId)
+        .collection('journals')
+        .document()
+        .delete()
+        .catchError((e) {
+      //print(e);
+    });
+
+    return;
+  }
+
   Future<void> updateJournal(Journal journal) async {
     if (journal.userId == null)
       journal.userId = (await _firebaseAuth.currentUser()).uid;
