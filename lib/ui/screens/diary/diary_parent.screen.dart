@@ -39,9 +39,7 @@ class _DiaryParentScreenState extends State<DiaryParentScreen> {
     pageController.addListener(() {
       bool original = toggleValue;
       toggleValue = pageController.page.round() == 0 ? true : false;
-      if (original != toggleValue) {
-        setState(() {});
-      }
+      if (original != toggleValue) setState(() {});
     });
     super.initState();
   }

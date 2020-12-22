@@ -22,7 +22,6 @@ mixin JournalActionsMixin<T extends Widget> {
             .fetchJournalEntries(journal);
     Navigator.pushNamed(context, aJournal, arguments: {'journal': journal});
   }
-   
 
   void navigateToAddJournalNote(context,
       {JournalEntry entry, bool readOnly = false}) {
@@ -168,11 +167,46 @@ mixin JournalActionsMixin<T extends Widget> {
                     child: Text("Delete"),
                     onPressed: () {
                       Navigator.of(context).pop(context);
-                      if (journalNote.id != null)
-                        diaryBloc.deletejournalEntry(journalNote);
-                      Navigator.of(context).pop(context);
+                      areYouSurePopup(context, () {
+                        if (journalNote.id != null)
+                          diaryBloc.deletejournalEntry(journalNote);
+                        Navigator.of(context).pop(context);
+                      });
                     },
                   ),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                child: Container(color: Colors.white, child: Text('Cancel')),
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+              ),
+            ));
+  }
+
+  void showEditJournalActionSheet(
+      BuildContext context, JournalEntry journalNote) {
+    DiaryBloc diaryBloc = Provider.of<DiaryBloc>(context, listen: false);
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                  child: Text("Edit Title"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                CupertinoActionSheetAction(
+                  child: Text("Delete Journal"),
+                  isDestructiveAction: true,
+                  onPressed: () {
+                    Navigator.pop(context);
+                    areYouSurePopup(context, () {
+                      Navigator.pushReplacementNamed(context, diary);
+                    });
+                  },
+                ),
               ],
               cancelButton: CupertinoActionSheetAction(
                 child: Container(color: Colors.white, child: Text('Cancel')),
@@ -203,6 +237,36 @@ mixin JournalActionsMixin<T extends Widget> {
           ),
         );
       },
+    );
+  }
+
+  void areYouSurePopup(BuildContext context, Function func) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        message: Text('Are you sure?'),
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text("Yes"),
+            onPressed: () {
+              Navigator.of(context).pop(context);
+              func.call();
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text("No"),
+            onPressed: () {
+              Navigator.of(context).pop(context);
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Container(color: Colors.white, child: Text('Cancel')),
+          onPressed: () {
+            Navigator.of(context).pop(context);
+          },
+        ),
+      ),
     );
   }
 }
