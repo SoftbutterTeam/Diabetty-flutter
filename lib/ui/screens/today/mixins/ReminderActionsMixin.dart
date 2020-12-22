@@ -196,6 +196,7 @@ mixin ReminderActionsMixin<T extends Widget> {
               CupertinoActionSheetAction(
                   onPressed: () {
                     Navigator.of(context).pop(context);
+                    Navigator.of(context).pop(context);
 
                     dayPlanManager.takeReminder(reminder, DateTime.now());
                   },
@@ -205,6 +206,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                 CupertinoActionSheetAction(
                     onPressed: () {
                       Navigator.of(context).pop(context);
+                      Navigator.of(context).pop(context);
 
                       dayPlanManager.takeReminder(
                           reminder, reminder.rescheduledTime ?? reminder.time);
@@ -213,6 +215,8 @@ mixin ReminderActionsMixin<T extends Widget> {
               CupertinoActionSheetAction(
                   onPressed: () {
                     Navigator.of(context).pop(context);
+                    Navigator.of(context).pop(context);
+
                     showExactTimePicker(
                       context,
                       (DateTime choosenTime) {
