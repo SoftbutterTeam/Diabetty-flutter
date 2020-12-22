@@ -62,7 +62,7 @@ class _JournalScreenState extends State<JournalScreen>
   }
 
   Widget build(BuildContext context) {
-    manager = Provider.of<DiaryBloc>(context, listen: false);
+    manager = Provider.of<DiaryBloc>(context, listen: true);
 
     return JournalBackground(
       header: JournalHeader(journal: journal),
