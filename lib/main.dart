@@ -62,66 +62,65 @@ class MyApp extends StatelessWidget {
       ..init();
     TeamManager teamManager = TeamManager(appContext: appContext)..init();
     return MultiProvider(
-        providers: [
-          // ignore: todo
-          //*TODO place AppleSignIn and emailSecure in AuthService
-          Provider<AppleSignInAvailable>.value(value: appleSignInAvailable),
-          Provider<AuthService>(
-            create: (_) => authService,
-            dispose: (_, AuthService authService) => authService.dispose(),
+      providers: [
+        // ignore: todo
+        //*TODO place AppleSignIn and emailSecure in AuthService
+        Provider<AppleSignInAvailable>.value(value: appleSignInAvailable),
+        Provider<AuthService>(
+          create: (_) => authService,
+          dispose: (_, AuthService authService) => authService.dispose(),
+        ),
+        ChangeNotifierProvider<AppContext>(
+          create: (_) => appContext,
+        ),
+        ChangeNotifierProvider<TherapyManager>(
+          create: (_) => therapyManager,
+        ),
+        ChangeNotifierProvider<DayPlanManager>(
+          create: (_) => dayPlanManager,
+        ),
+        ChangeNotifierProvider<DiaryBloc>(
+          create: (_) => diaryBloc,
+        ),
+        ChangeNotifierProvider<TeamManager>(
+          create: (_) => teamManager,
+        ),
+        Provider<EmailSecureStore>(
+          create: (_) => EmailSecureStore(
+            flutterSecureStorage: FlutterSecureStorage(),
           ),
-          ChangeNotifierProvider<AppContext>(
-            create: (_) => appContext,
-          ),
-          ChangeNotifierProvider<TherapyManager>(
-            create: (_) => therapyManager,
-          ),
-          ChangeNotifierProvider<DayPlanManager>(
-            create: (_) => dayPlanManager,
-          ),
-          ChangeNotifierProvider<DiaryBloc>(
-            create: (_) => diaryBloc,
-          ),
-          ChangeNotifierProvider<TeamManager>(
-            create: (_) => teamManager,
-          ),
-          Provider<EmailSecureStore>(
-            create: (_) => EmailSecureStore(
-              flutterSecureStorage: FlutterSecureStorage(),
+        ),
+        ProxyProvider2<AuthService, EmailSecureStore, FirebaseEmailLinkHandler>(
+          update: (_, AuthService authService, EmailSecureStore storage, __) =>
+              FirebaseEmailLinkHandler(
+            auth: authService,
+            emailStore: storage,
+            firebaseDynamicLinks: FirebaseDynamicLinks.instance,
+          )..init(),
+          dispose: (_, linkHandler) => linkHandler.dispose(),
+        ),
+      ],
+      child: AuthWidgetBuilder(builder: (BuildContext context,
+          AsyncSnapshot<User> userSnapshot,
+          AsyncSnapshot<UserModel.User> aUserSnapshot) {
+        startKeepAlive(dayPlanManager.refresh);
+        return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.indigo,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-          ),
-          ProxyProvider2<AuthService, EmailSecureStore,
-              FirebaseEmailLinkHandler>(
-            update:
-                (_, AuthService authService, EmailSecureStore storage, __) =>
-                    FirebaseEmailLinkHandler(
-              auth: authService,
-              emailStore: storage,
-              firebaseDynamicLinks: FirebaseDynamicLinks.instance,
-            )..init(),
-            dispose: (_, linkHandler) => linkHandler.dispose(),
-          ),
-        ],
-        child: AuthWidgetBuilder(builder: (BuildContext context,
-            AsyncSnapshot<User> userSnapshot,
-            AsyncSnapshot<UserModel.User> aUserSnapshot) {
-          startKeepAlive(dayPlanManager.refresh);
-          return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                primarySwatch: Colors.indigo,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-              ),
-              onGenerateRoute: routerthing.Router.generateRoute,
-              home: EmailLinkErrorPresenter.create(context,
-                  child: AuthWidget(
-                    userSnapshot: userSnapshot,
-                    aUserSnapshot: aUserSnapshot,
-                  )),
-              builder: (context, child) => ScrollConfiguration(
-                    behavior: SBehavior(),
-                    child: child,
-                  ));
-        }));
+            onGenerateRoute: routerthing.Router.generateRoute,
+            home: EmailLinkErrorPresenter.create(context,
+                child: AuthWidget(
+                  userSnapshot: userSnapshot,
+                  aUserSnapshot: aUserSnapshot,
+                )),
+            builder: (context, child) => ScrollConfiguration(
+                  behavior: SBehavior(),
+                  child: child,
+                ));
+      }),
+    );
   }
 }
