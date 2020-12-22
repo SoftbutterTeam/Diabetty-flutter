@@ -73,7 +73,7 @@ class _JournalHeaderState extends State<JournalHeader> with JournalActionsMixin{
                     Icons.more_horiz,
                     size: 25,
                   ),
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.centerRight,
                 ),
               ),
             )
