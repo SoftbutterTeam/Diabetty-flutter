@@ -19,6 +19,7 @@ import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.da
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_reminder.dart';
 import 'package:diabetty/extensions/index.dart';
+import 'package:diabetty/ui/screens/therapy/edit_therapy_screen.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,7 +48,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     Size size = MediaQuery.of(context).size;
     return Column(
       children: <Widget>[
-        _buildHeader(size),
+        _buildHeader(context),
         Expanded(
             child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
@@ -66,17 +67,21 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         _body(context),
         SafeArea(
           child: IntrinsicHeight(
-            child: Container(
-              alignment: Alignment.topCenter,
-              child: SizedBox(
-                child: SubPageHeader(
-                  saveFunction: null,
-                  color: Colors.white,
-                  backFunction: () => Navigator.pop(context),
-                ),
-              ),
-            ),
-          ),
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  child: SizedBox(
+                    child: SubPageHeader(
+                      text: 'edit',
+                      saveFunction: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) =>
+                                EditTherapyScreen(therapy: therapy)),
+                      ),
+                      color: Colors.white,
+                      backFunction: () => Navigator.pop(context),
+                    ),
+                  ))),
         ),
       ]),
     );
@@ -190,7 +195,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildFooter(Size size) {
     return ConstrainedBox(
-        constraints: BoxConstraints(minHeight: size.height * 0.15),
+        constraints: BoxConstraints(minHeight: size.height * 0.18),
         child: IntrinsicHeight(
             child: Container(
           padding: EdgeInsets.only(top: 15),
@@ -326,15 +331,19 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     );
   }
 
-  Container _buildHeader(Size size) {
+  Widget _buildHeader(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     String nextMessage = getNextReminderMessage() ?? '-';
     String lastMessage = getLastTakenMessage() ?? '-';
     return Container(
       width: size.width,
-      height: size.height * 0.20,
+      height: size.height * 0.30,
+      padding: EdgeInsets.only(bottom: 10),
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(
-          color: Colors.orange[800],
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [Colors.deepOrange[900], Colors.deepOrange[800]]),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
@@ -355,89 +364,95 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
               width: 0.7,
             ),
           )),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 5.0),
-            child: Wrap(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: size.height * 0.05,
-                      width: size.width * 0.1,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgPicture.asset(
-                        appearance_iconss[
-                            widget.therapy.medicationInfo.appearanceIndex],
-                        width: 10,
-                        height: 10,
-                      ),
-                    ),
-                    SizedBox(width: size.width * 0.05),
-                    Text(widget.therapy.name,
-                        style: TextStyle(
-                            fontSize: 22.0,
-                            color: textColor,
-                            fontWeight: FontWeight.w600)),
-                  ],
-                ),
-              ],
+      child: Stack(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Icon(
+              Icons.dashboard,
+              color: Colors.transparent,
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 50, right: 50, bottom: 25),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      'last taken',
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    if (lastMessage != null)
-                      Text(
-                        lastMessage,
-                        style: TextStyle(
-                            color: textColor,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w300),
+            Padding(
+              padding: EdgeInsets.only(top: 30.0),
+              child: Wrap(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: size.height * 0.05,
+                        width: size.width * 0.1,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: SvgPicture.asset(
+                          appearance_iconss[
+                              widget.therapy.medicationInfo.appearanceIndex],
+                          width: 10,
+                          height: 10,
+                        ),
                       ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "next",
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    if (nextMessage != null)
-                      Text(
-                        nextMessage,
-                        style: TextStyle(
-                            color: textColor,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w300),
-                      ),
-                  ],
-                ),
-              ],
+                      SizedBox(width: size.width * 0.05),
+                      Text(widget.therapy.name,
+                          style: TextStyle(
+                              fontSize: 22.0,
+                              color: textColor,
+                              fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+            Padding(
+              padding: EdgeInsets.only(left: 50, right: 50, bottom: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        'last taken',
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      if (lastMessage != null)
+                        Text(
+                          lastMessage,
+                          style: TextStyle(
+                              color: textColor,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w300),
+                        ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "next",
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      if (nextMessage != null)
+                        Text(
+                          nextMessage,
+                          style: TextStyle(
+                              color: textColor,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w300),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ]),
     );
   }
 
