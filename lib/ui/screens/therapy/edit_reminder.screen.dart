@@ -29,10 +29,10 @@ class _EditReminderState extends State<EditReminder>
   Therapy get therapy => widget.therapy;
   @override
   Widget build(BuildContext context) {
-        final TherapyManager manager =
+    final TherapyManager manager =
         Provider.of<TherapyManager>(context, listen: true);
 
-        if (widget.therapy.schedule != null ||
+    if (widget.therapy.schedule != null ||
         widget.therapy.schedule.reminderRules.isNotEmpty) {
       widget.therapy.schedule.reminderRules
         ..sort((ReminderRule a, ReminderRule b) =>
@@ -101,9 +101,12 @@ class _EditReminderState extends State<EditReminder>
             },
             decoration: BoxDecoration(
               color: appWhite,
-              border: Border.all(
-                  color: Colors.black54, width: 0.1, style: BorderStyle.solid),
-              borderRadius: BorderRadius.circular(0),
+              border: Border(
+                bottom: BorderSide(
+                    color: Colors.grey[200],
+                    width: 1.2,
+                    style: BorderStyle.solid),
+              ),
             ),
             prefix: Container(
               padding: EdgeInsets.only(left: 18),
