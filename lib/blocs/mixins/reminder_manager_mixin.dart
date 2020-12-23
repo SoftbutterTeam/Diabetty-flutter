@@ -27,8 +27,10 @@ abstract class ReminderManagerMixin<T extends Manager> {
     reminder.skippedAt = null;
     // update Push Notifcations
     reminderService.saveReminder(reminder);
-    Therapy therapy = therapyManager?.usersTherapies
-        ?.firstWhere((element) => element.id == reminder.therapyId);
+    Therapy therapy = therapyManager?.usersTherapies?.firstWhere(
+      (element) => element.id == reminder.therapyId,
+      orElse: () => null,
+    );
     if (therapy != null && therapy.stock != null)
       therapy.stock.takenAmount(reminder.dose);
     if (update) updateListeners();
@@ -39,8 +41,10 @@ abstract class ReminderManagerMixin<T extends Manager> {
     reminder.skippedAt = null;
 
     reminderService.saveReminder(reminder);
-    Therapy therapy = therapyManager?.usersTherapies
-        ?.firstWhere((element) => element.id == reminder.therapyId);
+    Therapy therapy = therapyManager?.usersTherapies?.firstWhere(
+      (element) => element.id == reminder.therapyId,
+      orElse: () => null,
+    );
     if (therapy != null && therapy.stock != null)
       therapy.stock.refillAdd(reminder.dose);
     updateListeners();

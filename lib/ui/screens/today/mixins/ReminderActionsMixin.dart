@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
@@ -21,12 +22,19 @@ mixin ReminderActionsMixin<T extends Widget> {
   @protected
   Reminder get reminder;
 
-  void navigateToTherapy(BuildContext context, Reminder reminder) {
+  void navigateToTherapy(BuildContext context, Reminder reminder,
+      {DayPlanManager dayPlan}) {
     DayPlanManager dayPlanManager =
-        Provider.of<DayPlanManager>(context, listen: false);
+        dayPlan ?? Provider.of<DayPlanManager>(context, listen: false);
     TherapyManager therapyManager = dayPlanManager.therapyManager;
-    Therapy therapy = therapyManager?.usersTherapies
-        ?.firstWhere((element) => element.id == reminder.therapyId);
+    Therapy therapy;
+    if (therapyManager?.usersTherapies?.isNotEmpty ?? false) {
+      therapy = therapyManager?.usersTherapies?.firstWhere(
+          (element) => element.id == reminder.therapyId,
+          orElse: () => null);
+    } else {
+      therapy = null;
+    }
     if (therapy == null) return null;
     Navigator.push(
       context,
@@ -130,52 +138,56 @@ mixin ReminderActionsMixin<T extends Widget> {
     dayPlanManager.skipReminder(reminder);
   }
 
-  void showReminderInfoMoreActionSheet(context) => showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-            actions: [
-              CupertinoActionSheetAction(
-                child: Text(
-                  "View Profile",
+  void showReminderInfoMoreActionSheet(context,
+          {readOnly = false, DayPlanManager dayplan}) =>
+      showCupertinoModalPopup(
+          context: context,
+          builder: (context) => CupertinoActionSheet(
+                actions: [
+                  CupertinoActionSheetAction(
+                    child: Text(
+                      "View Profile",
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      navigateToTherapy(context, reminder, dayPlan: dayplan);
+                    },
+                  ),
+                  if (!readOnly)
+                    CupertinoActionSheetAction(
+                      child: Text(
+                        "Edit Dose",
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditDosageScreen(
+                                    reminder: reminder,
+                                  )),
+                        );
+                      },
+                    ),
+                  if (!readOnly)
+                    CupertinoActionSheetAction(
+                      child: Text(
+                        "Delete Reminder",
+                      ),
+                      onPressed: () {
+                        getDayPlanManager(context).deleteReminder(reminder);
+                        Navigator.of(context).pop(context);
+                        Navigator.pop(context);
+                      },
+                    ),
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  child: Container(color: Colors.white, child: Text('Cancel')),
+                  onPressed: () {
+                    Navigator.of(context).pop(context);
+                  },
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  navigateToTherapy(context, reminder);
-                },
-              ),
-              CupertinoActionSheetAction(
-                child: Text(
-                  "Edit Dose",
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditDosageScreen(
-                              reminder: reminder,
-                            )),
-                  );
-                },
-              ),
-              CupertinoActionSheetAction(
-                child: Text(
-                  "Delete Reminder",
-                ),
-                onPressed: () {
-                  getDayPlanManager(context).deleteReminder(reminder);
-                  Navigator.of(context).pop(context);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-            cancelButton: CupertinoActionSheetAction(
-              child: Container(color: Colors.white, child: Text('Cancel')),
-              onPressed: () {
-                Navigator.of(context).pop(context);
-              },
-            ),
-          ));
+              ));
 
   void unTakeReminder(BuildContext context, Reminder reminder) {
     getDayPlanManager(context).unTakeReminder(reminder);
@@ -185,7 +197,9 @@ mixin ReminderActionsMixin<T extends Widget> {
     getDayPlanManager(context).takeReminder(reminder, DateTime.now());
   }
 
-  void showTakeActionPopup(BuildContext context) => showCupertinoModalPopup(
+  void showTakeActionPopup(BuildContext context,
+          {bool reminderModal = false}) =>
+      showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
           DayPlanManager dayPlanManager = getDayPlanManager(context);
@@ -196,7 +210,7 @@ mixin ReminderActionsMixin<T extends Widget> {
               CupertinoActionSheetAction(
                   onPressed: () {
                     Navigator.of(context).pop(context);
-                    Navigator.of(context).pop(context);
+                    if (reminderModal) Navigator.of(context).pop(context);
 
                     dayPlanManager.takeReminder(reminder, DateTime.now());
                   },
@@ -206,7 +220,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                 CupertinoActionSheetAction(
                     onPressed: () {
                       Navigator.of(context).pop(context);
-                      Navigator.of(context).pop(context);
+                      if (reminderModal) Navigator.of(context).pop(context);
 
                       dayPlanManager.takeReminder(
                           reminder, reminder.rescheduledTime ?? reminder.time);
@@ -215,7 +229,7 @@ mixin ReminderActionsMixin<T extends Widget> {
               CupertinoActionSheetAction(
                   onPressed: () {
                     Navigator.of(context).pop(context);
-                    Navigator.of(context).pop(context);
+                    if (reminderModal) Navigator.of(context).pop(context);
 
                     showExactTimePicker(
                       context,
@@ -327,21 +341,29 @@ mixin ReminderActionsMixin<T extends Widget> {
         },
       );
 
-  void showReminderPopupModal(BuildContext context) => showGeneralDialog(
-        barrierDismissible: true,
-        barrierLabel: '',
-        context: context,
-        barrierColor: Colors.black12, //black12 white
-        pageBuilder: (context, anim1, anim2) => Dialog(
+  void showReminderPopupModal(BuildContext context, {DayPlanManager dayPlan}) {
+    bool readOnly = Provider.of<AppContext>(context, listen: false).readOnly;
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      barrierColor: Colors.black12, //black12 white
+      pageBuilder: (context, anim1, anim2) {
+        return Dialog(
             insetPadding: EdgeInsets.symmetric(horizontal: 25),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
             elevation: 3,
-            child: ReminderInfoModal(reminder: reminder)),
-        transitionBuilder: _transitionBuilderStyle1(),
-        transitionDuration: Duration(milliseconds: 250),
-      );
+            child: ReminderInfoModal(
+                reminder: reminder,
+                readOnly: readOnly,
+                dayPlanManager: readOnly ? dayPlan : null));
+      },
+      transitionBuilder: _transitionBuilderStyle1(),
+      transitionDuration: Duration(milliseconds: 250),
+    );
+  }
 
   _transitionBuilderStyle1() =>
       (BuildContext context, Animation<double> anim1, anim2, Widget child) {

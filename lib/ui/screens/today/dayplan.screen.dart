@@ -99,11 +99,14 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     show = true;
     String id = manager
         .getFinalRemindersList(date: manager.currentDateStamp)
-        .firstWhere((element) =>
-            !element.isComplete &&
-            !element.isDeleted &&
-            !element.isSkipped &&
-            !element.isMissed)
+        .firstWhere(
+          (element) =>
+              !element.isComplete &&
+              !element.isDeleted &&
+              !element.isSkipped &&
+              !element.isMissed,
+          orElse: () => null,
+        )
         ?.id;
 
     print(id);

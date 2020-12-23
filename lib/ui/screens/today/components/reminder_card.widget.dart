@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
@@ -42,12 +43,14 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
   }
 
   Widget _buildContent(BuildContext context) {
+    final dayplan = Provider.of<DayPlanManager>(context, listen: false);
+
     return SizedBox(
       child: Padding(
         padding:
             const EdgeInsets.only(right: 12, top: 7.0, bottom: 4, left: 12),
         child: GestureDetector(
-          onTap: () => showReminderPopupModal(context),
+          onTap: () => showReminderPopupModal(context, dayPlan: dayplan),
           child: Row(
             children: <Widget>[
               _buildReminderIcon(context),
@@ -168,13 +171,18 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
 
   Widget _buildReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
+    bool readOnly = Provider.of<AppContext>(context, listen: false).readOnly;
+    final dayplan = Provider.of<DayPlanManager>(context, listen: false);
+
+    print('readOnly');
+    print(readOnly);
     return GestureDetector(
       onTap: reminder.isSkipped
           ? (null)
-          : reminder.isActive || reminder.isLate
+          : (reminder.isActive || reminder.isLate) && !readOnly
               ? () => takeReminder(context, reminder)
-              : reminder.isComplete
-                  ? () => showReminderPopupModal(context)
+              : reminder.isComplete || readOnly
+                  ? () => showReminderPopupModal(context, dayPlan: dayplan)
                   : () => showTakeActionPopup(context),
       child: Container(
         alignment: Alignment.center,

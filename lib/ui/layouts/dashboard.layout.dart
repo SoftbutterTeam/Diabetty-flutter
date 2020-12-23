@@ -1,4 +1,3 @@
-import 'package:diabetty/blocs/team_manager.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/diary/diary_parent.screen.dart';
@@ -8,9 +7,7 @@ import 'package:diabetty/ui/screens/therapy/therapy.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/ui/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -47,10 +44,11 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   void initState() {
-    pageController = PageController(initialPage: pageIndex, keepPage: true);
+    pageController = PageController(
+        initialPage: (widget.appContext == null) ? pageIndex : 0,
+        keepPage: true);
     if (widget.appContext != null)
       _pages = [
-        DiaryParentScreenBuilder(),
         Simple.DayPlanScreenBuilder(),
         TherapyScreenBuilder(),
       ];
@@ -72,16 +70,17 @@ class _DashBoardState extends State<DashBoard> {
 
   Scaffold _buildDashboard() {
     var __navigationItems = [
-      BottomNavigationBarItem(
-        icon: SvgPicture.asset(
-          d_5,
-          height: 30,
-          width: 30,
-          color: color,
-          fit: BoxFit.fitHeight,
+      if (widget.appContext == null)
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            d_5,
+            height: 30,
+            width: 30,
+            color: color,
+            fit: BoxFit.fitHeight,
+          ),
+          title: Text("diary"),
         ),
-        title: Text("diary"),
-      ),
       BottomNavigationBarItem(
           icon: Container(
               padding: EdgeInsets.only(left: 0.5),
@@ -149,7 +148,9 @@ class _DashBoardState extends State<DashBoard> {
           providers: [
             // ignore: todo
             //*TODO place AppleSignIn and emailSecure in AuthService
-
+            ChangeNotifierProvider<AppContext>(
+              create: (_) => widget.appContext,
+            ),
             ChangeNotifierProvider<TherapyManager>(
               create: (_) => therapyManager,
             ),

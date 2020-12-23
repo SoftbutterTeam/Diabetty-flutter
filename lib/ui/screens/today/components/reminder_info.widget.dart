@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
@@ -21,10 +22,14 @@ import 'package:provider/provider.dart';
 class ReminderInfoModal extends StatefulWidget {
   const ReminderInfoModal({
     this.reminder,
+    this.readOnly,
+    this.dayPlanManager,
     Key key,
   }) : super(key: key);
 
   final Reminder reminder;
+  final bool readOnly;
+  final dayPlanManager;
 
   @override
   _ReminderInfoModalState createState() => _ReminderInfoModalState();
@@ -40,6 +45,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
 
   @override
   void initState() {
+    dayPlanManager = widget.dayPlanManager;
+    print('yoyo');
     super.initState();
   }
 
@@ -48,7 +55,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   DayPlanManager dayPlanManager;
   @override
   Widget build(BuildContext context) {
-    dayPlanManager = Provider.of<DayPlanManager>(context, listen: true);
+    dayPlanManager = widget.dayPlanManager ??
+        Provider.of<DayPlanManager>(context, listen: true);
     colorToFade = false ? Colors.green : Colors.grey;
     opacity = reminder.isComplete ? .3 : .3;
     var size = MediaQuery.of(context).size;
@@ -82,7 +90,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
           ),
           Flexible(
             flex: 1,
-            child: _buildFooter(context),
+            child: widget.readOnly ? Container() : _buildFooter(context),
           ),
         ],
       ),
@@ -96,8 +104,12 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     int remStrengthType = reminder.strengthUnitindex;
     int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
 
-    Therapy therapy = dayPlanManager.therapyManager?.usersTherapies
-        ?.firstWhere((element) => element.id == reminder.therapyId);
+    Therapy therapy =
+        dayPlanManager?.therapyManager?.usersTherapies?.isNotEmpty ?? false
+            ? dayPlanManager.therapyManager?.usersTherapies?.firstWhere(
+                (element) => element.id == reminder.therapyId,
+                orElse: () => null)
+            : null;
     return ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: size.height * 0.25,
@@ -365,14 +377,15 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 ),
               ),
               Icon(Icons.more_vert, color: Colors.transparent),
-              Container(
-                color: Colors.transparent,
-                child: Padding(
-                    padding: EdgeInsets.only(right: 15.0),
-                    child: GestureDetector(
-                        onTap: () => showReminderInfoMoreActionSheet(context),
-                        child: Icon(Icons.more_horiz))),
-              ),
+              GestureDetector(
+                  onTap: () => showReminderInfoMoreActionSheet(context,
+                      readOnly: widget.readOnly, dayplan: dayPlanManager),
+                  child: Container(
+                      color: Colors.transparent,
+                      padding: EdgeInsets.only(
+                        right: 15.0,
+                      ),
+                      child: Icon(Icons.more_horiz))),
             ],
           ),
         ),
@@ -402,10 +415,10 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
             ),
             ReminderModalFooterButton(
                 text2: (reminder.takenAt != null) ? "Un-Take" : "Take",
-                assetName: (reminder.takenAt != null)
+                assetName: (reminder.isComplete)
                     ? 'assets/icons/navigation/clock/redo.svg'
                     : 'assets/icons/navigation/checkbox/tick_outline2.svg',
-                onTap: () => (reminder.takenAt != null)
+                onTap: () => (reminder.isComplete)
                     ? _unTakeAction(context)
                     : _takenActionSheet(context)),
             ReminderModalFooterButton(
@@ -431,7 +444,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   }
 
   void _takenActionSheet(BuildContext context) {
-    showTakeActionPopup(context);
+    showTakeActionPopup(context, reminderModal: true);
   }
 }
 

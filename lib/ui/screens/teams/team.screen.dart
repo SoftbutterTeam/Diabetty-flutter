@@ -195,60 +195,60 @@ class RelationCard extends StatelessWidget with RelationActionsMixin {
 
   Widget _buildSupporteeCard(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return RelationDecor(
-      child: GestureDetector(
-          onTap: () => navigateToSupporteeDashboard(context),
+    return GestureDetector(
+      onTap: () => navigateToSupporteeDashboard(context),
+      child: RelationDecor(
           child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 15, right: 20),
+            child: CircleAvatar(backgroundColor: Colors.white, child: null),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: Container(
+              height: max(6, size.height * 0.02),
+              width: 1.5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.orange[800],
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 15, right: 20),
-                child: CircleAvatar(backgroundColor: Colors.white, child: null),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: Container(
-                  height: max(6, size.height * 0.02),
-                  width: 1.5,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.orange[800],
-                  ),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+              text(
+                  (contract.supportee.displayName.isEmpty
+                          ? contract.supportee.name
+                          : contract.supportee.displayName)
+                      .toLowerCase(),
+                  fontSize: 15.0),
+              text('supportee', fontSize: 13.0),
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(right: 25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  text(
-                      (contract.supportee.displayName.isEmpty
-                              ? contract.supportee.name
-                              : contract.supportee.displayName)
-                          .toLowerCase(),
-                      fontSize: 15.0),
-                  text('supportee', fontSize: 13.0),
+                  GestureDetector(
+                    onTap: () => stopSupportPopup(context),
+                    child: SizedBox(
+                        child: Container(
+                            padding: EdgeInsets.all(2),
+                            color: Colors.transparent,
+                            child: Icon(Icons.more_horiz,
+                                size: 25, color: Colors.black87))),
+                  )
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(right: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () => stopSupportPopup(context),
-                        child: SizedBox(
-                            child: Container(
-                                padding: EdgeInsets.all(2),
-                                color: Colors.transparent,
-                                child: Icon(Icons.more_horiz,
-                                    size: 25, color: Colors.black87))),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          )),
+            ),
+          ),
+        ],
+      )),
     );
   }
 

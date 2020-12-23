@@ -18,7 +18,9 @@ class AppContext extends ChangeNotifier {
   UserModel.User user;
   // UserModel.User get user => _user;
 
-  AppContext(this.authService);
+  AppContext(this.authService, {this.readOnly = false});
+
+  bool readOnly;
 
   StreamController<UserModel.User> _onUserChanged = StreamController();
 

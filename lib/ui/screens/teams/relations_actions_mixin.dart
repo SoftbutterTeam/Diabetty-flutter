@@ -30,7 +30,7 @@ mixin RelationActionsMixin<T extends Widget> {
   Contract get contract;
 
   void navigateToSupporteeDashboard(BuildContext context) {
-    AppContext appContext = new AppContext(null);
+    AppContext appContext = new AppContext(null, readOnly: true);
     appContext.user = contract.supportee;
     Navigator.push(
         context,
