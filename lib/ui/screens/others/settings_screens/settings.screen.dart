@@ -246,7 +246,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   Widget _buildAboutUsField(BuildContext context) {
     return CustomTextField(
       onTap: () {},
-      placeholderText: 'Abous Us',
+      placeholderText: 'About Us',
     );
   }
 

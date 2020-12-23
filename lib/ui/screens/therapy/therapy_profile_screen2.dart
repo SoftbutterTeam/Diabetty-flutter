@@ -66,15 +66,17 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         _body(context),
         SafeArea(
           child: IntrinsicHeight(
-              child: Container(
-                  alignment: Alignment.topCenter,
-                  child: SizedBox(
-                    child: SubPageHeader(
-                      saveFunction: null,
-                      color: Colors.white,
-                      backFunction: () => Navigator.pop(context),
-                    ),
-                  ))),
+            child: Container(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                child: SubPageHeader(
+                  saveFunction: null,
+                  color: Colors.white,
+                  backFunction: () => Navigator.pop(context),
+                ),
+              ),
+            ),
+          ),
         ),
       ]),
     );
