@@ -25,6 +25,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 
 class TherapyProfileScreen2 extends StatefulWidget {
   final Therapy therapy;
@@ -42,14 +43,6 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   TherapyManager manager;
   Color textColor = Colors.white;
 
-  @override
-  Widget build(BuildContext context) {
-    manager = Provider.of<TherapyManager>(context, listen: true);
-    return TherapyProfileBackground(
-        header: TherapyProfileHeader(therapy: widget.therapy),
-        child: _body(context));
-  }
-
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
@@ -62,6 +55,28 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                 child: _buildBody(size))),
         _buildFooter(size),
       ],
+    );
+  }
+
+  Widget build(BuildContext context) {
+    manager = Provider.of<TherapyManager>(context, listen: true);
+
+    return Scaffold(
+      body: Stack(children: [
+        _body(context),
+        SafeArea(
+          child: IntrinsicHeight(
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  child: SizedBox(
+                    child: SubPageHeader(
+                      saveFunction: null,
+                      color: Colors.white,
+                      backFunction: () => Navigator.pop(context),
+                    ),
+                  ))),
+        ),
+      ]),
     );
   }
 
@@ -84,7 +99,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
     return Column(
       children: [
-        Padding(padding: EdgeInsets.only(top: 25, bottom: 5), child: _buildStockField()),
+        Padding(
+            padding: EdgeInsets.only(top: 25, bottom: 5),
+            child: _buildStockField()),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

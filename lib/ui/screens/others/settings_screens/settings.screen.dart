@@ -35,12 +35,10 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Widget build(BuildContext context) {
     appContext = Provider.of<AppContext>(context, listen: true);
-    if (appContext.user == null) {
-      return SizedBox();
-    }
+
     return Scaffold(
       body: Stack(children: [
-        _body(context),
+        if (appContext.user == null) SizedBox() else _body(context),
         SafeArea(
           child: IntrinsicHeight(
               child: Container(
