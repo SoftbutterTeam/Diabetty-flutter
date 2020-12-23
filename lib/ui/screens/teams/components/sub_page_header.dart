@@ -62,7 +62,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
                 child: Align(
                   child: Text(widget.text ?? '',
                       style: TextStyle(
-                          color: Colors.orange[800],
+                          color: widget.color ?? Colors.orange[800],
                           fontSize: 17.0,
                           fontWeight: FontWeight.w400)),
                   alignment: Alignment.centerRight,

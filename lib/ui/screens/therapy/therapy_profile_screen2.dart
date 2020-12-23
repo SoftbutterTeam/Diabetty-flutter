@@ -19,6 +19,7 @@ import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.da
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_reminder.dart';
 import 'package:diabetty/extensions/index.dart';
+import 'package:diabetty/ui/screens/therapy/edit_therapy_screen.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,7 +71,13 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   alignment: Alignment.topCenter,
                   child: SizedBox(
                     child: SubPageHeader(
-                      saveFunction: null,
+                      text: 'edit',
+                      saveFunction: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) =>
+                                EditTherapyScreen(therapy: therapy)),
+                      ),
                       color: Colors.white,
                       backFunction: () => Navigator.pop(context),
                     ),
@@ -188,7 +195,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildFooter(Size size) {
     return ConstrainedBox(
-        constraints: BoxConstraints(minHeight: size.height * 0.15),
+        constraints: BoxConstraints(minHeight: size.height * 0.18),
         child: IntrinsicHeight(
             child: Container(
           padding: EdgeInsets.only(top: 15),
@@ -329,10 +336,12 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     String lastMessage = getLastTakenMessage() ?? '-';
     return Container(
       width: size.width,
-      height: size.height * 0.20,
+      height: size.height * 0.30,
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(
-          color: Colors.orange[800],
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [Colors.orange[900], Colors.orange[800]]),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
@@ -357,8 +366,12 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Icon(
+            Icons.dashboard,
+            color: Colors.transparent,
+          ),
           Padding(
-            padding: EdgeInsets.only(top: 5.0),
+            padding: EdgeInsets.only(top: 30.0),
             child: Wrap(
               children: [
                 Row(
