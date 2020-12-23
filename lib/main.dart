@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:diabetty/utils/application_state_reset_timer.dart';
@@ -104,22 +105,23 @@ class MyApp extends StatelessWidget {
           AsyncSnapshot<User> userSnapshot,
           AsyncSnapshot<UserModel.User> aUserSnapshot) {
         startKeepAlive(dayPlanManager.refresh);
-        return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              primarySwatch: Colors.indigo,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            onGenerateRoute: routerthing.Router.generateRoute,
-            home: EmailLinkErrorPresenter.create(context,
-                child: AuthWidget(
-                  userSnapshot: userSnapshot,
-                  aUserSnapshot: aUserSnapshot,
-                )),
-            builder: (context, child) => ScrollConfiguration(
-                  behavior: SBehavior(),
-                  child: child,
-                ));
+        return OKToast(
+            child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  primarySwatch: Colors.indigo,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                ),
+                onGenerateRoute: routerthing.Router.generateRoute,
+                home: EmailLinkErrorPresenter.create(context,
+                    child: AuthWidget(
+                      userSnapshot: userSnapshot,
+                      aUserSnapshot: aUserSnapshot,
+                    )),
+                builder: (context, child) => ScrollConfiguration(
+                      behavior: SBehavior(),
+                      child: child,
+                    )));
       }),
     );
   }

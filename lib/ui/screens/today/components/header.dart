@@ -1,10 +1,13 @@
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/ui/screens/today/components/drop_modal.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/extensions/index.dart';
 
 class DayPlanHeader extends StatefulWidget {
   const DayPlanHeader({Key key}) : super(key: key);
@@ -13,37 +16,51 @@ class DayPlanHeader extends StatefulWidget {
   _DayPlanHeaderState createState() => _DayPlanHeaderState();
 }
 
-class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
+class _DayPlanHeaderState extends State<DayPlanHeader> {
   @override
   void initState() {
     super.initState();
   }
 
+  DayPlanManager dayManager;
+
   final DropModal dropModal = DropModal();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    dayManager = Provider.of<DayPlanManager>(context, listen: false);
+    bool readOnly = Provider.of<AppContext>(context, listen: false).readOnly;
     return Container(
       height: size.height * 0.11,
+      margin: EdgeInsets.symmetric(horizontal: 30),
       decoration: BoxDecoration(
         color: Colors.transparent,
       ),
-      // padding: EdgeInsets.only(left: 15, right: 15),
-      child: Stack(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          _buildSilentButton(context),
-          _buildTakeButton(context),
-          _buildDateWidget(context),
+          if (readOnly)
+            Flexible(
+              flex: 1,
+              child: _buildBackButton(context),
+            ),
+          readOnly
+              ? _buildDateWidget(context)
+              : Expanded(
+                  child: _buildDateWidget(context),
+                ),
+          if (readOnly)
+            Flexible(
+              flex: 1,
+              child: _buildTakeButton(context),
+            ),
         ],
       ),
     );
   }
 
   void _showDateSelectDropModal(BuildContext context, Widget child) async {
-    final DayPlanManager dayManager =
-        Provider.of<DayPlanManager>(context, listen: false);
-
     Size size = MediaQuery.of(context).size;
     showGeneralDialog(
       barrierDismissible: true,
@@ -77,6 +94,8 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
   }
 
   Widget _buildDateWidget(BuildContext context) {
+    bool readOnly = Provider.of<AppContext>(context, listen: false).readOnly;
+
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
     return Center(
@@ -89,7 +108,10 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
         child: Container(
           alignment: Alignment.center,
           child: subHeadingText(
-              shortenDateRepresent(dayManager.currentDateStamp), Colors.white),
+              readOnly
+                  ? "Friend's " + dayManager.currentDateStamp.formatShortShort()
+                  : dayManager.currentDateStamp.shortenDateRepresent(),
+              Colors.white),
         ),
       ),
     ));
@@ -108,6 +130,42 @@ class _DayPlanHeaderState extends State<DayPlanHeader> with DateMixin {
           color: Colors.white,
           child:
               Icon(Icons.keyboard_arrow_up, size: 30, color: Colors.grey[900]),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: FlatButton(
+        onPressed: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+          Navigator.pop(context);
+        },
+        color: Colors.transparent,
+        disabledTextColor: Colors.grey,
+        disabledColor: Colors.transparent,
+        padding: EdgeInsets.only(left: 0),
+        child: Align(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.arrow_back_ios, color: Colors.white, size: 17),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(bottom: 3),
+                child: Icon(
+                  CupertinoIcons.profile_circled,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
+          alignment: Alignment.centerLeft,
         ),
       ),
     );

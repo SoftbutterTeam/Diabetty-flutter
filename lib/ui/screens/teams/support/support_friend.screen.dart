@@ -1,12 +1,15 @@
 import 'dart:math';
 
 import 'package:diabetty/blocs/team_manager.dart';
+import 'package:diabetty/ui/common_widgets/toast_widget.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_background.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:diabetty/extensions/index.dart';
 
 class SupportScreenBuilder extends StatelessWidget {
   @override
@@ -65,9 +68,18 @@ class _SupportScreenState extends State<SupportScreen> {
           },
           saveFunction: () async {
             if (validatePhoneNo()) {
-              print(await teamManager.requestToSupport(phoneNo));
-              print(phoneNo);
-              Navigator.pop(context);
+              String str = await teamManager.requestToSupport(phoneNo);
+              if (str != null) {
+                showToastWidget(
+                    ToastWidget(
+                      title: "Couldn't Add Friend",
+                      description: str,
+                    ),
+                    position: ToastPosition.top,
+                    duration: Duration(seconds: 5));
+              } else {
+                Navigator.pop(context);
+              }
             }
           },
         ),
@@ -93,7 +105,7 @@ class _SupportScreenState extends State<SupportScreen> {
     return Column(
       children: [
         SizedBox(height: min(50, size.height * 0.03)),
-        Text('Please enter desired supporters number',
+        Text('Please enter friends mobile number',
             style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w500,
