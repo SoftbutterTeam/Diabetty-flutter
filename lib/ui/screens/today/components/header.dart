@@ -1,6 +1,7 @@
 import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -154,7 +155,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
       child: FlatButton(
         onPressed: () {
           FocusScope.of(context).requestFocus(FocusNode());
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, team);
         },
         color: Colors.transparent,
         disabledTextColor: Colors.grey,

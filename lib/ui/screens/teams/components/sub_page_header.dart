@@ -18,7 +18,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 15),
+        margin: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: Colors.transparent,
         ),

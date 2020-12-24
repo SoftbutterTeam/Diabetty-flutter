@@ -23,6 +23,6 @@ extension StringExtension on String {
   }
 
   bool isNotEmpty() {
-    return this != "" && this != null;
+    return this != null && this != "";
   }
 }

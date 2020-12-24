@@ -153,7 +153,9 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
     int remQuantity = reminder.dose;
     int remType = reminder.doseTypeIndex;
     int remStrengthType = reminder.strengthUnitindex;
-    int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
+    int remAdviceInd = (reminder.advices != null && reminder.advices.isNotEmpty)
+        ? reminder.advices[0]
+        : 0;
     String remDescription = "";
     if (remStrength != null && remStrengthType != null && remStrengthType != 0)
       remDescription += "$remStrength ${strengthUnits[remStrengthType]}";
