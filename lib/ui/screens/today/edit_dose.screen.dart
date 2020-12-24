@@ -23,18 +23,20 @@ class EditDosageScreen extends StatefulWidget {
 class _EditDosageScreenState extends State<EditDosageScreen>
     with ReminderActionsMixin {
   TextEditingController dosageController;
+  TextEditingController strengthController;
   int dose;
-  int y;
-  int z;
+  Reminder reminderForm;
 
   @override
   Reminder get reminder => widget.reminder;
 
   @override
   void initState() {
+    reminderForm = Reminder();
+    reminderForm.loadFromJson(reminder.tojson());
     dosageController = TextEditingController(text: reminder.dose.toString());
-    y = reminder.dose;
-    z = reminder.doseTypeIndex;
+    strengthController = TextEditingController(
+        text: reminder.strength != null ? reminder.strength.toString() : '');
     super.initState();
   }
 
@@ -54,20 +56,17 @@ class _EditDosageScreenState extends State<EditDosageScreen>
   }
 
   _back() {
-    reminder.dose = y;
-    reminder.doseTypeIndex = z;
     Navigator.pop(context);
   }
 
   _save() {
     DayPlanManager dayPlanManager =
         Provider.of<DayPlanManager>(context, listen: false);
-    if (dosageController.text.isEmpty) {
+    if (dosageController.text.isEmpty || strengthController.text.isEmpty) {
       return showErrorModal(context);
     } else {
-      reminder.dose = int.parse(dosageController.text);
-      setState(() {});
-      dayPlanManager.updateListeners();
+      dayPlanManager.editDoseReminder(reminder, reminderForm.dose,
+          strength: reminderForm.strength);
       Navigator.pop(context);
     }
   }
@@ -76,7 +75,7 @@ class _EditDosageScreenState extends State<EditDosageScreen>
     return showDialog(
       context: context,
       builder: (context) => NoResponseErrorModal(
-        errorDescription: 'Please fill in the dosage field',
+        errorDescription: 'Please fill in all fields',
       ),
     );
   }
@@ -97,25 +96,31 @@ class _EditDosageScreenState extends State<EditDosageScreen>
     );
   }
 
-  Widget _buildBody(Size size) {
-    return Column(
-      children: [
-        SizedBox(height: size.height * 0.02),
-        _buildInputDoseField(context),
-        SizedBox(height: size.height * 0.01),
-        _buildStrengthField(context),
-      ],
-    );
-  }
-
   InputTextField _buildInputDoseField(BuildContext context) {
     return InputTextField(
       stackIcons: null,
       controller: dosageController,
       placeholder: 'Dosage',
-      initalName: widget.reminder.dose.toString(),
+      initalName:
+          widget.reminder.dose != null ? widget.reminder.dose.toString() : '',
       onChanged: (val) {
-        dose = toInt(val);
+        reminderForm.dose = toInt(val);
+        setState(() {});
+        // or widget.manager.updateListeners();
+      },
+    );
+  }
+
+  InputTextField _buildInputStrengthField(BuildContext context) {
+    return InputTextField(
+      stackIcons: null,
+      controller: strengthController,
+      placeholder: 'Strength',
+      initalName: widget.reminder.strength != null
+          ? widget.reminder.strength.toString()
+          : '',
+      onChanged: (val) {
+        reminderForm.strength = toInt(val);
         setState(() {});
         // or widget.manager.updateListeners();
       },
@@ -128,95 +133,19 @@ class _EditDosageScreenState extends State<EditDosageScreen>
         SizedBox(height: size.height * 0.02),
         Padding(
           padding: EdgeInsets.only(bottom: 5.0),
-          child: Text('Edit Dosage',
-              style: TextStyle(color: Colors.orange[800])),
+          child:
+              Text('Edit Dosage', style: TextStyle(color: Colors.orange[800])),
         ),
         _buildInputDoseField(context),
         SizedBox(height: size.height * 0.01),
-        Padding(
-          padding: EdgeInsets.only(bottom: 5.0),
-          child: Text('Edit Dosage Type',
-              style: TextStyle(color: Colors.orange[800])),
-        ),
-        _buildDoseTypeField(context, reminder, size),
+        if (widget.reminder.strength != null)
+          Padding(
+            padding: EdgeInsets.only(bottom: 5.0),
+            child: Text('Edit Strength',
+                style: TextStyle(color: Colors.orange[800])),
+          ),
+        _buildInputStrengthField(context),
       ],
     );
-  }
-
-  Widget _buildDoseTypeField(
-      BuildContext context, Reminder reminder, Size size) {
-    return CustomTextField(
-      stackIcons: null,
-      onTap: () => showTypeThing(context, reminder, size),
-      placeholder: _dosePlaceholder2(),
-      placeholderText: 'Dose Type',
-    );
-  }
-
-  showTypeThing(BuildContext context, Reminder reminder, Size size) {
-    void settingState() {
-      return setState(() {});
-    }
-
-    openTypeThing(context, reminder, size, settingState);
-  }
-
-  Widget _buildDoseField(BuildContext context) {
-    return CustomTextField(
-      stackIcons: null,
-      onTap: () {},
-      placeholder: _dosePlaceholder(),
-      placeholderText: 'Dose',
-    );
-  }
-
-  Widget _buildStrengthField(BuildContext context) {
-    return CustomTextField(
-      stackIcons: null,
-      onTap: () {},
-      placeholder: _strengthPlaceholder(),
-      placeholderText: 'Strength',
-    );
-  }
-
-  _dosePlaceholder2() {
-    // int remStrength = widget.reminder.strength;
-    // int remStrengthType = widget.reminder.strengthUnitindex;
-    int remQuantity = widget.reminder.dose;
-    int remType = widget.reminder.doseTypeIndex;
-
-    String remDescription = "";
-    // if (remStrength != null && remStrengthType != null && remStrengthType != 0)
-    //   remDescription += "$remStrength ${strengthUnits[remStrengthType]}";
-    // if (remDescription.isNotEmpty) remDescription += ', ';
-    if (remType != null && remQuantity != null)
-      remDescription += "${unitTypes[remType].plurarlUnits(remQuantity ?? 1)}";
-
-    return remDescription;
-  }
-
-  _dosePlaceholder() {
-    // int remStrength = widget.reminder.strength;
-    // int remStrengthType = widget.reminder.strengthUnitindex;
-    int remQuantity = widget.reminder.dose;
-    int remType = widget.reminder.doseTypeIndex;
-
-    String remDescription = "";
-    // if (remStrength != null && remStrengthType != null && remStrengthType != 0)
-    //   remDescription += "$remStrength ${strengthUnits[remStrengthType]}";
-    // if (remDescription.isNotEmpty) remDescription += ', ';
-    if (remType != null && remQuantity != null)
-      remDescription +=
-          "${remQuantity ?? ''} ${unitTypes[remType].plurarlUnits(remQuantity ?? 1)}";
-
-    return remDescription;
-  }
-
-  _strengthPlaceholder() {
-    int remStrength = widget.reminder.strength;
-    int remStrengthType = widget.reminder.strengthUnitindex;
-
-    if (remStrength != null || remStrengthType != null || remStrengthType != 0)
-      return "$remStrength ${strengthUnits[remStrengthType]}";
   }
 }
