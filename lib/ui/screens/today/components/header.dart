@@ -1,6 +1,7 @@
 import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
+import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -94,8 +95,20 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
   }
 
   Widget _buildDateWidget(BuildContext context) {
-    bool readOnly = Provider.of<AppContext>(context, listen: false).readOnly;
+    AppContext appContext = Provider.of<AppContext>(context, listen: false);
+    bool readOnly = appContext.readOnly;
 
+    String name = (((appContext.user.displayName == null ||
+                appContext.user.displayName.isEmpty
+            ? appContext.user.name
+            : appContext.user.displayName) ??
+        ''));
+    name = name.isEmpty ? "friend" : name;
+    name += "'s";
+
+    name = name
+        .substring(0, name.length > 10 ? 10 : name.length)
+        .capitalizeBegins();
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
     return Center(
@@ -109,7 +122,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
           alignment: Alignment.center,
           child: subHeadingText(
               readOnly
-                  ? "Friend's " + dayManager.currentDateStamp.formatShortShort()
+                  ? name + ' ' + dayManager.currentDateStamp.formatShortShort()
                   : dayManager.currentDateStamp.shortenDateRepresent(),
               Colors.white),
         ),
@@ -142,7 +155,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
       child: FlatButton(
         onPressed: () {
           FocusScope.of(context).requestFocus(FocusNode());
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, team);
         },
         color: Colors.transparent,
         disabledTextColor: Colors.grey,

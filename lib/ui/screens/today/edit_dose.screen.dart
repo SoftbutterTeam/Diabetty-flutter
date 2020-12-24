@@ -65,6 +65,7 @@ class _EditDosageScreenState extends State<EditDosageScreen>
     if (dosageController.text.isEmpty || strengthController.text.isEmpty) {
       return showErrorModal(context);
     } else {
+      reminder.dose = int.parse(dosageController.text).abs();
       dayPlanManager.editDoseReminder(reminder, reminderForm.dose,
           strength: reminderForm.strength);
       Navigator.pop(context);

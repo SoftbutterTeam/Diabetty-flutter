@@ -76,7 +76,7 @@ class AddTherapyForm {
             appearanceIndex: this.apperanceIndex,
             intakeAdvices: List<int>()..add(intakeAdviceIndex),
             name: this.name,
-            strength: this.strengthUnitsIndex == 0 ? null : this.strength,
+            strength: this.strengthUnitsIndex == 0 ? null : this.strength.abs(),
             unitIndex: this.strengthUnitsIndex,
             restDuration: this.minRest,
             typeIndex: this.typeIndex),

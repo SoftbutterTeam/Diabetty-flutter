@@ -289,7 +289,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
 
   _handleSubmit() {
     reminder.days = days;
-    var doseStringToDouble = int.parse(dosageController.text);
+    var doseStringToDouble = int.parse(dosageController.text).abs();
     reminder.dose = doseStringToDouble;
     reminder.time = TimeOfDay.fromDateTime(timeSelected);
     final TherapyManager manager =

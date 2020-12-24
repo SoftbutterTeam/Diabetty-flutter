@@ -413,7 +413,6 @@ class _JournalLineChartState extends State<JournalLineChart> {
         .toList();
 
     maxX = records.first.date.month + 1.0;
-    //todo
     minX = max(
         (last.date.isBefore(first.date) && last.date.month > first.date.month)
             ? (last.date.month.toDouble() - 12)
@@ -423,8 +422,12 @@ class _JournalLineChartState extends State<JournalLineChart> {
     List<FlSpot> tRecordsMapped = List.of(recordsMapped);
     tRecordsMapped.sort((a, b) => a.y.compareTo(b.y));
 
-    minY = (tRecordsMapped.first.y * 0.8).round().toDouble();
-    maxY = (tRecordsMapped.last.y * 1.2).round().toDouble();
+    minY = (tRecordsMapped.first.y * (tRecordsMapped.first.y > 0 ? 0.8 : 1.2))
+        .round()
+        .toDouble();
+    maxY = (tRecordsMapped.last.y * (tRecordsMapped.first.y > 0 ? 1.2 : 0.8))
+        .round()
+        .toDouble();
 
     intervals = max(((maxY - minY) ~/ 4).toDouble(), 1);
     print("${maxY} ${minY} ${maxX} ${minX} ${intervals}");

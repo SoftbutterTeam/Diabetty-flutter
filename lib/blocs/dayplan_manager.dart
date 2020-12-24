@@ -107,7 +107,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
       } catch (e) {}
       this._reminderStream().listen((event) async {
         usersReminders = event ?? usersReminders;
-
+        event ??= [];
         if (event.isNotEmpty) updateListeners();
       });
     }

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
@@ -11,12 +12,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_alarm_dialog.dart';
-import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/profile_custom_textfield.dart';
-import 'package:diabetty/ui/screens/therapy/components/refill_dialog.dart';
-import 'package:diabetty/ui/screens/therapy/components/therapy_profile_background.dart';
-import 'package:diabetty/ui/screens/therapy/components/therapy_profile_header.dart';
-import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_profile_reminder.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/ui/screens/therapy/edit_therapy_screen.dart';
@@ -30,8 +26,7 @@ import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 
 class TherapyProfileScreen2 extends StatefulWidget {
   final Therapy therapy;
-  final BuildContext context;
-  TherapyProfileScreen2({this.context, this.therapy});
+  TherapyProfileScreen2({this.therapy});
 
   @override
   _TherapyProfileScreen2State createState() => _TherapyProfileScreen2State();
@@ -43,6 +38,12 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   Therapy get therapy => widget.therapy;
   TherapyManager manager;
   Color textColor = Colors.white;
+  bool readOnly;
+  initState() {
+    readOnly = therapy.userId !=
+        Provider.of<AppContext>(context, listen: false).user.uid;
+    super.initState();
+  }
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -54,7 +55,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                 physics: AlwaysScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 child: _buildBody(size))),
-        _buildFooter(size),
+        if (!readOnly) _buildFooter(size),
       ],
     );
   }
@@ -71,13 +72,15 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   alignment: Alignment.topCenter,
                   child: SizedBox(
                     child: SubPageHeader(
-                      text: 'edit',
-                      saveFunction: () => Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) =>
-                                EditTherapyScreen(therapy: therapy)),
-                      ),
+                      text: !readOnly ? 'edit' : '',
+                      saveFunction: readOnly
+                          ? () => Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        EditTherapyScreen(therapy: therapy)),
+                              )
+                          : null,
                       color: Colors.white,
                       backFunction: () => Navigator.pop(context),
                     ),
@@ -165,7 +168,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   Widget _buildStockField() {
     return ProfileCustomTextField(
       stackIcons: null,
-      onTap: () => showEditStockDialog2(context),
+      onTap: () => readOnly ? () {} : showEditStockDialog2(context),
       placeholder: _getStockMessage(),
       placeholderText: 'Stock',
     );

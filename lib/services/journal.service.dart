@@ -19,6 +19,7 @@ class JournalService {
       await journalRepo.deleteJournal(journal);
       return true;
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
