@@ -94,7 +94,6 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
             final TherapyManager therapyManager =
                 Provider.of<TherapyManager>(context, listen: false);
             therapyManager.resetForm();
-            //print('this far');
             Navigator.pushReplacementNamed(context, addmedication);
           },
         ),
