@@ -68,7 +68,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
         ));
   }
 
-    Widget _body(BuildContext context) {
+  Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -111,6 +111,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
     return InputTextField(
       // stackIcons: _stackedHeartIcons(true),
       stackIcons: null,
+      autoFocus: true,
       controller: textEditingController,
       placeholder: "Journal's Name...",
       initalName: '',

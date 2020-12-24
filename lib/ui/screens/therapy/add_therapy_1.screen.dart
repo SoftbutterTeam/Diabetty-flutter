@@ -196,6 +196,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     return InputTextField(
       // stackIcons: _stackedHeartIcons(therapyForm.isNameValid()),
       stackIcons: null,
+      autoFocus: true,
       controller: medicationNameController,
       placeholder: 'Medication Name...',
       initalName: therapyForm.name,
