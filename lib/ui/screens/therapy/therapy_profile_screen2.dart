@@ -114,7 +114,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
           children: [
             text(
               "scheduled reminders",
-              fontSize: 16.0,
+              fontSize: 14.0,
               textColor: Colors.grey[600],
             )
           ],

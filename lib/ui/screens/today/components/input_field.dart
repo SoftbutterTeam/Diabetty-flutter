@@ -1,3 +1,4 @@
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 class InputTextField extends StatefulWidget {
   final TextEditingController controller;
   final String placeholder;
+  final String suffix;
   final Function onSubmitted;
   final Function validator;
   final Stack stackIcons;
@@ -23,7 +25,8 @@ class InputTextField extends StatefulWidget {
       this.onChanged,
       this.icon,
       this.initalName,
-      this.icon2});
+      this.icon2,
+      this.suffix});
 
   @override
   _InputTextFieldState createState() => _InputTextFieldState();
@@ -51,9 +54,26 @@ class _InputTextFieldState extends State<InputTextField> {
           controller: widget.controller,
           decoration: BoxDecoration(
             color: appWhite,
-            border: Border.symmetric(
-              vertical: BorderSide(
-                  color: Colors.black54, width: 0.1, style: BorderStyle.solid),
+            border: Border(
+              bottom: BorderSide(
+                  color: Colors.grey[200],
+                  width: 1.2,
+                  style: BorderStyle.solid),
+            ),
+          ),
+          suffix: Container(
+            padding: EdgeInsets.only(right: 15),
+            child: Row(
+              children: [
+                Padding(
+                    padding: EdgeInsets.only(right: 10, bottom: 2),
+                    child:
+                        text((widget.suffix), fontSize: textSizeMedium2)),
+                // Icon(
+                //   Icons.arrow_drop_down,
+                //   size: 20,
+                // ),
+              ],
             ),
           ),
           prefix: Container(

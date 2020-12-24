@@ -2,6 +2,7 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:diabetty/ui/screens/therapy/components/AppearancePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
@@ -48,8 +49,49 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     super.dispose();
   }
 
-  @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(children: [
+        _body(context),
+        SafeArea(
+          child: IntrinsicHeight(
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  child: SizedBox(
+                    child: SubPageHeader(
+                      text: 'next',
+                      saveFunction: () {
+                        if (medicationNameController.text.isNotEmpty) {
+                          widget.manager.updateListeners();
+                          FocusScope.of(context).unfocus();
+                          widget.pageController.jumpToPage(1);
+                        }
+                      },
+                      color: Colors.white,
+                      backFunction: () => Navigator.pop(context),
+                    ),
+                  ))),
+        ),
+      ]),
+    );
+  }
+
+  Widget _body(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      children: <Widget>[
+        _buildHeader(context),
+        Expanded(
+            child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                child: _buildBody(context))),
+      ],
+    );
+  }
+
+  @override
+  Widget build2(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
@@ -69,7 +111,20 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     );
   }
 
-  TopBar _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height * 0.1,
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: [Colors.orange[900], Colors.orange[800]]),
+      ),
+    );
+  }
+
+  TopBar _buildHeader2(BuildContext context) {
     return TopBar(
       btnEnabled: (therapyForm.name.isEmpty) ? false : true,
       centerText: 'Add Medication',
@@ -139,7 +194,8 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   InputTextField _buildMedicationNameField() {
     return InputTextField(
-      stackIcons: _stackedHeartIcons(therapyForm.isNameValid()),
+      // stackIcons: _stackedHeartIcons(therapyForm.isNameValid()),
+      stackIcons: null,
       controller: medicationNameController,
       placeholder: 'Medication Name...',
       initalName: therapyForm.name,
@@ -153,7 +209,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildUnitField(BuildContext context) {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: null,
       onTap: () => showUnitPopUp(context),
       placeholder: unitTypes[therapyForm.typeIndex],
       placeholderText: 'Type',
@@ -172,9 +228,10 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
           (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
       // (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
       controller: strengthController,
-      stackIcons: _stackedHeartIcons(therapyForm.strengthUnitsIndex != 0 &&
-          therapyForm.strength != null &&
-          therapyForm.strength != 0),
+      // stackIcons: _stackedHeartIcons(therapyForm.strengthUnitsIndex != 0 &&
+      //     therapyForm.strength != null &&
+      //     therapyForm.strength != 0),
+      stackIcons: null,
       onTap: onTap,
       onChange: (String val) {
         therapyForm.strength = val != '' ? int.parse(val) : null;
@@ -187,7 +244,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildAppearanceField(BuildContext context) {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(true),
+      stackIcons: null,
       onTap: () => showAppearance(context),
       placeholder: SvgPicture.asset(
         appearance_iconss[therapyForm.apperanceIndex],
@@ -200,7 +257,8 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildIntakeAdviceField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(therapyForm.intakeAdviceIndex != 0),
+      // stackIcons: _stackedHeartIcons(therapyForm.intakeAdviceIndex != 0),
+      stackIcons: null,
       onTap: () => showIntakePopUp(),
       placeholder: intakeAdvice[therapyForm.intakeAdviceIndex],
       placeholderText: 'Intake Advice',
@@ -209,7 +267,8 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget _buildMinimumRestField() {
     return CustomTextField(
-      stackIcons: _stackedHeartIcons(therapyForm.minRest != null),
+      // stackIcons: _stackedHeartIcons(therapyForm.minRest != null),
+      stackIcons: null,
       onTap: () => showMinRestPopup(context),
       placeholder: therapyForm.minRest == null
           ? 'none'

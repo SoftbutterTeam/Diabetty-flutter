@@ -272,8 +272,8 @@ mixin JournalActionsMixin<T extends Widget> {
           CupertinoActionSheetAction(
             child: Text("Yes"),
             onPressed: () {
-              Navigator.of(context).pop(context);
               func.call();
+              Navigator.of(context).pop(context);
             },
           ),
           CupertinoActionSheetAction(

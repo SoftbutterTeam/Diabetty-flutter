@@ -98,6 +98,7 @@ class _EditDosageScreenState extends State<EditDosageScreen>
 
   InputTextField _buildInputDoseField(BuildContext context) {
     return InputTextField(
+      suffix: '',
       stackIcons: null,
       controller: dosageController,
       placeholder: 'Dosage',
@@ -113,6 +114,7 @@ class _EditDosageScreenState extends State<EditDosageScreen>
 
   InputTextField _buildInputStrengthField(BuildContext context) {
     return InputTextField(
+      suffix: strengthUnits[widget.reminder.strengthUnitindex ?? 0],
       stackIcons: null,
       controller: strengthController,
       placeholder: 'Strength',
@@ -144,7 +146,7 @@ class _EditDosageScreenState extends State<EditDosageScreen>
             child: Text('Edit Strength',
                 style: TextStyle(color: Colors.orange[800])),
           ),
-        _buildInputStrengthField(context),
+        if (widget.reminder.strength != null) _buildInputStrengthField(context),
       ],
     );
   }

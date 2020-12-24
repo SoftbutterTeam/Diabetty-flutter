@@ -38,9 +38,8 @@ class ProfileCustomTextField extends StatelessWidget {
         ),
       ),
       prefix: Container(
-          padding: EdgeInsets.only(left: 18),
-          child: stackIcons ?? singleIcon),
- suffix: Container(
+          padding: EdgeInsets.only(left: 18), child: stackIcons ?? singleIcon),
+      suffix: Container(
         padding: EdgeInsets.only(right: 33),
         child: Row(
           children: [
