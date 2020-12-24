@@ -37,7 +37,7 @@ class JournalRepository {
         .collection('users')
         .document(journal.userId)
         .collection('journals')
-        .document()
+        .document(journal.id)
         .delete()
         .catchError((e) {
       //print(e);

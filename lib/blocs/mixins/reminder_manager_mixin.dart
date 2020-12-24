@@ -136,7 +136,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
   Future<void> editDoseReminder(Reminder reminder, int dose,
       {int strength}) async {
     reminder.dose = dose;
-    reminder.strength = strength;
+    reminder.strength = strength ?? null;
     reminder.doseEdited = true;
     reminderService.saveReminder(reminder);
     updateListeners();

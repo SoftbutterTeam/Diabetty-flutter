@@ -102,6 +102,7 @@ mixin JournalActionsMixin<T extends Widget> {
   void showEditRecordActionSheet(
       BuildContext context, JournalEntry journalRecord) {
     DiaryBloc diaryBloc = Provider.of<DiaryBloc>(context, listen: false);
+
     showCupertinoModalPopup(
         context: context,
         builder: (context) => CupertinoActionSheet(
@@ -121,10 +122,10 @@ mixin JournalActionsMixin<T extends Widget> {
                     isDestructiveAction: true,
                     child: Text("Delete"),
                     onPressed: () {
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                       if (journalRecord.id != null)
                         diaryBloc.deletejournalEntry(journalRecord);
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                     },
                   ),
               ],
@@ -205,8 +206,7 @@ mixin JournalActionsMixin<T extends Widget> {
                     Navigator.pop(context);
                     areYouSurePopup(context, () {
                       diaryBloc.deleteJournal(journal);
-                      Navigator.pushReplacementNamed(context, diary);
-                    });
+                    }, pop: 2);
                   },
                 ),
               ],
@@ -243,27 +243,27 @@ mixin JournalActionsMixin<T extends Widget> {
   }
 
   void showEditTitleModal(BuildContext context, Journal journal) {
-      showGeneralDialog(
-        barrierDismissible: true,
-        barrierLabel: '',
-        context: context,
-        barrierColor: Colors.black12, //black12 white
-        pageBuilder: (context, anim1, anim2) => Dialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 25),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          elevation: 3,
-          child: EditJournalTitle(
-            journal: journal,
-          ),
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      barrierColor: Colors.black12, //black12 white
+      pageBuilder: (context, anim1, anim2) => Dialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: 25),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
         ),
-        transitionBuilder: _transitionBuilderStyle1(),
-        transitionDuration: Duration(milliseconds: 250),
-      );
+        elevation: 3,
+        child: EditJournalTitle(
+          journal: journal,
+        ),
+      ),
+      transitionBuilder: _transitionBuilderStyle1(),
+      transitionDuration: Duration(milliseconds: 250),
+    );
   }
 
-  void areYouSurePopup(BuildContext context, Function func) {
+  void areYouSurePopup(BuildContext context, Function func, {int pop = 1}) {
     showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
@@ -272,7 +272,10 @@ mixin JournalActionsMixin<T extends Widget> {
           CupertinoActionSheetAction(
             child: Text("Yes"),
             onPressed: () {
-              Navigator.of(context).pop(context);
+              for (var i = 0; i < pop; i++) {
+                Navigator.of(context).pop(context);
+              }
+
               func.call();
             },
           ),
