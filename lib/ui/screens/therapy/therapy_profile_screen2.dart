@@ -73,7 +73,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   child: SizedBox(
                     child: SubPageHeader(
                       text: !readOnly ? 'edit' : '',
-                      saveFunction: readOnly
+                      saveFunction: !readOnly
                           ? () => Navigator.push(
                                 context,
                                 CupertinoPageRoute(
@@ -117,8 +117,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
           children: [
             text(
               "scheduled reminders",
-              fontSize: 14.0,
-              textColor: Colors.grey[600],
+              fontSize: 13.0,
+              textColor: Colors.black54,
             )
           ],
         ),

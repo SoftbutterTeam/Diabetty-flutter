@@ -69,14 +69,15 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            Navigator.of(context).pop(context);
             if (therapyForm.strengthUnitsIndex != 0 &&
                 (therapyForm.strength == null || therapyForm.strength == 0)) {
               therapyForm.strength = 100;
               strengthController.text = '100';
+              Navigator.of(context).pop(context);
             } else if (therapyForm.strengthUnitsIndex == 0) {
               therapyForm.strength = null;
               strengthController.text = '';
+              Navigator.of(context).pop(context);
             }
             setState(() {});
           },

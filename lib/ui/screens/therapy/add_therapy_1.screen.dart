@@ -217,10 +217,6 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
   }
 
   Widget _buildStrengthField() {
-    Function onTap = () {
-      showStrengthUnitPopUp(context, strengthController);
-      //print(therapyForm.strength);
-    };
     return Container(
         child: StrengthTextField(
       therapyForm: therapyForm,
@@ -232,7 +228,10 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       //     therapyForm.strength != null &&
       //     therapyForm.strength != 0),
       stackIcons: null,
-      onTap: onTap,
+      onTap: () {
+        showStrengthUnitPopUp(context, strengthController);
+        //print(therapyForm.strength);
+      },
       onChange: (String val) {
         therapyForm.strength = val != '' ? int.parse(val) : null;
         setState(() {});
