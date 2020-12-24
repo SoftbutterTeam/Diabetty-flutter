@@ -8,6 +8,7 @@ class InputTextField extends StatefulWidget {
   final String placeholder;
   final Function onSubmitted;
   final Function validator;
+  final bool autoFocus;
   final Stack stackIcons;
   final String initalName;
   final ValueChanged<String> onChanged;
@@ -22,6 +23,7 @@ class InputTextField extends StatefulWidget {
       this.validator,
       this.onChanged,
       this.icon,
+      this.autoFocus = false,
       this.initalName,
       this.icon2});
 
@@ -44,7 +46,7 @@ class _InputTextFieldState extends State<InputTextField> {
     return Padding(
       padding: EdgeInsets.only(bottom: 40.0),
       child: CupertinoTextField(
-          autofocus: true,
+          autofocus: widget.autoFocus,
           onChanged: widget.onChanged,
           onSubmitted: widget.onSubmitted,
           controller: widget.controller,
