@@ -45,14 +45,13 @@ class MedicationInfo {
 
   bool loadFromJson(Map<String, dynamic> json) {
     try {
-      if (json.containsKey('restDuration') && json['restDuration'] != null) {
-        Duration temp = new Duration(seconds: json['restDuration']);
-        this.restDuration = temp;
-      }
+      if (json.containsKey('restDuration') && json['restDuration'] != null)
+        this.restDuration = new Duration(seconds: json['restDuration']);
+
       if (json.containsKey('name')) this.name = json['name'];
       if (json.containsKey('unit')) this.unitIndex = json['unit'];
       if (json.containsKey('type')) this.typeIndex = json['type'];
-      if (json.containsKey('strength')) this.strength = json['strength'];
+      if (json.containsKey('strength')) this.strength = json['strength'].abs();
       if (json.containsKey('intakeAdvices'))
         this.intakeAdvices = new List<int>.from(json['intakeAdvices']);
       if (json.containsKey('appearance'))

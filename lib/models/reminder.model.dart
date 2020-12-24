@@ -18,7 +18,7 @@ class Reminder with DateMixin {
   Duration window;
   DateTime takenAt;
   DateTime rescheduledTime;
-  double editedDose;
+//  double editedDose;
   bool doseEdited;
   DateTime skippedAt;
   DateTime deletedAt;
@@ -46,6 +46,7 @@ class Reminder with DateMixin {
 
   // late is like isActive but for rescheduledTime.
   //? im going to remove is late, dont really think it makes sense, in a computational manor.
+  bool get isDoseEdited => doseEdited == true;
   bool get isComplete => takenAt != null;
   bool get isSnoozed =>
       !isComplete &&
@@ -102,7 +103,6 @@ class Reminder with DateMixin {
       this.advices,
       this.skippedAt,
       this.window,
-      this.editedDose,
       this.rescheduledTime,
       this.takenAt,
       this.doseEdited});
@@ -140,7 +140,7 @@ class Reminder with DateMixin {
     if (json.containsKey('dose')) this.dose = json['dose'];
     if (json.containsKey('doseTypeIndex'))
       this.doseTypeIndex = json['doseTypeIndex'];
-    if (json.containsKey('strength')) this.strength = json['strength'];
+    if (json.containsKey('strength')) this.strength = json['strength'].abs();
     if (json.containsKey('strengthUnitIndex'))
       this.strengthUnitindex = json['strengthUnitIndex'];
     if (json.containsKey('advices'))
@@ -181,7 +181,7 @@ class Reminder with DateMixin {
     if (this.takenAt != null) output['takenAt'] = this.takenAt.toString();
     if (this.rescheduledTime != null)
       output['rescheduledTime'] = this.rescheduledTime.toString();
-    if (this.editedDose != null) output['editedDose'] = this.editedDose;
+    // if (this.editedDose != null) output['editedDose'] = this.editedDose;
     if (this.skippedAt != null) output['skippedAt'] = this.skippedAt.toString();
     if (this.deletedAt != null) output['deletedAt'] = this.deletedAt.toString();
 

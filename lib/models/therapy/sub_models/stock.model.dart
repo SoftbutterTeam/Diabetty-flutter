@@ -24,6 +24,7 @@ class Stock {
 
   void takenAmount(int amountTaken) {
     if (_currentLevel == null) return;
+    amountTaken = amountTaken.abs();
     (amountTaken > _currentLevel)
         ? _currentLevel = 0
         : _currentLevel -= amountTaken;

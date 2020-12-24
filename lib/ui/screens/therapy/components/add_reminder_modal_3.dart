@@ -72,23 +72,23 @@ class _AddReminderModal3State extends State<AddReminderModal3> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return IntrinsicHeight(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: size.height * 0.35,
-          ),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            width: size.width * 0.8,
-            child: Column(
-              children: [
-                _buildDaySelector(size),
-                _buildTimeField(size),
-                _buildDosageField(size),
-                _buildCancelAndSubmitButtons(),
-              ],
-            ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: size.height * 0.35,
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          width: size.width * 0.8,
+          child: Column(
+            children: [
+              _buildDaySelector(size),
+              _buildTimeField(size),
+              _buildDosageField(size),
+              _buildCancelAndSubmitButtons(),
+            ],
           ),
         ),
+      ),
     );
   }
 
@@ -296,8 +296,8 @@ class _AddReminderModal3State extends State<AddReminderModal3> {
 
   _handleSubmit() {
     reminder.days = days;
-    var doseStringToDouble = int.parse(dosageController.text);
-    reminder.dose = doseStringToDouble;
+    var doseStringToInt = int.parse(dosageController.text).abs();
+    reminder.dose = doseStringToInt;
     reminder.time = TimeOfDay.fromDateTime(timeSelected);
     final TherapyManager manager =
         Provider.of<TherapyManager>(context, listen: false);

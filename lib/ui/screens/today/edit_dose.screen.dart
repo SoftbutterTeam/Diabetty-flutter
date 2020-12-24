@@ -65,7 +65,7 @@ class _EditDosageScreenState extends State<EditDosageScreen>
     if (dosageController.text.isEmpty) {
       return showErrorModal(context);
     } else {
-      reminder.dose = int.parse(dosageController.text);
+      reminder.dose = int.parse(dosageController.text).abs();
       setState(() {});
       dayPlanManager.updateListeners();
       Navigator.pop(context);
@@ -128,8 +128,8 @@ class _EditDosageScreenState extends State<EditDosageScreen>
         SizedBox(height: size.height * 0.02),
         Padding(
           padding: EdgeInsets.only(bottom: 5.0),
-          child: Text('Edit Dosage',
-              style: TextStyle(color: Colors.orange[800])),
+          child:
+              Text('Edit Dosage', style: TextStyle(color: Colors.orange[800])),
         ),
         _buildInputDoseField(context),
         SizedBox(height: size.height * 0.01),
