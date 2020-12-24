@@ -157,7 +157,8 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   }
 
   Widget _buildIntakeAdviceField() {
-    int remAdviceInd = newTherapy.medicationInfo.intakeAdvices.isNotEmpty
+    int remAdviceInd = newTherapy.medicationInfo.intakeAdvices != null &&
+            newTherapy.medicationInfo.intakeAdvices.isNotEmpty
         ? newTherapy.medicationInfo.intakeAdvices[0]
         : 0;
     return ProfileCustomTextField(

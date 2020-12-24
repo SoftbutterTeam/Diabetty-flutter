@@ -34,7 +34,7 @@ class _AddReminderModal3State extends State<AddReminderModal3> {
   @override
   void initState() {
     super.initState();
-    final rules = widget.therapyForm.schedule.reminderRules;
+    final rules = widget.therapyForm.schedule.reminderRules ?? [];
     days = Days.fromDays(rules.isNotEmpty ? rules.last.days : Days());
     dosageController = TextEditingController(
         text: (rules.length == 0) ? '' : rules.last.dose.toString());

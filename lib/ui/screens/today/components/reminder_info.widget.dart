@@ -102,7 +102,9 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     int remQuantity = reminder.dose;
     int remType = reminder.doseTypeIndex;
     int remStrengthType = reminder.strengthUnitindex;
-    int remAdviceInd = reminder.advices.isNotEmpty ? reminder.advices[0] : 0;
+    int remAdviceInd = reminder.advices != null && reminder.advices.isNotEmpty
+        ? reminder.advices[0]
+        : 0;
 
     Therapy therapy =
         dayPlanManager?.therapyManager?.usersTherapies?.isNotEmpty ?? false

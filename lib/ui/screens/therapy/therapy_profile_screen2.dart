@@ -73,7 +73,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   child: SizedBox(
                     child: SubPageHeader(
                       text: !readOnly ? 'edit' : '',
-                      saveFunction: readOnly
+                      saveFunction: !readOnly
                           ? () => Navigator.push(
                                 context,
                                 CupertinoPageRoute(

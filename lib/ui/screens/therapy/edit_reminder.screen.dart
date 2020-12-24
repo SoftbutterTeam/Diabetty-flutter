@@ -33,7 +33,8 @@ class _EditReminderState extends State<EditReminder>
         Provider.of<TherapyManager>(context, listen: true);
 
     if (widget.therapy.schedule != null ||
-        widget.therapy.schedule.reminderRules.isNotEmpty) {
+        (widget.therapy.schedule.reminderRules != null &&
+            widget.therapy.schedule.reminderRules.isNotEmpty)) {
       widget.therapy.schedule.reminderRules
         ..sort((ReminderRule a, ReminderRule b) =>
             a.time.applyTimeOfDay().compareTo(b.time.applyTimeOfDay()));
