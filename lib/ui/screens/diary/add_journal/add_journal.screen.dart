@@ -186,6 +186,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
     return InputTextField(
       // stackIcons: _stackedHeartIcons(true),
       stackIcons: null,
+      autoFocus: true,
       controller: textEditingController,
       placeholder: "Journal's Name...",
       initalName: '',

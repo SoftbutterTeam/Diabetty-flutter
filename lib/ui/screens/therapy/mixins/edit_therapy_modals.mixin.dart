@@ -133,8 +133,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         transitionDuration: Duration(milliseconds: 250),
       );
 
-  void showEditStockDialog2(BuildContext context) =>
-      showGeneralDialog(
+  void showEditStockDialog2(BuildContext context) => showGeneralDialog(
         barrierDismissible: true,
         barrierLabel: '',
         context: context,
@@ -191,7 +190,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       context: context,
       builder: (context) {
         return CustomTimerPicker(
-          desciption: 'How long you have to take medication or respond',
+          desciption: 'Time given to respond to reminder',
           height: height,
           width: width,
           onPressed: () {
@@ -339,7 +338,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       context: context,
       builder: (context) {
         return CustomTimerPicker(
-          desciption: 'How long you have to take medication or respond',
+          desciption: 'Time given to respond to reminder',
           height: height,
           width: width,
           onPressed: () {
