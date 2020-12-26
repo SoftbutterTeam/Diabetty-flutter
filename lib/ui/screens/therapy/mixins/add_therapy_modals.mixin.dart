@@ -73,12 +73,11 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
                 (therapyForm.strength == null || therapyForm.strength == 0)) {
               therapyForm.strength = 100;
               strengthController.text = '100';
-              Navigator.of(context).pop(context);
             } else if (therapyForm.strengthUnitsIndex == 0) {
               therapyForm.strength = null;
               strengthController.text = '';
-              Navigator.of(context).pop(context);
             }
+            Navigator.pop(context);
             setState(() {});
           },
           intakePicker: CupertinoPicker(

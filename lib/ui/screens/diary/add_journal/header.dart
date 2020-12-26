@@ -13,9 +13,9 @@ class AddJournalHeader extends StatelessWidget {
     final diaryManager = Provider.of<DiaryBloc>(context, listen: false);
     return Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 15),
+        padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          color: Colors.orange[800],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,7 +29,7 @@ class AddJournalHeader extends StatelessWidget {
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(left: 5),
                 child: Align(
-                  child: Text('Cancel'),
+                  child: Text('Cancel', style: TextStyle(color: Colors.white)),
                   alignment: Alignment.centerLeft,
                 ),
               ),
@@ -37,7 +37,7 @@ class AddJournalHeader extends StatelessWidget {
             Expanded(
               child: Container(
                   alignment: Alignment.center,
-                  child: subHeadingText("Add Journal", Colors.black87)),
+                  child: subHeadingText("Add Journal", Colors.white)),
             ),
             Container(
               alignment: Alignment.centerRight,

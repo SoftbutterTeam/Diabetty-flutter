@@ -1,6 +1,7 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
@@ -10,6 +11,7 @@ import 'package:diabetty/ui/screens/therapy/components/snooze_options_header.dar
 import 'package:diabetty/ui/screens/therapy/edit_reminder.screen.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:duration/duration.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -86,6 +88,13 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             child: _buildBody(size),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 25.0),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: _buildDeleteField(context),
           ),
         ),
       ],
@@ -214,6 +223,31 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
           newTherapy.schedule.reminderRules.length.toString() + ' scheduled',
       placeholderText: 'Reminder(s)',
     );
+  }
+
+  Widget _buildDeleteField(BuildContext context) {
+    return GestureDetector(
+        onTap: ()  {
+          showYesOrNoActionsheet(context);
+          // await Provider.of<AuthService>(context, listen: false).signOut();
+          // Navigator.pop(context);
+        },
+        child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                bottom: BorderSide(
+                    color: Colors.grey[200],
+                    width: 1.2,
+                    style: BorderStyle.solid),
+              ),
+            ),
+            child: text('Delete',
+                fontSize: 15.0,
+                isCentered: true,
+                textColor: CupertinoColors.destructiveRed)));
   }
 
   _showUnits(BuildContext context) {

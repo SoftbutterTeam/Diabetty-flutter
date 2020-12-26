@@ -386,4 +386,34 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       },
     );
   }
+
+  void showYesOrNoActionsheet(context) {
+          showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        message: Text('Are you sure?'),
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text("Yes"),
+            onPressed: () {
+              // func.call();
+              Navigator.of(context).pop(context);
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text("No"),
+            onPressed: () {
+              Navigator.of(context).pop(context);
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Container(color: Colors.white, child: Text('Cancel')),
+          onPressed: () {
+            Navigator.of(context).pop(context);
+          },
+        ),
+      ),
+    );
+  }
 }
