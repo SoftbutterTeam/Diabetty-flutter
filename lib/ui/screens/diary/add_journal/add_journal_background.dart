@@ -14,11 +14,12 @@ class AddJournalBackground extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      color: Colors.white,
+      color: Colors.orange[800],
       child: Container(
         width: double.maxFinite,
         height: size.height,
         child: SafeArea(
+          maintainBottomViewPadding: true,
           child: Scaffold(
               backgroundColor: Colors.transparent,
               appBar: PreferredSize(

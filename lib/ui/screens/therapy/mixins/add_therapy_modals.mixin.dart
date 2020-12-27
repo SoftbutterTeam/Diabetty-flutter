@@ -79,7 +79,8 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
               strengthController.text = '';
               Navigator.pop(context);
             }
-            setState(() {});
+            //    Navigator.pop(context);
+            //   setState(() {});
           },
           intakePicker: CupertinoPicker(
             scrollController: FixedExtentScrollController(

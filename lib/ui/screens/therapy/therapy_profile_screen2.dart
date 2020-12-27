@@ -384,16 +384,25 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: size.height * 0.05,
-                        width: size.width * 0.1,
+                        padding: EdgeInsets.all(5),
+                        height: size.height * 0.13,
+                        width: size.width * 0.13,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              spreadRadius: 1,
+                              blurRadius: 1.5,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
                         ),
                         child: SvgPicture.asset(
                           appearance_iconss[
                               widget.therapy.medicationInfo.appearanceIndex],
-                          width: 10,
-                          height: 10,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       SizedBox(width: size.width * 0.05),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
@@ -5,6 +7,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/add_journal/add_journal_background.dart';
 import 'package:diabetty/ui/screens/diary/add_journal/header.dart';
+import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
@@ -56,24 +59,96 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
   }
 
   Widget build(BuildContext context) {
-    return AddJournalBackground(
-        header: AddJournalHeader(
-            isValid: newJournal.name != '' && newJournal.name != null),
-        child: Container(
-          color: Colors.white,
-          // padding: EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-              scrollDirection: Axis.vertical, child: _body(context)),
-        ));
+    bool isValid = newJournal.name != '' && newJournal.name != null;
+    final diaryManager = Provider.of<DiaryBloc>(context, listen: false);
+    return Scaffold(
+      body: Stack(children: [
+        _body(context),
+        SafeArea(
+          child: IntrinsicHeight(
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  child: SizedBox(
+                    child: SubPageHeader(
+                      text: isValid ? 'Create' : '',
+                      saveFunction: () {
+                        if (isValid) {
+                          diaryManager
+                              .submitNewJournal(diaryManager.newJournal);
+                          Navigator.of(context).pop(context);
+                        }
+                      },
+                      color: Colors.white,
+                      backFunction: () => Navigator.pop(context),
+                    ),
+                  ))),
+        ),
+      ]),
+    );
   }
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
+      children: <Widget>[
+        _buildHeader(context),
+        Expanded(
+            child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                child: _buildBody(context))),
+      ],
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height * 0.1,
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: [Colors.orange[900], Colors.orange[800]]),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 15.0),
+            child: subHeadingText("Add Journal", Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget build2(BuildContext context) {
+    return AddJournalBackground(
+        header: AddJournalHeader(
+            isValid: newJournal.name != '' && newJournal.name != null),
+        child: Column(
+          children: [
+            Expanded(
+              // padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                color: Colors.white,
+                child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical, child: _body(context)),
+              ),
+            ),
+          ],
+        ));
+  }
+
+  Widget _buildBody(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: 15.0),
+          padding: EdgeInsets.only(top: 35.0),
           child: _buildJournalNameField(),
         ),
         _buildReportUnitsField(),
