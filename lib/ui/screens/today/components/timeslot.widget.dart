@@ -216,7 +216,7 @@ class _TimeSlotState extends State<TimeSlot>
       cancelButton: CupertinoActionSheetAction(
         child: Container(color: Colors.white, child: Text('Cancel')),
         onPressed: () {
-          Navigator.of(context).pop(context);
+          Navigator.pop(context);
         },
       ),
     );

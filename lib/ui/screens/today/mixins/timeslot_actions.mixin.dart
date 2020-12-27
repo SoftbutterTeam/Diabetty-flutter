@@ -25,7 +25,7 @@ mixin TimeSlotActionsMixin<T extends Widget> {
           actions: <Widget>[
             CupertinoActionSheetAction(
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
 
                   dayPlanManager.takeAllReminders(timeSlot.reminders);
                 },
@@ -51,7 +51,7 @@ mixin TimeSlotActionsMixin<T extends Widget> {
                 child: Text('Skip All')),
           ],
           cancelButton: CupertinoActionSheetAction(
-            onPressed: () => Navigator.of(context).pop(context),
+            onPressed: () => Navigator.pop(context),
             child: Container(color: Colors.white, child: Text('Cancel')),
           ),
         );

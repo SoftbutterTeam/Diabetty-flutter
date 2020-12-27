@@ -221,7 +221,7 @@ class _JournalAddRecordState extends State<JournalAddRecord>
                     color: CupertinoColors.destructiveRed,
                   )),
               onPressed: () {
-                Navigator.of(context).pop(context);
+                Navigator.pop(context);
                 //print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
@@ -241,7 +241,7 @@ class _JournalAddRecordState extends State<JournalAddRecord>
                       double.parse(inputController.text);
                   Provider.of<DiaryBloc>(context, listen: false)
                       .saveJournalEntry(journalRecord);
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                   //_handleSubmit();
                 }
               },

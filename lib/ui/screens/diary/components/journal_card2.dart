@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/extensions/index.dart';
@@ -55,16 +56,17 @@ class JournalCard2 extends StatelessWidget with JournalActionsMixin {
                 child: Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 15, right: 20),
+                      padding: EdgeInsets.only(left: 35 / 2, right: 35 / 2),
                       child: FittedBox(
                         fit: BoxFit.fill,
                         child: Container(
                           child: SvgPicture.asset(
-                              'assets/icons/navigation/essentials/diary.svg',
-                              height: 30,
-                              width: 30,
-                              color: Colors.orange[800],
-                            ),
+                            /* diary_1, */ 'assets/icons/navigation/essentials/diary.svg',
+                            height: 25,
+                            fit: BoxFit.fill,
+                            width: 30,
+                            color: Colors.orange[800],
+                          ),
                         ),
                       ),
                     ),

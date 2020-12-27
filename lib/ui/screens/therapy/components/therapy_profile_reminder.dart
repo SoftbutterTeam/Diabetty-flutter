@@ -41,7 +41,7 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
     fontFeatures: [
       FontFeature.proportionalFigures(),
     ],
-    fontSize: textSizeLargeMedium - 2,
+    fontSize: 14,
     color: Colors.grey[700],
   );
 
@@ -55,7 +55,7 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
           .format(DateTime.now().applyTimeOfDay(widget.rule.time))
           .toString()), //TODO click to show add reminder dialog with its attributes showing
       overflow: TextOverflow.clip,
-     decoration: BoxDecoration(
+      decoration: BoxDecoration(
         color: appWhite,
         border: Border(
           bottom: BorderSide(
@@ -88,7 +88,10 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
           ),
           Container(
               padding: EdgeInsets.only(right: 15),
-              child: Text(_getTime(), style: textstyle)),
+              child: Text(
+                _getTime(),
+                style: textstyle,
+              )),
         ],
       ),
       placeholder: widget.rule.dose.toString() +

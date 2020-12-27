@@ -92,12 +92,12 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CupertinoButton(
-              child: Text('Cancel',
+              child: Text('cancel',
                   style: TextStyle(
                     color: CupertinoColors.destructiveRed,
                   )),
               onPressed: () {
-                Navigator.of(context).pop(context);
+                Navigator.pop(context);
                 //print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
@@ -105,7 +105,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
                 vertical: 5.0,
               )),
           CupertinoButton(
-              child: Text('Submit',
+              child: Text('add',
                   style: TextStyle(
                     color: _isFilled ? Colors.indigo : Colors.black26,
                   )),
@@ -159,7 +159,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
       timeString = hourAndMin;
     });
     //print(hourAndMin);
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
   }
 
   _showTimePicker() {
@@ -298,7 +298,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     manager.therapyForm.reminderRules.add(reminder);
     manager.updateListeners();
     //print(manager.therapyForm.reminderRules.length);
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
   }
 
   allFieldsFilled() {

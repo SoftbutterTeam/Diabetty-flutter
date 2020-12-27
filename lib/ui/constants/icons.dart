@@ -42,6 +42,13 @@ const appearance_icon_0 = 'assets/icons/navigation/essentials/drugs (1).svg';
 const appearance_icon_1 = 'assets/icons/navigation/essentials/pills.svg';
 const appearance_icon_2 = 'assets/icons/navigation/essentials/drugs.svg';
 
+const team_1 = "assets/icons/moreb/user.svg";
+const team_2 = "assets/icons/moreb/friends.svg";
+const team_3 = "assets/icons/moreb/user2.svg";
+
+const diary_1 = "assets/icons/moreb/diary.svg";
+const diary_2 = "assets/icons/moreb/diary2.svg";
+
 const appearance_icons = [
   appearance_icon_0,
   appearance_icon_1,

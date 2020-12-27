@@ -15,7 +15,7 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+        padding: EdgeInsets.symmetric(horizontal: 15),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.orange[800],
@@ -26,14 +26,14 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
             Container(
               alignment: Alignment.centerLeft,
               child: FlatButton(
-                onPressed: () => Navigator.of(context).pop(context),
+                onPressed: () => Navigator.pop(context),
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(left: 5),
                 child: Align(
-                  child: Icon(Icons.arrow_back_ios,
-                      color: Colors.white, size: 15),
+                  child:
+                      Icon(Icons.arrow_back_ios, color: Colors.white, size: 15),
                   alignment: Alignment.centerLeft,
                 ),
               ),
@@ -50,7 +50,8 @@ class _TherapyProfileHeaderState extends State<TherapyProfileHeader> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => EditTherapyScreen(therapy: widget.therapy)),
+                        builder: (context) =>
+                            EditTherapyScreen(therapy: widget.therapy)),
                   );
                 },
                 color: Colors.transparent,

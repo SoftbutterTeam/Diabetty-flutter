@@ -51,13 +51,13 @@ mixin RelationActionsMixin<T extends Widget> {
                   child: Text("Accept"),
                   onPressed: () {
                     teamManager.acceptContract(contract);
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
                   },
                 ),
                 CupertinoActionSheetAction(
                   child: Text("Decline"),
                   onPressed: () {
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
 
                     areYouSurePopup(
                         context, () => teamManager.deleteContract(contract));
@@ -67,7 +67,7 @@ mixin RelationActionsMixin<T extends Widget> {
               cancelButton: CupertinoActionSheetAction(
                 child: Container(color: Colors.white, child: Text('Cancel')),
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ));
@@ -83,7 +83,7 @@ mixin RelationActionsMixin<T extends Widget> {
                   isDestructiveAction: true,
                   child: Text("Unsend"),
                   onPressed: () {
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
                     areYouSurePopup(
                         context, () => teamManager.deleteContract(contract));
                   },
@@ -92,7 +92,7 @@ mixin RelationActionsMixin<T extends Widget> {
               cancelButton: CupertinoActionSheetAction(
                 child: Container(color: Colors.white, child: Text('Cancel')),
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ));
@@ -108,7 +108,7 @@ mixin RelationActionsMixin<T extends Widget> {
                   isDestructiveAction: true,
                   child: Text("Delete"),
                   onPressed: () {
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
 
                     areYouSurePopup(
                         context, () => teamManager.deleteContract(contract));
@@ -118,7 +118,7 @@ mixin RelationActionsMixin<T extends Widget> {
               cancelButton: CupertinoActionSheetAction(
                 child: Container(color: Colors.white, child: Text('Cancel')),
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ));
@@ -134,14 +134,14 @@ mixin RelationActionsMixin<T extends Widget> {
                   child: Text("Edit Permissions"),
                   onPressed: () {
                     // teamManager.deleteContract(contract);
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
                   },
                 ),
                 CupertinoActionSheetAction(
                   isDestructiveAction: true,
                   child: Text("Remove"),
                   onPressed: () {
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
 
                     areYouSurePopup(
                         context, () => teamManager.deleteContract(contract));
@@ -151,7 +151,7 @@ mixin RelationActionsMixin<T extends Widget> {
               cancelButton: CupertinoActionSheetAction(
                 child: Container(color: Colors.white, child: Text('Cancel')),
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ));
@@ -166,7 +166,7 @@ mixin RelationActionsMixin<T extends Widget> {
           CupertinoActionSheetAction(
             child: Text("View"),
             onPressed: () {
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
               navigateToSupporteeDashboard(context);
             },
           ),
@@ -174,7 +174,7 @@ mixin RelationActionsMixin<T extends Widget> {
             isDestructiveAction: true,
             child: Text("Stop Supporting"),
             onPressed: () {
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
 
               areYouSurePopup(context, () {
                 teamManager.deleteContract(contract);
@@ -185,7 +185,7 @@ mixin RelationActionsMixin<T extends Widget> {
         cancelButton: CupertinoActionSheetAction(
           child: Container(color: Colors.white, child: Text('Cancel')),
           onPressed: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
           },
         ),
       ),
@@ -202,20 +202,20 @@ mixin RelationActionsMixin<T extends Widget> {
             child: Text("Yes"),
             onPressed: () {
               func.call();
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
             },
           ),
           CupertinoActionSheetAction(
             child: Text("No"),
             onPressed: () {
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
             },
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
           child: Container(color: Colors.white, child: Text('Cancel')),
           onPressed: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
           },
         ),
       ),

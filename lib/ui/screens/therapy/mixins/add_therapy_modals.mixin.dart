@@ -33,7 +33,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
             setState(() {});
           },
           intakePicker: CupertinoPicker(
@@ -73,11 +73,11 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
                 (therapyForm.strength == null || therapyForm.strength == 0)) {
               therapyForm.strength = 100;
               strengthController.text = '100';
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
             } else if (therapyForm.strengthUnitsIndex == 0) {
               therapyForm.strength = null;
               strengthController.text = '';
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
             }
             setState(() {});
           },
@@ -113,7 +113,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             height: height,
             width: width,
             onPressed: () {
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
               setState(() {});
             },
             appearancePicker: CupertinoPicker(
@@ -153,7 +153,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {});
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
           },
           intakePicker: CupertinoPicker(
             scrollController: FixedExtentScrollController(
@@ -190,7 +190,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {});
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
           },
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,
@@ -218,7 +218,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           width: width,
           onPressed: () {
             setState(() {});
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
           },
           timerPicker: CupertinoTimerPicker(
             mode: CupertinoTimerPickerMode.hm,

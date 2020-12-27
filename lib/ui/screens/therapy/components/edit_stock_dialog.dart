@@ -40,10 +40,7 @@ class _EditStockDialogState extends State<EditStockDialog>
                 widget.therapyForm.stock.flagLimit == null)
             ? null
             : widget.therapyForm.stock.flagLimit.toString());
-    _isFilled = (currentLevelController.text.isNotEmpty &&
-            flagLimitController.text.isNotEmpty)
-        ? true
-        : false;
+    _isFilled = (currentLevelController.text.isNotEmpty) ? true : false;
   }
 
   @override
@@ -188,8 +185,7 @@ class _EditStockDialogState extends State<EditStockDialog>
   }
 
   handleBothFieldsFilled() {
-    if (currentLevelController.text.isNotEmpty &&
-        flagLimitController.text.isNotEmpty) {
+    if (currentLevelController.text.isNotEmpty) {
       _isFilled = true;
       setState(() {});
     } else {
@@ -206,13 +202,13 @@ class _EditStockDialogState extends State<EditStockDialog>
         children: [
           CupertinoButton(
               child: Text(
-                'Cancel',
+                'cancel',
                 style: TextStyle(
                   color: CupertinoColors.destructiveRed,
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop(context);
+                Navigator.pop(context);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -220,7 +216,7 @@ class _EditStockDialogState extends State<EditStockDialog>
               )),
           CupertinoButton(
               child: Text(
-                'Reset',
+                'clear',
                 style: TextStyle(
                   color: _isFilled ? Colors.indigo : Colors.black26,
                 ),
@@ -234,7 +230,7 @@ class _EditStockDialogState extends State<EditStockDialog>
               )),
           CupertinoButton(
             child: Text(
-              'Submit',
+              'save',
               style: TextStyle(
                 color: _isFilled ? Colors.indigo : Colors.black26,
               ),
@@ -277,7 +273,7 @@ class _EditStockDialogState extends State<EditStockDialog>
 
     setState(() {});
     manager.updateListeners();
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
     print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
   }
 }

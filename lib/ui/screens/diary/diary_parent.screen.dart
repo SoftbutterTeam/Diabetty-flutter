@@ -122,11 +122,10 @@ class _DiaryParentScreenState extends State<DiaryParentScreen> {
           shadows: lightMode.shadow,
           initialValue: toggleValue,
           onToggleCallback: (index) {
-            pageController.animateToPage(index,
-                duration: Duration(milliseconds: 300),
-                curve: Curves.bounceInOut);
             toggleValue = index == 0 ? true : false;
-            setState(() {});
+            pageController.animateToPage(index,
+                duration: Duration(milliseconds: 300), curve: Curves.linear);
+            // setState(() {});
           },
         ));
   }

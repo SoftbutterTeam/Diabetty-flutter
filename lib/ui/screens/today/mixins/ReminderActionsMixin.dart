@@ -54,7 +54,7 @@ mixin ReminderActionsMixin<T extends Widget> {
           height: size.height,
           width: size.width,
           onPressed: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
             reminder.doseTypeIndex = s;
             settingState();
           },
@@ -103,14 +103,14 @@ mixin ReminderActionsMixin<T extends Widget> {
                     onPressed: () {
                       Navigator.pop(context);
                       snoozeReminder(context, reminder, Duration(minutes: 10));
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                     },
                   ),
                   CupertinoActionSheetAction(
                     child: Text("Snooze 30 min"),
                     onPressed: () {
                       snoozeReminder(context, reminder, Duration(minutes: 30));
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                     },
                   ),
                   CupertinoActionSheetAction(
@@ -118,7 +118,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                       "Choose a Time",
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                       showPostponePicker(context, reminder);
                     },
                   ),
@@ -126,7 +126,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                 cancelButton: CupertinoActionSheetAction(
                   child: Container(color: Colors.white, child: Text('Cancel')),
                   onPressed: () {
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
                   },
                 ),
               ));
@@ -139,55 +139,94 @@ mixin ReminderActionsMixin<T extends Widget> {
   }
 
   void showReminderInfoMoreActionSheet(context,
-          {readOnly = false, DayPlanManager dayplan}) =>
-      showCupertinoModalPopup(
-          context: context,
-          builder: (context) => CupertinoActionSheet(
-                actions: [
+      {readOnly = false, DayPlanManager dayplan}) {
+    DayPlanManager dayPlanManager = getDayPlanManager(context);
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                  child: Text(
+                    "View Profile",
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    navigateToTherapy(context, reminder, dayPlan: dayplan);
+                  },
+                ),
+                if (!readOnly)
                   CupertinoActionSheetAction(
                     child: Text(
-                      "View Profile",
+                      "Edit Dose",
                     ),
                     onPressed: () {
                       Navigator.pop(context);
-                      navigateToTherapy(context, reminder, dayPlan: dayplan);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditDosageScreen(
+                                  reminder: reminder,
+                                )),
+                      );
                     },
                   ),
-                  if (!readOnly)
-                    CupertinoActionSheetAction(
-                      child: Text(
-                        "Edit Dose",
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditDosageScreen(
-                                    reminder: reminder,
-                                  )),
-                        );
-                      },
+                if (!readOnly)
+                  CupertinoActionSheetAction(
+                    isDestructiveAction: true,
+                    child: Text(
+                      "Delete Reminder",
                     ),
-                  if (!readOnly)
-                    CupertinoActionSheetAction(
-                      child: Text(
-                        "Delete Reminder",
-                      ),
-                      onPressed: () {
-                        getDayPlanManager(context).deleteReminder(reminder);
-                        Navigator.of(context).pop(context);
-                        Navigator.pop(context);
-                      },
-                    ),
-                ],
-                cancelButton: CupertinoActionSheetAction(
-                  child: Container(color: Colors.white, child: Text('Cancel')),
-                  onPressed: () {
-                    Navigator.of(context).pop(context);
-                  },
-                ),
-              ));
+                    onPressed: () {
+                      Navigator.pop(context);
+
+                      areYouSurePopup(context, () {
+                        dayPlanManager.deleteReminder(reminder);
+                      }, pop: 1);
+                    },
+                  ),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                child: Container(color: Colors.white, child: Text('Cancel')),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ));
+  }
+
+  void areYouSurePopup(BuildContext context, Function func, {int pop = 1}) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        message: Text('Are you sure?'),
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text("Yes"),
+            onPressed: () {
+              for (var i = 0; i < pop; i++) {
+                Navigator.pop(context);
+              }
+
+              func.call();
+              Navigator.pop(context);
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text("No"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Container(color: Colors.white, child: Text('Cancel')),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
 
   void unTakeReminder(BuildContext context, Reminder reminder) {
     getDayPlanManager(context).unTakeReminder(reminder);
@@ -209,8 +248,8 @@ mixin ReminderActionsMixin<T extends Widget> {
             actions: <Widget>[
               CupertinoActionSheetAction(
                   onPressed: () {
-                    Navigator.of(context).pop(context);
-                    if (reminderModal) Navigator.of(context).pop(context);
+                    Navigator.pop(context);
+                    if (reminderModal) Navigator.pop(context);
 
                     dayPlanManager.takeReminder(reminder, DateTime.now());
                   },
@@ -219,8 +258,8 @@ mixin ReminderActionsMixin<T extends Widget> {
                   .isBefore(reminder.rescheduledTime ?? reminder.time))
                 CupertinoActionSheetAction(
                     onPressed: () {
-                      Navigator.of(context).pop(context);
-                      if (reminderModal) Navigator.of(context).pop(context);
+                      Navigator.pop(context);
+                      if (reminderModal) Navigator.pop(context);
 
                       dayPlanManager.takeReminder(
                           reminder, reminder.rescheduledTime ?? reminder.time);
@@ -228,8 +267,8 @@ mixin ReminderActionsMixin<T extends Widget> {
                     child: Text('On Time')),
               CupertinoActionSheetAction(
                   onPressed: () {
-                    Navigator.of(context).pop(context);
-                    if (reminderModal) Navigator.of(context).pop(context);
+                    Navigator.pop(context);
+                    if (reminderModal) Navigator.pop(context);
 
                     showExactTimePicker(
                       context,
@@ -241,7 +280,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                   child: Text('Choose a Time')),
             ],
             cancelButton: CupertinoActionSheetAction(
-              onPressed: () => Navigator.of(context).pop(context),
+              onPressed: () => Navigator.pop(context),
               child: Container(color: Colors.white, child: Text('Cancel')),
             ),
           );
@@ -280,7 +319,7 @@ mixin ReminderActionsMixin<T extends Widget> {
       builder: (context) {
         return TimerPicker(
           onConfirm: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
             getDayPlanManager(context)
                 .rescheduleReminder(reminder, _dateTimeChange);
           },
@@ -312,20 +351,20 @@ mixin ReminderActionsMixin<T extends Widget> {
                   onPressed: () {
                     print(reminder);
                     // dayPlanManager.takeAllReminders(reminder);
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
                   },
                   child: Text('Take All')),
               CupertinoActionSheetAction(
                   onPressed: () {
                     // dayPlanManager.skipAllReminders(reminder);
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
                   },
                   child: Text('Skip All')),
               CupertinoActionSheetAction(
                   onPressed: () {
                     // dayPlanManager.rescheduleAllReminders(
                     //     reminder, rescheduledTo);
-                    Navigator.of(context).pop(context);
+                    Navigator.pop(context);
                     showExactTimePicker(
                       context,
                       (DateTime choosenTime) {},
@@ -334,7 +373,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                   child: Text('Reschedule All')),
             ],
             cancelButton: CupertinoActionSheetAction(
-              onPressed: () => Navigator.of(context).pop(context),
+              onPressed: () => Navigator.pop(context),
               child: Container(color: Colors.white, child: Text('Cancel')),
             ),
           );
@@ -386,7 +425,7 @@ mixin ReminderActionsMixin<T extends Widget> {
                       padding: EdgeInsets.only(top: 10, left: 10),
                       child: GestureDetector(
                         onTapDown: (TapDownDetails tp) =>
-                            Navigator.of(context).pop(context),
+                            Navigator.pop(context),
                         child: Icon(
                           Icons.cancel,
                           color: Colors.white,

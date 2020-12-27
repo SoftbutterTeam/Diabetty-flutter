@@ -45,7 +45,7 @@ class _EditTherapyReminderState extends State<EditTherapyReminder>
     fontFeatures: [
       FontFeature.proportionalFigures(),
     ],
-    fontSize: textSizeLargeMedium - 2,
+    fontSize: 14,
     color: Colors.grey[700],
   );
 

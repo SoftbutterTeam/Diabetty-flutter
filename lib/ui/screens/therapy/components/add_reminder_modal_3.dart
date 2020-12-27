@@ -104,7 +104,7 @@ class _AddReminderModal3State extends State<AddReminderModal3> {
                     color: CupertinoColors.destructiveRed,
                   )),
               onPressed: () {
-                Navigator.of(context).pop(context);
+                Navigator.pop(context);
                 //print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
@@ -166,7 +166,7 @@ class _AddReminderModal3State extends State<AddReminderModal3> {
       timeString = hourAndMin;
     });
     //print(hourAndMin);
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
   }
 
   _showTimePicker() {
@@ -308,7 +308,7 @@ class _AddReminderModal3State extends State<AddReminderModal3> {
 
     manager.updateListeners();
     //print(manager.therapyForm.reminderRules.length);
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
   }
 
   allFieldsFilled() {

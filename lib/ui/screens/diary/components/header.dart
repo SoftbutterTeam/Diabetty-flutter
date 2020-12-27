@@ -26,7 +26,7 @@ class _DiaryHeaderState extends State<DiaryHeader> with DateMixin {
 
     return Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(horizontal: 15),
+        margin: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: Colors.transparent,
         ),

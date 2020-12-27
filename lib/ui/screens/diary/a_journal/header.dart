@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/string_extension.dart';
 
-class JournalHeader extends StatelessWidget with JournalActionsMixin{
+class JournalHeader extends StatelessWidget with JournalActionsMixin {
   final Journal journal;
   final bool isValid;
   const JournalHeader({Key key, this.isValid = false, this.journal})
@@ -28,7 +28,7 @@ class JournalHeader extends StatelessWidget with JournalActionsMixin{
             Container(
               alignment: Alignment.centerLeft,
               child: FlatButton(
-                onPressed: () => Navigator.of(context).pop(context),
+                onPressed: () => Navigator.pop(context),
                 color: Colors.transparent,
                 disabledTextColor: Colors.grey,
                 disabledColor: Colors.transparent,
@@ -46,11 +46,11 @@ class JournalHeader extends StatelessWidget with JournalActionsMixin{
               child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    journal?.name?.capitalize(), style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 19.7
-                    ),
+                    journal?.name?.capitalize(),
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 19.7),
                   )),
             ),
             Container(

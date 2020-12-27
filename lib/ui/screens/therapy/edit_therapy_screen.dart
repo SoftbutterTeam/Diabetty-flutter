@@ -107,10 +107,11 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
           child: _buildIntakeAdviceField(),
         ),
         _buildWindowField(),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
-          child: _buildMinimumRestField(),
-        ),
+        if (false)
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: _buildMinimumRestField(),
+          ),
         _buildReminderField(context),
       ],
     );

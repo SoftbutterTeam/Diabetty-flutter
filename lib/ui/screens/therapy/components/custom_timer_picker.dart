@@ -84,7 +84,7 @@ class _CustomTimerPickerState extends State<CustomTimerPicker> {
                     color: CupertinoColors.destructiveRed,
                   ),
                 ),
-                onPressed: () => Navigator.of(context).pop(context),
+                onPressed: () => Navigator.pop(context),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
                   vertical: 5.0,

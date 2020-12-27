@@ -61,9 +61,10 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
                     child: SubPageHeader(
                       text: 'next',
                       saveFunction: () {
+                        FocusScope.of(context).unfocus();
+
                         if (medicationNameController.text.isNotEmpty) {
                           widget.manager.updateListeners();
-                          FocusScope.of(context).unfocus();
                           widget.pageController.jumpToPage(1);
                         }
                       },
@@ -131,7 +132,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       leftButtonText: 'Cancel',
       rightButtonText: 'Next',
       onLeftTap: () {
-        Navigator.of(context).pop(context);
+        Navigator.pop(context);
       },
       onRightTap: () {
         widget.manager.updateListeners();
@@ -151,7 +152,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
         _buildAppearanceField(context),
         _buildDividerHeader(),
         _buildIntakeAdviceField(),
-        _buildMinimumRestField(),
+        //  _buildMinimumRestField(),
       ].map((e) => animatedOpacity(e, therapyForm.isNameValid()) as Widget));
 
     return Column(children: <Widget>[

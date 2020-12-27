@@ -7,7 +7,6 @@ import 'package:diabetty/ui/screens/diary/add_journal/add_journal_background.dar
 import 'package:diabetty/ui/screens/diary/add_journal/header.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
-import 'package:diabetty/ui/screens/diary/components/journal_card.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,31 +81,6 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
     );
   }
 
-  Widget _body2(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          width: size.width * 0.9,
-          margin: EdgeInsets.only(top: 5, left: 5, right: 5),
-          height: size.height * 0.20,
-          alignment: Alignment.center,
-          child: IntrinsicHeight(
-              child: IgnorePointer(
-            ignoring: true,
-            child: JournalCard(
-              journal: newJournal,
-            ),
-          )),
-        ),
-        _buildPageTitle(),
-        _buildJournalNameField(),
-        _buildReportUnitsField(),
-      ],
-    );
-  }
-
   InputTextField _buildJournalNameField() {
     return InputTextField(
       // stackIcons: _stackedHeartIcons(true),
@@ -176,7 +150,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
           height: height,
           width: width,
           onPressed: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
             setState(() {});
           },
           intakePicker: CupertinoPicker(

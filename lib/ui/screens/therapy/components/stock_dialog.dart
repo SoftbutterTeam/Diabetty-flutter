@@ -27,16 +27,13 @@ class _StockDialogState extends State<StockDialog> {
     super.initState();
     currentLevelController = TextEditingController(
         text: (widget.therapyForm.stock.currentLevel == null)
-            ? null
+            ? ''
             : widget.therapyForm.stock.currentLevel.toString());
     flagLimitController = TextEditingController(
         text: (widget.therapyForm.stock.flagLimit == null)
-            ? null
+            ? ''
             : widget.therapyForm.stock.flagLimit.toString());
-    _isFilled = (currentLevelController.text.isNotEmpty &&
-            flagLimitController.text.isNotEmpty)
-        ? true
-        : false;
+    _isFilled = (currentLevelController.text.isNotEmpty) ? true : false;
   }
 
   @override
@@ -176,8 +173,7 @@ class _StockDialogState extends State<StockDialog> {
   }
 
   handleBothFieldsFilled() {
-    if (currentLevelController.text.isNotEmpty &&
-        flagLimitController.text.isNotEmpty) {
+    if (currentLevelController.text.isNotEmpty) {
       _isFilled = true;
       setState(() {});
     } else {
@@ -194,13 +190,13 @@ class _StockDialogState extends State<StockDialog> {
         children: [
           CupertinoButton(
               child: Text(
-                'Cancel',
+                'cancel',
                 style: TextStyle(
                   color: CupertinoColors.destructiveRed,
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop(context);
+                Navigator.pop(context);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -208,7 +204,7 @@ class _StockDialogState extends State<StockDialog> {
               )),
           CupertinoButton(
               child: Text(
-                'Reset',
+                'clear',
                 style: TextStyle(
                   color: _isFilled ? Colors.indigo : Colors.black26,
                 ),
@@ -222,7 +218,7 @@ class _StockDialogState extends State<StockDialog> {
               )),
           CupertinoButton(
             child: Text(
-              'Submit',
+              'save',
               style: TextStyle(
                 color: _isFilled ? Colors.indigo : Colors.black26,
               ),
@@ -256,6 +252,6 @@ class _StockDialogState extends State<StockDialog> {
     widget.therapyForm.stock.flagLimit = flagLimitControllerToInt;
 
     widget.manager.updateListeners();
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
   }
 }

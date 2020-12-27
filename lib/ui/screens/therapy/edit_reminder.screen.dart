@@ -2,6 +2,7 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_therapy_reminders.dart';
@@ -76,7 +77,9 @@ class _EditReminderState extends State<EditReminder>
     return Column(
       children: [
         // SizedBox(height: size.height * 0.05),
-        Text('Scheduled Reminders'),
+        Container(
+            padding: EdgeInsets.only(bottom: 10),
+            child: text('Scheduled Reminders', fontSize: 15.0)),
         ColumnBuilder(
           mainAxisAlignment: MainAxisAlignment.start,
           itemCount: reminderRulesList.length,

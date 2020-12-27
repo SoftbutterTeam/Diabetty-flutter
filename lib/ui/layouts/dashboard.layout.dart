@@ -63,7 +63,8 @@ class _DashBoardState extends State<DashBoard> {
   }
 
   onTap(int pageIndex) {
-    pageController.jumpToPage(pageIndex);
+    pageController.animateToPage(pageIndex,
+        duration: Duration(milliseconds: 10), curve: Curves.linear);
 
     currentIndex = pageIndex;
   }

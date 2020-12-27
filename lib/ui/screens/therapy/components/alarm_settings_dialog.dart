@@ -57,12 +57,12 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
         children: [
           CupertinoButton(
             child: Text(
-              'Cancel',
+              'cancel',
               style: TextStyle(
                 color: CupertinoColors.destructiveRed,
               ),
             ),
-            onPressed: () => Navigator.of(context).pop(context),
+            onPressed: () => Navigator.pop(context),
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
               vertical: 5.0,
@@ -70,7 +70,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
           ),
           CupertinoButton(
             child: Text(
-              'Reset',
+              'clear',
               style: TextStyle(
                 color: (noReminderToggle || silentToggle)
                     ? Colors.indigo
@@ -85,7 +85,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
           ),
           CupertinoButton(
             child: Text(
-              'Submit',
+              'save',
               style: TextStyle(
                 color: (noReminderToggle || silentToggle)
                     ? Colors.indigo
@@ -213,6 +213,6 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
     widget.therapyForm.settings
         .handleValidation(silentToggle, noReminderToggle, enableCriticalToggle);
     widget.manager.updateListeners();
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
   }
 }

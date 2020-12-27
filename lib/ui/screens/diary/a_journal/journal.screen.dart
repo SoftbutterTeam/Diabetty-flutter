@@ -9,7 +9,6 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/header.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:diabetty/ui/screens/diary/a_journal/journal_background.dart';
-import 'package:diabetty/ui/screens/diary/components/journal_card.dart';
 import 'package:diabetty/ui/screens/diary/components/journal_entry_card.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/cupertino.dart';

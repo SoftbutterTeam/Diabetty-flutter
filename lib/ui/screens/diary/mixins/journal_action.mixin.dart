@@ -82,7 +82,7 @@ mixin JournalActionsMixin<T extends Widget> {
                       padding: EdgeInsets.only(top: 10, left: 10),
                       child: GestureDetector(
                         onTapDown: (TapDownDetails tp) =>
-                            Navigator.of(context).pop(context),
+                            Navigator.pop(context),
                         child: Icon(
                           Icons.cancel,
                           color: Colors.white,
@@ -132,7 +132,7 @@ mixin JournalActionsMixin<T extends Widget> {
               cancelButton: CupertinoActionSheetAction(
                 child: Container(color: Colors.white, child: Text('Cancel')),
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ));
@@ -168,11 +168,11 @@ mixin JournalActionsMixin<T extends Widget> {
                     isDestructiveAction: true,
                     child: Text("Delete"),
                     onPressed: () {
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                       areYouSurePopup(context, () {
                         if (journalNote.id != null)
                           diaryBloc.deletejournalEntry(journalNote);
-                        Navigator.of(context).pop(context);
+                        Navigator.pop(context);
                       });
                     },
                   ),
@@ -180,7 +180,7 @@ mixin JournalActionsMixin<T extends Widget> {
               cancelButton: CupertinoActionSheetAction(
                 child: Container(color: Colors.white, child: Text('Cancel')),
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ));
@@ -213,7 +213,7 @@ mixin JournalActionsMixin<T extends Widget> {
               cancelButton: CupertinoActionSheetAction(
                 child: Container(color: Colors.white, child: Text('Cancel')),
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ));
@@ -273,24 +273,24 @@ mixin JournalActionsMixin<T extends Widget> {
             child: Text("Yes"),
             onPressed: () {
               for (var i = 0; i < pop; i++) {
-                Navigator.of(context).pop(context);
+                Navigator.pop(context);
               }
 
               func.call();
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
             },
           ),
           CupertinoActionSheetAction(
             child: Text("No"),
             onPressed: () {
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
             },
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
           child: Container(color: Colors.white, child: Text('Cancel')),
           onPressed: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
           },
         ),
       ),

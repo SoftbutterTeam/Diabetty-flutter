@@ -125,7 +125,7 @@ class _EditJournalTitleState extends State<EditJournalTitle>
                     color: CupertinoColors.destructiveRed,
                   )),
               onPressed: () {
-                Navigator.of(context).pop(context);
+                Navigator.pop(context);
                 //print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
@@ -140,7 +140,7 @@ class _EditJournalTitleState extends State<EditJournalTitle>
               onPressed: () {
                 if (inputController.text.isNotEmpty) {
                   widget.journal.name = inputController.text;
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                   var manager = Provider.of<DiaryBloc>(context, listen: false);
                   manager.updateListeners();
                 }

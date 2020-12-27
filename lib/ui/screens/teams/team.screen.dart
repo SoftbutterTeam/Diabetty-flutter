@@ -1,11 +1,10 @@
 import 'dart:math';
 import 'package:diabetty/blocs/team_manager.dart';
 import 'package:diabetty/blocs/app_context.dart';
-import 'package:diabetty/services/team.service.dart';
 
 import 'package:diabetty/ui/common_widgets/ThemeColor.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/toggle_button.dart';
+import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/teams/components/background.dart';
 import 'package:diabetty/ui/screens/teams/relations_actions_mixin.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,7 +81,7 @@ class _TeamScreenState extends State<TeamScreen> {
 
   Widget _buildBody(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 26),
         color: Colors.transparent,
         child: ListView.builder(
           itemCount: manager.usersContracts.length,
@@ -142,8 +141,15 @@ class RelationCard extends StatelessWidget with RelationActionsMixin {
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 15, right: 20),
-            child: CircleAvatar(backgroundColor: Colors.white, child: null),
+            padding: EdgeInsets.only(left: 35 / 2, right: 35 / 2),
+            child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: SvgPicture.asset(
+                  team_2,
+                  color: Colors.orange[800],
+                  width: 25,
+                  height: 25,
+                )),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
@@ -201,8 +207,15 @@ class RelationCard extends StatelessWidget with RelationActionsMixin {
           child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 15, right: 20),
-            child: CircleAvatar(backgroundColor: Colors.white, child: null),
+            padding: EdgeInsets.only(left: 35 / 2, right: 35 / 2),
+            child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: SvgPicture.asset(
+                  team_2,
+                  color: Colors.orange[800],
+                  width: 25,
+                  height: 25,
+                )),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
@@ -258,8 +271,15 @@ class RelationCard extends StatelessWidget with RelationActionsMixin {
         child: Row(
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 15, right: 20),
-          child: CircleAvatar(backgroundColor: Colors.white, child: null),
+          padding: EdgeInsets.only(left: 35 / 2, right: 35 / 2),
+          child: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: SvgPicture.asset(
+                team_2,
+                color: Colors.orange[800],
+                width: 25,
+                height: 25,
+              )),
         ),
         Padding(
           padding: const EdgeInsets.only(right: 20.0),
@@ -316,8 +336,15 @@ class RelationCard extends StatelessWidget with RelationActionsMixin {
             child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 15, right: 20),
-              child: CircleAvatar(backgroundColor: Colors.white, child: null),
+              padding: EdgeInsets.only(left: 35 / 2, right: 35 / 2),
+              child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: SvgPicture.asset(
+                    team_2,
+                    color: Colors.orange[800],
+                    width: 25,
+                    height: 25,
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 20.0),

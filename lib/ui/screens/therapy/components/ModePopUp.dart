@@ -40,7 +40,7 @@ class _ModePopUpState extends State<ModePopUp> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(context);
+                  Navigator.pop(context);
                 },
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,

@@ -81,7 +81,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                     },
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
@@ -91,7 +91,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                   CupertinoButton(
                     child: Text('Confirm'),
                     onPressed: () {
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                       var timeSelected = initialtimer.toString();
                       var trimmedtimeSelected = timeSelected.lastIndexOf(':');
                       String result = (trimmedtimeSelected != -1)
@@ -168,7 +168,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                   CupertinoButton(
                     child: Text('Confirm'),
                     onPressed: () {
-                      Navigator.of(context).pop(context);
+                      Navigator.pop(context);
                       var timeSelected = dateTime.toString();
                       var trimmedtimeSelected = timeSelected[11] +
                           timeSelected[12] +
@@ -242,7 +242,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
       manager.therapyForm.reminderRules.add(reminder);
       manager.updateListeners();
       //print(manager.therapyForm.reminderRules.length);
-      Navigator.of(context).pop(context);
+      Navigator.pop(context);
     }
   }
 

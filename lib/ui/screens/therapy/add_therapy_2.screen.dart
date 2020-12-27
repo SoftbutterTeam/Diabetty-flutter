@@ -383,7 +383,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
             maxLength: 30,
             padding: EdgeInsets.only(left: 18, top: 9, bottom: 9, right: 10),
             placeholderStyle: TextStyle(
-              fontSize: textSizeLargeMedium - 3,
+              fontSize: 14,
               color: Colors.grey[700],
             ),
           ),

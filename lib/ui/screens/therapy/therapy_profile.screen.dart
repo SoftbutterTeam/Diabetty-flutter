@@ -26,8 +26,7 @@ class TherapyProfileScreen extends StatefulWidget {
 
 class _TherapyProfileScreenState extends State<TherapyProfileScreen>
     with EditTherapyModalsMixin {
-
-          @override
+  @override
   Therapy get therapy => widget.therapy;
   final int count = 0;
   final Color textColor = Colors.orange[800];
@@ -347,14 +346,14 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
         CupertinoActionSheetAction(
           child: text("Add Stock", fontSize: 18.0, textColor: Colors.indigo),
           onPressed: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
             showEditStockDialog2(context);
           },
         ),
         CupertinoActionSheetAction(
           child: text("Add Reminder", fontSize: 18.0, textColor: Colors.indigo),
           onPressed: () {
-            Navigator.of(context).pop(context);
+            Navigator.pop(context);
             showEditReminderDialog2(context);
           },
         ),
@@ -362,7 +361,7 @@ class _TherapyProfileScreenState extends State<TherapyProfileScreen>
       cancelButton: CupertinoActionSheetAction(
         child: Container(color: Colors.white, child: Text('Cancel')),
         onPressed: () {
-          Navigator.of(context).pop(context);
+          Navigator.pop(context);
         },
       ),
     );

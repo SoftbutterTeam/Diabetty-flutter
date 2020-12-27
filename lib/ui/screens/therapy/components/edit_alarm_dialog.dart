@@ -74,7 +74,7 @@ class _EditAlarmDialogState extends State<EditAlarmDialog>
               ),
             ),
             onPressed: () {
-              Navigator.of(context).pop(context);
+              Navigator.pop(context);
             },
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,

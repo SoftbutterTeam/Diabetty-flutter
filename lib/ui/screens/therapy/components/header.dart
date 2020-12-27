@@ -176,7 +176,7 @@ class _TherapyHeaderState extends State<TherapyHeader> with DateMixin {
       cancelButton: CupertinoActionSheetAction(
         child: Container(color: Colors.white, child: Text('Cancel')),
         onPressed: () {
-          Navigator.of(context).pop(context);
+          Navigator.pop(context);
         },
       ),
     );

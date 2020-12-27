@@ -87,24 +87,24 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return IntrinsicHeight(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: size.height * 0.35,
-          ),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            width: size.width * 0.8,
-            child: Column(
-              children: [
-                _buildDaySelector(size),
-                _buildTimeField(size),
-                _buildDosageField(size),
-                _buildCancelAndSubmitButtons(),
-              ],
-            ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: size.height * 0.35,
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          width: size.width * 0.8,
+          child: Column(
+            children: [
+              _buildDaySelector(size),
+              _buildTimeField(size),
+              _buildDosageField(size),
+              _buildCancelAndSubmitButtons(),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 
   Expanded _buildCancelAndSubmitButtons() {
@@ -119,7 +119,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
                     color: CupertinoColors.destructiveRed,
                   )),
               onPressed: () {
-                Navigator.of(context).pop(context);
+                Navigator.pop(context);
                 print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
@@ -181,7 +181,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
       timeString = hourAndMin;
     });
     print(hourAndMin);
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
   }
 
   _showTimePicker() {
@@ -320,7 +320,7 @@ class _EditReminderModal2State extends State<EditReminderModal2> {
     // manager.therapyForm.reminderRules.add(reminder);
     manager.updateListeners();
     print(manager.therapyForm.reminderRules.length);
-    Navigator.of(context).pop(context);
+    Navigator.pop(context);
   }
 
   allFieldsFilled() {
