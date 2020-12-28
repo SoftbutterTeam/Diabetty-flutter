@@ -1,3 +1,5 @@
+import 'package:diabetty/blocs/app_context.dart';
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
@@ -10,6 +12,7 @@ import 'package:diabetty/ui/screens/therapy/components/therapy_card.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile_screen2.dart';
+import 'package:diabetty/ui/screens/today/components/header.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,6 +80,14 @@ class _TherapyScreenState extends State<TherapyScreen>
                   itemCount: therapies.length,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
+                    bool readOnly =
+                        Provider.of<AppContext>(context, listen: false)
+                            .readOnly;
+                    print(readOnly ? ' READONLYYY' : null);
+                    var therapy =
+                        readOnly ? Provider.of<TherapyManager>(context) : null;
+                    var dayplan =
+                        readOnly ? Provider.of<DayPlanManager>(context) : null;
                     return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -84,6 +95,8 @@ class _TherapyScreenState extends State<TherapyScreen>
                             MaterialPageRoute(
                                 builder: (context) => TherapyProfileScreen2(
                                       therapy: therapies[index],
+                                      therapyManager: therapy,
+                                      dayManager: dayplan,
                                     )),
                           );
                         },

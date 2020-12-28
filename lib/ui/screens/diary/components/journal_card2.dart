@@ -61,7 +61,7 @@ class JournalCard2 extends StatelessWidget with JournalActionsMixin {
                         fit: BoxFit.fill,
                         child: Container(
                           child: SvgPicture.asset(
-                            /* diary_1, */ 'assets/icons/navigation/essentials/diary.svg',
+                            diary_1,  // 'assets/icons/navigation/essentials/diary.svg',
                             height: 25,
                             fit: BoxFit.fill,
                             width: 30,
