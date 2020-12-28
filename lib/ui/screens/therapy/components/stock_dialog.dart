@@ -46,20 +46,17 @@ class _StockDialogState extends State<StockDialog> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return AlertDialog(
-      contentPadding: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      content: Container(
-        height: size.height * 0.36,
-        width: size.width * 0.85,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildStockLevelField(size),
-            _buildNotifyWhenField(size),
-            _buildButtons(),
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      height: size.height * 0.36,
+      width: size.width * 0.85,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildStockLevelField(size),
+          _buildNotifyWhenField(size),
+          _buildButtons(),
+        ],
       ),
     );
   }

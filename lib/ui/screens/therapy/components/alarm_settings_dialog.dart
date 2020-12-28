@@ -31,10 +31,8 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return AlertDialog(
-      contentPadding: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      content: Container(
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
         height: size.height * 0.36,
         width: size.width * 0.85,
         child: Column(
@@ -45,8 +43,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
             _buildButtons(),
           ],
         ),
-      ),
-    );
+      );
   }
 
   Expanded _buildButtons() {
