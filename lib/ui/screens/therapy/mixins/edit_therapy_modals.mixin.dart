@@ -14,6 +14,7 @@ import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/index.dart';
 import 'package:diabetty/ui/screens/therapy/components/refill_dialog.dart';
+import 'package:diabetty/ui/screens/therapy/components/take_modal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -109,6 +110,25 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         ),
         elevation: 3,
         child: RefillDialog(therapyForm: therapy),
+      ),
+      transitionBuilder: _transitionBuilderStyle1(),
+      transitionDuration: Duration(milliseconds: 250),
+    );
+  }
+
+  void showTakenModal(BuildContext context) {
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      barrierColor: Colors.black12, //black12 white
+      pageBuilder: (context, anim1, anim2) => Dialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: 25),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 3,
+        child: TakeModal(therapy: therapy),
       ),
       transitionBuilder: _transitionBuilderStyle1(),
       transitionDuration: Duration(milliseconds: 250),
@@ -387,7 +407,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   }
 
   void showYesOrNoActionsheet(context) {
-          showCupertinoModalPopup(
+    showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
         message: Text('Are you sure?'),

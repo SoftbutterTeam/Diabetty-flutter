@@ -250,18 +250,21 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   Column _buildTakeColumn(Size size) {
     return Column(
       children: [
-        Container(
-          height: size.height * 0.08,
-          width: size.width * 0.16,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.orange[800],
-          ),
-          child: Center(
-            child: Icon(
-              Icons.check,
-              color: Colors.white,
-              size: 35,
+        GestureDetector(
+          onTap: () => showTakenModal(context),
+          child: Container(
+            height: size.height * 0.08,
+            width: size.width * 0.16,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.orange[800],
+            ),
+            child: Center(
+              child: Icon(
+                Icons.check,
+                color: Colors.white,
+                size: 35,
+              ),
             ),
           ),
         ),

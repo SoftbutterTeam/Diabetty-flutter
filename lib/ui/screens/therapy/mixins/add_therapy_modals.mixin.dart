@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/routes.dart';
@@ -257,27 +259,27 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     }
   }
 
-  showAlarmSettingsDialog(BuildContext context, TherapyManager manager) {
-    showDialog(
-        context: context,
-        builder: (context) =>
-            AlarmSettingsDialog(therapyForm: therapyForm, manager: manager));
-  }
+  // showAlarmSettingsDialog(BuildContext context, TherapyManager manager) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) =>
+  //           AlarmSettingsDialog(therapyForm: therapyForm, manager: manager));
+  // }
 
-  showStockDialog(BuildContext context, TherapyManager manager) {
-    showDialog(
-        context: context,
-        builder: (context) =>
-            StockDialog(therapyForm: therapyForm, manager: manager));
-  }
+  // showStockDialog(BuildContext context, TherapyManager manager) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) =>
+  //           StockDialog(therapyForm: therapyForm, manager: manager));
+  // }
 
-  showReminderModal(BuildContext context, TherapyManager manager) {
-    showDialog(
-      context: context,
-      builder: (context) =>
-          AddReminderModal2(therapyForm: therapyForm, manager: manager),
-    );
-  }
+  // showReminderModal(BuildContext context, TherapyManager manager) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) =>
+
+  //   );
+  // }
 
   bool isSameDayAs(DateTime date, DateTime datey) {
     if (datey.day != date.day) return false;
@@ -286,7 +288,95 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     return true;
   }
 
-  saveAsNeededData() {
-    //print('hey');
-  }
+   void showStockDialog(BuildContext context, TherapyManager manager) =>
+      showGeneralDialog(
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        barrierColor: Colors.black12, //black12 white
+        pageBuilder: (context, anim1, anim2) => Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 3,
+          child: StockDialog(therapyForm: therapyForm, manager: manager),
+        ),
+        transitionBuilder: _transitionBuilderStyle1(),
+        transitionDuration: Duration(milliseconds: 250),
+      );
+
+  void showAlarmSettingsDialog(BuildContext context, TherapyManager manager) =>
+      showGeneralDialog(
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        barrierColor: Colors.black12, //black12 white
+        pageBuilder: (context, anim1, anim2) => Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 3,
+          child: AlarmSettingsDialog(therapyForm: therapyForm, manager: manager),
+        ),
+        transitionBuilder: _transitionBuilderStyle1(),
+        transitionDuration: Duration(milliseconds: 250),
+      );
+
+  void showReminderModal(BuildContext context, TherapyManager manager) =>
+      showGeneralDialog(
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        barrierColor: Colors.black12, //black12 white
+        pageBuilder: (context, anim1, anim2) => Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 25),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          elevation: 3,
+          child: AddReminderModal2(therapyForm: therapyForm, manager: manager),
+        ),
+        transitionBuilder: _transitionBuilderStyle1(),
+        transitionDuration: Duration(milliseconds: 250),
+      );
+
+  _transitionBuilderStyle1() =>
+      (BuildContext context, Animation<double> anim1, anim2, Widget child) {
+        bool isReversed = anim1.status == AnimationStatus.reverse;
+        double animValue = isReversed ? 0 : anim1.value;
+        var size = MediaQuery.of(context).size;
+        return SafeArea(
+          child: BackdropFilter(
+            filter:
+                ImageFilter.blur(sigmaX: 8 * animValue, sigmaY: 8 * animValue),
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(bottom: size.height * .1),
+              child: FadeTransition(
+                opacity: anim1,
+                child: Stack(
+                  children: [
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(top: 10, left: 10),
+                      child: GestureDetector(
+                        onTapDown: (TapDownDetails tp) =>
+                            Navigator.pop(context),
+                        child: Icon(
+                          Icons.cancel,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                    child,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      };
 }
