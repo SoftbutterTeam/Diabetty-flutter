@@ -98,7 +98,6 @@ mixin JournalActionsMixin<T extends Widget> {
           ),
         );
       };
-
   void showEditRecordActionSheet(
       BuildContext context, JournalEntry journalRecord) {
     DiaryBloc diaryBloc = Provider.of<DiaryBloc>(context, listen: false);
@@ -123,9 +122,13 @@ mixin JournalActionsMixin<T extends Widget> {
                     child: Text("Delete"),
                     onPressed: () {
                       Navigator.pop(context);
-                      if (journalRecord.id != null)
-                        diaryBloc.deletejournalEntry(journalRecord);
-                      Navigator.pop(context);
+                      areYouSurePopup(context, () {
+                        if (journalRecord.id != null)
+                          diaryBloc.deletejournalEntry(journalRecord);
+                        Navigator.popUntil(
+                            context, ModalRoute.withName(aJournal));
+                        //navigateToJournal(context);
+                      });
                     },
                   ),
               ],
@@ -172,7 +175,8 @@ mixin JournalActionsMixin<T extends Widget> {
                       areYouSurePopup(context, () {
                         if (journalNote.id != null)
                           diaryBloc.deletejournalEntry(journalNote);
-                        Navigator.pop(context);
+                        Navigator.popUntil(
+                            context, ModalRoute.withName(aJournal));
                       });
                     },
                   ),
@@ -206,7 +210,9 @@ mixin JournalActionsMixin<T extends Widget> {
                     Navigator.pop(context);
                     areYouSurePopup(context, () {
                       diaryBloc.deleteJournal(journal);
-                    }, pop: 2);
+                      Navigator.popUntil(
+                          context, ModalRoute.withName(diary)); //? no clue
+                    });
                   },
                 ),
               ],
@@ -263,7 +269,7 @@ mixin JournalActionsMixin<T extends Widget> {
     );
   }
 
-  void areYouSurePopup(BuildContext context, Function func, {int pop = 1}) {
+  void areYouSurePopup(BuildContext context, Function func) {
     showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
@@ -272,12 +278,9 @@ mixin JournalActionsMixin<T extends Widget> {
           CupertinoActionSheetAction(
             child: Text("Yes"),
             onPressed: () {
-              for (var i = 0; i < pop; i++) {
-                Navigator.pop(context);
-              }
+              Navigator.pop(context);
 
               func.call();
-              Navigator.pop(context);
             },
           ),
           CupertinoActionSheetAction(
