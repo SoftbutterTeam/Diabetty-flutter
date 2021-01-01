@@ -99,14 +99,15 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildBody(Size size) {
     Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
-    if (widget.therapy.schedule != null ||
+    if (widget.therapy.schedule?.reminderRules != null &&
         widget.therapy.schedule.reminderRules.isNotEmpty) {
       widget.therapy.schedule.reminderRules
         ..sort((ReminderRule a, ReminderRule b) =>
             a.time.applyTimeOfDay().compareTo(b.time.applyTimeOfDay()));
     }
 
-    List<Widget> reminderRulesList = (widget.therapy.schedule == null ||
+    List<Widget> reminderRulesList = (widget.therapy.schedule?.reminderRules ==
+                null ||
             widget.therapy.schedule.reminderRules.isEmpty)
         ? List()
         : widget.therapy.schedule.reminderRules
@@ -129,7 +130,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             )
           ],
         ),
-        if (reminderRulesList.isNotEmpty)
+        if (reminderRulesList != null || reminderRulesList.isNotEmpty)
           Container(
             color: backgroundColor,
             padding: EdgeInsets.only(top: 10),
@@ -142,17 +143,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   )
                 : 'yeye',
           ),
-        if (reminderRulesList.isEmpty)
-          Container(
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            child: Text(
-              'No reminders here man, move on pls',
-              style: TextStyle(
-                fontSize: textSizeLargeMedium,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
+
         // Padding(
         //   padding: EdgeInsets.only(top: 10.0),
         //   child: Row(
@@ -472,7 +463,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   _getWindowMessage() {
-    return (widget.therapy.schedule == null ||
+    return (widget.therapy.schedule?.reminderRules == null ||
             widget.therapy.schedule.window == null)
         ? Text(
             'none',
@@ -627,7 +618,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   String getLastTakenMessage() {
     dayManager ??= Provider.of<DayPlanManager>(context, listen: false);
-    if (widget.therapy.schedule == null ||
+    if (widget.therapy.schedule?.reminderRules == null ||
         widget.therapy.schedule.reminderRules.isEmpty) return null;
     List userRemindersLast =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
@@ -654,7 +645,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   String getNextReminderMessage() {
     dayManager ??= Provider.of<DayPlanManager>(context, listen: false);
-    if (widget.therapy.schedule == null ||
+    if (widget.therapy.schedule?.reminderRules == null ||
         widget.therapy.schedule.reminderRules.isEmpty) return null;
     List userRemindersNext =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
