@@ -406,7 +406,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     );
   }
 
-  void showYesOrNoActionsheet(context) {
+  void showYesOrNoActionsheet(context, therapy) {
     showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
@@ -414,8 +414,9 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         actions: [
           CupertinoActionSheetAction(
             child: Text("Yes"),
+            isDestructiveAction: true,
             onPressed: () {
-              // func.call();
+              therapyService.deleteTherapy(therapy);
               Navigator.of(context).pop(context);
             },
           ),

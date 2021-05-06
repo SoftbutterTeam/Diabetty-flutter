@@ -39,6 +39,27 @@ class TherapyRepository {
     return true;
   }
 
+  Future<void> deleteTherapy(Therapy therapy) async {
+    //print(therapy.userId);
+    if (therapy.userId == null)
+      therapy.userId = (await _firebaseAuth.currentUser()).uid;
+    Map<String, dynamic> therapyData = therapy.toJson();
+    print(therapyData);
+
+    await _db
+        .collection('users')
+        .document(therapy.userId)
+        .collection('therapies')
+        .document(therapy.id)
+        .delete()
+        .catchError((e) {
+      //print('ahhhhhhaaaa');
+
+      print(e);
+    });
+    return;
+  }
+
   //Dont know if this is ever going to be used
   Future<DataResult<dynamic>> getTherapy(String uid, String therapyid) async {
     try {

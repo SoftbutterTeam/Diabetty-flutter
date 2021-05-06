@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
       await widget.manager
-          .signInWithEmailAndPassword("admin@123.com", "adminn");
+          .signInWithEmailAndPassword("papi@gmail.com", "papi123");
     } on PlatformException catch (e) {
       if (e.code != 'ERROR_ABORTED_BY_USER') {
         _showSignInError(context, e);
@@ -129,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: _body(context),
     );
   }

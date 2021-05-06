@@ -5,15 +5,12 @@ import 'package:diabetty/repositories/therapy.repository.dart';
 class TherapyService {
   TherapyRepository therapyRepo = TherapyRepository();
 
-
-    Future<void> saveTherapy(Therapy therapy) async {
+  Future<void> saveTherapy(Therapy therapy) async {
     try {
-      
       therapyRepo.setTherapy(therapy);
-      
     } catch (e) {
       print(e);
-      
+
       return null;
     }
   }
@@ -21,7 +18,22 @@ class TherapyService {
   Future<bool> addTherapy(Therapy therapy) async {
     try {
       //print(therapy.name);
+      print('HAHAEHUWRHUEHWRUHRH');
+      print(therapy.medicationInfo.appearanceIndex);
       await therapyRepo.createTherapy(therapy);
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> deleteTherapy(Therapy therapy) async {
+    try {
+      //print(therapy.name);
+      if (therapy.id == null || therapy.userId == null) {
+        throw Error();
+      }
+      await therapyRepo.deleteTherapy(therapy);
       return true;
     } catch (e) {
       rethrow;

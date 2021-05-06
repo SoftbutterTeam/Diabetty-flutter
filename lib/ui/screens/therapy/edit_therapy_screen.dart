@@ -62,6 +62,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
     if (medicationNameController.text.isEmpty) {
       return _showErrorModal(context);
     } else {
+      print('lololool');
       therapy.medicationInfo.name = medicationNameController.text;
       therapy.loadFromJson(newTherapy.toJson());
       saveTherapy(newTherapy);
@@ -94,7 +95,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
           padding: EdgeInsets.only(bottom: 25.0),
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: _buildDeleteField(context),
+            child: _buildDeleteField(context, therapy),
           ),
         ),
       ],
@@ -227,10 +228,10 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
     );
   }
 
-  Widget _buildDeleteField(BuildContext context) {
+  Widget _buildDeleteField(BuildContext context, Therapy therapy) {
     return GestureDetector(
-        onTap: ()  {
-          showYesOrNoActionsheet(context);
+        onTap: () {
+          showYesOrNoActionsheet(context, therapy);
           // await Provider.of<AuthService>(context, listen: false).signOut();
           // Navigator.pop(context);
         },

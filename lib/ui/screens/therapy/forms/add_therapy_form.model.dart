@@ -69,12 +69,13 @@ class AddTherapyForm {
   }
 
   Therapy toTherapy() {
+    List<int> intakeAdviceInt = <int>[];
     return Therapy(
         mode: this.mode,
         name: this.name,
         medicationInfo: MedicationInfo(
             appearanceIndex: this.apperanceIndex,
-            intakeAdvices: List<int>()..add(intakeAdviceIndex),
+            intakeAdvices: intakeAdviceInt..add(intakeAdviceIndex),
             name: this.name,
             strength: this.strengthUnitsIndex == 0 ? null : this.strength.abs(),
             unitIndex: this.strengthUnitsIndex,

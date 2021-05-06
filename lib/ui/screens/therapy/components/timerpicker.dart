@@ -39,7 +39,9 @@ class _TimerPickerState extends State<TimerPicker> {
                     color: CupertinoColors.destructiveRed,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
                   vertical: 5.0,

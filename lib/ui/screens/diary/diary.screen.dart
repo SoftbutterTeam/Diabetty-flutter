@@ -86,14 +86,31 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 
   Widget _buildJournalCards(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return StreamBuilder(
         stream: manager.journalStream,
         initialData: manager.usersJournals,
         builder: (context, snapshot) {
           if (manager.usersJournals == null || manager.usersJournals.isEmpty) {
             return Container(
-              child: null,
-            );
+              padding: EdgeInsets.symmetric(horizontal: 26),
+        height: size.height,
+        width: size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 25.0),
+              child: text("Add a journal here!"),
+            ),
+            SvgPicture.asset(
+              'assets/images/empty_diary.svg',
+              height: 250,
+              width: 300,
+            ),
+
+          ],
+        ), );
           }
           List<Journal> journals = manager.usersJournals
             ..sort(

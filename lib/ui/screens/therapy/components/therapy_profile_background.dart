@@ -20,7 +20,7 @@ class TherapyProfileBackground extends StatelessWidget {
         child: SafeArea(
           bottom: true,
           child: Scaffold(
-              resizeToAvoidBottomPadding: true,
+              resizeToAvoidBottomInset: true,
               backgroundColor: Colors.transparent,
               appBar: PreferredSize(
                   child: header, preferredSize: Size.fromHeight(60)),

@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
 import 'package:diabetty/ui/screens/today/components/circle_plan.dart';
@@ -139,9 +140,23 @@ class _DayPlanScreenState extends State<DayPlanScreen>
       child: Builder(builder: (context) {
         if (manager.getFinalRemindersList().isEmpty) {
           return Container(
-            child: Text('no reminders'),
-            alignment: Alignment.center,
-          );
+        height: size.height,
+        width: size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 25.0),
+              child: text("No reminders for today!"),
+            ),
+            SvgPicture.asset(
+              'assets/images/empty_today.svg',
+              height: 250,
+              width: 300,
+            ),
+
+          ],
+        ), );
         }
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,

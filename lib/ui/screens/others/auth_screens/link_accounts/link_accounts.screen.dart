@@ -124,7 +124,7 @@ class _LinkAccountScreenState extends State<LinkAccountScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: _body(context),
     );
   }

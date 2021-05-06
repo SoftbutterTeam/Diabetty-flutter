@@ -19,7 +19,7 @@ class SnoozeOptionsBackground extends StatelessWidget {
         height: size.height,
         child: SafeArea(
           child: Scaffold(
-              resizeToAvoidBottomPadding: true,
+              resizeToAvoidBottomInset: true,
               backgroundColor: Colors.transparent,
               appBar: PreferredSize(
                   child: header, preferredSize: Size.fromHeight(60)),

@@ -122,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: _body(context),
     );
   }

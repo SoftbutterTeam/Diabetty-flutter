@@ -38,7 +38,7 @@ dependencies:
   flutter_secure_storage: ^3.3.1+1
   package_info: ^0.4.0+13
   random_string: ^2.0.0
-  flutter_svg: ^0.19.0
+  flutter_svg: ^0.20.0-nullsafety.3
   validators: ^2.0.1
   focused_menu: ^1.0.0
   nb_utils: ^3.1.6+11
@@ -47,7 +47,7 @@ dependencies:
   flutter_staggered_grid_view:
   date_picker_timeline: 1.2.1
   circle_list: ^1.0.2
-  date_range_picker: ^1.0.6
+  date_range_picker: ^1.0.7
   animator: ^2.0.1
   weekday_selector: ^0.4.0
   like_button: ^1.0.3
@@ -55,14 +55,14 @@ dependencies:
   circular_check_box: ^1.0.4
   marquee: ^1.6.1
   fcharts: ^0.0.11
-  fl_chart: ^0.12.0
+  fl_chart: ^0.35.0
   modern_charts: ^0.1.19
   syncfusion_flutter_charts: ^18.3.48+1
   animated_button: ^0.1.2
   calendar_strip: ^1.0.6
   share: 0.6.5+4
-  intl_phone_number_input:
-  flutter_local_notifications: ^3.0.2
+  intl_phone_number_input: ^0.7.0+1
+  flutter_local_notifications: ^5.0.0+3
   oktoast: ^2.1.8
 
 dev_dependencies:
@@ -86,6 +86,9 @@ flutter:
     - assets/icons/navigation/x/
     - assets/icons/infob/
     - assets/icons/moreb/
+    - assets/images/
+    - assets/images/empty_team.svg
+    
 
 fonts:
   - family: Neue-Book

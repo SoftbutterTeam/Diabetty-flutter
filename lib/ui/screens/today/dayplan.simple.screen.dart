@@ -3,15 +3,17 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'dart:async';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/background.dart';
-import 'package:calendar_strip/calendar_strip.dart';
+// import 'package:calendar_strip/calendar_strip.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 //*swtich versions. animation differences*/
     as SlotWidget;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
@@ -158,8 +160,22 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     return Background(
         child: (manager.getFinalRemindersList().isEmpty)
             ? Container(
-                child: Text('no reminders'),
-                alignment: Alignment.center,
+                height: size.height,
+                width: size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 25.0),
+                      child: text("No reminders for today!"),
+                    ),
+                    SvgPicture.asset(
+                      'assets/images/empty_today.svg',
+                      height: 250,
+                      width: 300,
+                    ),
+                  ],
+                ),
               )
             : Column(
                 mainAxisAlignment: MainAxisAlignment.start,
