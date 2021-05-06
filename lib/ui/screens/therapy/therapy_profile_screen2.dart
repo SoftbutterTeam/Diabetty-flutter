@@ -26,7 +26,9 @@ import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 
 class TherapyProfileScreen2 extends StatefulWidget {
   final Therapy therapy;
-  TherapyProfileScreen2({this.therapy});
+  final DayPlanManager dayManager;
+  final TherapyManager therapyManager;
+  TherapyProfileScreen2({this.therapy, this.dayManager, this.therapyManager});
 
   @override
   _TherapyProfileScreen2State createState() => _TherapyProfileScreen2State();
@@ -36,10 +38,15 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     with EditTherapyModalsMixin {
   @override
   Therapy get therapy => widget.therapy;
-  TherapyManager manager;
+  TherapyManager therapyManager; //* not altered yet for teams
+
+  DayPlanManager dayManager;
+
   Color textColor = Colors.white;
   bool readOnly;
   initState() {
+    dayManager = widget.dayManager;
+    therapyManager = widget.therapyManager;
     readOnly = therapy.userId !=
         Provider.of<AppContext>(context, listen: false).user.uid;
     super.initState();
@@ -61,7 +68,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   Widget build(BuildContext context) {
-    manager = Provider.of<TherapyManager>(context, listen: true);
+    therapyManager ??= Provider.of<TherapyManager>(context, listen: true);
 
     return Scaffold(
       body: Stack(children: [
@@ -92,14 +99,15 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildBody(Size size) {
     Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
-    if (widget.therapy.schedule != null ||
+    if (widget.therapy.schedule?.reminderRules != null &&
         widget.therapy.schedule.reminderRules.isNotEmpty) {
       widget.therapy.schedule.reminderRules
         ..sort((ReminderRule a, ReminderRule b) =>
             a.time.applyTimeOfDay().compareTo(b.time.applyTimeOfDay()));
     }
 
-    List<Widget> reminderRulesList = (widget.therapy.schedule == null ||
+    List<Widget> reminderRulesList = (widget.therapy.schedule?.reminderRules ==
+                null ||
             widget.therapy.schedule.reminderRules.isEmpty)
         ? List()
         : widget.therapy.schedule.reminderRules
@@ -122,7 +130,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             )
           ],
         ),
-        if (reminderRulesList.isNotEmpty)
+        if (reminderRulesList != null || reminderRulesList.isNotEmpty)
           Container(
             color: backgroundColor,
             padding: EdgeInsets.only(top: 10),
@@ -135,17 +143,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   )
                 : 'yeye',
           ),
-        if (reminderRulesList.isEmpty)
-          Container(
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            child: Text(
-              'No reminders here man, move on pls',
-              style: TextStyle(
-                fontSize: textSizeLargeMedium,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
+
         // Padding(
         //   padding: EdgeInsets.only(top: 10.0),
         //   child: Row(
@@ -341,138 +339,131 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     var size = MediaQuery.of(context).size;
     String nextMessage = getNextReminderMessage() ?? '-';
     String lastMessage = getLastTakenMessage() ?? '-';
-    return Container(
-      width: size.width,
-      height: size.height * 0.30,
-      padding: EdgeInsets.only(bottom: 10),
-      alignment: Alignment.topCenter,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              colors: [Colors.deepOrange[900], Colors.deepOrange[800]]),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: Offset(0, 0.5),
-            ),
-            BoxShadow(
-              color: Colors.white.withOpacity(1),
-              spreadRadius: 3,
-              blurRadius: 0,
-              offset: Offset(0, -1),
-            ),
-          ],
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.transparent, // Color.fromRGBO(200, 100, 100, 0.4),
-              width: 0.7,
-            ),
-          )),
-      child: Stack(children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Icon(
-              Icons.dashboard,
-              color: Colors.transparent,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 30.0),
-              child: Wrap(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        height: size.height * 0.13,
-                        width: size.width * 0.13,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
-                              spreadRadius: 1,
-                              blurRadius: 1.5,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: SvgPicture.asset(
-                          appearance_iconss[
-                              widget.therapy.medicationInfo.appearanceIndex],
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      SizedBox(width: size.width * 0.05),
-                      Text(widget.therapy.name,
-                          style: TextStyle(
-                              fontSize: 22.0,
-                              color: textColor,
-                              fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                ],
+    return IntrinsicHeight(
+      child: Container(
+        width: size.width,
+        constraints: BoxConstraints(minHeight: size.height * 0.30),
+        padding: EdgeInsets.only(bottom: 10),
+        alignment: Alignment.topCenter,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                colors: [Colors.deepOrange[800], Colors.deepOrange[700]]),
+            border: Border(
+              bottom: BorderSide(
+                color:
+                    Colors.transparent, // Color.fromRGBO(200, 100, 100, 0.4),
+                width: 0.7,
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 50, right: 50, bottom: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        'last taken',
-                        style: TextStyle(
-                            color: textColor,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      if (lastMessage != null)
-                        Text(
-                          lastMessage,
-                          style: TextStyle(
-                              color: textColor,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w300),
-                        ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        "next",
-                        style: TextStyle(
-                            color: textColor,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      if (nextMessage != null)
-                        Text(
-                          nextMessage,
-                          style: TextStyle(
-                              color: textColor,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w300),
-                        ),
-                    ],
-                  ),
-                ],
+            )),
+        child: Stack(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Icon(
+                Icons.dashboard,
+                color: Colors.transparent,
               ),
-            ),
-          ],
-        ),
-      ]),
+              Padding(
+                padding: EdgeInsets.only(top: 30.0),
+                child: Wrap(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(2), //was 5
+                          margin: EdgeInsets.only(bottom: 8, right: 8),
+                          height: 40,
+                          width: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                spreadRadius: 0.5,
+                                blurRadius: 1.5,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: SvgPicture.asset(
+                            appearance_iconss[
+                                widget.therapy.medicationInfo.appearanceIndex],
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 3),
+                          child: Text(widget.therapy.name.capitalizeBegins(),
+                              style: TextStyle(
+                                  fontSize: 24.0,
+                                  color: textColor,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 50, right: 50, bottom: 17),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          'last taken',
+                          style: TextStyle(
+                              color: textColor,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        if (lastMessage != null)
+                          Text(
+                            lastMessage,
+                            style: TextStyle(
+                                color: textColor,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "next",
+                          style: TextStyle(
+                              color: textColor,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        if (nextMessage != null)
+                          Text(
+                            nextMessage,
+                            style: TextStyle(
+                                color: textColor,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ]),
+      ),
     );
   }
 
   _getWindowMessage() {
-    return (widget.therapy.schedule == null ||
+    return (widget.therapy.schedule?.reminderRules == null ||
             widget.therapy.schedule.window == null)
         ? Text(
             'none',
@@ -586,7 +577,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         builder: (context) => BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: EditAlarmDialog(
-                  manager: manager, therapyForm: widget.therapy),
+                  manager: therapyManager, therapyForm: widget.therapy),
             ) //TODO complete this modal
         );
   }
@@ -626,8 +617,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   }
 
   String getLastTakenMessage() {
-    final dayManager = Provider.of<DayPlanManager>(context, listen: false);
-    if (widget.therapy.schedule == null ||
+    dayManager ??= Provider.of<DayPlanManager>(context, listen: false);
+    if (widget.therapy.schedule?.reminderRules == null ||
         widget.therapy.schedule.reminderRules.isEmpty) return null;
     List userRemindersLast =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
@@ -653,8 +644,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   } //! it can return null!!!!!!!! Error handle it, for no last taken
 
   String getNextReminderMessage() {
-    final dayManager = Provider.of<DayPlanManager>(context, listen: false);
-    if (widget.therapy.schedule == null ||
+    dayManager ??= Provider.of<DayPlanManager>(context, listen: false);
+    if (widget.therapy.schedule?.reminderRules == null ||
         widget.therapy.schedule.reminderRules.isEmpty) return null;
     List userRemindersNext =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))

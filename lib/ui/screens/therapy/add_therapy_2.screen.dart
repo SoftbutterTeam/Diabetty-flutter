@@ -46,7 +46,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    if (widget.manager.therapyForm.reminderRules != null ||
+    if (widget.manager.therapyForm.reminderRules != null &&
         widget.manager.therapyForm.reminderRules.length != 0) {
       widget.manager.therapyForm.reminderRules
         ..sort((ReminderRule a, ReminderRule b) =>
@@ -112,7 +112,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   @override
   Widget build2(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    if (widget.manager.therapyForm.reminderRules != null ||
+    if (widget.manager.therapyForm.reminderRules != null &&
         widget.manager.therapyForm.reminderRules.length != 0) {
       widget.manager.therapyForm.reminderRules
         ..sort((ReminderRule a, ReminderRule b) =>

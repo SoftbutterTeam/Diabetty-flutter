@@ -91,7 +91,7 @@ class JournalEntryRepository {
     Map<String, dynamic> entryData = Map();
     if (entry.userId == null) return null;
     Map<String, dynamic> json = Map<String, dynamic>();
-    json['updatedAt'] = DateTime.now();
+    json['updatedAt'] = DateTime.now().toString();
     await _db
         .collection('users')
         .document(entry.userId)

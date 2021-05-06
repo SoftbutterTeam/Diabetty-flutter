@@ -151,7 +151,7 @@ class _TherapyCardState extends State<TherapyCard>
 
   String getLastTakenMessage() {
     final dayManager = Provider.of<DayPlanManager>(context, listen: false);
-    if (widget.therapy.schedule == null ||
+    if (widget.therapy.schedule?.reminderRules == null ||
         widget.therapy.schedule.reminderRules.isEmpty) return null;
     List userRemindersLast =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
@@ -171,14 +171,14 @@ class _TherapyCardState extends State<TherapyCard>
         (a.rescheduledTime ?? a.time).compareTo(b.rescheduledTime ?? b.time));
 
     if (userRemindersLast.isEmpty) return null;
-    Reminder lastReminder = userRemindersLast.last; 
+    Reminder lastReminder = userRemindersLast.last;
 
     return 'last taken: ${(lastReminder.takenAt).shortenDayRepresent().toLowerCase()} ${(lastReminder.takenAt).formatTime().toLowerCase()} ';
   } //! it can return null!!!!!!!! Error handle it, for no last taken
 
   String getNextReminderMessage() {
     final dayManager = Provider.of<DayPlanManager>(context, listen: false);
-    if (widget.therapy.schedule == null ||
+    if (widget.therapy.schedule?.reminderRules == null ||
         widget.therapy.schedule.reminderRules.isEmpty) return null;
     List userRemindersNext =
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))

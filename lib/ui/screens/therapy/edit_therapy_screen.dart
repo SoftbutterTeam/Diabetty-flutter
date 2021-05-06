@@ -223,7 +223,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
         );
       },
       placeholder:
-          newTherapy.schedule.reminderRules.length.toString() + ' scheduled',
+        ( newTherapy.schedule.reminderRules == null  ? 'none' :  newTherapy.schedule.reminderRules.length.toString()) + ' scheduled',
       placeholderText: 'Reminder(s)',
     );
   }
