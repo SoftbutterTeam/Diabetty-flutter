@@ -84,8 +84,9 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                           ? () => Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                    builder: (context) =>
-                                        EditTherapyScreen(therapy: therapy)),
+                                    builder: (context) => EditTherapyScreen(
+                                        therapy: therapy,
+                                        prevContext: context)),
                               )
                           : null,
                       color: Colors.white,

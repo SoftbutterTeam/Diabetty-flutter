@@ -18,8 +18,9 @@ import 'package:provider/provider.dart';
 
 class EditTherapyScreen extends StatefulWidget {
   final Therapy therapy;
+  final BuildContext prevContext;
 
-  EditTherapyScreen({this.therapy});
+  EditTherapyScreen({this.therapy, this.prevContext});
 
   @override
   _EditTherapyScreenState createState() => _EditTherapyScreenState();
@@ -68,6 +69,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       saveTherapy(newTherapy);
       manager.updateListeners();
       Navigator.pop(context);
+      setState(() {});
     }
   }
 
@@ -108,21 +110,30 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
         SizedBox(height: size.height * 0.02),
         _buildMedicationNameField(),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: EdgeInsets.only(top: 4.0),
           child: _buildUnitField(context),
         ),
         _buildAppearanceField(context),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
-          child: _buildIntakeAdviceField(),
-        ),
-        _buildWindowField(),
-        if (false)
+        if (therapy.schedule != null)
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
+            padding: EdgeInsets.only(top: 4.0),
+            child: _buildIntakeAdviceField(),
+          ),
+        if (therapy.schedule != null)
+          Padding(
+            padding: EdgeInsets.only(top: 4.0),
+            child: _buildWindowField(),
+          ),
+        if (therapy.schedule != null)
+          Padding(
+            padding: EdgeInsets.only(top: 4.0),
             child: _buildMinimumRestField(),
           ),
-        _buildReminderField(context),
+        if (therapy.schedule != null)
+          Padding(
+            padding: EdgeInsets.only(top: 4.0),
+            child: _buildReminderField(context),
+          ),
       ],
     );
   }
@@ -222,8 +233,10 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
               builder: (context) => EditReminder(therapy: newTherapy)),
         );
       },
-      placeholder:
-        ( newTherapy.schedule.reminderRules == null  ? 'none' :  newTherapy.schedule.reminderRules.length.toString()) + ' scheduled',
+      placeholder: (newTherapy.schedule.reminderRules == null
+              ? 'none'
+              : newTherapy.schedule.reminderRules.length.toString()) +
+          ' scheduled',
       placeholderText: 'Reminder(s)',
     );
   }
@@ -231,7 +244,8 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   Widget _buildDeleteField(BuildContext context, Therapy therapy) {
     return GestureDetector(
         onTap: () {
-          showYesOrNoActionsheet(context, therapy);
+          showYesOrNoActionsheet(context, therapy,
+              prevContext: widget.prevContext);
           // await Provider.of<AuthService>(context, listen: false).signOut();
           // Navigator.pop(context);
         },
