@@ -222,7 +222,10 @@ class _EditStockDialogState extends State<EditStockDialog>
                 ),
               ),
               onPressed: () {
-                if (_isFilled) _reset();
+                if (_isFilled) {
+                  _reset();
+                  Navigator.pop(context);
+                }
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
