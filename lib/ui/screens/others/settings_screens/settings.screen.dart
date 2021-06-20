@@ -13,6 +13,13 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/customtextfield.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/index.dart';
 
+class SettingsScreenBuilder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SettingsScreen();
+  }
+}
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key key}) : super(key: key);
 

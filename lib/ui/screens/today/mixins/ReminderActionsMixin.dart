@@ -4,7 +4,6 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/timerpicker.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile_screen2.dart';
@@ -13,7 +12,6 @@ import 'package:diabetty/ui/screens/today/edit_dose.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
-import 'package:diabetty/blocs/mixins/reminder_manager_mixin.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/index.dart';
 

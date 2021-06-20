@@ -5,7 +5,7 @@ class Journal {
   String id;
   String name;
   int reportUnitsIndex;
-  List<JournalEntry> journalEntries;
+  List<JournalEntry> journalEntries = [];
   DateTime updatedAt;
   Journal(
       {this.userId,
@@ -32,12 +32,12 @@ class Journal {
 
   List<JournalEntry> journalEntriesFromJson(List<dynamic> json) {
     List<JournalEntry> journalEntries = List();
-    if (json == null || json.length == 0) return journalEntries;
+    if (json == null || json.length == 0) return journalEntries ?? [];
     for (dynamic j in json) {
       Map<String, dynamic> entryJson = new Map<String, dynamic>.from(j);
       JournalEntry journalEntry = JournalEntry()..loadFromJson(entryJson);
       journalEntries.add(journalEntry);
     }
-    return journalEntries;
+    return journalEntries ?? [];
   }
 }

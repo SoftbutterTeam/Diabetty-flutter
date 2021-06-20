@@ -1,19 +1,12 @@
 import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
-import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/routes.dart';
-import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/screens/therapy/components/add_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_card.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
-import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile_screen2.dart';
-import 'package:diabetty/ui/screens/today/components/header.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -65,9 +58,9 @@ class _TherapyScreenState extends State<TherapyScreen>
     var size = MediaQuery.of(context).size;
     return StreamBuilder(
         stream: manager.therapyStream,
-        initialData: manager.usersTherapies,
         builder: (context, snapshot) {
-          if (snapshot.data == null || snapshot.data.isEmpty) {
+          if (manager.usersTherapies == null ||
+              manager.usersTherapies.isEmpty) {
             //print(snapshot.data.toString());
             return Container(
               height: size.height,
@@ -88,7 +81,7 @@ class _TherapyScreenState extends State<TherapyScreen>
               ),
             );
           }
-          List<Therapy> therapies = snapshot.data;
+          List<Therapy> therapies = manager.usersTherapies;
           therapies.sort((a, b) => a.name.compareTo(b.name));
           return Container(
             child: Scrollbar(

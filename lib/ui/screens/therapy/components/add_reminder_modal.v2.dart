@@ -46,6 +46,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         : reminder.dose;
     _isFilled = false;
     timeString = timeSelected.formatTime();
+    allFieldsFilled();
   }
 
   DateTime getInitialTime() {

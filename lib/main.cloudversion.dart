@@ -27,12 +27,19 @@ import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:diabetty/utils/application_state_reset_timer.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+GoogleSignIn _googleSignIn = new GoogleSignIn(
+  scopes: <String>[
+    'email',
+  ],
+);
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appleSignInAvailable = await AppleSignInAvailable.check();
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(systemNavigationBarColor: appWhite));
   runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
+  // runApp(LoginApp());
 }
 
 class MyApp extends StatelessWidget {
