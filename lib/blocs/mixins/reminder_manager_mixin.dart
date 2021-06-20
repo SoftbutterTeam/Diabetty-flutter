@@ -7,6 +7,14 @@ import 'package:diabetty/services/reminder.service.dart';
 
 abstract class ReminderManagerMixin<T extends Manager> {
   ReminderService reminderService = ReminderService();
+  /**
+    Big Brain todos
+      - what if a Reminder is Taken, and then cancelled after. Does it still have takenAt
+      - what if Reminder is cancelled and then taken/reschedueld/snoozed
+
+    Tips if you need something from the day manager use @protected get. 
+    e.g. is in the ReminderActionsMixin
+   */
   @protected
   void updateListeners();
   @protected

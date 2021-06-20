@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/repositories/local_repositories/therapy.local.repository.dart';
+import 'package:diabetty/repositories/therapy.repository.dart';
 
 class TherapyService {
   TherapyRepository therapyRepo = TherapyRepository();
@@ -18,6 +18,7 @@ class TherapyService {
   Future<bool> addTherapy(Therapy therapy) async {
     try {
       //print(therapy.name);
+      print('HAHAEHUWRHUEHWRUHRH');
       print(therapy.medicationInfo.appearanceIndex);
       await therapyRepo.createTherapy(therapy);
       return true;
@@ -29,11 +30,10 @@ class TherapyService {
   Future<bool> deleteTherapy(Therapy therapy) async {
     try {
       //print(therapy.name);
-
+      if (therapy.id == null || therapy.userId == null) {
+        throw Error();
+      }
       await therapyRepo.deleteTherapy(therapy);
-
-      print('deleted seru=ruv');
-
       return true;
     } catch (e) {
       rethrow;
@@ -48,19 +48,34 @@ class TherapyService {
         //print('init null');
         return List();
       }
+      //print('init here');
       return therapies.map<Therapy>((json) {
+        //print('init map');
         Therapy therapy = Therapy();
         therapy.id = json['id'];
+        //print(therapy.id);
         return therapy..loadFromJson(json);
       }).toList();
     } catch (e) {
-      print('error21');
       print(e);
       throw e;
     }
   }
 
-  Stream localStream() {
-    return therapyRepo.onStateChanged('uid');
+  Stream<List<Therapy>> therapyStream(String uid) {
+    return therapyRepo
+        .onStateChanged(uid)
+        .map((e) => _therapyListFromSnapshop(e, uid));
+  }
+
+  List<Therapy> _therapyListFromSnapshop(QuerySnapshot snapshot, String uid) {
+    return snapshot.documents.map<Therapy>((doc) {
+      Therapy therapy = Therapy();
+      therapy.id = doc.documentID;
+      therapy.userId = uid;
+      therapy.loadFromJson(doc.data);
+
+      return therapy;
+    }).toList();
   }
 }

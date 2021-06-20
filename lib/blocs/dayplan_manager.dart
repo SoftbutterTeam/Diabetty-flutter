@@ -64,15 +64,14 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   StreamController<List<Reminder>> _dataController = BehaviorSubject();
 
   ///* user reminders is only fetched reminders/data from store
-  List<Reminder> usersReminders = [];
+  List<Reminder> usersReminders = List();
   get userTherapies => (therapyManager?.usersTherapies) ?? List();
 
   DateTime get currentDateStamp => _currentDateStamp ?? DateTime.now();
 
-  Stream _reminderStream() => true
-      ? reminderService.localStream()
-      : reminderService.reminderStream(uid);
-  Stream get reminderStream => this._reminderStream();
+  Stream<List<Reminder>> _reminderStream() =>
+      reminderService.reminderStream(uid);
+  Stream<List<Reminder>> get reminderStream => this._reminderStream();
 
   Function dayScreenSetState;
 
@@ -103,30 +102,19 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     currentDateStamp = DateTime.now();
     if (uid != null) {
       try {
-        usersReminders =
-            await reminderService.getReminders(uid, local: true) ?? [];
+        usersReminders = await reminderService.getReminders(uid, local: true);
         cleanOutReminders();
       } catch (e) {}
       this._reminderStream().listen((event) async {
-        if (event != null && event['id'] != null) {
-          if (usersReminders.length > 0)
-            usersReminders
-                ?.firstWhere((element) =>
-                    element.id == event['id'] && event['id'] != null)
-                ?.loadFromJson(event);
-        } else {
-          usersReminders = await reminderService.getReminders(uid);
-        }
-
-        print('userReminders' + usersReminders.toString());
-        usersReminders ??= [];
-        updateListeners();
+        usersReminders = event ?? usersReminders;
+        event ??= [];
+        if (event.isNotEmpty) updateListeners();
       });
     }
   }
 
   Future<void> cleanOutReminders() async {
-    usersReminders?.forEach((reminder) async {
+    await usersReminders.forEach((reminder) async {
       if ((reminder.rescheduledTime ?? reminder.time)
           .isBefore(DateTime.now().subtract(Duration(days: 244))))
         await reminderService.deleteReminder(reminder);
@@ -135,9 +123,6 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
 
   List<Reminder> getFinalRemindersList({DateTime date}) {
     date = date ?? currentDateStamp;
-    print('hererere');
-
-    print(usersReminders);
     List<Reminder> finalReminders = getProjectedReminders(date: date);
     List<Reminder> fetchedReminders = usersReminders
         .where((element) =>
@@ -158,7 +143,6 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   List<Reminder> getProjectedReminders({DateTime date}) {
     date ??= currentDateStamp;
     List<Therapy> therapies = List.of(therapyManager.usersTherapies);
-
     //print(therapies.length);
     List<Reminder> projectedReminders = List();
     therapies

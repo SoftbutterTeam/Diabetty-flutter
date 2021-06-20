@@ -5,7 +5,8 @@ import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
 import 'package:diabetty/services/journal.service.dart';
 import 'package:diabetty/blocs/app_context.dart';
-
+import 'package:diabetty/services/journalentry.service.dart';
+import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 
@@ -19,12 +20,11 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
   List<Journal> usersJournals = List();
   String get uid => this.appContext.user?.uid;
 
-  Stream get journalStream => journalService.localStream();
-  Stream getJournalEntriesStream(Journal journal) =>
+  Stream<List<Journal>> get journalStream => journalService.journalStream(uid);
+  Stream<List<JournalEntry>> getJournalEntriesStream(Journal journal) =>
       journalEntryService.journalEntriesStream(uid, journal)
-        ..listen((event) async {
-          journal.journalEntries = event ?? journal.journalEntries ?? [];
-        });
+        ..listen(
+            (event) => event != null ? journal.journalEntries = event : null);
 
   Journal newJournal;
 
@@ -40,18 +40,11 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
     authService = appContext.authService;
     if (uid != null) {
       try {
-        usersJournals = await journalService.getJournals(uid);
+        usersJournals = await journalService.getJournals(uid, local: true);
       } catch (e) {}
       this.journalStream.listen((event) async {
-        if (event != null && event['id'] != null) {
-          if (usersJournals.length > 0)
-            usersJournals
-                ?.firstWhere((element) =>
-                    element.id == event['id'] && event['id'] != null)
-                ?.loadFromJson(event);
-        } else {
-          usersJournals = await journalService.getJournals(uid);
-        }
+        usersJournals = event;
+        usersJournals ??= List();
       });
     }
   }

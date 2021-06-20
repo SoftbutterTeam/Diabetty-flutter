@@ -94,10 +94,8 @@ class _JournalScreenState extends State<JournalScreen>
                   width: size.width,
                   height: size.height * 0.25,
                   padding: EdgeInsets.only(top: 10, left: 5, right: 5),
-                  child: widget.journal.journalEntries != null &&
-                          ((widget.journal.journalEntries
-                                  .where((element) => !element.isNotesType))
-                              .isNotEmpty)
+                  child: ((widget.journal.journalEntries
+                          .where((element) => !element.isNotesType)).isNotEmpty)
                       ? JournalLineChart(journal: widget.journal)
                       : null,
                 ),
@@ -203,7 +201,7 @@ class _JournalScreenState extends State<JournalScreen>
   Widget _buildJournalCards2(BuildContext context) {
     int recordCount = 0;
     int totalRecords = 0;
-    this.journal.journalEntries ??= [];
+
     this.journal.journalEntries.forEach((element) {
       if (!element.isNotesType) totalRecords++;
     });
@@ -352,7 +350,7 @@ class _JournalScreenState extends State<JournalScreen>
           SizedBox(height: size.height * 0.01),
           Center(
             child: Text(
-              'Check-in',
+              'Record',
               style: style,
             ),
           )

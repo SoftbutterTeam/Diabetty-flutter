@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
-import 'package:diabetty/repositories/local_repositories/journal.local.repository.dart';
+import 'package:diabetty/repositories/journal.repository.dart';
 
 class JournalService {
   JournalRepository journalRepo = JournalRepository();
@@ -35,7 +36,18 @@ class JournalService {
     }).toList();
   }
 
-  Stream localStream() {
-    return journalRepo.onStateChanged('uid');
+  Stream<List<Journal>> journalStream(String uid) {
+    return journalRepo.onStateChanged(uid).map(_journalListFromSnapshop);
+  }
+
+  List<Journal> _journalListFromSnapshop(QuerySnapshot snapshot) {
+    //print('hera');
+    //print(snapshot.documents.length);
+    return snapshot.documents.map<Journal>((doc) {
+      Journal journal = Journal();
+      journal.id = doc.documentID;
+      journal.loadFromJson(doc.data);
+      return journal;
+    }).toList();
   }
 }

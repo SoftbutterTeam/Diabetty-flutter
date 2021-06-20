@@ -5,7 +5,6 @@ import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
-import 'package:diabetty/ui/screens/teams/common.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/cupertino_text_field.dart'
     as custom;
@@ -27,8 +26,7 @@ class ReminderRuleField extends StatefulWidget {
   _ReminderRuleFieldState createState() => _ReminderRuleFieldState();
 }
 
-class _ReminderRuleFieldState extends State<ReminderRuleField>
-    with CommonMixins {
+class _ReminderRuleFieldState extends State<ReminderRuleField> {
   @override
   dispose() {
     super.dispose();
@@ -60,9 +58,7 @@ class _ReminderRuleFieldState extends State<ReminderRuleField>
       prefix: Row(
         children: [
           GestureDetector(
-            onTap: () => areYouSurePopup(context, () {
-              _deleteRule(manager);
-            }, destructive: true),
+            onTap: () => _deleteRule(manager),
             child: Container(
               padding: EdgeInsets.only(left: 18, right: 14),
               child: Icon(

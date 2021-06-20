@@ -1,7 +1,6 @@
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/diary/diary_parent.screen.dart';
-import 'package:diabetty/ui/screens/others/settings_screens/settings.screen.dart';
 import 'package:diabetty/ui/screens/teams/team.screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.simple.screen.dart' as Simple;
 import 'package:diabetty/ui/screens/therapy/therapy.screen.dart';
@@ -35,7 +34,6 @@ class _DashBoardState extends State<DashBoard> {
   int pageIndex = 0;
   int currentIndex = 0;
   Color color = Colors.deepOrangeAccent[400];
-  bool local = true;
 
   var _pages = [
     DiaryParentScreenBuilder(),
@@ -46,21 +44,6 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   void initState() {
-    _pages = local
-        ? [
-            DiaryParentScreenBuilder(),
-            Simple.DayPlanScreenBuilder(),
-            TherapyScreenBuilder(),
-          ]
-        : [
-            DiaryParentScreenBuilder(),
-            Simple.DayPlanScreenBuilder(),
-            TeamScreenBuilder(),
-            TherapyScreenBuilder(),
-          ];
-    if (pageIndex > _pages.length - 1) {
-      pageIndex = _pages.length - 1;
-    }
     pageController = PageController(
         initialPage: (widget.appContext == null) ? pageIndex : 0,
         keepPage: true);
@@ -97,7 +80,7 @@ class _DashBoardState extends State<DashBoard> {
             color: color,
             fit: BoxFit.fitHeight,
           ),
-          label: "diary",
+          title: Text("diary"),
         ),
       BottomNavigationBarItem(
           icon: Container(
@@ -109,8 +92,8 @@ class _DashBoardState extends State<DashBoard> {
                 color: color,
                 fit: BoxFit.fitHeight,
               )),
-          label: "today"),
-      if (widget.appContext == null && !local)
+          title: Text("today")),
+      if (widget.appContext == null)
         BottomNavigationBarItem(
             icon: SvgPicture.asset(
               sos_icon,
@@ -119,7 +102,7 @@ class _DashBoardState extends State<DashBoard> {
               color: color,
               fit: BoxFit.fitHeight,
             ),
-            label: "team"),
+            title: Text("team")),
       BottomNavigationBarItem(
         icon: SvgPicture.asset(
           t_2,
@@ -128,7 +111,7 @@ class _DashBoardState extends State<DashBoard> {
           color: color,
           fit: BoxFit.fitHeight,
         ),
-        label: "therapy",
+        title: Text("therapy"),
       ),
     ];
 

@@ -257,7 +257,6 @@ class _EditStockDialogState extends State<EditStockDialog>
     flagLimitController.clear();
     widget.therapyForm.stock.handleReset();
     _isFilled = false;
-    therapyService.saveTherapy(therapy);
     setState(() {});
     manager.updateListeners();
   }
@@ -276,7 +275,6 @@ class _EditStockDialogState extends State<EditStockDialog>
     }
 
     setState(() {});
-    therapyService.saveTherapy(therapy);
     manager.updateListeners();
     Navigator.pop(context);
     print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());

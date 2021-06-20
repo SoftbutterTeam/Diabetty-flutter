@@ -1,4 +1,5 @@
-import 'package:diabetty/repositories/local_repositories/reminder.local.repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:diabetty/repositories/reminder.repository.dart';
 import 'package:diabetty/models/reminder.model.dart';
 
 class ReminderService {
@@ -35,7 +36,7 @@ class ReminderService {
         //print('init map');
         Reminder reminder = Reminder();
         reminder.id = json['id'];
-        print(reminder.id);
+        //print(therapy.id);
         return reminder..loadFromJson(json);
       }).toList();
     } catch (e) {
@@ -44,20 +45,16 @@ class ReminderService {
     }
   }
 
-  Stream localStream() {
-    return reminderRepo.onStateChanged('uid');
-  }
-
   Stream<List<Reminder>> reminderStream(String uid) {
     return reminderRepo.onStateChanged(uid).map(_reminderListFromSnapshop);
   }
 
-  List<Reminder> _reminderListFromSnapshop(Map<String, dynamic> snapshot) {
-    return snapshot.entries.map<Reminder>((doc) {
+  List<Reminder> _reminderListFromSnapshop(QuerySnapshot snapshot) {
+    return snapshot.documents.map<Reminder>((doc) {
       Reminder reminder = Reminder();
-      reminder.id = doc.key;
-      doc.value['id'] = reminder.id;
-      reminder.loadFromJson(doc.value);
+      reminder.id = doc.documentID;
+      doc.data['id'] = reminder.id;
+      reminder.loadFromJson(doc.data);
 
       return reminder;
     }).toList();

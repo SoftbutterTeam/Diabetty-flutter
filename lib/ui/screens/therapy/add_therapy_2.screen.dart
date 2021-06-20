@@ -132,14 +132,12 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         preferredSize: Size.fromHeight(50),
         child: _buildHeader(context),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: IntrinsicHeight(
-            child: SizedBox(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: size.height * 0.85),
-                child: _buildBody(context, reminderRulesList),
-              ),
+      body: SingleChildScrollView(
+        child: IntrinsicHeight(
+          child: SizedBox(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: size.height * 0.85),
+              child: _buildBody(context, reminderRulesList),
             ),
           ),
         ),
@@ -158,6 +156,34 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
             colors: [Colors.orange[900], Colors.orange[800]]),
       ),
     );
+  }
+
+  TopBar _buildHeader2(BuildContext context, size) {
+    return TopBar(
+        btnEnabled: (therapyForm.name.isEmpty) ? false : true,
+        centerText: 'Add Reminders',
+        leftButtonText: 'Back',
+        rightButtonText: 'Save',
+        onLeftTap: () {
+          widget.pageController.jumpToPage(0);
+        },
+        onRightTap: () async {
+          //print(therapyForm.name);
+
+          try {
+            if (therapyForm.isNeededMode())
+              therapyForm.neededValidation(toThrow: true);
+            else if (therapyForm.isPlannedMode())
+              therapyForm.plannedValidation(toThrow: true);
+            await widget.manager.submitAddTherapy(therapyForm);
+            Navigator.pushNamed(context, therapy);
+          } catch (e) {
+            //print(e.message);
+            //print('this shows up');
+            showErrorModal(context);
+            // TODO Display Model with describing the error
+          }
+        });
   }
 
   Future showErrorModal(BuildContext context) {
@@ -196,20 +222,18 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       if (reminderRulesList.length > 0)
         Visibility(
             visible: therapyForm.isVisible() ? true : false,
-            child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: size.height * 0.3),
-                child: Container(
-                  padding: EdgeInsets.only(top: 2),
-                  // height: size.height * 0.37,
-                  child: (reminderRulesList.length < 7)
-                      ? ColumnBuilder(
-                          itemCount: reminderRulesList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return reminderRulesList[index];
-                          },
-                        )
-                      : _buildListViewRep(context, reminderRulesList),
-                )))
+            child: Container(
+              padding: EdgeInsets.only(top: 2),
+              height: size.height * 0.37,
+              child: (reminderRulesList.length < 7)
+                  ? ColumnBuilder(
+                      itemCount: reminderRulesList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return reminderRulesList[index];
+                      },
+                    )
+                  : _buildListViewRep(context, reminderRulesList),
+            ))
     ];
 
     return Column(
@@ -225,9 +249,6 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
         Container(
           padding: EdgeInsets.symmetric(vertical: 10),
           alignment: FractionalOffset.bottomCenter,
-          margin: EdgeInsets.only(
-            bottom: 20,
-          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -333,7 +354,6 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   }
 
   Widget _buildAddReminderField(context) {
-    // ignore: unnecessary_cast
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -380,13 +400,10 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     mywidgets.removeLast();
     return Container(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            alignment: Alignment.topCenter,
+          SizedBox(
             height: size.height * 0.3,
             child: ListView(
-              padding: EdgeInsets.zero,
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               children: mywidgets.cast(),

@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/app_context.dart';
 import 'package:flutter/material.dart';
 
 abstract class Manager extends ChangeNotifier {

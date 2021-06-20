@@ -14,17 +14,16 @@ class TherapyManager extends Manager {
   ValueNotifier<bool> isLoading;
   final AppContext appContext;
   AuthService authService;
-  List<Therapy> usersTherapies = [];
+  List<Therapy> usersTherapies = List();
   String get uid => this.appContext.user?.uid;
 
   AddTherapyForm therapyForm;
 
   Therapy therapy;
 
-  Stream _therapyStream() => therapyService.localStream();
+  Stream<List<Therapy>> _therapyStream() => therapyService.therapyStream(uid);
 
-  Stream get therapyStream => this._therapyStream();
-  //Stream get therapyStream => therapyService.localStream();
+  Stream<List<Therapy>> get therapyStream => this._therapyStream();
   void resetForm() => therapyForm = new AddTherapyForm();
 
   @override
@@ -41,10 +40,9 @@ class TherapyManager extends Manager {
         usersTherapies = await therapyService.getTherapies(uid, local: true);
       } catch (e) {}
       this._therapyStream().listen((event) async {
-        usersTherapies = await therapyService.getTherapies(uid);
-
+        usersTherapies = event ?? usersTherapies;
         usersTherapies.forEach((element) {
-          // print(element.toJson());
+          print(element.toJson());
         });
         // updateListeners();
         // usersTherapies ??= List();

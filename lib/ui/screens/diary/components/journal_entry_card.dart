@@ -195,48 +195,64 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                 ),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: Text(
-                        "check. " + number.toString(),
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                          child: Text(
+                            "no. " + number.toString(),
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     Container(
                       height: size.height * 0.07,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: EdgeInsets.only(bottom: 2),
-                            child: SvgPicture.asset(
-                              'assets/icons/navigation/essentials/line-chart.svg',
-                              height: 30,
-                              width: 30,
-                              color: Colors.orange[800],
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/navigation/essentials/line-chart.svg',
+                                  height: 30,
+                                  width: 30,
+                                  color: Colors.orange[800],
+                                ),
+                              ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 5, top: 2),
-                            child: Text(
-                              (widget.journalEntry?.recordEntry.toString() ??
-                                      '') +
-                                  ' ' +
-                                  report_measurements[(widget.journal == null ||
-                                          widget.journal.reportUnitsIndex ==
-                                              null)
-                                      ? 0
-                                      : widget.journal.reportUnitsIndex],
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w500,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 5, top: 2),
+                                child: Text(
+                                  (widget.journalEntry?.recordEntry
+                                              .toString() ??
+                                          '') +
+                                      ' ' +
+                                      report_measurements[(widget.journal ==
+                                                  null ||
+                                              widget.journal.reportUnitsIndex ==
+                                                  null)
+                                          ? 0
+                                          : widget.journal.reportUnitsIndex],
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
