@@ -143,9 +143,10 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       stackIcons: null,
       controller: medicationNameController,
       placeholder: "Medication...",
-      initalName: widget.therapy.name,
+      initalName: newTherapy.name,
       onChanged: (val) {
         print(val);
+        newTherapy.name = val ?? '';
         setState(() {});
         // or widget.manager.updateListeners();
       },

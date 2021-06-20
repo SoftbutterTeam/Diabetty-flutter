@@ -47,19 +47,4 @@ class ReminderService {
   Stream localStream() {
     return reminderRepo.onStateChanged('uid');
   }
-
-  Stream<List<Reminder>> reminderStream(String uid) {
-    return reminderRepo.onStateChanged(uid).map(_reminderListFromSnapshop);
-  }
-
-  List<Reminder> _reminderListFromSnapshop(Map<String, dynamic> snapshot) {
-    return snapshot.entries.map<Reminder>((doc) {
-      Reminder reminder = Reminder();
-      reminder.id = doc.key;
-      doc.value['id'] = reminder.id;
-      reminder.loadFromJson(doc.value);
-
-      return reminder;
-    }).toList();
-  }
 }

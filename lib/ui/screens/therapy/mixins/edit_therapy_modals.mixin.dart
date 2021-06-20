@@ -233,7 +233,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   }
 
   showIntakeAdvicePicker(context, Therapy therapy) {
-    int s;
+    int s = therapy.medicationInfo.intakeAdvices[0];
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     showCupertinoModalPopup(
@@ -316,7 +316,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   showUnitPicker(BuildContext context, Therapy therapy) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    int s;
+    int s = therapy.medicationInfo.typeIndex;
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
@@ -329,7 +329,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             setState(() {});
           },
           intakePicker: CupertinoPicker(
-            scrollController: FixedExtentScrollController(initialItem: 0),
+            scrollController: FixedExtentScrollController(initialItem: s),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {

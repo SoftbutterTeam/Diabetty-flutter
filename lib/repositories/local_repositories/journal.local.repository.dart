@@ -47,6 +47,7 @@ class JournalRepository {
         .doc()
         .set(journalData)
         .catchError((e) {
+      print('j error');
       print(e);
     });
     return;
@@ -61,7 +62,8 @@ class JournalRepository {
       print("--here");
       print(result);
       var data = (result.entries.map((e) {
-        var json = Map<String, dynamic>.from(e.value)..['id'] = e.key;
+        var json = Map<String, dynamic>.from(e.value)
+          ..['id'] = e.key.split('/').last;
         return json;
       }).toList());
       //print(data.map((e) => e.toString()));

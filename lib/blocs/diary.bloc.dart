@@ -23,7 +23,7 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
   Stream getJournalEntriesStream(Journal journal) =>
       journalEntryService.journalEntriesStream(uid, journal)
         ..listen((event) async {
-          journal.journalEntries = event ?? journal.journalEntries ?? [];
+          journal.journalEntries = await fetchJournalEntries(journal);
         });
 
   Journal newJournal;
@@ -77,6 +77,7 @@ class DiaryBloc extends Manager with journalEntryManagerMixin {
       return await journalEntryService.getjournalEntrys(uid, journal.id,
           local: true);
     } catch (e) {
+      print('je Errro');
       print(e);
     }
   }

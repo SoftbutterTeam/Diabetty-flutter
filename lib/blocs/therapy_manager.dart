@@ -42,7 +42,7 @@ class TherapyManager extends Manager {
       } catch (e) {}
       this._therapyStream().listen((event) async {
         usersTherapies = await therapyService.getTherapies(uid);
-
+//        updateListeners();
         usersTherapies.forEach((element) {
           // print(element.toJson());
         });

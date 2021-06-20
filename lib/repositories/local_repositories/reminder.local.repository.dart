@@ -16,7 +16,8 @@ class ReminderRepository {
       var result = await _localdb.collection('reminders').get();
 
       var data = (result.entries.map((e) {
-        var json = Map<String, dynamic>.from(e.value)..['id'] = e.key;
+        var json = Map<String, dynamic>.from(e.value)
+          ..['id'] = e.key.split('/').last;
         return json;
       }).toList());
       //print(data.map((e) => e.toString()));
