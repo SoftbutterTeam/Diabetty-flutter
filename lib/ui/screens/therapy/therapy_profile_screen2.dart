@@ -338,8 +338,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   Widget _buildHeader(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    String nextMessage = getNextReminderMessage() ?? '...';
-    String lastMessage = getLastTakenMessage() ?? '...';
+    String nextMessage = getNextReminderMessage() ?? '-';
+    String lastMessage = getLastTakenMessage() ?? '-';
     return IntrinsicHeight(
       child: Container(
         width: size.width,
@@ -374,14 +374,22 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(1.5), //was 5
-                          margin: EdgeInsets.only(bottom: 4, right: 8),
-                          height: 32,
-                          width: 32,
+                          padding: EdgeInsets.all(2), //was 5
+                          margin: EdgeInsets.only(bottom: 8, right: 8),
+                          height: 40,
+                          width: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                spreadRadius: 0.5,
+                                blurRadius: 1.5,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
                           ),
                           child: SvgPicture.asset(
                             appearance_iconss[
@@ -408,8 +416,6 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'last taken',
