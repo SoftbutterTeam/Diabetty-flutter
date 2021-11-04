@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
@@ -42,13 +41,12 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   DayPlanManager dayManager;
 
-  Color textColor = Colors.white;
+  Color textColor = true ? Colors.white : Colors.black87;
   bool readOnly;
   initState() {
     dayManager = widget.dayManager;
     therapyManager = widget.therapyManager;
-    readOnly = therapy.userId !=
-        Provider.of<AppContext>(context, listen: false).user.uid;
+    readOnly = false;
     super.initState();
   }
 
@@ -89,7 +87,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                                         prevContext: context)),
                               )
                           : null,
-                      color: Colors.white,
+                      iconColor: textColor,
                       backFunction: () => Navigator.pop(context),
                     ),
                   ))),
@@ -133,17 +131,14 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         ),
         if (reminderRulesList != null || reminderRulesList.isNotEmpty)
           Container(
-            color: backgroundColor,
-            padding: EdgeInsets.only(top: 10),
-            child: (reminderRulesList.length < 10)
-                ? ColumnBuilder(
-                    itemCount: reminderRulesList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return reminderRulesList[index];
-                    },
-                  )
-                : 'yeye',
-          ),
+              color: backgroundColor,
+              padding: EdgeInsets.only(top: 10),
+              child: ColumnBuilder(
+                itemCount: reminderRulesList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return reminderRulesList[index];
+                },
+              )),
 
         // Padding(
         //   padding: EdgeInsets.only(top: 10.0),
@@ -349,7 +344,11 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
-                colors: [Colors.deepOrange[800], Colors.deepOrange[700]]),
+                colors: false
+                    ? [Colors.white, Colors.white]
+                    : [Colors.deepOrange[800], Colors.deepOrange[700]]),
+            //                colors: [Colors.deepOrange[800], Colors.deepOrange[700]]),
+
             border: Border(
               bottom: BorderSide(
                 color:
@@ -374,21 +373,23 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(1.5), //was 5
-                          margin: EdgeInsets.only(bottom: 4, right: 8),
-                          height: 32,
-                          width: 32,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: SvgPicture.asset(
-                            appearance_iconss[
-                                widget.therapy.medicationInfo.appearanceIndex],
-                            fit: BoxFit.contain,
-                          ),
-                        ),
+                            padding: EdgeInsets.all(2), //was 5
+                            margin: EdgeInsets.only(bottom: 4, right: 8),
+                            height: 35,
+                            width: 35,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: Container(
+                              color: Colors.transparent,
+                              child: SvgPicture.asset(
+                                appearance_iconss[widget
+                                    .therapy.medicationInfo.appearanceIndex],
+                                fit: BoxFit.scaleDown,
+                              ),
+                            )),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 3),
                           child: Text(widget.therapy.name.capitalizeBegins(),
@@ -635,7 +636,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     if (userRemindersLast.isEmpty) return null;
     Reminder lastReminder = userRemindersLast.last;
 
-    return '${(lastReminder.takenAt).shortenDayRepresent().toLowerCase()} ${(lastReminder.takenAt).formatTime().toLowerCase()} ';
+    return '${(lastReminder.takenAt).shortenDayRepresent().toLowerCase()} ${(lastReminder.takenAt).formatTime().toLowerCase()}';
   } //! it can return null!!!!!!!! Error handle it, for no last taken
 
   String getNextReminderMessage() {
@@ -669,7 +670,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     if (userRemindersNext.isEmpty) return null;
     Reminder nextReminder = userRemindersNext.first;
 
-    return '${(nextReminder.rescheduledTime ?? nextReminder.time).shortenDayRepresent().toLowerCase()} ${(nextReminder.rescheduledTime ?? nextReminder.time).formatTime().toLowerCase()} ';
+    return '${(nextReminder.rescheduledTime ?? nextReminder.time).shortenDayRepresent().toLowerCase()} ${(nextReminder.rescheduledTime ?? nextReminder.time).formatTime().toLowerCase()}';
 
     /***
      *? So this is an Example. When we have proper ReminderState checks, we can 

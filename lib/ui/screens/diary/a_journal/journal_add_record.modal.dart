@@ -222,14 +222,19 @@ class _JournalAddRecordState extends State<JournalAddRecord>
                   )),
               onPressed: () {
                 Navigator.pop(context);
-                //print(initialDate);
+                //// print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
                 vertical: 5.0,
               )),
           CupertinoButton(
-              child: Text(readOnly ? '' : edit ? 'save' : 'add',
+              child: Text(
+                  readOnly
+                      ? ''
+                      : edit
+                          ? 'save'
+                          : 'add',
                   style: TextStyle(
                     color: true ? Colors.orange[800] : Colors.black26,
                   )),

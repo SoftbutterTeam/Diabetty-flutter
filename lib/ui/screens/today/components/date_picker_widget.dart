@@ -221,7 +221,7 @@ class _DatePickerState extends State<DatePicker> {
 
     // check if this date needs to be deactivated for only DeactivatedDates
     if (widget.inactiveDates != null) {
-//            //print("Inside Inactive dates.");
+//            //// print("Inside Inactive dates.");
       for (DateTime inactiveDate in widget.inactiveDates) {
         if (_compareDate(date, inactiveDate)) {
           isDeactivated = true;
@@ -251,13 +251,19 @@ class _DatePickerState extends State<DatePicker> {
       date: date,
       monthTextStyle: isDeactivated
           ? deactivatedMonthStyle
-          : isSelected ? selectedMonthStyle : widget.monthTextStyle,
+          : isSelected
+              ? selectedMonthStyle
+              : widget.monthTextStyle,
       dateTextStyle: isDeactivated
           ? deactivatedDateStyle
-          : isSelected ? selectedDateStyle : widget.dateTextStyle,
+          : isSelected
+              ? selectedDateStyle
+              : widget.dateTextStyle,
       dayTextStyle: isDeactivated
           ? deactivatedDayStyle
-          : isSelected ? selectedDayStyle : widget.dayTextStyle,
+          : isSelected
+              ? selectedDayStyle
+              : widget.dayTextStyle,
       locale: widget.locale,
       width: widget.width,
       selectionColor: isSelected ? widget.selectionColor : Colors.transparent,

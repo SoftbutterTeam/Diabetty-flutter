@@ -70,7 +70,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
                   alignment: Alignment.topCenter,
                   child: SizedBox(
                     child: SubPageHeader(
-                      text: isValid ? 'Create' : '',
+                      text: isValid ? 'save' : '',
                       saveFunction: () {
                         if (isValid) {
                           diaryManager
@@ -78,7 +78,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
                           Navigator.of(context).pop(context);
                         }
                       },
-                      color: Colors.white,
+                      iconColor: Colors.white,
                       backFunction: () => Navigator.pop(context),
                     ),
                   ))),

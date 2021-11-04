@@ -1,4 +1,3 @@
-import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
@@ -153,9 +152,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
     int remQuantity = reminder.dose;
     int remType = reminder.doseTypeIndex;
     int remStrengthType = reminder.strengthUnitindex;
-    int remAdviceInd = (reminder.advices != null && reminder.advices.isNotEmpty)
-        ? reminder.advices[0]
-        : 0;
+    int remAdviceInd = reminder.advice ?? 0;
     String remDescription = "";
     if (remStrength != null && remStrengthType != null && remStrengthType != 0)
       remDescription += "$remStrength ${strengthUnits[remStrengthType]}";
@@ -164,7 +161,7 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
       remDescription +=
           "${remQuantity ?? ''} ${unitTypes[remType].plurarlUnits(remQuantity ?? 1)}";
     if (remAdviceInd != 0)
-      remDescription += ", ${intakeAdvice[reminder.advices[0]].toLowerCase()}";
+      remDescription += ", ${intakeAdvice[remAdviceInd].toLowerCase()}";
 
     return remDescription;
   }
@@ -173,11 +170,9 @@ class ReminderCard extends StatelessWidget with ReminderActionsMixin {
 
   Widget _buildReminderTick(BuildContext context) {
     bool completed = reminder.takenAt != null;
-    bool readOnly = Provider.of<AppContext>(context, listen: false).readOnly;
+    bool readOnly = false;
     final dayplan = Provider.of<DayPlanManager>(context, listen: false);
 
-    print('readOnly');
-    print(readOnly);
     return GestureDetector(
       onTap: reminder.isSkipped
           ? (null)

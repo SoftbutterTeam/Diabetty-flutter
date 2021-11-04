@@ -126,7 +126,7 @@ class _DropModalState extends State<DropModal>
                 widget.manager.currentDateStamp = DateTime.now();
                 //  _controller.animateToDate(
                 //     dayManager.currentDateStamp.subtract(Duration(days: 2)));
-                //print(_selectedValue);
+                //// print(_selectedValue);
 
                 setState(() {});
                 widget.manager.dayScreenSetState?.call();

@@ -18,13 +18,13 @@ class JournalService {
       await journalRepo.deleteJournal(journal);
       return true;
     } catch (e) {
-      print(e);
+      // print(e);
       rethrow;
     }
   }
 
-  Future<List<Journal>> getJournals(String uid, {bool local = false}) async {
-    final journals = (await journalRepo.getAllJournals(uid, local: local)).data;
+  Future<List<Journal>> getJournals({bool local = false}) async {
+    final journals = (await journalRepo.getAllJournals(local: local)).data;
     if (journals == null) {
       return List();
     }
@@ -36,6 +36,16 @@ class JournalService {
   }
 
   Stream localStream() {
-    return journalRepo.onStateChanged('uid');
+    return journalRepo.onStateChanged();
+  }
+
+  Future<void> saveJournal(Journal journal) async {
+    try {
+      await journalRepo.updateJournal(journal);
+      return true;
+    } catch (e) {
+      // print(e);
+      rethrow;
+    }
   }
 }

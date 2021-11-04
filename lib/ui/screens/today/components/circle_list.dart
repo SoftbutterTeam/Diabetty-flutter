@@ -362,17 +362,17 @@ class _CircleListState extends State<CircleList>
 
   double reverseAngle(progressCompletion, innerProgressCompletion) {
     double angle = () {
-      print(widget.progressAngle);
+      // print(widget.progressAngle);
       if (progressCompletion != 0) {
         return (progressCompletion / 100 * 2 * pi) + widget.progressAngle;
       } else
         return innerProgressCompletion / 100 * 2 * pi;
     }.call();
     angle = angle.sign * (angle % (2 * pi));
-    print('AAAA----------------+' + angle.toString());
+    // print('AAAA----------------+' + angle.toString());
     double result =
         -(angle.abs() <= pi ? angle : ((angle.sign * 2 * pi) - angle));
-    print(result);
+    // print(result);
     return result;
   }
 

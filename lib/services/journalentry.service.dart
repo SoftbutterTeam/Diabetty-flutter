@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/repositories/local_repositories/journalentry.local.repository.dart';
@@ -18,7 +17,7 @@ class JournalEntryService {
     try {
       journalEntryRepo.setEntry(journalEntry);
     } catch (e) {
-      print(e);
+      // print(e);
       return null;
     }
   }
@@ -27,17 +26,16 @@ class JournalEntryService {
     try {
       journalEntryRepo.deleteEntry(journalEntry);
     } catch (e) {
-      print(e);
+      // print(e);
       return null;
     }
   }
 
-  Future<List<JournalEntry>> getjournalEntrys(String uid, String journalId,
+  Future<List<JournalEntry>> getjournalEntries(String journalId,
       {bool local: false}) async {
     try {
       final journalEntrys =
-          (await journalEntryRepo.getAllEntrys(uid, journalId, local: local))
-              .data;
+          (await journalEntryRepo.getAllEntrys(journalId, local: local)).data;
       if (journalEntrys == null) {
         return List();
       }
@@ -47,12 +45,12 @@ class JournalEntryService {
         return journalEntry..loadFromJson(json);
       }).toList();
     } catch (e) {
-      print(e);
+      // print(e);
       return null;
     }
   }
 
-  Stream journalEntriesStream(String uid, Journal journal) {
-    return journalEntryRepo.onStateChanged(uid, journal.id);
+  Stream journalEntriesStream(Journal journal) {
+    return journalEntryRepo.onStateChanged(journal.id);
   }
 }

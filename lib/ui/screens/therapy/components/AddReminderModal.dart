@@ -100,7 +100,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                       setState(() {
                         window = result;
                       });
-                      //print(window);
+                      //// print(window);
                     },
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
@@ -176,7 +176,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                           timeSelected[14] +
                           timeSelected[15];
                       var result = trimmedtimeSelected;
-                      //print(result);
+                      //// print(result);
                       setState(() {
                         time = result;
                       });
@@ -198,11 +198,11 @@ class _AddReminderModalState extends State<AddReminderModal> {
                 minuteInterval: 5,
                 initialDateTime: initialDate,
                 onDateTimeChanged: (dateTimeChange) {
-                  //print(dateTimeChange);
+                  //// print(dateTimeChange);
                   setState(() {
                     dateTime = dateTimeChange;
                   });
-                  //print(dateTime);
+                  //// print(dateTime);
                 },
               ),
             ),
@@ -214,7 +214,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
 
   _saveData() {
     if (dosageController.text.isEmpty || time == '00:00' || window == '00:00') {
-      //print('pls fill it out dumbnuts');
+      //// print('pls fill it out dumbnuts');
     } else {
       monday ? reminder.days.monday = true : reminder.days.monday = false;
       tuesday ? reminder.days.tuesday = true : reminder.days.tuesday = false;
@@ -227,21 +227,21 @@ class _AddReminderModalState extends State<AddReminderModal> {
       sunday ? reminder.days.sunday = true : reminder.days.sunday = false;
       var doseStringToDouble = int.parse(dosageController.text);
       reminder.dose = doseStringToDouble;
-      //print(reminder.dose);
-      //print(reminder.time);
-      //print(dosageController.text);
-      //print(reminder.days.monday);
-      //print(reminder.days.tuesday);
-      //print(reminder.days.wednesday);
-      //print(reminder.days.thursday);
-      //print(reminder.days.friday);
-      //print(reminder.days.saturday);
-      //print(reminder.days.sunday);
+      //// print(reminder.dose);
+      //// print(reminder.time);
+      //// print(dosageController.text);
+      //// print(reminder.days.monday);
+      //// print(reminder.days.tuesday);
+      //// print(reminder.days.wednesday);
+      //// print(reminder.days.thursday);
+      //// print(reminder.days.friday);
+      //// print(reminder.days.saturday);
+      //// print(reminder.days.sunday);
       final TherapyManager manager =
           Provider.of<TherapyManager>(context, listen: false);
       manager.therapyForm.reminderRules.add(reminder);
       manager.updateListeners();
-      //print(manager.therapyForm.reminderRules.length);
+      //// print(manager.therapyForm.reminderRules.length);
       Navigator.pop(context);
     }
   }
@@ -296,7 +296,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onTap: () {
                       setState(() {
                         tuesday = !tuesday;
-                        //print(tuesday);
+                        //// print(tuesday);
                       });
                     },
                     child: Container(
@@ -326,7 +326,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onTap: () {
                       setState(() {
                         wednesday = !wednesday;
-                        //print(wednesday);
+                        //// print(wednesday);
                       });
                     },
                     child: Container(
@@ -356,7 +356,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onTap: () {
                       setState(() {
                         thursday = !thursday;
-                        //print(thursday);
+                        //// print(thursday);
                       });
                     },
                     child: Container(
@@ -386,7 +386,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onTap: () {
                       setState(() {
                         friday = !friday;
-                        //print(friday);
+                        //// print(friday);
                       });
                     },
                     child: Container(
@@ -416,7 +416,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onTap: () {
                       setState(() {
                         saturday = !saturday;
-                        //print(saturday);
+                        //// print(saturday);
                       });
                     },
                     child: Container(
@@ -446,7 +446,7 @@ class _AddReminderModalState extends State<AddReminderModal> {
                     onTap: () {
                       setState(() {
                         sunday = !sunday;
-                        //print(sunday);
+                        //// print(sunday);
                       });
                     },
                     child: Container(

@@ -51,7 +51,7 @@ class _JournalScreenState extends State<JournalScreen>
             : true;
     noChart =
         (journal.reportUnitsIndex == 0 || journal.reportUnitsIndex == null);
-    print(journal.reportUnitsIndex);
+    // print(journal.reportUnitsIndex);
     super.initState();
   }
 
@@ -127,7 +127,7 @@ class _JournalScreenState extends State<JournalScreen>
                     SizedBox(
                       child: AnimatedScaleButton(
                         onTap: () {
-                          print('clicked');
+                          // print('clicked');
                           setState(() {
                             chartMinimized = !chartMinimized;
                           });
@@ -431,7 +431,7 @@ class _JournalLineChartState extends State<JournalLineChart> {
         .toDouble();
 
     intervals = max(((maxY - minY) ~/ 4).toDouble(), 1);
-    print("${maxY} ${minY} ${maxX} ${minX} ${intervals}");
+    // print("${maxY} ${minY} ${maxX} ${minX} ${intervals}");
   }
 
   double calculateDays(DateTime date) {
@@ -556,7 +556,7 @@ class _JournalLineChartState extends State<JournalLineChart> {
           ),
           interval: intervals,
           getTitles: (value) {
-            print(value);
+            // print(value);
             switch (value.toInt()) {
             }
             return value.toInt().toString();
@@ -593,7 +593,7 @@ class _JournalLineChartState extends State<JournalLineChart> {
 
   List<LineChartBarData> linesBarData1() {
     recordsMapped.forEach((element) {
-      return print('${element.x} ${element.y} ');
+      return; // print('${element.x} ${element.y} ');
     });
     if (records.isEmpty) return [];
 

@@ -8,7 +8,7 @@ class ReminderService {
     try {
       reminderRepo.setReminder(reminder);
     } catch (e) {
-      print(e);
+      // print(e);
       return null;
     }
   }
@@ -17,34 +17,33 @@ class ReminderService {
     try {
       reminderRepo.deleteReminder(reminder);
     } catch (e) {
-      print(e);
+      // print(e);
       return null;
     }
   }
 
-  Future<List<Reminder>> getReminders(String uid, {bool local: false}) async {
+  Future<List<Reminder>> getReminders({bool local: false}) async {
     try {
-      final reminders =
-          (await reminderRepo.getAllReminders(uid, local: local)).data;
+      final reminders = (await reminderRepo.getAllReminders(local: local)).data;
       if (reminders == null) {
-        //print('init null');
+        //// print('init null');
         return List();
       }
-      //print('init here');
+      //// print('init here');
       return reminders.map<Reminder>((json) {
-        //print('init map');
+        //// print('init map');
         Reminder reminder = Reminder();
         reminder.id = json['id'];
-        print(reminder.id);
+        // print(reminder.id);
         return reminder..loadFromJson(json);
       }).toList();
     } catch (e) {
-      print(e);
+      // print(e);
       return null;
     }
   }
 
   Stream localStream() {
-    return reminderRepo.onStateChanged('uid');
+    return reminderRepo.onStateChanged();
   }
 }

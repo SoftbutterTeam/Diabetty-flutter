@@ -9,7 +9,7 @@ class TherapyService {
     try {
       therapyRepo.setTherapy(therapy);
     } catch (e) {
-      print(e);
+      // print(e);
 
       return null;
     }
@@ -17,8 +17,8 @@ class TherapyService {
 
   Future<bool> addTherapy(Therapy therapy) async {
     try {
-      //print(therapy.name);
-      print(therapy.medicationInfo.appearanceIndex);
+      //// print(therapy.name);
+      // print(therapy.medicationInfo.appearanceIndex);
       await therapyRepo.createTherapy(therapy);
       return true;
     } catch (e) {
@@ -28,11 +28,11 @@ class TherapyService {
 
   Future<bool> deleteTherapy(Therapy therapy) async {
     try {
-      //print(therapy.name);
+      //// print(therapy.name);
 
       await therapyRepo.deleteTherapy(therapy);
 
-      print('deleted seru=ruv');
+      // print('deleted seru=ruv');
 
       return true;
     } catch (e) {
@@ -40,12 +40,11 @@ class TherapyService {
     }
   }
 
-  Future<List<Therapy>> getTherapies(String uid, {bool local: false}) async {
+  Future<List<Therapy>> getTherapies({bool local: false}) async {
     try {
-      final therapies =
-          (await therapyRepo.getAllTherapies(uid, local: local)).data;
+      final therapies = (await therapyRepo.getAllTherapies(local: local)).data;
       if (therapies == null) {
-        //print('init null');
+        //// print('init null');
         return List();
       }
       return therapies.map<Therapy>((json) {
@@ -54,13 +53,13 @@ class TherapyService {
         return therapy..loadFromJson(json);
       }).toList();
     } catch (e) {
-      print('error21');
-      print(e);
+      // print('error21');
+      // print(e);
       throw e;
     }
   }
 
   Stream localStream() {
-    return therapyRepo.onStateChanged('uid');
+    return therapyRepo.onStateChanged();
   }
 }

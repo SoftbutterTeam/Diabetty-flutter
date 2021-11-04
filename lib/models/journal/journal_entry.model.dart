@@ -2,7 +2,7 @@ import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:random_string/random_string.dart' as random;
 
 class JournalEntry {
-  String userId;
+  final String userId = 'user';
   String id;
   String journalId;
   double recordEntry;
@@ -16,8 +16,7 @@ class JournalEntry {
   get isNotesType => notes != null;
 
   JournalEntry(
-      {this.userId,
-      this.id,
+      {this.id,
       this.journalId,
       this.createdAt,
       this.recordEntry,
@@ -30,7 +29,6 @@ class JournalEntry {
   }
 
   JournalEntry.generated({Journal journal}) {
-    userId = journal.userId;
     journalId = journal.id;
     reportUnitsIndex = journal.reportUnitsIndex;
     date = DateTime.now();
@@ -43,7 +41,6 @@ class JournalEntry {
 
   loadFromJson(Map<String, dynamic> json) {
     this.id ??= json['id'];
-    this.userId = json['userId'];
     this.journalId = json['journalId'];
     this.date = DateTime.parse(json['date']);
     this.createdAt = DateTime.parse(json['createdAt']);

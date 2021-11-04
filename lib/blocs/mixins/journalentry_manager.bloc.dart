@@ -5,7 +5,7 @@ import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:diabetty/services/journalEntry.service.dart';
 
-abstract class journalEntryManagerMixin<T extends Manager> {
+abstract class JournalEntryManagerMixin<T extends Manager> {
   JournalEntryService journalEntryService = JournalEntryService();
 
   @protected
@@ -13,15 +13,16 @@ abstract class journalEntryManagerMixin<T extends Manager> {
   @protected
   TherapyManager therapyManager;
 
-  void saveJournalEntry(JournalEntry journalEntry, {update = true}) async {
+  Future<void> saveJournalEntry(JournalEntry journalEntry,
+      {update = true}) async {
     journalEntry.createdAt ??= DateTime.now();
     journalEntry.date ??= DateTime.now();
     await journalEntryService.savejournalEntry(journalEntry);
     if (update) updateListeners();
   }
 
-  void deletejournalEntry(JournalEntry journalEntry) async {
-    journalEntryService.deletejournalEntry(journalEntry);
+  Future<void> deletejournalEntry(JournalEntry journalEntry) async {
+    await journalEntryService.deletejournalEntry(journalEntry);
 
     updateListeners();
   }

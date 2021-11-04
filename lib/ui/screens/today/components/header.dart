@@ -1,4 +1,3 @@
-import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/mixins/date_mixin.dart';
 import 'package:diabetty/routes.dart';
@@ -30,7 +29,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     dayManager = Provider.of<DayPlanManager>(context, listen: false);
-    bool readOnly = Provider.of<AppContext>(context, listen: false).readOnly;
+    bool readOnly = false;
     return Container(
       height: size.height * 0.11,
       margin: EdgeInsets.symmetric(horizontal: 30),
@@ -95,20 +94,8 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
   }
 
   Widget _buildDateWidget(BuildContext context) {
-    AppContext appContext = Provider.of<AppContext>(context, listen: false);
-    bool readOnly = appContext.readOnly;
+    bool readOnly = false;
 
-    String name = (((appContext.user.displayName == null ||
-                appContext.user.displayName.isEmpty
-            ? appContext.user.name
-            : appContext.user.displayName) ??
-        ''));
-    name = name.isEmpty ? "friend" : name;
-    name += "'s";
-
-    name = name
-        .substring(0, name.length > 10 ? 10 : name.length)
-        .capitalizeBegins();
     final DayPlanManager dayManager =
         Provider.of<DayPlanManager>(context, listen: false);
     return Center(
@@ -122,7 +109,7 @@ class _DayPlanHeaderState extends State<DayPlanHeader> {
           alignment: Alignment.center,
           child: subHeadingText(
               readOnly
-                  ? name + ' ' + dayManager.currentDateStamp.formatShortShort()
+                  ? dayManager.currentDateStamp.formatShortShort()
                   : dayManager.currentDateStamp.shortenDateRepresent(),
               Colors.white),
         ),

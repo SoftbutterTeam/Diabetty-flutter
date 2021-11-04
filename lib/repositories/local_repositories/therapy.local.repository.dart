@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/services/authentication/auth_service/firebase_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:localstore/localstore.dart';
 
@@ -21,7 +19,7 @@ class TherapyRepository {
 
     therapyData = therapy.toJson();
 
-    print(therapyData);
+    // print(therapyData);
 
     // therapy.
 
@@ -30,24 +28,24 @@ class TherapyRepository {
         .doc(therapy.id)
         .set(therapyData)
         .catchError((e) {
-      print('error');
-      print(e);
+      // print('error');
+      // print(e);
     });
     return true;
   }
 
   Future<void> deleteTherapy(Therapy therapy) async {
     Map<String, dynamic> therapyData = therapy.toJson();
-    print(therapyData);
+    // print(therapyData);
 
     await _localdb
         .collection('therapies')
         .doc(therapy.id)
         .delete()
         .catchError((e) {
-      print('ahhhhhhaaaa');
+      // print('ahhhhhhaaaa');
 
-      print(e);
+      // print(e);
     });
     return;
   }
@@ -55,13 +53,13 @@ class TherapyRepository {
   // Future<void> deleteAllTherapy() async {
   //   await _localdb.collection('therapies').get()
   //     ..forEach((key, value) async {
-  //       print({key: key, value: value});
+  //       // print({key: key, value: value});
   //       await _localdb.collection('therapies').doc(key).delete();
   //     });
   //   return;
   // }
 
-  Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(String userId,
+  Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(
       {bool local}) async {
     try {
       Source source = local ? Source.cache : Source.serverAndCache;
@@ -73,16 +71,16 @@ class TherapyRepository {
           ..['id'] = e.key.split('/').last;
         return json;
       }).toList());
-      //print(data.map((e) => e.toString()));
+      //// print(data.map((e) => e.toString()));
       return DataResult<List<Map<String, dynamic>>>(data: data);
     } catch (exception, stackTrace) {
-      //print('HELLLO');
+      //// print('HELLLO');
       return DataResult(exception: exception, stackTrace: stackTrace);
     }
   }
 
   Future<void> updateTherapy(Therapy therapy) async {
-    //print(therapy.name);
+    //// print(therapy.name);
 
     Map<String, dynamic> therapyData = Map();
     therapyData = therapy.toJson();
@@ -93,34 +91,34 @@ class TherapyRepository {
         .doc(therapy.id)
         .set(therapyData)
         .catchError((e) {
-      //print(e);
+      //// print(e);
     });
     return true;
   }
 
   Future<void> createTherapy(Therapy therapy) async {
-    //print(therapy.userId);
+    //// print(therapy.userId);
 
     Map<String, dynamic> therapyData = therapy.toJson();
-    print(therapyData);
+    // print(therapyData);
     var timeNow = DateTime.now().toString();
     therapyData['createdAt'] = timeNow;
     therapyData['updatedAt'] = timeNow;
-    //print(therapy.name);
+    //// print(therapy.name);
     await _localdb
         .collection('therapies')
         .doc()
         .set(therapyData)
         .catchError((e) {
-      //print('ahhhhhhaaaa');
+      //// print('ahhhhhhaaaa');
 
-      print(e);
+      // print(e);
     });
     return;
   }
 
-  Stream<Map<String, dynamic>> onStateChanged(String uid) {
-    //print('hererehere' + uid);
+  Stream<Map<String, dynamic>> onStateChanged() {
+    //// print('hererehere' + uid);
 
     return _localdb.collection('therapies').stream;
   }

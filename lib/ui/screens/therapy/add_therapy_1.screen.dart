@@ -68,7 +68,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
                           widget.pageController.jumpToPage(1);
                         }
                       },
-                      color: Colors.white,
+                      iconColor: Colors.white,
                       backFunction: () => Navigator.pop(context),
                     ),
                   ))),
@@ -224,15 +224,10 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       therapyForm: therapyForm,
       initialText:
           (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
-      // (therapyForm.strength == null) ? '' : therapyForm.strength.toString(),
       controller: strengthController,
-      // stackIcons: _stackedHeartIcons(therapyForm.strengthUnitsIndex != 0 &&
-      //     therapyForm.strength != null &&
-      //     therapyForm.strength != 0),
       stackIcons: null,
       onTap: () {
         showStrengthUnitPopUp(context, strengthController);
-        //print(therapyForm.strength);
       },
       onChange: (String val) {
         therapyForm.strength = val != '' ? int.parse(val) : null;

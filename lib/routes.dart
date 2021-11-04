@@ -1,12 +1,8 @@
 import 'package:diabetty/ui/screens/diary/a_journal/journal.screen.dart';
 import 'package:diabetty/ui/screens/diary/add_journal/add_journal.screen.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/login/login.screen.dart';
-import 'package:diabetty/ui/screens/others/auth_screens/register/register.screen.dart';
 import 'package:diabetty/ui/layouts/dashboard.layout.dart';
 import 'package:diabetty/ui/screens/others/settings_screens/settings.screen.dart';
-import 'package:diabetty/ui/screens/teams/support/support_friend.screen.dart';
 import 'package:diabetty/ui/screens/therapy/add_medication.screen.dart';
-import 'package:diabetty/ui/screens/therapy/therapy_profile.screen.dart';
 import 'package:diabetty/ui/screens/diary/history/history.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,19 +11,10 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final Map arguments = settings.arguments as Map;
     switch (settings.name) {
-      case login:
-        return CupertinoPageRoute(
-            builder: (BuildContext context) => LoginScreenBuilder());
-      case register:
-        return CupertinoPageRoute(
-            builder: (BuildContext context) => RegisterScreenBuilder());
       case addmedication:
         return CupertinoPageRoute(
             builder: (BuildContext context) => AddMedicationScreenBuilder());
-      case therapyprofile:
-        return CupertinoPageRoute(
-            settings: settings,
-            builder: (BuildContext context) => TherapyProfileScreen());
+
       case appsettings:
         return CupertinoPageRoute(
             builder: (BuildContext context) => SettingsScreen());
@@ -46,21 +33,15 @@ class Router {
         return PageRouteBuilder(
             pageBuilder: (_, a1, a2) => DashBoard(initIndex: 1),
             transitionDuration: Duration(seconds: 0));
-      case team:
-        return PageRouteBuilder(
-            pageBuilder: (_, a1, a2) => DashBoard(initIndex: 2),
-            transitionDuration: Duration(seconds: 0));
+
       case therapy:
         return PageRouteBuilder(
-            pageBuilder: (_, a1, a2) => DashBoard(initIndex: 3),
+            pageBuilder: (_, a1, a2) => DashBoard(initIndex: 2),
             transitionDuration: Duration(seconds: 0));
 
       case history:
         return CupertinoPageRoute(
             builder: (BuildContext context) => HistoryScreenBuilder());
-      case supportFriend:
-        return CupertinoPageRoute(
-            builder: (BuildContext context) => SupportScreenBuilder());
 
       default:
         return MaterialPageRoute(

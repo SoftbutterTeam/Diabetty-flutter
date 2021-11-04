@@ -1,12 +1,12 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
 
 import 'package:diabetty/blocs/therapy_manager.dart';
-import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'dart:async';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
-import 'package:diabetty/ui/screens/today/components/background.dart';
+import 'package:diabetty/ui/screens/today/components/common_background.dart';
+import 'package:diabetty/ui/screens/today/components/header.dart';
 // import 'package:calendar_strip/calendar_strip.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 //*swtich versions. animation differences*/
@@ -112,7 +112,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
     });*/
     List<Reminder> reminders = manager.getFinalRemindersList();
     String id;
-    print(reminders.length);
+    // print(reminders.length);
     if (reminders.isNotEmpty) {
       id = reminders
           .firstWhere(
@@ -124,9 +124,6 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               orElse: () => reminders.first)
           ?.id;
     }
-
-    print(id);
-    print('yyy');
 
     WidgetsBinding.instance.addPostFrameCallback((_) => () {
           manager.fadeAnimation?.addStatusListener(setStateFunc);
@@ -157,7 +154,8 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Background(
+    return CommonBackground(
+        header: DayPlanHeader(),
         child: (manager.getFinalRemindersList().isEmpty)
             ? Container(
                 height: size.height,

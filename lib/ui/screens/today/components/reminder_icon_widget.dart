@@ -46,6 +46,7 @@ class _RemIconWidgetState extends State<RemIconWidget> {
                   if (manager
                           .reminderScrollKeys[widget.reminder.reminderRuleId] !=
                       null) {
+                    //* scrollTo code
                     Scrollable.ensureVisible(manager
                         .reminderScrollKeys[widget.reminder.reminderRuleId]
                         .currentContext);
@@ -152,7 +153,8 @@ class ReminderStateIcon extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.amber, // if using clock.svg, change this to Colors.white
+          color:
+              Colors.amber, // if using clock.svg, change this to Colors.white
           border: Border.all(color: Colors.white, width: 1)),
       child: Center(
         // child: SvgPicture.asset(
@@ -161,7 +163,7 @@ class ReminderStateIcon extends StatelessWidget {
         //   height: size - 3,
         //   width: size - 3,
         // ),
-       child: Icon(
+        child: Icon(
           Icons.skip_next,
           color: Colors.white,
           size: size - 6,
@@ -227,7 +229,7 @@ class ReminderStateIcon extends StatelessWidget {
 
   Widget _buildRelevantIcon() {
     ReminderStatus status = reminder.status;
-    // print(status.toString() + " ---h");
+    // // print(status.toString() + " ---h");
     switch (status) {
       case ReminderStatus.completed:
         return _buildCompletedIcon();

@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetty/ui/screens/today/components/header.dart';
 
-class Background extends StatelessWidget {
+class CommonBackground extends StatelessWidget {
   final Widget child;
+  final Widget header;
 
-  const Background({Key key, @required this.child}) : super(key: key);
+  const CommonBackground({Key key, @required this.child, @required this.header})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +25,19 @@ class Background extends StatelessWidget {
         child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(
-                child: DayPlanHeader(), preferredSize: Size.fromHeight(50)),
+                child: header, preferredSize: Size.fromHeight(50)),
             body: Container(
-              decoration: BoxDecoration(
-                color: appWhite, //Colors.grey[50], appWhite,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(0), //was 20
-                    topRight: Radius.circular(0)), // was 20
+              color: appWhite,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: t2_colorPrimaryLight, //maryLightColor
+                  //   .withAlpha(220), //app_ba Colors.grey[50], appWhite,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(0), //was 20
+                      topRight: Radius.circular(0)), // was 20
+                ),
+                child: child,
               ),
-              child: child,
             )),
       ),
     );

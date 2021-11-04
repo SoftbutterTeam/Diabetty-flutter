@@ -106,7 +106,7 @@ class _StrengthDropModalState extends State<StrengthDropModal> {
                       ), onDateChange: (date) {
                     // New date selected
 
-                    //print(date);
+                    //// print(date);
                   }),
                   FlatButton(
                       padding: EdgeInsets.zero,

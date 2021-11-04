@@ -56,33 +56,12 @@ class _DiaryScreenState extends State<DiaryScreen> {
   }
 
   Widget _body(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double firstSectionHeight = 0.25;
     return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: Offset(0, -1),
-            ),
-          ],
-          border: Border(top: BorderSide(color: Colors.transparent, width: 1))),
-      child: Column(
-        children: [
-          Expanded(
-            child: Container(
-                padding: EdgeInsets.only(top: 4),
-                child: Container(
-                  margin: EdgeInsets.only(top: 5),
-                  child: _buildJournalCards(context),
-                )),
-          ),
-        ],
-      ),
-    );
+        padding: EdgeInsets.only(top: 4),
+        child: Container(
+          margin: EdgeInsets.only(top: 5),
+          child: _buildJournalCards(context),
+        ));
   }
 
   Widget _buildJournalCards(BuildContext context) {
@@ -94,23 +73,23 @@ class _DiaryScreenState extends State<DiaryScreen> {
           if (manager.usersJournals == null || manager.usersJournals.isEmpty) {
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 26),
-        height: size.height,
-        width: size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
-              child: text("Add a journal here!"),
-            ),
-            SvgPicture.asset(
-              'assets/images/empty_diary.svg',
-              height: 250,
-              width: 300,
-            ),
-
-          ],
-        ), );
+              height: size.height,
+              width: size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 25.0),
+                    child: text("Add a journal here!"),
+                  ),
+                  SvgPicture.asset(
+                    'assets/images/empty_diary.svg',
+                    height: 250,
+                    width: 300,
+                  ),
+                ],
+              ),
+            );
           }
           List<Journal> journals = manager.usersJournals
             ..sort(

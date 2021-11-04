@@ -1,104 +1,63 @@
+import 'dart:io';
+
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/diary.bloc.dart';
-import 'package:diabetty/blocs/team_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart' as routerthing;
-import 'package:diabetty/services/authentication/apple_auth_api/apple_sign_in_available.dart';
-import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/services/authentication/auth_service_adapter.dart';
-import 'package:diabetty/services/authentication/firebase_email_api/email_secure_store.dart';
-import 'package:diabetty/services/authentication/firebase_email_api/firebase_email_link_handler.dart';
-import 'package:diabetty/blocs/app_context.dart';
-import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget.dart';
-import 'package:diabetty/ui/common_widgets/auth_widget/auth_widget_builder.dart';
-import 'package:diabetty/ui/common_widgets/auth_widget/email_link_error_presenter.dart';
 import 'package:diabetty/ui/common_widgets/scroll_behaviours/SBehavior.dart';
-import 'package:diabetty/ui/constants/colors.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'dart:ui';
+
+import 'package:device_info/device_info.dart';
+import 'package:diabetty/utils/notifcation._service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:rxdart/subjects.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:diabetty/ui/constants/colors.dart';
+import 'package:diabetty/ui/layouts/dashboard.layout.dart';
+import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
-import 'package:diabetty/models/user.model.dart' as UserModel;
 import 'package:diabetty/utils/application_state_reset_timer.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final appleSignInAvailable = await AppleSignInAvailable.check();
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(systemNavigationBarColor: appWhite));
-  runApp(MyApp(appleSignInAvailable: appleSignInAvailable));
+
+  NotificationService().init();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp(
-      {this.initialAuthServiceType = AuthServiceType.firebase,
-      this.appleSignInAvailable});
-  final AuthServiceType initialAuthServiceType;
-  final AppleSignInAvailable appleSignInAvailable;
+  const MyApp();
 
   @override
   Widget build(BuildContext context) {
-    AuthService authService = AuthServiceAdapter(
-      initialAuthServiceType: initialAuthServiceType,
-    );
-    AppContext appContext = AppContext(authService)..init();
-    TherapyManager therapyManager = TherapyManager(appContext: appContext)
-      ..init();
-
-    DiaryBloc diaryBloc = DiaryBloc(appContext: appContext)..init();
-    DayPlanManager dayPlanManager = DayPlanManager(appContext: appContext)
-      ..init();
-    TeamManager teamManager = TeamManager(appContext: appContext)..init();
+    TherapyManager therapyManager = TherapyManager()..init();
+    DiaryBloc diaryBloc = DiaryBloc()..init();
+    DayPlanManager dayPlanManager = DayPlanManager()..init();
     return MultiProvider(
-      providers: [
-        // ignore: todo
-        //*TODO place AppleSignIn and emailSecure in AuthService
-        Provider<AppleSignInAvailable>.value(value: appleSignInAvailable),
-        Provider<AuthService>(
-          create: (_) => authService,
-          dispose: (_, AuthService authService) => authService.dispose(),
-        ),
-        ChangeNotifierProvider<AppContext>(
-          create: (_) => appContext,
-        ),
-        ChangeNotifierProvider<TherapyManager>(
-          create: (_) => therapyManager,
-        ),
-        ChangeNotifierProvider<DayPlanManager>(
-          create: (_) => dayPlanManager,
-        ),
-        ChangeNotifierProvider<DiaryBloc>(
-          create: (_) => diaryBloc,
-        ),
-        ChangeNotifierProvider<TeamManager>(
-          create: (_) => teamManager,
-        ),
-        Provider<EmailSecureStore>(
-          create: (_) => EmailSecureStore(
-            flutterSecureStorage: FlutterSecureStorage(),
+        providers: [
+          ChangeNotifierProvider<TherapyManager>(
+            create: (_) => therapyManager,
           ),
-        ),
-        ProxyProvider2<AuthService, EmailSecureStore, FirebaseEmailLinkHandler>(
-          update: (_, AuthService authService, EmailSecureStore storage, __) =>
-              FirebaseEmailLinkHandler(
-            auth: authService,
-            emailStore: storage,
-            firebaseDynamicLinks: FirebaseDynamicLinks.instance,
-          )..init(),
-          dispose: (_, linkHandler) => linkHandler.dispose(),
-        ),
-      ],
-      child: AuthWidgetBuilder(builder: (BuildContext context,
-          AsyncSnapshot<User> userSnapshot,
-          AsyncSnapshot<UserModel.User> aUserSnapshot) {
-        startKeepAlive(dayPlanManager.refresh);
-        return OKToast(
+          ChangeNotifierProvider<DayPlanManager>(
+            create: (_) => dayPlanManager,
+          ),
+          ChangeNotifierProvider<DiaryBloc>(
+            create: (_) => diaryBloc,
+          ),
+        ],
+        child: OKToast(
             child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
@@ -106,16 +65,27 @@ class MyApp extends StatelessWidget {
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                 ),
                 onGenerateRoute: routerthing.Router.generateRoute,
-                home: EmailLinkErrorPresenter.create(context,
-                    child: AuthWidget(
-                      userSnapshot: userSnapshot,
-                      aUserSnapshot: aUserSnapshot,
-                    )),
-                builder: (context, child) => ScrollConfiguration(
-                      behavior: SBehavior(),
-                      child: child,
-                    )));
-      }),
-    );
+                home: DashBoard(
+                  initIndex: 1,
+                ),
+                builder: (context, child) {
+                  startKeepAlive(dayPlanManager.refresh);
+                  return FutureBuilder(
+                    future: () async {
+                      await dayPlanManager.init();
+                      await Future.delayed(
+                          const Duration(milliseconds: 1000), () {});
+                      return;
+                    }.call(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting)
+                        return LoadingScreen();
+                      return ScrollConfiguration(
+                        behavior: SBehavior(),
+                        child: child,
+                      );
+                    },
+                  );
+                })));
   }
 }

@@ -1,15 +1,19 @@
 import 'dart:math';
 
+import 'package:diabetty/blocs/dayplan_manager.dart';
+import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/edit_therapy_modals.mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TakeModal extends StatefulWidget {
   final Therapy therapy;
+  final TherapyManager therapyBloc;
 
-  TakeModal({this.therapy});
+  TakeModal({this.therapy, this.therapyBloc});
 
   @override
   _TakeModalState createState() => _TakeModalState();
@@ -115,6 +119,9 @@ class _TakeModalState extends State<TakeModal> with EditTherapyModalsMixin {
               onPressed: () {
                 if (inputController.text.isNotEmpty) {
                   Navigator.pop(context);
+                  Provider.of<DayPlanManager>(context, listen: false)
+                      .takeMedication(widget.therapy, DateTime.now(),
+                          dose: int.parse(inputController.text));
                 }
               },
               padding: const EdgeInsets.symmetric(

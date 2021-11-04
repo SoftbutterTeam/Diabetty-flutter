@@ -5,9 +5,14 @@ class SubPageHeader extends StatefulWidget {
   final String text;
   final Function saveFunction;
   final Function backFunction;
-  final Color color;
+  final Color iconColor;
 
-  SubPageHeader({this.text, this.saveFunction, this.backFunction, this.color});
+  SubPageHeader({
+    this.text,
+    this.saveFunction,
+    this.backFunction,
+    this.iconColor,
+  });
 
   @override
   _SubPageHeaderState createState() => _SubPageHeaderState();
@@ -38,7 +43,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
                 padding: EdgeInsets.only(left: 0),
                 child: Align(
                   child: Icon(Icons.arrow_back_ios,
-                      color: widget.color ?? Colors.orange[800], size: 15),
+                      color: widget.iconColor ?? Colors.orange[800], size: 15),
                   alignment: Alignment.centerLeft,
                 ),
               ),
@@ -62,7 +67,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
                 child: Align(
                   child: Text(widget.text ?? '',
                       style: TextStyle(
-                          color: widget.color ?? Colors.orange[800],
+                          color: widget.iconColor ?? Colors.orange[800],
                           fontSize: 17.0,
                           fontWeight: FontWeight.w400)),
                   alignment: Alignment.centerRight,

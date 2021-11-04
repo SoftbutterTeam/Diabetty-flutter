@@ -4,6 +4,7 @@ import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
+import 'package:diabetty/ui/screens/therapy/components/StrengthTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/profile_custom_textfield.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_option_background.dart';
@@ -29,6 +30,8 @@ class EditTherapyScreen extends StatefulWidget {
 class _EditTherapyScreenState extends State<EditTherapyScreen>
     with EditTherapyModalsMixin {
   TextEditingController medicationNameController = TextEditingController();
+  TextEditingController strengthController = TextEditingController();
+
   Therapy newTherapy;
   TherapyManager manager;
 
@@ -63,10 +66,9 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
     if (medicationNameController.text.isEmpty) {
       return _showErrorModal(context);
     } else {
-      print('lololool');
-      therapy.medicationInfo.name = medicationNameController.text;
       therapy.loadFromJson(newTherapy.toJson());
-      saveTherapy(newTherapy);
+      saveTherapy(therapy);
+
       manager.updateListeners();
       Navigator.pop(context);
       setState(() {});
@@ -114,20 +116,19 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
           child: _buildUnitField(context),
         ),
         _buildAppearanceField(context),
+        Padding(
+          padding: EdgeInsets.only(top: 4.0),
+          child: _buildStrengthField(),
+        ),
         if (therapy.schedule != null)
           Padding(
-            padding: EdgeInsets.only(top: 4.0),
+            padding: EdgeInsets.only(top: 0.0),
             child: _buildIntakeAdviceField(),
           ),
         if (therapy.schedule != null)
           Padding(
             padding: EdgeInsets.only(top: 4.0),
             child: _buildWindowField(),
-          ),
-        if (therapy.schedule != null)
-          Padding(
-            padding: EdgeInsets.only(top: 4.0),
-            child: _buildMinimumRestField(),
           ),
         if (therapy.schedule != null)
           Padding(
@@ -145,7 +146,7 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       placeholder: "Medication...",
       initalName: newTherapy.name,
       onChanged: (val) {
-        print(val);
+        // print(val);
         newTherapy.name = val ?? '';
         setState(() {});
         // or widget.manager.updateListeners();
@@ -180,21 +181,37 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
   }
 
   Widget _buildIntakeAdviceField() {
-    int remAdviceInd = newTherapy.medicationInfo.intakeAdvices != null &&
-            newTherapy.medicationInfo.intakeAdvices.isNotEmpty
-        ? newTherapy.medicationInfo.intakeAdvices[0]
-        : 0;
+    int remAdviceInd = newTherapy.medicationInfo.intakeAdviceIndex ?? 0;
     return ProfileCustomTextField(
       stackIcons: null,
       onTap: () {
         _showIntakeAdvice(context);
       },
       placeholder: (remAdviceInd != 0)
-          ? intakeAdvice[newTherapy.medicationInfo.intakeAdvices[0]]
-              .toLowerCase()
+          ? intakeAdvice[remAdviceInd].toLowerCase()
           : intakeAdvice[0],
       placeholderText: 'Intake Advice',
     );
+  }
+
+  Widget _buildStrengthField() {
+    return Container(
+        child: StrengthTextField(
+      therapyForm: null,
+      therapy: newTherapy,
+      initialText: therapy.medicationInfo.strength?.toString() ?? '',
+      controller: strengthController,
+      stackIcons: null,
+      onTap: () {
+        _showStrengthUnitPopUp(context, strengthController);
+      },
+      onChange: (String val) {
+        newTherapy.medicationInfo.strength = val != '' ? int.parse(val) : null;
+        setState(() {});
+      },
+      placeholder: strengthUnits[newTherapy.medicationInfo.unitIndex],
+      placeholderText: 'Set Strength',
+    ));
   }
 
   Widget _buildMinimumRestField() {
@@ -231,7 +248,8 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => EditReminder(therapy: newTherapy)),
+              builder: (context) =>
+                  EditReminderRulesScreen(therapy: newTherapy)),
         );
       },
       placeholder: (newTherapy.schedule.reminderRules == null
@@ -286,5 +304,10 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
 
   _showMinRest(BuildContext context) {
     showMinRestPicker(context, newTherapy);
+  }
+
+  void _showStrengthUnitPopUp(
+      BuildContext context, TextEditingController strengthController) {
+    showStrengthUnitPopUp(context, strengthController, newTherapy);
   }
 }

@@ -1,21 +1,18 @@
 import 'dart:math';
-import 'package:diabetty/blocs/team_manager.dart';
-import 'package:diabetty/blocs/app_context.dart';
-import 'package:diabetty/services/team.service.dart';
 
 import 'package:diabetty/ui/common_widgets/ThemeColor.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/toggle_button.dart';
+import 'package:diabetty/ui/screens/diary/components/header.dart';
 import 'package:diabetty/ui/screens/diary/diary.screen.dart';
 import 'package:diabetty/ui/screens/diary/history/history.screen.dart';
 import 'package:diabetty/ui/screens/diary/components/background.dart';
-import 'package:diabetty/ui/screens/teams/relations_actions_mixin.dart';
+import 'package:diabetty/ui/screens/today/components/common_background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:diabetty/models/teams/relationship.dart';
 
 class DiaryParentScreenBuilder extends StatelessWidget {
   @override
@@ -52,42 +49,28 @@ class _DiaryParentScreenState extends State<DiaryParentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Background(
+    return CommonBackground(
+      header: DiaryHeader(),
       child: _body(context),
     );
   }
 
   Widget _body(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double firstSectionHeight = 0.25;
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: Offset(0, -1),
-            ),
-          ],
-          border: Border(top: BorderSide(color: Colors.transparent, width: 1))),
-      child: Column(
-        children: [
-          Container(child: _buildPageIndicator(context)),
-          Expanded(
-              child: Container(
-                  padding: EdgeInsets.only(top: 4),
-                  child: PageView(
-                    controller: pageController,
-                    physics: ClampingScrollPhysics(),
-                    children: [
-                      DiaryScreenBuilder(),
-                      HistoryScreenBuilder(),
-                    ],
-                  ))),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(child: _buildPageIndicator(context)),
+        Expanded(
+            child: Container(
+                padding: EdgeInsets.only(top: 4),
+                child: PageView(
+                  controller: pageController,
+                  physics: ClampingScrollPhysics(),
+                  children: [
+                    DiaryScreenBuilder(),
+                    HistoryScreenBuilder(),
+                  ],
+                ))),
+      ],
     );
   }
 

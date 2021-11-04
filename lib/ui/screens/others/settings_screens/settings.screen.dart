@@ -1,16 +1,10 @@
 import 'dart:ui';
 
-import 'package:diabetty/blocs/app_context.dart';
-import 'package:diabetty/services/authentication/auth_service/auth_service.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/animated_scale_button.dart';
-import 'package:diabetty/ui/common_widgets/misc_widgets/cupertino_text_field.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/screens/teams/components/sub_page_background.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/customtextfield.dart';
-import 'package:provider/provider.dart';
 import 'package:diabetty/extensions/index.dart';
 
 class SettingsScreenBuilder extends StatelessWidget {
@@ -29,7 +23,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen>
     with SingleTickerProviderStateMixin {
-  AppContext appContext;
   @override
   void initState() {
     super.initState();
@@ -41,11 +34,9 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Widget build(BuildContext context) {
-    appContext = Provider.of<AppContext>(context, listen: true);
-
     return Scaffold(
       body: Stack(children: [
-        if (appContext.user == null) SizedBox() else _body(context),
+        if (false) SizedBox() else _body(context),
         SafeArea(
           child: IntrinsicHeight(
               child: Container(
@@ -53,7 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   child: SizedBox(
                     child: SubPageHeader(
                       saveFunction: null,
-                      color: Colors.white,
+                      iconColor: Colors.white,
                       backFunction: () => Navigator.pop(context),
                     ),
                   ))),
@@ -71,15 +62,17 @@ class _SettingsScreenState extends State<SettingsScreen>
           Container(
             alignment: Alignment.bottomCenter,
             width: size.width,
-            height: size.height * 0.28,
+            height: size.height * 0.2,
             child: Stack(children: [
               Container(
                 width: double.maxFinite,
                 height: double.maxFinite,
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        colors: [Colors.orange[900], Colors.orange[800]])),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    colors: [Colors.orange[900], Colors.orange[800]],
+                  ),
+                ),
                 child: null,
               ),
               BackdropFilter(
@@ -96,36 +89,19 @@ class _SettingsScreenState extends State<SettingsScreen>
                 height: double.maxFinite,
                 width: double.maxFinite,
                 alignment: Alignment.center,
-                child: Column(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(
                       CupertinoIcons.profile_circled,
-                      size: 70,
+                      size: 40,
                       color: Colors.white,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 5),
-                      child: text(
-                          ((appContext.user.displayName == null ||
-                                          appContext.user.displayName.isEmpty
-                                      ? appContext.user.name
-                                      : appContext.user.displayName) ??
-                                  '')
-                              .capitalize(),
-                          fontSize: 14.0,
-                          textColor: Colors.white),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [],
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                      child: text('edit profile', fontSize: 12.0),
+                      child: text(('').capitalize(),
+                          fontSize: 14.0, textColor: Colors.white),
                     ),
                   ],
                 ),
@@ -141,12 +117,18 @@ class _SettingsScreenState extends State<SettingsScreen>
                 border: Border(
                     top: BorderSide(color: Colors.transparent, width: 1)),
               ),
-              child: Column(
-                children: [
-                  _buildSections2(context),
-                  _buildSections3(context),
-                  _buildSections1(context),
-                ],
+              child: SafeArea(
+                child: Stack(
+                  children: [
+                    _buildSections1(context),
+                    Column(
+                      children: [
+                        _buildSections2(context),
+                        _buildSections3(context),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -156,9 +138,13 @@ class _SettingsScreenState extends State<SettingsScreen>
   Widget _buildSections1(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(bottom: 20),
+      alignment: Alignment.bottomCenter,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _buildSignOutField(context),
+          _buildMessageField(context),
+          text('Diabetty v.1.5.1', fontSize: 10.0, textColor: Colors.black54),
         ],
       ),
     );
@@ -166,10 +152,10 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Widget _buildSections2(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.only(bottom: 30),
       child: Column(
         children: [
-          _buildDarkModeField(context),
+          //   _buildDarkModeField(context),
           _buildLangaugeField(context),
           _buildSettingsField(context),
         ],
@@ -182,64 +168,63 @@ class _SettingsScreenState extends State<SettingsScreen>
       padding: EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          _buildHelpSupportField(context),
           _buildShareAppField(context),
           _buildFeedbackField(context),
-          _buildAboutUsField(context),
+          _buildHelpSupportField(context),
         ],
       ),
     );
   }
 
-  Widget _buildSignOutField(BuildContext context) {
-    return GestureDetector(
-        onTap: () async {
-          await Provider.of<AuthService>(context, listen: false).signOut();
-          Navigator.pop(context);
-        },
-        child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                bottom: BorderSide(
-                    color: Colors.grey[200],
-                    width: 1.2,
-                    style: BorderStyle.solid),
-              ),
-            ),
-            child: text('Sign Out',
-                fontSize: 15.0,
-                isCentered: true,
-                textColor: CupertinoColors.destructiveRed)));
+  Widget _buildMessageField(BuildContext context) {
+    return Container(
+        alignment: Alignment.bottomCenter,
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: text(
+          '❤️ Thanks for being apart of Diabetty ❤️',
+          fontSize: 13.5,
+          textColor: Colors.black87,
+          isCentered: true,
+        ));
   }
 
   Widget _buildDarkModeField(BuildContext context) {
-    return CustomTextField(
-      onTap: () {},
-      placeholderText: 'Dark Mode',
-    );
+    return Container(
+        alignment: Alignment.bottomCenter,
+        padding: EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(
+                color: Colors.grey[200], width: 1.2, style: BorderStyle.solid),
+          ),
+        ),
+        child: text(
+          'Notification Settings',
+          fontSize: 14.0,
+          textColor: Colors.grey[700],
+          isCentered: true,
+        ));
   }
 
   Widget _buildLangaugeField(BuildContext context) {
     return CustomTextField(
       onTap: () {},
-      placeholderText: 'Langauge Settings',
+      placeholderText: 'Notification Settings',
     );
   }
 
   Widget _buildSettingsField(BuildContext context) {
     return CustomTextField(
       onTap: () {},
-      placeholderText: 'Settings',
+      placeholderText: 'Clear Memory',
     );
   }
 
   Widget _buildHelpSupportField(BuildContext context) {
     return CustomTextField(
       onTap: () {},
-      placeholderText: 'Help and Support',
+      placeholderText: 'Contact us',
     );
   }
 
@@ -247,13 +232,6 @@ class _SettingsScreenState extends State<SettingsScreen>
     return CustomTextField(
       onTap: () {},
       placeholderText: 'Share App',
-    );
-  }
-
-  Widget _buildAboutUsField(BuildContext context) {
-    return CustomTextField(
-      onTap: () {},
-      placeholderText: 'About Us',
     );
   }
 

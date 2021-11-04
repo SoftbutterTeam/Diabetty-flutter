@@ -1,9 +1,11 @@
 import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
+import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:diabetty/services/reminder.service.dart';
+import 'package:flutter/material.dart';
 
 abstract class ReminderManagerMixin<T extends Manager> {
   ReminderService reminderService = ReminderService();
@@ -28,6 +30,25 @@ abstract class ReminderManagerMixin<T extends Manager> {
     if (update) updateListeners();
   }
 
+  void takeMedication(Therapy therapy, DateTime takenAt,
+      {update = true, int dose = 1}) async {
+    ReminderRule reminderRule = new ReminderRule(
+        days: Days.fromDate(DateTime.now()),
+        time: TimeOfDay.fromDateTime(takenAt),
+        dose: dose);
+    Reminder reminder =
+        Reminder.generated(therapy, reminderRule, DateTime.now());
+    takenAt ??= DateTime.now();
+    reminder.takenAt = takenAt;
+    reminder.skippedAt = null;
+    // update Push Notifcations
+    reminderService.saveReminder(reminder);
+
+    if (therapy != null && therapy.stock != null)
+      therapy.stock.takenAmount(reminder.dose);
+    if (update) updateListeners();
+  }
+
   void unTakeReminder(Reminder reminder) async {
     reminder.takenAt = null;
     reminder.skippedAt = null;
@@ -42,12 +63,12 @@ abstract class ReminderManagerMixin<T extends Manager> {
     updateListeners();
   }
 
-  void deleteReminder(Reminder reminder) async {
+  Future<void> deleteReminder(Reminder reminder) async {
     reminder.takenAt = null;
     reminder.skippedAt = null;
     reminder.rescheduledTime = null;
     reminder.deletedAt = DateTime.now();
-    reminderService.saveReminder(reminder);
+    await reminderService.saveReminder(reminder);
 
     updateListeners();
   }
@@ -61,7 +82,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
   skipReminder(Reminder reminder, {update = true}) async {
     reminder.takenAt = null;
     reminder.skippedAt = DateTime.now();
-    print('skipped --here');
+    // print('skipped --here');
     reminderService.saveReminder(reminder);
     // update Push Notifcations
     if (update) updateListeners();
@@ -78,7 +99,7 @@ abstract class ReminderManagerMixin<T extends Manager> {
   unSkipReminder(Reminder reminder, {update = true}) async {
     reminder.takenAt = null;
     reminder.skippedAt = null;
-    print('unskipped --here');
+    // print('unskipped --here');
     reminderService.saveReminder(reminder);
     // update Push Notifcations
     if (update) updateListeners();

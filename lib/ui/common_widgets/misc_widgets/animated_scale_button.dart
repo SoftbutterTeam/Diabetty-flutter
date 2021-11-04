@@ -50,7 +50,7 @@ class _AnimatedScaleButtonState extends State<AnimatedScaleButton>
       behavior: HitTestBehavior.translucent,
       onTap: () {
         _controller?.forward();
-        widget.onTap.call();
+        widget.onTap?.call();
       },
       child: ScaleTransition(
         scale: tween != null && _controller != null ? tween : 1,

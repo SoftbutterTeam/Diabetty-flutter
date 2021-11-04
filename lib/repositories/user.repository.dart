@@ -33,7 +33,7 @@ class UserRepository {
         return false;
       }
     } catch (e) {
-      //print(e);
+      //// print(e);
       return false;
     }
   }
@@ -50,7 +50,7 @@ class UserRepository {
         .document(documentId)
         .updateData(userData)
         .catchError((e) {
-      //print(e);
+      //// print(e);
     });
     return true;
   }
@@ -87,20 +87,20 @@ class UserRepository {
     Map<String, dynamic> userData = user.toJson();
 
     if (user.uid == null) {
-      //print('no user id given in repo');
+      //// print('no user id given in repo');
       return false;
     }
     DateTime timeNow = DateTime.now();
     userData['createdAt'] = timeNow;
     userData['updatedAt'] = timeNow;
-    //print(userData.toString());
+    //// print(userData.toString());
 
     await _db
         .collection('users')
         .document(user.uid)
         .setData(userData)
         .catchError((e) {
-      //print(e);
+      //// print(e);
     });
     return true;
   }

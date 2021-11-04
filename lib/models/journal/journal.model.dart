@@ -1,22 +1,16 @@
 import 'package:diabetty/models/journal/journal_entry.model.dart';
 
 class Journal {
-  String userId;
+  final String userId = 'user';
   String id;
   String name;
   int reportUnitsIndex;
   List<JournalEntry> journalEntries = [];
   DateTime updatedAt;
-  Journal(
-      {this.userId,
-      this.id,
-      this.name,
-      this.reportUnitsIndex,
-      this.journalEntries});
+  Journal({this.id, this.name, this.reportUnitsIndex, this.journalEntries});
 
   loadFromJson(Map<String, dynamic> json) {
     this.id ??= json['id'];
-    this.userId = json['userId'];
     this.name = json['name'];
     this.reportUnitsIndex = json['reportUnitsIndex'];
     this.updatedAt =

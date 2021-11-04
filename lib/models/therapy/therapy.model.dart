@@ -12,7 +12,7 @@ import 'package:diabetty/extensions/timeofday_extension.dart';
 
 //btw Schedule.reminders should be called reminderRules for clarity
 class Therapy {
-  String userId;
+  final String userId = 'user';
   String id;
   String name;
   Schedule schedule;
@@ -20,7 +20,6 @@ class Therapy {
   Stock stock;
   String mode;
   Therapy({
-    this.userId,
     this.id,
     this.name,
     this.schedule,
@@ -35,10 +34,9 @@ class Therapy {
   loadFromJson(Map<String, dynamic> json) {
     if (json.containsKey('id')) this.id ??= json['id'];
 
-    if (json.containsKey('userId')) this.userId ??= json['userId'];
     this.name = json['name'];
     this.mode = json['mode'];
-    //print(json.toString());
+    //// print(json.toString());
     Schedule schedule = Schedule();
     if (json['schedule'] != null) {
       Map<String, dynamic> sheduledata =
@@ -54,11 +52,11 @@ class Therapy {
       stock.loadFromJson(stockdata);
       this.stock = stock;
     }
-    MedicationInfo medicationInfo = MedicationInfo();
+    MedicationInfo medInfo = MedicationInfo();
     Map<String, dynamic> medicationinfodata =
         new Map<String, dynamic>.from(json['medicationInfo']);
-    medicationInfo.loadFromJson(medicationinfodata);
-    this.medicationInfo = medicationInfo;
+    medInfo.loadFromJson(medicationinfodata);
+    this.medicationInfo = medInfo;
   }
 
   Map<String, dynamic> toJson() => {

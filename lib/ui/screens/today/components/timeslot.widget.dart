@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
@@ -168,22 +167,16 @@ class _TimeSlotState extends State<TimeSlot>
                     ),
                   ),
                   GestureDetector(
-                    onTap:
-                        Provider.of<AppContext>(context, listen: false).readOnly
-                            ? null
-                            : () {
-                                _openActionSheet(context);
-                              },
+                    onTap: () {
+                      _openActionSheet(context);
+                    },
                     child: Container(
                         padding: EdgeInsets.only(right: 13.0, left: 12),
                         color: Colors.transparent,
                         child: Icon(
                           Icons.more_horiz,
                           size: 20,
-                          color: Provider.of<AppContext>(context, listen: false)
-                                  .readOnly
-                              ? Colors.transparent
-                              : null,
+                          color: false ? Colors.transparent : null,
                         )),
                   ),
                 ],

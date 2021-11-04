@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
+import 'package:diabetty/services/journal.service.dart';
 // import 'package:diabetty/ui/common_widgets/misc_widgets/cupertino_text_field.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
 import 'package:flutter/cupertino.dart';
@@ -126,7 +127,7 @@ class _EditJournalTitleState extends State<EditJournalTitle>
                   )),
               onPressed: () {
                 Navigator.pop(context);
-                //print(initialDate);
+                //// print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -140,6 +141,7 @@ class _EditJournalTitleState extends State<EditJournalTitle>
               onPressed: () {
                 if (inputController.text.isNotEmpty) {
                   widget.journal.name = inputController.text;
+                  JournalService().saveJournal(widget.journal);
                   Navigator.pop(context);
                   var manager = Provider.of<DiaryBloc>(context, listen: false);
                   manager.updateListeners();

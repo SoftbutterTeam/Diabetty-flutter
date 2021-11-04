@@ -203,12 +203,12 @@ class _RefillDialogState extends State<RefillDialog>
     if (widget.therapyForm.stock != null) {
       widget.therapyForm.stock.refillAdd(addStockControllerToInt);
     } else {
-      //print('itsnull');
+      //// print('itsnull');
     }
 
     setState(() {});
     manager.updateListeners();
     Navigator.pop(context);
-    print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
+    // print('grgrg ----> ' + widget.therapyForm?.stock?.currentLevel.toString());
   }
 }

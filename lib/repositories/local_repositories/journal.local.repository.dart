@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:localstore/localstore.dart';
 
 class JournalRepository {
@@ -18,9 +17,8 @@ class JournalRepository {
         .collection('journals')
         .doc()
         .set(journalData)
-        .then((value) => print(value + 'toto'))
         .catchError((e) {
-      //print(e);
+      //// print(e);
     });
     return;
   }
@@ -31,9 +29,18 @@ class JournalRepository {
         .doc(journal.id)
         .delete()
         .catchError((e) {
-      //print(e);
+      //// print(e);
     });
 
+    return;
+  }
+
+  Future<void> deleteAllJournal() async {
+    await _localdb.collection('journals').get()
+      ..forEach((key, value) async {
+        // print({key: key, value: value});
+        await _localdb.collection('journals').doc(key.split('/').last).delete();
+      });
     return;
   }
 
@@ -41,41 +48,44 @@ class JournalRepository {
     Map<String, dynamic> journalData = journal.toJson();
     var timeNow = DateTime.now().toString();
     journalData['updatedAt'] = timeNow;
-
+    // print(journal.id + 'journalData: ' + journalData.toString());
     await _localdb
         .collection('journals')
-        .doc()
+        .doc(journal.id)
         .set(journalData)
         .catchError((e) {
-      print('j error');
-      print(e);
+      // print('j error');
+      // print(e);
     });
     return;
   }
 
-  Future<DataResult<List<Map<String, dynamic>>>> getAllJournals(String userId,
+  Future<DataResult<List<Map<String, dynamic>>>> getAllJournals(
       {bool local = false}) async {
     Source source = local ? Source.cache : Source.serverAndCache;
     try {
       var result = await _localdb.collection('journals').get();
-
-      print("--here");
-      print(result);
+      /** 
+       * * for testing only - to clear journal data. 
+       * * await deleteAllJournal();
+      */
+      // print("--here");
+      // // print(result);
       var data = (result.entries.map((e) {
         var json = Map<String, dynamic>.from(e.value)
           ..['id'] = e.key.split('/').last;
         return json;
       }).toList());
-      //print(data.map((e) => e.toString()));
+      //// print(data.map((e) => e.toString()));
       return DataResult<List<Map<String, dynamic>>>(data: data);
     } catch (exception, stackTrace) {
-      print("--here eror");
+      // print("--here eror");
 
       return DataResult(exception: exception, stackTrace: stackTrace);
     }
   }
 
-  Stream<Map<String, dynamic>> onStateChanged(String uid) {
+  Stream<Map<String, dynamic>> onStateChanged() {
     return _localdb.collection('journals').stream;
   }
 }

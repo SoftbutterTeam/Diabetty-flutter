@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
@@ -46,7 +45,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
   @override
   void initState() {
     dayPlanManager = widget.dayPlanManager;
-    print('yoyo');
+    // print('yoyo');
     super.initState();
   }
 
@@ -102,9 +101,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
     int remQuantity = reminder.dose;
     int remType = reminder.doseTypeIndex;
     int remStrengthType = reminder.strengthUnitindex;
-    int remAdviceInd = reminder.advices != null && reminder.advices.isNotEmpty
-        ? reminder.advices[0]
-        : 0;
+    int remAdviceInd = reminder.advice ?? 0;
 
     Therapy therapy =
         dayPlanManager?.therapyManager?.usersTherapies?.isNotEmpty ?? false
@@ -219,8 +216,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                     SizedBox(width: 15),
                     Icon(Icons.assignment, size: 20),
                     SizedBox(width: 20),
-                    text(
-                        "Advice: ${intakeAdvice[reminder.advices[0]].toLowerCase()}",
+                    text("Advice: ${intakeAdvice[remAdviceInd].toLowerCase()}",
                         fontSize: 13.0),
                   ],
                 ),

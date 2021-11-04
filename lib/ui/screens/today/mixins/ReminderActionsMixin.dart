@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
@@ -145,7 +144,7 @@ mixin ReminderActionsMixin<T extends Widget> {
               actions: [
                 CupertinoActionSheetAction(
                   child: Text(
-                    "View Profile",
+                    "View Medication",
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -347,7 +346,7 @@ mixin ReminderActionsMixin<T extends Widget> {
             actions: <Widget>[
               CupertinoActionSheetAction(
                   onPressed: () {
-                    print(reminder);
+                    // print(reminder);
                     // dayPlanManager.takeAllReminders(reminder);
                     Navigator.pop(context);
                   },
@@ -379,7 +378,7 @@ mixin ReminderActionsMixin<T extends Widget> {
       );
 
   void showReminderPopupModal(BuildContext context, {DayPlanManager dayPlan}) {
-    bool readOnly = Provider.of<AppContext>(context, listen: false).readOnly;
+    bool readOnly = false;
     showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: '',

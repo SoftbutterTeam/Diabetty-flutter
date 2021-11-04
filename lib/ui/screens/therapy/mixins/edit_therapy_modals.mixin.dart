@@ -5,6 +5,7 @@ import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/therapy.service.dart';
+import 'package:diabetty/ui/screens/teams/common.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal_3.dart';
@@ -18,6 +19,7 @@ import 'package:diabetty/ui/screens/therapy/components/take_modal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 @optionalTypeArgs
 mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
@@ -67,7 +69,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     try {
       therapyService.saveTherapy(therapy);
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -201,6 +203,52 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     );
   }
 
+  void showStrengthUnitPopUp(BuildContext context,
+      TextEditingController strengthController, Therapy newTherapy) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return IntakePopUp(
+          height: height,
+          width: width,
+          onPressed: () {
+            if (newTherapy.medicationInfo.unitIndex != 0 &&
+                (newTherapy.medicationInfo.strength == null ||
+                    newTherapy.medicationInfo.strength == 0)) {
+              newTherapy.medicationInfo.strength = 100;
+              strengthController.text = '100';
+            } else if (newTherapy.medicationInfo.unitIndex == 0) {
+              newTherapy.medicationInfo.strength = null;
+              strengthController.text = '';
+            }
+            setState(() {});
+
+            Navigator.pop(context);
+          },
+          intakePicker: CupertinoPicker(
+            scrollController: FixedExtentScrollController(
+                initialItem: newTherapy.medicationInfo.unitIndex),
+            itemExtent: 35,
+            backgroundColor: Colors.white,
+            onSelectedItemChanged: (int x) {
+              newTherapy.medicationInfo.unitIndex = x;
+            },
+            children: new List<Widget>.generate(
+              strengthUnits.length,
+              (int index) {
+                return new Center(
+                  child: new Text(strengthUnits[index]),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   showWindowPicker(BuildContext context, Therapy therapy) {
     Duration s;
     var width = MediaQuery.of(context).size.width;
@@ -233,7 +281,9 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   }
 
   showIntakeAdvicePicker(context, Therapy therapy) {
-    int s = therapy.medicationInfo.intakeAdvices[0];
+    int s = therapy.medicationInfo.intakeAdviceIndex;
+
+    // print('Printing S intakeAdvice: ' + s.toString());
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     showCupertinoModalPopup(
@@ -243,16 +293,13 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
           height: height,
           width: width,
           onPressed: () {
-            if (therapy.medicationInfo.intakeAdvices.isNotEmpty)
-              therapy.medicationInfo.intakeAdvices[0] = s;
-            else
-              therapy.medicationInfo.intakeAdvices.add(s);
+            therapy.medicationInfo.intakeAdviceIndex = s;
+
             setState(() {});
             Navigator.pop(context);
           },
           intakePicker: CupertinoPicker(
-            scrollController: FixedExtentScrollController(
-                initialItem: therapy.medicationInfo.intakeAdvices[0]),
+            scrollController: FixedExtentScrollController(initialItem: s),
             itemExtent: 35,
             backgroundColor: Colors.white,
             onSelectedItemChanged: (int x) {
@@ -275,7 +322,7 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
   showAppearancePicker(BuildContext context, Therapy therapy) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    int s;
+    int s = therapy.medicationInfo.appearanceIndex;
     showCupertinoModalPopup(
         context: context,
         builder: (context) {
@@ -406,6 +453,36 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     );
   }
 
+  editOrDeleteReminderRule(
+      context, ReminderRule reminderRule, Therapy therapy) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text("Edit"),
+            onPressed: () {
+              Navigator.of(context).pop(context);
+              showEditReminderModal(context, therapy, reminderRule);
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text("Remove"),
+            onPressed: () {
+              Navigator.of(context).pop(context);
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Container(color: Colors.white, child: Text('Cancel')),
+          onPressed: () {
+            Navigator.of(context).pop(context);
+          },
+        ),
+      ),
+    );
+  }
+
   void showYesOrNoActionsheet(context, therapy, {BuildContext prevContext}) {
     BuildContext mainContext = context;
     showCupertinoModalPopup(
@@ -418,7 +495,9 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             isDestructiveAction: true,
             onPressed: () {
               Navigator.of(context).pop(context);
-              therapyService.deleteTherapy(therapy);
+
+              Provider.of<TherapyManager>(context, listen: false)
+                  .deleteTherapy(therapy);
               Navigator.of(mainContext).pop(context);
               if (prevContext != null) {
                 Navigator.of(prevContext).pop(context);

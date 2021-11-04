@@ -30,13 +30,13 @@ class AddTherapyForm {
   }
 
   set setMinRest(Duration x) {
-    //print(x.toString());
+    //// print(x.toString());
 
     if ((x == null) || (Duration(hours: 0, minutes: 5).compareTo(x) > 0))
       window = null;
     else
       minRest = x;
-    //print(minRest.toString());
+    //// print(minRest.toString());
   }
 
   AddTherapyForm(
@@ -69,13 +69,12 @@ class AddTherapyForm {
   }
 
   Therapy toTherapy() {
-    List<int> intakeAdviceInt = <int>[];
     return Therapy(
         mode: this.mode,
         name: this.name,
         medicationInfo: MedicationInfo(
             appearanceIndex: this.apperanceIndex,
-            intakeAdvices: intakeAdviceInt..add(intakeAdviceIndex),
+            intakeAdviceIndex: intakeAdviceIndex,
             name: this.name,
             strength: this.strengthUnitsIndex == 0 ? null : this.strength.abs(),
             unitIndex: this.strengthUnitsIndex,

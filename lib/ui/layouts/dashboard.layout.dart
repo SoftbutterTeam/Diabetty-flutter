@@ -2,7 +2,6 @@ import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/diary/diary_parent.screen.dart';
 import 'package:diabetty/ui/screens/others/settings_screens/settings.screen.dart';
-import 'package:diabetty/ui/screens/teams/team.screen.dart';
 import 'package:diabetty/ui/screens/today/dayplan.simple.screen.dart' as Simple;
 import 'package:diabetty/ui/screens/therapy/therapy.screen.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +14,14 @@ import 'package:provider/provider.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/blocs/diary.bloc.dart';
 
-import 'package:diabetty/blocs/app_context.dart';
-
 class DashBoard extends StatefulWidget {
   @override
-  DashBoard({Key key, this.initIndex = 1, this.appContext}) : super(key: key);
+  DashBoard({
+    Key key,
+    this.initIndex = 1,
+  }) : super(key: key);
   //! TODO default index should be 1, only changed for testings
   final int initIndex;
-  final AppContext appContext;
 
   @override
   _DashBoardState createState() => _DashBoardState(this.initIndex);
@@ -40,35 +39,16 @@ class _DashBoardState extends State<DashBoard> {
   var _pages = [
     DiaryParentScreenBuilder(),
     Simple.DayPlanScreenBuilder(),
-    TeamScreenBuilder(),
     TherapyScreenBuilder(),
   ];
 
   @override
   void initState() {
-    _pages = local
-        ? [
-            DiaryParentScreenBuilder(),
-            Simple.DayPlanScreenBuilder(),
-            TherapyScreenBuilder(),
-          ]
-        : [
-            DiaryParentScreenBuilder(),
-            Simple.DayPlanScreenBuilder(),
-            TeamScreenBuilder(),
-            TherapyScreenBuilder(),
-          ];
     if (pageIndex > _pages.length - 1) {
       pageIndex = _pages.length - 1;
     }
-    pageController = PageController(
-        initialPage: (widget.appContext == null) ? pageIndex : 0,
-        keepPage: true);
-    if (widget.appContext != null)
-      _pages = [
-        Simple.DayPlanScreenBuilder(),
-        TherapyScreenBuilder(),
-      ];
+    pageController = PageController(initialPage: pageIndex, keepPage: true);
+
     super.initState();
   }
 
@@ -88,17 +68,16 @@ class _DashBoardState extends State<DashBoard> {
 
   Scaffold _buildDashboard() {
     var __navigationItems = [
-      if (widget.appContext == null)
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            d_5,
-            height: 30,
-            width: 30,
-            color: color,
-            fit: BoxFit.fitHeight,
-          ),
-          label: "diary",
+      BottomNavigationBarItem(
+        icon: SvgPicture.asset(
+          d_5,
+          height: 30,
+          width: 30,
+          color: color,
+          fit: BoxFit.fitHeight,
         ),
+        label: "diary",
+      ),
       BottomNavigationBarItem(
           icon: Container(
               padding: EdgeInsets.only(left: 0.5),
@@ -110,16 +89,6 @@ class _DashBoardState extends State<DashBoard> {
                 fit: BoxFit.fitHeight,
               )),
           label: "today"),
-      if (widget.appContext == null && !local)
-        BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              sos_icon,
-              height: 32,
-              width: 32,
-              color: color,
-              fit: BoxFit.fitHeight,
-            ),
-            label: "team"),
       BottomNavigationBarItem(
         icon: SvgPicture.asset(
           t_2,
@@ -153,45 +122,12 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.appContext != null) {
-      TherapyManager therapyManager =
-          TherapyManager(appContext: widget.appContext)..init();
-
-      DiaryBloc diaryBloc = DiaryBloc(appContext: widget.appContext)..init();
-      DayPlanManager dayPlanManager =
-          DayPlanManager(appContext: widget.appContext)..init();
-
-      dayPlanManager.therapyManager = therapyManager;
-      return MultiProvider(
-          providers: [
-            // ignore: todo
-            //*TODO place AppleSignIn and emailSecure in AuthService
-            ChangeNotifierProvider<AppContext>(
-              create: (_) => widget.appContext,
-            ),
-            ChangeNotifierProvider<TherapyManager>(
-              create: (_) => therapyManager,
-            ),
-            ChangeNotifierProvider<DayPlanManager>(
-              create: (_) => dayPlanManager,
-            ),
-            ChangeNotifierProvider<DiaryBloc>(
-              create: (_) => diaryBloc,
-            ),
-          ],
-          child: Container(
-            color: app_background,
-            child: _buildDashboard(),
-          ));
-    } else {
-      final dayManager = Provider.of<DayPlanManager>(context, listen: false);
-      final therapyManager =
-          Provider.of<TherapyManager>(context, listen: false);
-      dayManager.therapyManager = therapyManager;
-      return Container(
-        color: app_background,
-        child: _buildDashboard(),
-      );
-    }
+    final dayManager = Provider.of<DayPlanManager>(context, listen: false);
+    final therapyManager = Provider.of<TherapyManager>(context, listen: false);
+    dayManager.therapyManager = therapyManager;
+    return Container(
+      color: app_background,
+      child: _buildDashboard(),
+    );
   }
 }

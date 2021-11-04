@@ -80,13 +80,13 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
                           await widget.manager.submitAddTherapy(therapyForm);
                           Navigator.pushNamed(context, therapy);
                         } catch (e) {
-                          //print(e.message);
-                          //print('this shows up');
+                          //// print(e.message);
+                          //// print('this shows up');
                           showErrorModal(context);
                           // TODO Display Model with describing the error
                         }
                       },
-                      color: Colors.white,
+                      iconColor: Colors.white,
                       backFunction: () => widget.pageController.jumpToPage(0),
                     ),
                   ))),
@@ -286,7 +286,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
   }
 
   Widget _buildStartEndDateField() {
-    //print(therapyForm.endDate);
+    //// print(therapyForm.endDate);
     return CustomTextField(
       stackIcons: null,
       onTap: () => showStartEndDate(context),

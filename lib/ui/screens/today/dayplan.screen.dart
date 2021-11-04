@@ -2,8 +2,9 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
-import 'package:diabetty/ui/screens/today/components/background.dart';
+import 'package:diabetty/ui/screens/today/components/common_background.dart';
 import 'package:diabetty/ui/screens/today/components/circle_plan.dart';
+import 'package:diabetty/ui/screens/today/components/header.dart';
 import 'package:diabetty/ui/screens/today/components/timeslot.widget.dart'
 //*swtich versions. animation differences*/
     as SlotWidget;
@@ -77,7 +78,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   @override
   void initState() {
     draggingIdle = true;
-    print('yyy');
+    // print('yyy');
 
     manager.reminderScrollKeys = {};
     _dateController = AnimationController(
@@ -110,7 +111,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         )
         ?.id;
 
-    print(id);
+    // print(id);
 
     if (id != null && id != '') {
       Scrollable.ensureVisible(manager.reminderScrollKeys[id].currentContext);
@@ -132,31 +133,32 @@ class _DayPlanScreenState extends State<DayPlanScreen>
   }
 
   Widget _body(BuildContext context) {
-    //print(_minAnimationRotate.value.toString() + "ds");
+    //// print(_minAnimationRotate.value.toString() + "ds");
 
     Size size = MediaQuery.of(context).size;
     double heightOfCircleSpace = size.height * 0.35;
-    return Background(
+    return CommonBackground(
+      header: DayPlanHeader(),
       child: Builder(builder: (context) {
         if (manager.getFinalRemindersList().isEmpty) {
           return Container(
-        height: size.height,
-        width: size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 25.0),
-              child: text("No reminders for today!"),
+            height: size.height,
+            width: size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 25.0),
+                  child: text("No reminders for today!"),
+                ),
+                SvgPicture.asset(
+                  'assets/images/empty_today.svg',
+                  height: 250,
+                  width: 300,
+                ),
+              ],
             ),
-            SvgPicture.asset(
-              'assets/images/empty_today.svg',
-              height: 250,
-              width: 300,
-            ),
-
-          ],
-        ), );
+          );
         }
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -204,7 +206,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
 
   AnimatedSize _buildCirclePlanOverlay(Size size, double heightOfCircleSpace,
       {CirclePlan child}) {
-    print('AAAAAQQQQQQQ ' + (manager.fadeAnimation?.status.toString()));
+    // print('AAAAAQQQQQQQ ' + (manager.fadeAnimation?.status.toString()));
     return AnimatedSize(
       duration: Duration(milliseconds: 600),
       vsync: this,
@@ -225,14 +227,14 @@ class _DayPlanScreenState extends State<DayPlanScreen>
               if (!circleMinimized) {
                 manager.fadeAnimation?.reset();
                 manager.resetTime();
-                print('RECYYYYY');
+                // print('RECYYYYY');
                 setState(() {
                   draggingIdle = false;
                   _minController?.forward();
                   circleMinimized = true;
                 });
               } else if (circleMinimized) {
-                print('RECAAAAA');
+                // print('RECAAAAA');
                 setState(() {
                   draggingIdle = false;
                   manager.fadeAnimation?.reset();
@@ -266,7 +268,11 @@ class _DayPlanScreenState extends State<DayPlanScreen>
         child: SizedBox(
             width: size.width,
             height: heightOfCircleSpace /
-                (!show ? circleMinimized ? 2.8 : 1 : heightOfCircleSpace),
+                (!show
+                    ? circleMinimized
+                        ? 2.8
+                        : 1
+                    : heightOfCircleSpace),
             // 2.8
             child: CirclePlanOverlay(
               child: FittedBox(
@@ -317,7 +323,7 @@ class _DayPlanScreenState extends State<DayPlanScreen>
                       ),
                       onVerticalDragUpdate: (details) {
                         if (draggingIdle) {
-                          print(details.delta.dy);
+                          // print(details.delta.dy);
                           if (details.delta.dy > dragSensitivity) {
                             setState(() {
                               manager.fadeAnimation?.reset();
@@ -473,11 +479,11 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                           manager.minController?.status ==
                               AnimationStatus.dismissed)
                       ? () {
-                          print('clicked');
+                          // print('clicked');
                           fadeController?.reverse(from: 1);
                         }
                       : () {
-                          print('clicked');
+                          // print('clicked');
                           fadeController?.reverse(from: 1);
                           showArrows = false;
                         },
@@ -492,7 +498,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                                     manager.minController?.status ==
                                         AnimationStatus.dismissed)
                             ? () {
-                                print('clicked');
+                                // print('clicked');
                                 manager.backTime();
                                 fadeController?.reverse(from: 1);
                               }
@@ -528,8 +534,8 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                           AnimationStatus.dismissed)
                   ? null
                   : () {
-                      print('clicked');
-                      print('ERRRRRRUUUUUUUUU');
+                      // print('clicked');
+                      // print('ERRRRRRUUUUUUUUU');
                       fadeController?.reverse(from: 1);
                       showArrows = false;
                     },
@@ -542,7 +548,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                         manager.minController?.status ==
                             AnimationStatus.dismissed)
                     ? () {
-                        print('clicked');
+                        // print('clicked');
                         fadeController?.reverse(from: 1);
                       }
                     : null,
@@ -556,7 +562,7 @@ class _CirclePlanOverlayState extends State<CirclePlanOverlay>
                               manager.minController?.status ==
                                   AnimationStatus.dismissed)
                           ? () {
-                              print('clicked');
+                              // print('clicked');
                               manager.forwardTime();
                               fadeController?.reverse(from: 1);
                             }

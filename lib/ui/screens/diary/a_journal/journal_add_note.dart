@@ -4,10 +4,10 @@ import 'package:diabetty/blocs/diary.bloc.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
 import 'package:diabetty/ui/constants/colors.dart';
+import 'package:diabetty/ui/screens/teams/components/sub_page_background.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:diabetty/ui/screens/teams/components/sub_page_background.dart';
 import 'package:diabetty/extensions/index.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/ui/screens/diary/mixins/journal_action.mixin.dart';
@@ -114,7 +114,9 @@ class _JournalAddNoteState extends State<JournalAddNote>
           child: TextField(
             textAlign: (leftAlign)
                 ? TextAlign.left
-                : (centerAlign) ? TextAlign.center : TextAlign.right,
+                : (centerAlign)
+                    ? TextAlign.center
+                    : TextAlign.right,
             keyboardType: TextInputType.multiline,
             maxLengthEnforced: true,
             readOnly: readOnly,
@@ -173,7 +175,9 @@ class _JournalAddNoteState extends State<JournalAddNote>
               maxLengthEnforced: true,
               textAlign: (leftAlign)
                   ? TextAlign.center
-                  : (centerAlign) ? TextAlign.center : TextAlign.right,
+                  : (centerAlign)
+                      ? TextAlign.center
+                      : TextAlign.right,
               decoration: new InputDecoration(
                   contentPadding:
                       EdgeInsets.only(left: 15, right: 15, bottom: 0),

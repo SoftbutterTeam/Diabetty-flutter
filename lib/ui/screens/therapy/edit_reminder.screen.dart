@@ -5,7 +5,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
-import 'package:diabetty/ui/screens/therapy/components/edit_therapy_reminders.dart';
+import 'package:diabetty/ui/screens/therapy/components/edit_therapy_reminder.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_option_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/snooze_options_header.dart';
@@ -16,15 +16,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EditReminder extends StatefulWidget {
+class EditReminderRulesScreen extends StatefulWidget {
   final Therapy therapy;
 
-  EditReminder({this.therapy});
+  EditReminderRulesScreen({this.therapy});
   @override
-  _EditReminderState createState() => _EditReminderState();
+  _EditReminderRulesScreenState createState() =>
+      _EditReminderRulesScreenState();
 }
 
-class _EditReminderState extends State<EditReminder>
+class _EditReminderRulesScreenState extends State<EditReminderRulesScreen>
     with EditTherapyModalsMixin {
   @override
   Therapy get therapy => widget.therapy;
@@ -55,7 +56,6 @@ class _EditReminderState extends State<EditReminder>
           text: '',
           backFunction: () {
             Navigator.pop(context);
-            // _back();
           },
           saveFunction: () {},
         ),
@@ -74,23 +74,25 @@ class _EditReminderState extends State<EditReminder>
   }
 
   Widget _buildBody(Size size, List<Widget> reminderRulesList) {
-    return Column(
-      children: [
-        // SizedBox(height: size.height * 0.05),
-        Container(
-            padding: EdgeInsets.only(bottom: 10),
-            child: text('Scheduled Reminders', fontSize: 15.0)),
-        ColumnBuilder(
-          mainAxisAlignment: MainAxisAlignment.start,
-          itemCount: reminderRulesList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: EdgeInsets.only(top: 8.0),
-              child: Container(child: reminderRulesList[index]),
-            );
-          },
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // SizedBox(height: size.height * 0.05),
+          Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: text('Scheduled Reminders', fontSize: 15.0)),
+          ColumnBuilder(
+            mainAxisAlignment: MainAxisAlignment.start,
+            itemCount: reminderRulesList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Container(child: reminderRulesList[index]),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 

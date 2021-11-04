@@ -96,7 +96,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
                   )),
               onPressed: () {
                 Navigator.pop(context);
-                //print(initialDate);
+                //// print(initialDate);
               },
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -156,7 +156,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
     setState(() {
       timeString = hourAndMin;
     });
-    //print(hourAndMin);
+    //// print(hourAndMin);
     Navigator.pop(context);
   }
 
@@ -170,9 +170,9 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
               _updateTime();
               allFieldsFilled();
             } else {
-              //print('naw way fam');
+              //// print('naw way fam');
             }
-            //print(timeSelected);
+            //// print(timeSelected);
           },
           timepicker: CupertinoDatePicker(
             use24hFormat: false,
@@ -182,7 +182,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
             onDateTimeChanged: (dateTimeChange) {
               timeSelected = dateTimeChange;
               setState(() {});
-              //print(initialDate);
+              //// print(initialDate);
             },
           ),
         );
@@ -256,7 +256,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
         });
         break;
     }
-    //print(v);
+    //// print(v);
     setState(() => lastTapped = v);
   }
 
@@ -295,7 +295,7 @@ class _AddReminderModal2State extends State<AddReminderModal2> {
 
     manager.therapyForm.reminderRules.add(reminder);
     manager.updateListeners();
-    //print(manager.therapyForm.reminderRules.length);
+    //// print(manager.therapyForm.reminderRules.length);
     Navigator.pop(context);
   }
 

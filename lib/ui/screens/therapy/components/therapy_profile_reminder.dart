@@ -51,9 +51,8 @@ class _TherapyProfileReminderState extends State<TherapyProfileReminder> {
     var size = MediaQuery.of(context).size;
     List<Widget> weekDays = buildWeekWidgets(context);
     return custom.CupertinoTextField(
-      onTap: () => print(DateFormat("h:mm a")
-          .format(DateTime.now().applyTimeOfDay(widget.rule.time))
-          .toString()), //TODO click to show add reminder dialog with its attributes showing
+      onTap:
+          () {}, //TODO click to show add reminder dialog with its attributes showing
       overflow: TextOverflow.clip,
       decoration: BoxDecoration(
         color: appWhite,

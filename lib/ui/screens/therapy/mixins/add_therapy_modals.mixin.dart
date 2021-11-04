@@ -75,14 +75,12 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
                 (therapyForm.strength == null || therapyForm.strength == 0)) {
               therapyForm.strength = 100;
               strengthController.text = '100';
-              Navigator.pop(context);
             } else if (therapyForm.strengthUnitsIndex == 0) {
               therapyForm.strength = null;
               strengthController.text = '';
-              Navigator.pop(context);
             }
-               Navigator.pop(context);
-              setState(() {});
+            Navigator.pop(context);
+            setState(() {});
           },
           intakePicker: CupertinoPicker(
             scrollController: FixedExtentScrollController(
@@ -247,7 +245,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
       if (picked.length > 1 && isSameDayAs(picked[0], picked[1]))
         picked.removeAt(1);
       else if (picked.length > 1) {
-        //print(picked);
+        //// print(picked);
         therapyForm.startDate = picked[0];
         therapyForm.endDate = picked[1];
         setState(() {});
@@ -288,7 +286,7 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
     return true;
   }
 
-   void showStockDialog(BuildContext context, TherapyManager manager) =>
+  void showStockDialog(BuildContext context, TherapyManager manager) =>
       showGeneralDialog(
         barrierDismissible: true,
         barrierLabel: '',
@@ -318,7 +316,8 @@ mixin AddTherapyModalsMixin<T extends StatefulWidget> on State<T> {
             borderRadius: BorderRadius.circular(15.0),
           ),
           elevation: 3,
-          child: AlarmSettingsDialog(therapyForm: therapyForm, manager: manager),
+          child:
+              AlarmSettingsDialog(therapyForm: therapyForm, manager: manager),
         ),
         transitionBuilder: _transitionBuilderStyle1(),
         transitionDuration: Duration(milliseconds: 250),

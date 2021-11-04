@@ -1,4 +1,3 @@
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart' as random;
 import 'dart:math' show Random;
@@ -70,6 +69,38 @@ class Days {
     this.saturday = true,
     this.sunday = true,
   });
+
+  Days.fromDate(DateTime date) {
+    this.monday = this.tuesday = this.wednesday =
+        this.thursday = this.friday = this.saturday = this.sunday = false;
+    switch (date.weekday) {
+      case 1:
+        this.monday = true;
+        break;
+      case 2:
+        this.tuesday = true;
+        break;
+
+      case 3:
+        this.wednesday = true;
+        break;
+
+      case 4:
+        this.thursday = true;
+        break;
+
+      case 5:
+        this.friday = true;
+        break;
+      case 6:
+        this.saturday = true;
+        break;
+      case 7:
+        this.sunday = true;
+        break;
+    }
+  }
+
   Days.fromDays(Days days)
       : monday = days.monday,
         tuesday = days.tuesday,
@@ -88,13 +119,13 @@ class Days {
       sunday);
 
   loadFromJson(Map<String, dynamic> json) {
-    this.monday = json['monday'];
-    this.tuesday = json['tuesday'];
-    this.wednesday = json['wednesday'];
-    this.thursday = json['thursday'];
-    this.friday = json['friday'];
-    this.saturday = json['saturday'];
-    this.sunday = json['sunday'];
+    this.monday = json['monday'] ?? false;
+    this.tuesday = json['tuesday'] ?? false;
+    this.wednesday = json['wednesday'] ?? false;
+    this.thursday = json['thursday'] ?? false;
+    this.friday = json['friday'] ?? false;
+    this.saturday = json['saturday'] ?? false;
+    this.sunday = json['sunday'] ?? false;
   }
 
   Map<String, dynamic> toJson() => {

@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/reminder.model.dart';
-import 'package:diabetty/repositories/team.repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:localstore/localstore.dart';
 
 class ReminderRepository {
   final _localdb = Localstore.instance;
 
-  Future<DataResult<List<Map<String, dynamic>>>> getAllReminders(String userId,
+  Future<DataResult<List<Map<String, dynamic>>>> getAllReminders(
       {bool local}) async {
     try {
       Source source = local ? Source.cache : Source.serverAndCache;
@@ -20,10 +18,10 @@ class ReminderRepository {
           ..['id'] = e.key.split('/').last;
         return json;
       }).toList());
-      //print(data.map((e) => e.toString()));
+      //// print(data.map((e) => e.toString()));
       return DataResult<List<Map<String, dynamic>>>(data: data);
     } catch (exception, stackTrace) {
-      //print('HELLLO');
+      //// print('HELLLO');
       return DataResult(exception: exception, stackTrace: stackTrace);
     }
   }
@@ -37,8 +35,8 @@ class ReminderRepository {
         .doc(reminder.id)
         .delete()
         .catchError((e) {
-      print('error');
-      print(e);
+      // print('error');
+      // print(e);
     });
     return true;
   }
@@ -55,15 +53,13 @@ class ReminderRepository {
         .doc(reminder.id)
         .set(reminderData)
         .catchError((e) {
-      print('error');
-      print(e);
+      // print('error');
+      // print(e);
     });
     return true;
   }
 
-  Stream<Map<String, dynamic>> onStateChanged(String uid) {
-    //print('hererehere' + uid);
-
+  Stream<Map<String, dynamic>> onStateChanged() {
     return _localdb.collection('reminders').stream;
   }
 }

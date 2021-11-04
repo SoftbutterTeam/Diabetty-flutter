@@ -1,9 +1,9 @@
-import 'package:diabetty/blocs/app_context.dart';
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
-import 'package:diabetty/ui/screens/therapy/components/background.dart';
+import 'package:diabetty/ui/screens/therapy/components/header.dart';
+import 'package:diabetty/ui/screens/today/components/common_background.dart';
 import 'package:diabetty/ui/screens/therapy/components/therapy_card.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
 import 'package:diabetty/ui/screens/therapy/therapy_profile_screen2.dart';
@@ -39,7 +39,8 @@ class _TherapyScreenState extends State<TherapyScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Background(
+    return CommonBackground(
+      header: TherapyHeader(),
       child: _body(context),
     );
   }
@@ -61,7 +62,7 @@ class _TherapyScreenState extends State<TherapyScreen>
         builder: (context, snapshot) {
           if (manager.usersTherapies == null ||
               manager.usersTherapies.isEmpty) {
-            //print(snapshot.data.toString());
+            //// print(snapshot.data.toString());
             return Container(
               height: size.height,
               width: size.width,
@@ -90,9 +91,7 @@ class _TherapyScreenState extends State<TherapyScreen>
               itemCount: therapies.length,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                bool readOnly =
-                    Provider.of<AppContext>(context, listen: false).readOnly;
-                print(readOnly ? ' READONLYYY' : null);
+                bool readOnly = false;
                 var therapy =
                     readOnly ? Provider.of<TherapyManager>(context) : null;
                 var dayplan =

@@ -11,7 +11,8 @@ class SnoozeOptionScreen extends StatefulWidget {
   int selectedRepeatRadioTile;
   int selectedMinuteRadioTile;
 
-  SnoozeOptionScreen({this.selectedMinuteRadioTile, this.selectedRepeatRadioTile});
+  SnoozeOptionScreen(
+      {this.selectedMinuteRadioTile, this.selectedRepeatRadioTile});
 
   @override
   _SnoozeOptionScreenState createState() => _SnoozeOptionScreenState();
@@ -19,7 +20,6 @@ class SnoozeOptionScreen extends StatefulWidget {
 
 class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
   bool toggle = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +194,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               groupValue: widget.selectedRepeatRadioTile,
               onChanged: (value) => {
                 setSelectedRadio(value),
-                print(value),
+                // print(value),
               },
               selected: (widget.selectedRepeatRadioTile == 3) ? true : false,
             ),
@@ -206,7 +206,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               groupValue: widget.selectedRepeatRadioTile,
               onChanged: (value) => {
                 setSelectedRadio(value),
-                print(value),
+                // print(value),
               },
               selected: (widget.selectedRepeatRadioTile == 5) ? true : false,
             ),
@@ -218,7 +218,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               groupValue: widget.selectedRepeatRadioTile,
               onChanged: (value) => {
                 setSelectedRadio(value),
-                print(value),
+                // print(value),
               },
               selected: (widget.selectedRepeatRadioTile == 100) ? true : false,
             ),
@@ -244,7 +244,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               groupValue: widget.selectedMinuteRadioTile,
               onChanged: (value) => {
                 setSelectedRadioTile(value),
-                print(value),
+                // print(value),
               },
               selected: (widget.selectedMinuteRadioTile == 5) ? true : false,
             ),
@@ -256,7 +256,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               groupValue: widget.selectedMinuteRadioTile,
               onChanged: (value) => {
                 setSelectedRadioTile(value),
-                print(value),
+                // print(value),
               },
               selected: (widget.selectedMinuteRadioTile == 10) ? true : false,
             ),
@@ -268,7 +268,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               groupValue: widget.selectedMinuteRadioTile,
               onChanged: (value) => {
                 setSelectedRadioTile(value),
-                print(value),
+                // print(value),
               },
               selected: (widget.selectedMinuteRadioTile == 15) ? true : false,
             ),
@@ -280,7 +280,7 @@ class _SnoozeOptionScreenState extends State<SnoozeOptionScreen> {
               groupValue: widget.selectedMinuteRadioTile,
               onChanged: (value) => {
                 setSelectedRadioTile(value),
-                print(value),
+                // print(value),
               },
               selected: (widget.selectedMinuteRadioTile == 30) ? true : false,
             ),

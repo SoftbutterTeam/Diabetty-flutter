@@ -61,31 +61,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget _body(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 10),
-      decoration: BoxDecoration(
-          color: appWhite,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: Offset(0, -1),
-            ),
-          ],
-          border: Border(
-            top: BorderSide(color: Colors.transparent, width: 1),
-          )),
-      child: Column(
-        children: [
-          Expanded(
-            child: Container(
-                child: Container(
-              child: _buildHistory(context),
-            )),
-          ),
-        ],
-      ),
-    );
+        child: Container(
+      child: _buildHistory(context),
+    ));
   }
 
   Widget _buildHistory(BuildContext context) {
@@ -122,7 +100,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.grey[50],
+              color: Colors.grey[200],
               border: Border(
                   top: BorderSide(color: Colors.black26, width: 0.4),
                   bottom: BorderSide(color: Colors.black26, width: 0.4)),

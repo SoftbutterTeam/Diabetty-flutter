@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 class Reminder with DateMixin {
   String id;
-  String userId;
+  final String userId = 'user';
   int appearance;
   String therapyId;
   String reminderRuleId;
@@ -23,13 +23,17 @@ class Reminder with DateMixin {
   DateTime skippedAt;
   DateTime deletedAt;
 
-  List<int> advices;
+  int advice;
 
   DateTime get getDateTimeAs12hr {
     if (time == null) return time;
     final df = new DateFormat('dd-MM-yyyy hh:mm a');
     String dtFormatted = df.format(time);
     return (df.parse(dtFormatted));
+  }
+
+  DateTime get prominentScheduledTime {
+    return rescheduledTime ?? time;
   }
 
   DateTime get date {
@@ -100,7 +104,7 @@ class Reminder with DateMixin {
       this.appearance,
       this.time,
       this.dose,
-      this.advices,
+      this.advice,
       this.skippedAt,
       this.window,
       this.rescheduledTime,
@@ -111,7 +115,6 @@ class Reminder with DateMixin {
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
   Reminder.generated(Therapy therapy, ReminderRule rule, DateTime date)
       : this.therapyId = therapy.id,
-        this.userId = therapy.userId,
         this.reminderRuleId = rule.id,
         this.name = therapy.medicationInfo.name,
         this.appearance = therapy.medicationInfo.appearanceIndex,
@@ -122,7 +125,7 @@ class Reminder with DateMixin {
         this.doseTypeIndex = therapy.medicationInfo.typeIndex,
         this.strength = therapy.medicationInfo.strength,
         this.strengthUnitindex = therapy.medicationInfo.unitIndex,
-        this.advices = therapy.medicationInfo.intakeAdvices;
+        this.advice = therapy.medicationInfo.intakeAdviceIndex;
 
   Reminder.formJson(Map<String, dynamic> json) {
     loadFromJson(json);
@@ -130,7 +133,6 @@ class Reminder with DateMixin {
 
   loadFromJson(Map<String, dynamic> json) {
     if (json.containsKey('id')) this.id = json['id'];
-    if (json.containsKey('userId')) this.userId = json['userId'];
     if (json.containsKey('therapyId')) this.therapyId = json['therapyId'];
     if (json.containsKey('reminderRuleId'))
       this.reminderRuleId = json['reminderRuleId'];
@@ -140,11 +142,10 @@ class Reminder with DateMixin {
     if (json.containsKey('dose')) this.dose = json['dose'];
     if (json.containsKey('doseTypeIndex'))
       this.doseTypeIndex = json['doseTypeIndex'];
-    if (json.containsKey('strength')) this.strength = json['strength'].abs();
+    if (json.containsKey('strength')) this.strength = json['strength']?.abs();
     if (json.containsKey('strengthUnitIndex'))
       this.strengthUnitindex = json['strengthUnitIndex'];
-    if (json.containsKey('advices'))
-      this.advices = new List<int>.from(json['advices']);
+    if (json.containsKey('advice')) this.advice = json['advice'];
     if (json.containsKey('window'))
       this.window = Duration(seconds: json['window']);
 
@@ -185,7 +186,7 @@ class Reminder with DateMixin {
     if (this.skippedAt != null) output['skippedAt'] = this.skippedAt.toString();
     if (this.deletedAt != null) output['deletedAt'] = this.deletedAt.toString();
 
-    if (this.advices != null) output['advices'] = this.advices;
+    if (this.advice != null) output['advice'] = this.advice;
     if (this.doseEdited != null) output['doseEdited'] = this.doseEdited;
     return output;
   }
