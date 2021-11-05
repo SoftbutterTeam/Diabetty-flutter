@@ -120,7 +120,7 @@ class TherapyRepository {
   Stream<Map<String, dynamic>> onStateChanged() {
     //// print('hererehere' + uid);
 
-    return _localdb.collection('therapies').stream;
+    return _localdb.collection('therapies').stream.distinct();
   }
 }
 

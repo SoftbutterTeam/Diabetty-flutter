@@ -9,8 +9,6 @@ class ReminderRepository {
   Future<DataResult<List<Map<String, dynamic>>>> getAllReminders(
       {bool local}) async {
     try {
-      Source source = local ? Source.cache : Source.serverAndCache;
-
       var result = await _localdb.collection('reminders').get();
 
       var data = (result.entries.map((e) {
@@ -43,9 +41,10 @@ class ReminderRepository {
 
   Future<void> setReminder(Reminder reminder) async {
     Map<String, dynamic> reminderData = Map();
-    if (reminder.userId == null) return null;
-
+    //   if (reminder.userId == null) return null;
+    print('listened set Data');
     reminderData = reminder.tojson();
+    reminderData['updatedAt'] = DateTime.now().toString();
 
     // reminder.
     await _localdb
@@ -56,11 +55,12 @@ class ReminderRepository {
       // print('error');
       // print(e);
     });
+    //  await getAllReminders();
     return true;
   }
 
   Stream<Map<String, dynamic>> onStateChanged() {
-    return _localdb.collection('reminders').stream;
+    return _localdb.collection('reminders').stream.distinct();
   }
 }
 

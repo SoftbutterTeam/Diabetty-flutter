@@ -125,7 +125,8 @@ class JournalEntryRepository {
         .collection('journals')
         .doc(journalId)
         .collection('journalEntries')
-        .stream;
+        .stream
+        .distinct();
   }
 }
 

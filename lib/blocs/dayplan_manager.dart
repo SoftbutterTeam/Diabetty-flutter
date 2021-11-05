@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:async';
 import 'dart:core';
 import 'package:diabetty/blocs/mixins/reminder_manager_mixin.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
@@ -6,6 +7,7 @@ import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:collection/collection.dart';
+import 'package:diabetty/services/reminder.service.dart';
 
 import 'package:diabetty/ui/screens/today/components/date_picker_widget.dart';
 import 'package:diabetty/utils/notifcation._service.dart';
@@ -65,8 +67,10 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
 
   Stream _reminderStream() => reminderService.localStream();
   Stream get reminderStream => this._reminderStream();
+  StreamSubscription _reminderStreamSub;
 
   Function dayScreenSetState;
+  bool firstInit = true;
 
   set currentDateStamp(DateTime value) {
     if (value.isSameDayAs(DateTime.now()))
@@ -80,6 +84,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   @override
   void dispose() {
     _dataController.close();
+    _reminderStreamSub.cancel();
     super.dispose();
   }
 
@@ -89,35 +94,85 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     super.updateListeners();
   }
 
-  Future<void> init() async {
-    currentDateStamp = DateTime.now();
-    if (true) {
-      try {
-        _usersReminders = await reminderService.getReminders(local: true) ?? [];
+  DateTime lastGetRemindersTimeStamp;
 
-        await removeOuteDatedReminders();
-        await scheduleNotifications();
-      } catch (e) {}
-      this._reminderStream().listen((event) async {
-        //     print('running here main' + event.toString());
-        if (event != null && event['id'] != null) {
-          if (_usersReminders.length > 0)
-            _usersReminders
-                ?.firstWhere((element) =>
-                    element.id == event['id'] && event['id'] != null)
-                ?.loadFromJson(event);
-          //    print('running here');
+  Future<List<Reminder>> getRemindersWithDateStamp() async {
+    lastGetRemindersTimeStamp = DateTime.now();
+    return await ReminderService().getReminders();
+  }
+  // for when new reminders are saved and need notification reset
+
+  Future<void> init(TherapyManager therapyMang) async {
+    therapyManager = therapyMang;
+    currentDateStamp = DateTime.now();
+
+    _usersReminders = await reminderService.getReminders(local: true) ?? [];
+    await removeOuteDatedReminders();
+    print('running init');
+    if (therapyManager != null) {
+      print('scheduled notifications');
+      await scheduleNotifications();
+    }
+
+    firstInit = false;
+
+    _reminderStreamSub = this._reminderStream().listen((event) async {
+      // print('listened');
+      if (event != null && event['id'] != null) {
+        if (_usersReminders.length > 0) {
+          Reminder updatedReminder = _usersReminders
+              .firstWhere((element) => element.id == event['id'], orElse: () {
+            return null;
+          });
+          Reminder newReminder = Reminder.fromJson(event);
+          // print(' updated reminder ' + updatedReminder.id);
+          if (updatedReminder != null ||
+              (newReminder.updatedAt != null &&
+                  (updatedReminder?.updatedAt
+                          ?.isBefore(newReminder.updatedAt) ??
+                      true))) {
+            //   print('test010 will update' + updatedReminder.id);
+
+            updatedReminder.loadFromJson(event);
+            if (updatedReminder.prominentScheduledTime
+                .isAfter(DateTime.now())) if (therapyManager != null)
+              await scheduleNotifications();
+          }
+        } else {
+          print('code 4');
+          if (lastGetRemindersTimeStamp == null ||
+              (Reminder.fromJson(event)
+                      ?.updatedAt
+                      ?.isAfter(lastGetRemindersTimeStamp) ??
+                  false)) {
+            _usersReminders = await getRemindersWithDateStamp();
+
+            await scheduleNotifications();
+          } else {
+            _usersReminders = await getRemindersWithDateStamp();
+          }
+          //  if (therapyManager != null) await scheduleNotifications();
+        }
+      } else {
+        print('test010 else ran'); //event.toString()
+        if (lastGetRemindersTimeStamp == null ||
+            (Reminder.fromJson(event)
+                    ?.updatedAt
+                    ?.isAfter(lastGetRemindersTimeStamp) ??
+                false)) {
+          _usersReminders = await getRemindersWithDateStamp();
+
           await scheduleNotifications();
         } else {
-          _usersReminders = await reminderService.getReminders();
+          _usersReminders = await getRemindersWithDateStamp();
         }
+        //if (therapyManager != null) await scheduleNotifications();
 
-        //  // print('userReminders' + _usersReminders.toString());
-        _usersReminders ??= [];
-
-        updateListeners();
-      });
-    }
+        //  await scheduleNotifications();
+      }
+      _usersReminders ??= [];
+      updateListeners();
+    }, onDone: () => print('done'), onError: (error) => print('error'));
   }
 
   Future<void> removeOuteDatedReminders() async {
@@ -242,13 +297,13 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
   }
 
   scheduleNotifications() async {
+    print('test021 running notification');
     var _notifcationService = NotificationService();
     await _notifcationService.clearScheduledNotfications();
-
     List<Reminder> orderedSoonReminders = [];
     DateTime now = DateTime.now();
     int limitByDays = 10;
-    for (var i = 0; i < limitByDays; i++) {
+    for (int i = 0; i < limitByDays; i++) {
       orderedSoonReminders.addAll(getFinalRemindersList(
               date: now.add(Duration(days: i)))
           ?.where((element) =>
@@ -261,6 +316,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
           ?.sortedBy((element) => element.prominentScheduledTime));
     }
     int i = 0;
+    print(orderedSoonReminders.length);
     orderedSoonReminders.forEach((element) async {
       if (i < 10 && true) //* testing
         print('notificationTest06: $i ' +

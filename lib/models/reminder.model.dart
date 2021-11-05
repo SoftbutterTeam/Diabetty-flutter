@@ -22,6 +22,7 @@ class Reminder with DateMixin {
   bool doseEdited;
   DateTime skippedAt;
   DateTime deletedAt;
+  DateTime updatedAt;
 
   int advice;
 
@@ -111,6 +112,10 @@ class Reminder with DateMixin {
       this.takenAt,
       this.doseEdited});
 
+  Reminder.loadFromJson(Map<String, dynamic> json) {
+    loadFromJson(json);
+  }
+
   ///*  Used to Project Reminders from the Therapys
   ///*  Note: There no uid assignment. so if no uid it must be a non-stored/saved reminder object
   Reminder.generated(Therapy therapy, ReminderRule rule, DateTime date)
@@ -127,8 +132,46 @@ class Reminder with DateMixin {
         this.strengthUnitindex = therapy.medicationInfo.unitIndex,
         this.advice = therapy.medicationInfo.intakeAdviceIndex;
 
-  Reminder.formJson(Map<String, dynamic> json) {
+  Reminder.fromJson(Map<String, dynamic> json) {
     loadFromJson(json);
+  }
+
+  bool isSameJson(Map<String, dynamic> json) {
+    if (json.containsKey('id') && this.id != json['id']) return false;
+    if (json.containsKey('therapyId') && this.therapyId != json['therapyId'])
+      return false;
+    if (json.containsKey('reminderRuleId') &&
+        this.reminderRuleId != json['reminderRuleId']) return false;
+    if (json.containsKey('appearance') && this.appearance != json['appearance'])
+      return false;
+    if (json.containsKey('time') && this.time != DateTime.parse(json['time']))
+      return false;
+    if (json.containsKey('dose') && this.dose != json['dose']) return false;
+    if (json.containsKey('dose') && this.dose != json['dose']) return false;
+    if (json.containsKey('doseTypeIndex') &&
+        this.doseTypeIndex != json['doseTypeIndex']) return false;
+
+    if (json.containsKey('strength') && this.strength != json['strength'])
+      return false;
+    if (json.containsKey('strengthUnitIndex') &&
+        this.strengthUnitindex != json['strengthUnitIndex']) return false;
+
+    if (json.containsKey('advice') && this.advice != json['advice'])
+      return false;
+    if (json.containsKey('window') &&
+        this.window != Duration(seconds: json['window'])) return false;
+    if (json.containsKey('rescheduledTime') &&
+        this.rescheduledTime != DateTime.parse(json['rescheduledTime']))
+      return false;
+    if (json.containsKey('takenAt') &&
+        this.takenAt != DateTime.parse(json['takenAt'])) return false;
+    if (json.containsKey('skippedAt') &&
+        this.skippedAt != DateTime.parse(json['skippedAt'])) return false;
+    if (json.containsKey('deletedAt') &&
+        this.deletedAt != DateTime.parse(json['deletedAt'])) return false;
+    if (json.containsKey('doseEdited') && this.doseEdited != json['doseEdited'])
+      return false;
+    return true;
   }
 
   loadFromJson(Map<String, dynamic> json) {
@@ -158,6 +201,8 @@ class Reminder with DateMixin {
     if (json.containsKey('deletedAt'))
       this.deletedAt = DateTime.parse(json['deletedAt']);
     if (json.containsKey('doseEdited')) this.doseEdited = json['doseEdited'];
+    if (json.containsKey('updatedAt'))
+      this.updatedAt = DateTime.parse(json['updatedAt']);
   }
 
   //TODO

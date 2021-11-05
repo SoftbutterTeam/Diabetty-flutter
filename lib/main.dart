@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     TherapyManager therapyManager = TherapyManager()..init();
     DiaryBloc diaryBloc = DiaryBloc()..init();
-    DayPlanManager dayPlanManager = DayPlanManager()..init();
+    DayPlanManager dayPlanManager = DayPlanManager()..init(therapyManager);
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<TherapyManager>(
@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
                   startKeepAlive(dayPlanManager.refresh);
                   return FutureBuilder(
                     future: () async {
-                      await dayPlanManager.init();
+                      await dayPlanManager.init(therapyManager);
                       await Future.delayed(
                           const Duration(milliseconds: 1000), () {});
                       return;

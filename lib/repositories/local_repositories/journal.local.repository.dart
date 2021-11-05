@@ -86,7 +86,7 @@ class JournalRepository {
   }
 
   Stream<Map<String, dynamic>> onStateChanged() {
-    return _localdb.collection('journals').stream;
+    return _localdb.collection('journals').stream.distinct();
   }
 }
 
