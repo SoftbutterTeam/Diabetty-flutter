@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:async';
+
 import 'dart:core';
 import 'package:diabetty/blocs/mixins/reminder_manager_mixin.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
@@ -16,6 +16,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:diabetty/models/timeslot.model.dart';
 import 'package:diabetty/blocs/abstracts/manager_abstract.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
+
+import 'package:diabetty/extensions/string_extension.dart';
 
 class DayPlanManager extends Manager with ReminderManagerMixin {
   Function dateAnimateFunction;
@@ -98,6 +100,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
 
   Future<List<Reminder>> getRemindersWithDateStamp() async {
     lastGetRemindersTimeStamp = DateTime.now();
+    //   print('updatedLastGetReminders');
     return await ReminderService().getReminders();
   }
   // for when new reminders are saved and need notification reset
@@ -106,7 +109,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     therapyManager = therapyMang;
     currentDateStamp = DateTime.now();
 
-    _usersReminders = await reminderService.getReminders(local: true) ?? [];
+    _usersReminders = await getRemindersWithDateStamp() ?? [];
     await removeOuteDatedReminders();
     print('running init');
     if (therapyManager != null) {
@@ -126,13 +129,11 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
           });
           Reminder newReminder = Reminder.fromJson(event);
           // print(' updated reminder ' + updatedReminder.id);
-          if (updatedReminder != null ||
-              (newReminder.updatedAt != null &&
-                  (updatedReminder?.updatedAt
-                          ?.isBefore(newReminder.updatedAt) ??
-                      true))) {
-            //   print('test010 will update' + updatedReminder.id);
-
+          if (updatedReminder != null &&
+              newReminder.updatedAt != null &&
+              (updatedReminder?.updatedAt?.isBefore(newReminder.updatedAt) ??
+                  true)) {
+            print('code 3');
             updatedReminder.loadFromJson(event);
             if (updatedReminder.prominentScheduledTime
                 .isAfter(DateTime.now())) if (therapyManager != null)
@@ -140,31 +141,24 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
           }
         } else {
           print('code 4');
-          if (lastGetRemindersTimeStamp == null ||
-              (Reminder.fromJson(event)
-                      ?.updatedAt
-                      ?.isAfter(lastGetRemindersTimeStamp) ??
-                  false)) {
-            _usersReminders = await getRemindersWithDateStamp();
+          _usersReminders = await getRemindersWithDateStamp();
+          await scheduleNotifications();
 
-            await scheduleNotifications();
-          } else {
-            _usersReminders = await getRemindersWithDateStamp();
-          }
           //  if (therapyManager != null) await scheduleNotifications();
         }
       } else {
         print('test010 else ran'); //event.toString()
+        Reminder tempReminder = Reminder.fromJson(event);
         if (lastGetRemindersTimeStamp == null ||
-            (Reminder.fromJson(event)
-                    ?.updatedAt
-                    ?.isAfter(lastGetRemindersTimeStamp) ??
+            (tempReminder.updatedAt?.isAfter(lastGetRemindersTimeStamp) ??
                 false)) {
+          print('case 1');
           _usersReminders = await getRemindersWithDateStamp();
-
           await scheduleNotifications();
         } else {
-          _usersReminders = await getRemindersWithDateStamp();
+          //   print(
+          //     'case 2  ${tempReminder.updatedAt}  - $lastGetRemindersTimeStamp');
+          // _usersReminders = await getRemindersWithDateStamp();
         }
         //if (therapyManager != null) await scheduleNotifications();
 
@@ -296,49 +290,58 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     return history;
   }
 
+  // LIMIT HOW MANY NOTIFICATIONS IT CAN SET
+
   scheduleNotifications() async {
     print('test021 running notification');
     var _notifcationService = NotificationService();
     await _notifcationService.clearScheduledNotfications();
     List<Reminder> orderedSoonReminders = [];
     DateTime now = DateTime.now();
-    int limitByDays = 10;
-    for (int i = 0; i < limitByDays; i++) {
+    int limitByDays = 10; //! reminder to put to 10
+    for (int i = 0; i < limitByDays && orderedSoonReminders.length < 20; i++) {
       orderedSoonReminders.addAll(getFinalRemindersList(
               date: now.add(Duration(days: i)))
-          ?.where((element) =>
-              !element.prominentScheduledTime.isBefore(DateTime.now()))
+          ?.where((element) => !element.prominentScheduledTime.isBefore(now))
           ?.where((element) => !element.isComplete && !element.isDeleted)
-          ?.where((element) => element.prominentScheduledTime.isBefore(
-              DateTime.now().add(Duration(
+          ?.where((element) => element.prominentScheduledTime.isBefore(now.add(
+              Duration(
                   days:
                       limitByDays)))) //* unneccessary line since we have limit in the forloop
           ?.sortedBy((element) => element.prominentScheduledTime));
     }
+    print(
+        ' length ${orderedSoonReminders.length}  ${orderedSoonReminders.length > 0 ? orderedSoonReminders?.first?.prominentScheduledTime : '0'}');
+
+    //? works fine till here. It doesnt even run that many times. why does it mess up from here?
+    print('notificationtest06: running from here');
     int i = 0;
-    print(orderedSoonReminders.length);
-    orderedSoonReminders.forEach((element) async {
-      if (i < 10 && true) //* testing
-        print('notificationTest06: $i ' +
-            element.prominentScheduledTime.toString());
-      await scheduleReminderNotifications(element, i);
+    for (Reminder reminder in orderedSoonReminders) {
+      print('notificationTest06: $i ' +
+          reminder.prominentScheduledTime.toString());
+      await scheduleReminderNotifications(reminder, i);
+      print('notificationtest06: done 1');
       i += 2;
-    });
+      print('notificationTest06: $i');
+    }
+    print('notificationtest06: done 2');
   }
 
   scheduleReminderNotifications(Reminder reminder, int index) async {
     var _notifcationService = NotificationService();
 
+    //print('test031  + $index ${reminder.prominentScheduledTime.toString()}');
     /*
       * set 2 notifications. 1 for the time. and one to tell them to take it soon before it is considered late. 
       * First: Ibiphro, body: take 2 ibiphro for 12.00.
       * Second: Hurry, You  are Late!, body: take 2 ibiphro before meal for 12.00.
       */
-    var title1 = reminder.name.toLowerCase()
-      ..replaceRange(0, 1, reminder.name[0].toUpperCase());
+    var title1 = reminder.name.capitalizeBegins();
     var title2 = "Hurry, You Are Late!";
     var body1 =
-        "Take ${reminder.dose} ${reminder.name.toLowerCase()} ${reminder.advice != 0 ? intakeAdvice[reminder.advice].toLowerCase() + ' ' : ''}for ${reminder.prominentScheduledTime.formatTime()}";
+        "Take ${reminder.dose} ${unitTypes[reminder.doseTypeIndex].plurarlUnits(reminder.dose)} ${reminder.advice != 0 ? intakeAdvice[reminder.advice].toLowerCase() + ' ' : ''}for ${reminder.prominentScheduledTime.formatTime().toLowerCase().replaceAll(' ', '')}";
+    var body2 =
+        "Take ${reminder.dose} ${unitTypes[reminder.doseTypeIndex].plurarlUnits(reminder.dose)} ${reminder.name.capitalizeBegins()} ${reminder.advice != 0 ? intakeAdvice[reminder.advice].toLowerCase() + ' ' : ''}for ${reminder.prominentScheduledTime.formatTime().toLowerCase().replaceAll(' ', '')}";
 
     await _notifcationService.scheduleNotfication(
         id: index,
@@ -349,7 +352,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         id: index + 1,
         scheduledDate: reminder.prominentScheduledTime
             .add(reminder.window ?? Duration(minutes: 20)),
-        body: body1,
+        body: body2,
         title: title2);
   }
 }

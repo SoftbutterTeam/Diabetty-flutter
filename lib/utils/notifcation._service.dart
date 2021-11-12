@@ -72,15 +72,7 @@ class NotificationService with CommonMixins {
       iOS: initializationSettingsIOS,
     );
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String payload) async {
-      if (payload == null)
-        return print('notifcation payload: ' + payload);
-      else
-        print('notifcation payload: ' + payload);
-      /*  await Navigator.pushNamed(context, today);
-      Provider.of<DayPlanManager>(context, listen: false).currentDateStamp = payload.;    
-    */
-    });
+        onSelectNotification: null);
     // * End of Notifications Config ---------------------------------------
   }
 
@@ -121,7 +113,8 @@ class NotificationService with CommonMixins {
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
 
     try {
-      print('notificationTest05: ' + pendingNotificationRequests?.first?.body);
+      print(
+          'notificationTest05: $scheduledDate  ${pendingNotificationRequests?.first?.body}');
     } catch (e) {}
   }
 

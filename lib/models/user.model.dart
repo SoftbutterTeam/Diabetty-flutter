@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class User {
   String uid;
   String name;
@@ -19,12 +17,6 @@ class User {
     this.name = another.name;
     this.email = another.email;
     this.displayName = another.displayName;
-  }
-
-  factory User.fromDocument(DocumentSnapshot document) {
-    var data = Map<String, dynamic>.from(document.data);
-    data['uid'] = document.documentID;
-    return User.fromJson(data);
   }
 
   User.fromJson(Map<String, dynamic> json) {

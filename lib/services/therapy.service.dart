@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/repositories/local_repositories/therapy.local.repository.dart';
 

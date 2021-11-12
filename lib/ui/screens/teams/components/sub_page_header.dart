@@ -51,7 +51,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
             Expanded(
               child: Container(
                   alignment: Alignment.center,
-                  child: subHeadingText("", Colors.black87)),
+                  child: subHeadingText("", Colors.white)),
             ),
             Container(
               alignment: Alignment.centerRight,

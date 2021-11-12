@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:localstore/localstore.dart';
 

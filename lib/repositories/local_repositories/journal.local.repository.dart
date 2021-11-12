@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/journal/journal.model.dart';
 import 'package:localstore/localstore.dart';
 
@@ -62,7 +61,6 @@ class JournalRepository {
 
   Future<DataResult<List<Map<String, dynamic>>>> getAllJournals(
       {bool local = false}) async {
-    Source source = local ? Source.cache : Source.serverAndCache;
     try {
       var result = await _localdb.collection('journals').get();
       /** 

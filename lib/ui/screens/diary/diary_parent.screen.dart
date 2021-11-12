@@ -98,11 +98,12 @@ class _DiaryParentScreenState extends State<DiaryParentScreen> {
         height: 60,
         alignment: Alignment.center,
         child: AnimatedToggle(
-          values: ['journals', 'history'],
+          values: [
+            'journals',
+            'history',
+          ],
           textColor: lightMode.textColor,
-          backgroundColor: lightMode.toggleBackgroundColor,
           buttonColor: lightMode.toggleButtonColor,
-          shadows: lightMode.shadow,
           initialValue: toggleValue,
           onToggleCallback: (index) {
             toggleValue = index == 0 ? true : false;

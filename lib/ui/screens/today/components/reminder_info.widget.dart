@@ -171,7 +171,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               child: Row(
                 children: [
                   SizedBox(width: 15),
-                  Icon(Icons.date_range, size: 20),
+                  Icon(Icons.date_range, color: Colors.black87, size: 20),
                   SizedBox(width: 20),
                   text(
                       'Time: ' +
@@ -181,7 +181,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                           (reminder.rescheduledTime ?? reminder.time)
                               .formatTime()
                               .toLowerCase(),
-                      fontSize: 13.0),
+                      fontSize: 13.0,
+                      textColor: Colors.black87),
                 ],
               ),
             ),
@@ -191,7 +192,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 child: Row(
                   children: [
                     SizedBox(width: 15),
-                    Icon(Icons.assessment, size: 20),
+                    Icon(Icons.assessment, color: Colors.black87, size: 20),
                     SizedBox(width: 20),
                     text(
                         'Take ' +
@@ -204,7 +205,8 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                                     remStrengthType != 0)
                                 ? ", $remStrength ${strengthUnits[remStrengthType]}"
                                 : ''),
-                        fontSize: 13.0),
+                        fontSize: 13.0,
+                        textColor: Colors.black87),
                   ],
                 ),
               ),
@@ -214,10 +216,10 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
                 child: Row(
                   children: [
                     SizedBox(width: 15),
-                    Icon(Icons.assignment, size: 20),
+                    Icon(Icons.assignment, color: Colors.black87, size: 20),
                     SizedBox(width: 20),
                     text("Advice: ${intakeAdvice[remAdviceInd].toLowerCase()}",
-                        fontSize: 13.0),
+                        fontSize: 13.0, textColor: Colors.black87),
                   ],
                 ),
               ),
@@ -458,7 +460,6 @@ class ReminderModalFooterButton extends StatelessWidget {
   final double width2 = 60;
   final double width3 = 30;
   final double height3 = 30;
-  final color = Colors.black;
 
   final String text2;
   final String assetName;
@@ -466,6 +467,7 @@ class ReminderModalFooterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var color = Colors.deepOrange[900];
     var size = MediaQuery.of(context).size;
     var edgeInsets = EdgeInsets.fromLTRB(0, 10, 0, 0);
     return Container(
@@ -489,7 +491,7 @@ class ReminderModalFooterButton extends StatelessWidget {
             SizedBox(height: 5),
             text(
               text2,
-              textColor: Colors.black,
+              textColor: Colors.black87,
               fontFamily: fontSemibold,
               fontSize: 13.0,
               maxLine: 1,

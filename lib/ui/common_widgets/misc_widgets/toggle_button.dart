@@ -13,12 +13,12 @@ class AnimatedToggle extends StatefulWidget {
     @required this.values,
     this.initialValue = false,
     @required this.onToggleCallback,
-    this.backgroundColor = const Color(0xFFe7e7e8),
+    this.backgroundColor = const Color(0xFFFFFFFF), // Color(0xFFe7e7e8),
     this.buttonColor = const Color(0xFFFFFFFF),
     this.textColor = const Color(0xFF000000),
     this.shadows = const [
       BoxShadow(
-        color: const Color(0xFFd8d7da),
+        color: const Color(0xFFFFFFFF),
         spreadRadius: 5,
         blurRadius: 10,
         offset: Offset(0, 5),
@@ -35,79 +35,87 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
     bool initialPosition = widget.initialValue;
 
     double width = MediaQuery.of(context).size.width;
-    return Container(
-      width: width * 0.7,
-      height: width * 0.13,
-      margin: EdgeInsets.all(15),
-      child: Stack(
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              initialPosition = !initialPosition;
-              var index = 0;
-              if (!initialPosition) {
-                index = 1;
-              }
-              widget.onToggleCallback(index);
-              setState(() {});
-            },
-            child: Container(
-              width: width * 0.7,
-              height: width * 0.13,
-              decoration: ShapeDecoration(
-                color: widget.backgroundColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                  widget.values.length,
-                  (index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-                    child: Text(
-                      widget.values[index],
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        fontSize: 16,
-                        //   fontWeight: FontWeight.bold,
-                        color: const Color(0xFF918f95),
+    return IntrinsicWidth(
+      child: ConstrainedBox(
+        constraints:
+            BoxConstraints(minHeight: width * 0.13, minWidth: width * 0.7),
+        child: Container(
+          margin: EdgeInsets.all(15),
+          child: Stack(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  initialPosition = !initialPosition;
+                  var index = 0;
+                  if (!initialPosition) {
+                    index = 1;
+                  }
+                  widget.onToggleCallback(index);
+                  setState(() {});
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: ShapeDecoration(
+                    shadows: [
+                      BoxShadow(blurRadius: 1.0, color: Colors.black26)
+                    ],
+                    color: widget.backgroundColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(
+                      widget.values.length,
+                      (index) => Padding(
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+                        child: Text(
+                          widget.values[index],
+                          style: TextStyle(
+                            fontFamily: 'Rubik',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors
+                                .deepOrange[700], // const Color(0xFF918f95),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-          AnimatedAlign(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.decelerate,
-            alignment:
-                initialPosition ? Alignment.centerLeft : Alignment.centerRight,
-            child: Container(
-              width: width * 0.35,
-              height: width * 0.13,
-              decoration: ShapeDecoration(
-                color: widget.buttonColor,
-                shadows: widget.shadows,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+              AnimatedAlign(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.decelerate,
+                alignment: initialPosition
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
+                child: Container(
+                  width: width * 0.35,
+                  height: width * 0.13,
+                  decoration: ShapeDecoration(
+                    color: widget.buttonColor,
+                    shadows: widget.shadows,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text(
+                    initialPosition ? widget.values[0] : widget.values[1],
+                    style: TextStyle(
+                      fontFamily: 'Rubik',
+                      fontSize: 17,
+                      color: widget.textColor,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  alignment: Alignment.center,
                 ),
               ),
-              child: Text(
-                initialPosition ? widget.values[0] : widget.values[1],
-                style: TextStyle(
-                  fontFamily: 'Rubik',
-                  fontSize: 17,
-                  color: widget.textColor,
-                  //fontWeight: FontWeight.bold,
-                ),
-              ),
-              alignment: Alignment.center,
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

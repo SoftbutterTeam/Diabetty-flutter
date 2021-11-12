@@ -18,17 +18,14 @@ dependencies:
   cupertino_icons: ^0.1.3
   simple_animations: ^1.3.3
   google_fonts:
-  cloud_firestore: ^0.12.9+4
-  firebase_analytics: ^5.0.2
-  firebase_core:
-  firebase_storage:
   intl:
-  firebase_auth: ^0.15.3
-  google_sign_in: ^4.1.1
-  #flutter_facebook_login: ^3.0.0
-  apple_sign_in: ^0.1.0
   provider: ^4.0.1
-  
+  app_settings: ^4.1.1
+  share: ^2.0.4
+  launch_review: ^3.0.1
+  url_launcher: ^6.0.12
+
+
   rxdart: ^0.23.1
   flutter_secure_storage: ^3.3.1+1
   package_info: ^0.4.0+13
@@ -37,7 +34,6 @@ dependencies:
   validators: ^2.0.1
   focused_menu: ^1.0.0
   nb_utils: ^3.1.6+11
-  flutter_statusbarcolor: 0.2.3
   flutter_slidable:
   flutter_staggered_grid_view:
   date_picker_timeline: 1.2.1
@@ -55,10 +51,8 @@ dependencies:
   syncfusion_flutter_charts: ^18.3.48+1
   animated_button: ^0.1.2
   calendar_strip: ^1.0.6
-  share: 0.6.5+4
   intl_phone_number_input: ^0.7.0+1
   flutter_local_notifications: ^5.0.0+3
-  oktoast: ^2.1.8
   localstore: ^1.2.0
   flutter_native_timezone: ^2.0.0
   device_info: ^2.0.2

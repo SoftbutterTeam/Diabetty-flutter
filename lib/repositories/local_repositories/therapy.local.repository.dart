@@ -1,9 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:localstore/localstore.dart';
 
 class TherapyRepository {
@@ -62,8 +58,6 @@ class TherapyRepository {
   Future<DataResult<List<Map<String, dynamic>>>> getAllTherapies(
       {bool local}) async {
     try {
-      Source source = local ? Source.cache : Source.serverAndCache;
-
       var result = await _localdb.collection('therapies').get();
 
       var data = (result.entries.map((e) {

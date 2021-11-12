@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diabetty/models/journal/journal_entry.model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:localstore/localstore.dart';
 
 class JournalEntryRepository {
@@ -57,8 +55,6 @@ class JournalEntryRepository {
       String journalId,
       {bool local}) async {
     try {
-      Source source = local ? Source.cache : Source.serverAndCache;
-
       var result = await _localdb
           .collection('journals')
           .doc(journalId)
@@ -81,7 +77,6 @@ class JournalEntryRepository {
 
   Future<void> deleteEntry(JournalEntry entry) async {
     Map<String, dynamic> entryData = Map();
-    if (entry.userId == null) return null;
     Map<String, dynamic> json =
         await _localdb.collection('journals').doc(entry.journalId).get();
     json['updatedAt'] = DateTime.now().toString();

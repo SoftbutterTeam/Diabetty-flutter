@@ -1,11 +1,15 @@
 import 'dart:ui';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/customtextfield.dart';
 import 'package:diabetty/extensions/index.dart';
+import 'package:launch_review/launch_review.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreenBuilder extends StatelessWidget {
   @override
@@ -84,26 +88,12 @@ class _SettingsScreenState extends State<SettingsScreen>
                     alignment: Alignment.center,
                     child: null),
               ),
-              Container(
-                padding: EdgeInsets.only(top: size.height * 0.05),
-                height: double.maxFinite,
-                width: double.maxFinite,
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      CupertinoIcons.profile_circled,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: text(('').capitalize(),
-                          fontSize: 14.0, textColor: Colors.white),
-                    ),
-                  ],
+              SafeArea(
+                child: Container(
+                  //     padding: EdgeInsets.only(top: size.height * 0.05),
+
+                  alignment: Alignment.center,
+                  child: subHeadingText("Settings", Colors.white),
                 ),
               )
             ]),
@@ -156,8 +146,8 @@ class _SettingsScreenState extends State<SettingsScreen>
       child: Column(
         children: [
           //   _buildDarkModeField(context),
-          _buildLangaugeField(context),
-          _buildSettingsField(context),
+          _buildNotificationsSettingsField(context),
+          //_buildSettingsField(context),
         ],
       ),
     );
@@ -207,10 +197,12 @@ class _SettingsScreenState extends State<SettingsScreen>
         ));
   }
 
-  Widget _buildLangaugeField(BuildContext context) {
+  Widget _buildNotificationsSettingsField(BuildContext context) {
     return CustomTextField(
-      onTap: () {},
-      placeholderText: 'Notification Settings',
+      onTap: () {
+        AppSettings.openNotificationSettings();
+      },
+      placeholderText: 'Notifications Settings',
     );
   }
 
@@ -223,21 +215,31 @@ class _SettingsScreenState extends State<SettingsScreen>
 
   Widget _buildHelpSupportField(BuildContext context) {
     return CustomTextField(
-      onTap: () {},
+      onTap: () async {
+        String _url = 'https://twitter.com/';
+        await canLaunch(_url)
+            ? await launch(_url)
+            : throw 'Could not launch $_url';
+      },
       placeholderText: 'Contact us',
     );
   }
 
   Widget _buildShareAppField(BuildContext context) {
+    //! need link to share
     return CustomTextField(
-      onTap: () {},
+      onTap: () {
+        Share.share('Join Diabetty here: link', subject: 'Join Diabetty');
+      },
       placeholderText: 'Share App',
     );
   }
 
   Widget _buildFeedbackField(BuildContext context) {
     return CustomTextField(
-      onTap: () {},
+      onTap: () {
+        LaunchReview.launch();
+      },
       placeholderText: 'Feedback',
     );
   }

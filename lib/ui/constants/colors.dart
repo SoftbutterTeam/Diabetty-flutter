@@ -28,6 +28,21 @@ var t2White = materialColor(0XFFFFFFFF);
 var t2TextColorPrimary = materialColor(0XFF212121);
 const shadow_color = Color(0XFFECECEC);
 
+/// Used in iOS 10 for light background fills such as the chat bubble background.
+///
+/// This is SystemLightGrayColor in the iOS palette.
+const Color lightBackgroundGray = Color(0xFFE5E5EA);
+
+/// Used in iOS 12 for very light background fills in tables between cell groups.
+///
+/// This is SystemExtraLightGrayColor in the iOS palette.
+const Color extraLightBackgroundGray = Color(0xFFEFEFF4);
+
+/// Used in iOS 12 for very dark background fills in tables between cell groups
+/// in dark mode.
+// Value derived from screenshot from the dark themed Apple Watch app.
+const Color darkBackgroundGray = Color(0xFF171717);
+
 Map<int, Color> color = {
   50: Color.fromRGBO(136, 14, 79, .1),
   100: Color.fromRGBO(136, 14, 79, .2),

@@ -51,6 +51,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(children: [
         _body(context),
         SafeArea(

@@ -24,7 +24,6 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/layouts/dashboard.layout.dart';
 import 'package:diabetty/ui/screens/others/loading_screens/loading.screen.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetty/utils/application_state_reset_timer.dart';
 
@@ -57,35 +56,34 @@ class MyApp extends StatelessWidget {
             create: (_) => diaryBloc,
           ),
         ],
-        child: OKToast(
-            child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  primarySwatch: Colors.indigo,
-                  visualDensity: VisualDensity.adaptivePlatformDensity,
-                ),
-                onGenerateRoute: routerthing.Router.generateRoute,
-                home: DashBoard(
-                  initIndex: 1,
-                ),
-                builder: (context, child) {
-                  startKeepAlive(dayPlanManager.refresh);
-                  return FutureBuilder(
-                    future: () async {
-                      await dayPlanManager.init(therapyManager);
-                      await Future.delayed(
-                          const Duration(milliseconds: 1000), () {});
-                      return;
-                    }.call(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting)
-                        return LoadingScreen();
-                      return ScrollConfiguration(
-                        behavior: SBehavior(),
-                        child: child,
-                      );
-                    },
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.indigo,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            onGenerateRoute: routerthing.Router.generateRoute,
+            home: DashBoard(
+              initIndex: 1,
+            ),
+            builder: (context, child) {
+              startKeepAlive(dayPlanManager.refresh);
+              return FutureBuilder(
+                future: () async {
+                  await dayPlanManager.init(therapyManager);
+                  await Future.delayed(
+                      const Duration(milliseconds: 1000), () {});
+                  return;
+                }.call(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting)
+                    return LoadingScreen();
+                  return ScrollConfiguration(
+                    behavior: SBehavior(),
+                    child: child,
                   );
-                })));
+                },
+              );
+            }));
   }
 }

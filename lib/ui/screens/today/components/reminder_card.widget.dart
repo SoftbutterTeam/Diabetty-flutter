@@ -1,11 +1,8 @@
 import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
-import 'package:diabetty/models/therapy/sub_models/medication_info.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
-import 'package:diabetty/ui/constants/icons.dart';
 import 'package:diabetty/ui/screens/today/components/reminder_icon_widget.dart';
-import 'package:diabetty/ui/screens/today/components/medication_profile.screen.dart';
 import 'package:diabetty/ui/screens/today/mixins/ReminderActionsMixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
