@@ -4,6 +4,7 @@ import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:diabetty/ui/screens/today/components/animatedBox.dart';
 import 'package:diabetty/ui/screens/today/components/animated_transform_rotate.dart';
@@ -111,8 +112,9 @@ class _TimeSlotState extends State<TimeSlot>
   }
 
   Widget _buildTimeHeader(String time) {
-    MaterialColor colorToFade = allComplete ? Colors.green : Colors.grey;
-    double opacity = allComplete ? .3 : .1;
+    MaterialColor colorToFade =
+        allComplete ? Colors.green : shadowColor; //Colors.grey
+    double opacity = allComplete ? .3 : .1; // .3 : .1
     return GestureDetector(
       onTap: () {
         _toggleMinimize();
@@ -265,10 +267,11 @@ class TimeSlotDecor extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
+              color: Colors.grey
+                  .withOpacity(0.2), //Colors.orange.withOpacity(0.2),
+              spreadRadius: 0.5, // was 1
               blurRadius: 3,
-              offset: Offset(0, 3),
+              offset: Offset(0, 2), // was 3
             ),
           ],
           borderRadius: BorderRadius.only(

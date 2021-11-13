@@ -26,7 +26,9 @@ const t2_linkedin_pink = Color(0XFF0c78b6);
 var t2lightStatusBar = materialColor(0XFFEAEAF9);
 var t2White = materialColor(0XFFFFFFFF);
 var t2TextColorPrimary = materialColor(0XFF212121);
-const shadow_color = Color(0XFFECECEC);
+var shadowColor = shadowGrey;
+var shadowOrange = Colors.orange;
+var shadowGrey = Colors.grey;
 
 /// Used in iOS 10 for light background fills such as the chat bubble background.
 ///

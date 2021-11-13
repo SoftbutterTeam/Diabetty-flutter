@@ -6,6 +6,7 @@ import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/routes.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
+import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class _TherapyCardState extends State<TherapyCard>
                   offset: Offset(0, -1), 
                 ),*/
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: shadowColor.withOpacity(0.2),
                   spreadRadius: 1,
                   blurRadius: 2,
                   offset: Offset(0, 0),
@@ -184,21 +185,21 @@ class _TherapyCardState extends State<TherapyCard>
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
             .where((element) => element.therapyId == widget.therapy.id)
             .toList()
-              ..retainWhere((element) =>
-                  (element.rescheduledTime ?? element.time)
-                      .isSameDayAs(DateTime.now()) &&
-                  !element.isComplete &&
-                  !element.isSkipped);
+          ..retainWhere((element) =>
+              (element.rescheduledTime ?? element.time)
+                  .isSameDayAs(DateTime.now()) &&
+              !element.isComplete &&
+              !element.isSkipped);
     for (int i = 1; i < 7 && userRemindersNext.isEmpty; i++) {
       userRemindersNext.addAll(dayManager
           .getFinalRemindersList(date: DateTime.now().add(Duration(days: i)))
           .where((element) => element.therapyId == widget.therapy.id)
           .toList()
-            ..retainWhere((element) =>
-                (element.rescheduledTime ?? element.time)
-                    .isSameDayAs(DateTime.now().add(Duration(days: i))) &&
-                !element.isComplete &&
-                !element.isSkipped));
+        ..retainWhere((element) =>
+            (element.rescheduledTime ?? element.time)
+                .isSameDayAs(DateTime.now().add(Duration(days: i))) &&
+            !element.isComplete &&
+            !element.isSkipped));
     }
 
     userRemindersNext.sort((a, b) =>

@@ -75,7 +75,7 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
                           style: TextStyle(
                             fontFamily: 'Rubik',
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             color: Colors
                                 .deepOrange[700], // const Color(0xFF918f95),
                           ),

@@ -30,7 +30,7 @@ class CommonBackground extends StatelessWidget {
               color: appWhite,
               child: Container(
                 decoration: BoxDecoration(
-                  color: extraLightBackgroundGray,
+                  color: extraLightBackgroundGray.withOpacity(0.5),
                   //NoDefaultCupertinoThemeData().scaffoldBackgroundColor, //t2_colorPrimaryLight, //maryLightColor
                   //   .withAlpha(220), //app_ba Colors.grey[50], appWhite,
                   borderRadius: BorderRadius.only(
