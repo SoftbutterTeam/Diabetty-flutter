@@ -6,6 +6,7 @@ import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/reminder.model.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
@@ -20,8 +21,13 @@ import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
+    as DateRangePicker;
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
+
+import 'components/CustomTextField.dart';
 
 class TherapyProfileScreen2 extends StatefulWidget {
   final Therapy therapy;
@@ -117,8 +123,19 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     return Column(
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 25, bottom: 5),
+            padding: EdgeInsets.only(top: 25, bottom: 0),
             child: _buildStockField()),
+        if (therapy.schedule.startDate.isAfter(DateTime.now()) ||
+            (therapy.schedule != null &&
+                therapy.schedule.startDate != null &&
+                therapy.schedule.endDate != null))
+          Padding(
+            padding: EdgeInsets.only(top: 0, bottom: 0),
+            child: _buildStartEndDateField(),
+          ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 5),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -168,26 +185,64 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     );
   }
 
-  Widget _buildWindowField() {
+  Widget _buildStartEndDateField() {
+    //// print(therapy.schedule.endDate);
     return ProfileCustomTextField(
       stackIcons: null,
-      onTap: () {},
-      placeholder: _getWindowMessage(),
-      placeholderText: 'Window',
-      // placeholderTextStyle: TextStyle(
-      //   fontSize: textSizeLargeMedium - 4,
-      //   color: Colors.grey[700],
-      // ),
+      onTap: () => showStartEndDate(context),
+      placeholder: Text(
+        (therapy.schedule.startDate.isSameDayAs(DateTime.now()) &&
+                (therapy.schedule.endDate == null ||
+                    therapy.schedule.startDate
+                        .isSameDayAs(therapy.schedule.endDate)))
+            ? "From Today"
+            : (therapy.schedule.endDate == null)
+                ? (therapy.schedule.startDate
+                        .isSameDayAs(DateTime.now().add(Duration(days: 1))))
+                    ? 'From Tomorrow'
+                    : 'From ' +
+                        DateFormat('dd MMM yy')
+                            .format(therapy.schedule.startDate)
+                : DateFormat('dd MMM yy').format(therapy.schedule.startDate) +
+                    ' - ' +
+                    DateFormat('dd MMM yy').format(therapy.schedule.endDate),
+        style:
+            TextStyle(color: Colors.grey[700], overflow: TextOverflow.ellipsis),
+      ),
+      placeholderText: 'Start - End Date',
     );
   }
 
-  Widget _buildMinRestField() {
-    return ProfileCustomTextField(
-      stackIcons: null,
-      onTap: () {},
-      placeholder: _getMinRestMessage(),
-      placeholderText: 'Minimum Rest Duration',
-    );
+  showStartEndDate(BuildContext context) async {
+    final List<DateTime> picked = await DateRangePicker.showDatePicker(
+        context: context,
+        initialFirstDate: therapy.schedule.startDate,
+        initialLastDate: therapy.schedule.endDate ?? therapy.schedule.startDate,
+        firstDate: DateTime.now().subtract(Duration(days: 1)),
+        lastDate: new DateTime(2026, 12, 31));
+
+    if (picked != null && picked.length > 0) {
+      if (picked.length > 1 && isSameDayAs(picked[0], picked[1]))
+        picked.removeAt(1);
+      else if (picked.length > 1) {
+        //// print(picked);
+        therapy.schedule.startDate = picked[0];
+        therapy.schedule.endDate = picked[1];
+        setState(() {});
+      } else if (picked.length == 1) {
+        therapy.schedule.startDate = picked[0];
+        therapy.schedule.endDate = null;
+        setState(() {});
+      }
+    }
+    TherapyService().saveTherapy(therapy);
+  }
+
+  bool isSameDayAs(DateTime date, DateTime datey) {
+    if (datey.day != date.day) return false;
+    if (datey.month != date.month) return false;
+    if (datey.year != date.year) return false;
+    return true;
   }
 
   Widget _buildFooter(Size size) {
@@ -335,6 +390,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     var size = MediaQuery.of(context).size;
     String nextMessage = getNextReminderMessage() ?? '...';
     String lastMessage = getLastTakenMessage() ?? '...';
+    var textStyle = TextStyle(
+        fontSize: 24.0, color: textColor, fontWeight: FontWeight.w500);
     return IntrinsicHeight(
       child: Container(
         width: size.width,
@@ -393,10 +450,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                         Padding(
                           padding: const EdgeInsets.only(bottom: 3),
                           child: Text(widget.therapy.name.capitalizeBegins(),
-                              style: TextStyle(
-                                  fontSize: 24.0,
-                                  color: textColor,
-                                  fontWeight: FontWeight.w500)),
+                              style: textStyle),
                         ),
                       ],
                     ),
@@ -647,21 +701,21 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         List.of(dayManager.getFinalRemindersList(date: DateTime.now()))
             .where((element) => element.therapyId == widget.therapy.id)
             .toList()
-              ..retainWhere((element) =>
-                  (element.rescheduledTime ?? element.time)
-                      .isSameDayAs(DateTime.now()) &&
-                  !element.isComplete &&
-                  !element.isSkipped);
+          ..retainWhere((element) =>
+              (element.rescheduledTime ?? element.time)
+                  .isSameDayAs(DateTime.now()) &&
+              !element.isComplete &&
+              !element.isSkipped);
     for (int i = 1; i < 7 && userRemindersNext.isEmpty; i++) {
       userRemindersNext.addAll(dayManager
           .getFinalRemindersList(date: DateTime.now().add(Duration(days: i)))
           .where((element) => element.therapyId == widget.therapy.id)
           .toList()
-            ..retainWhere((element) =>
-                (element.rescheduledTime ?? element.time)
-                    .isSameDayAs(DateTime.now().add(Duration(days: i))) &&
-                !element.isComplete &&
-                !element.isSkipped));
+        ..retainWhere((element) =>
+            (element.rescheduledTime ?? element.time)
+                .isSameDayAs(DateTime.now().add(Duration(days: i))) &&
+            !element.isComplete &&
+            !element.isSkipped));
     }
 
     userRemindersNext.sort((a, b) =>

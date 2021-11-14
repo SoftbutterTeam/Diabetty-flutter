@@ -314,8 +314,8 @@ class DayPicker extends StatelessWidget {
         assert(onChanged != null),
         assert(displayedMonth != null),
         assert(!firstDate.isAfter(lastDate)),
-        assert(!selectedFirstDate.isBefore(firstDate) &&
-            (selectedLastDate == null || !selectedLastDate.isAfter(lastDate))),
+        ////    assert(!selectedFirstDate.isBefore(firstDate) &&
+        ////        (selectedLastDate == null || !selectedLastDate.isAfter(lastDate))),
         assert(selectedLastDate == null ||
             !selectedLastDate.isBefore(selectedFirstDate)),
         super(key: key);
@@ -641,8 +641,8 @@ class MonthPicker extends StatefulWidget {
   })  : assert(selectedFirstDate != null),
         assert(onChanged != null),
         assert(!firstDate.isAfter(lastDate)),
-        assert(!selectedFirstDate.isBefore(firstDate) &&
-            (selectedLastDate == null || !selectedLastDate.isAfter(lastDate))),
+        ////      assert(!selectedFirstDate.isBefore(firstDate) &&
+        ////         (selectedLastDate == null || !selectedLastDate.isAfter(lastDate))),
         assert(selectedLastDate == null ||
             !selectedLastDate.isBefore(selectedFirstDate)),
         super(key: key);
@@ -1317,8 +1317,8 @@ Future<List<DateTime>> showDatePicker({
   Locale locale,
   TextDirection textDirection,
 }) async {
-  assert(!initialFirstDate.isBefore(firstDate),
-      'initialDate must be on or after firstDate');
+  //// assert(!initialFirstDate.isBefore(firstDate),
+  //// 'initialDate must be on or after firstDate');*/
   assert(!initialLastDate.isAfter(lastDate),
       'initialDate must be on or before lastDate');
   assert(!initialFirstDate.isAfter(initialLastDate),

@@ -210,9 +210,9 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         .where((therapy) =>
             therapy.mode == "planned" &&
             therapy.schedule != null &&
-            therapy.schedule.startDate.compareTo(DateTime.now()) <= 0 &&
+            therapy.schedule.startDate.compareTo(date) <= 0 &&
             (therapy.schedule.endDate == null ||
-                therapy.schedule.endDate.isAfter(DateTime.now())))
+                therapy.schedule.endDate.isAfter(date)))
         .forEach((therapy) {
       therapy.schedule?.reminderRules?.forEach((rule) {
         if (rule.isActiveOn(date))

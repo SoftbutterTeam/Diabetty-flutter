@@ -1,5 +1,6 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
+import 'package:diabetty/extensions/datetime_extension.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
@@ -15,7 +16,10 @@ import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:diabetty/ui/screens/therapy/components/date_range_picker.widget.dart'
+    as DateRangePicker;
 
 class EditTherapyScreen extends StatefulWidget {
   final Therapy therapy;
@@ -135,8 +139,67 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
             padding: EdgeInsets.only(top: 4.0),
             child: _buildReminderField(context),
           ),
+        if (therapy.schedule != null)
+          Padding(
+            padding: EdgeInsets.only(top: 4.0),
+            child: _buildStartEndDateField(),
+          ),
       ],
     );
+  }
+
+  Widget _buildStartEndDateField() {
+    //// print(therapy.schedule.endDate);
+    return ProfileCustomTextField(
+      stackIcons: null,
+      onTap: () => showStartEndDate(context),
+      placeholder: (therapy.schedule.startDate.isSameDayAs(DateTime.now()) &&
+              (therapy.schedule.endDate == null ||
+                  therapy.schedule.startDate
+                      .isSameDayAs(therapy.schedule.endDate)))
+          ? "From Today"
+          : (therapy.schedule.endDate == null)
+              ? (therapy.schedule.startDate
+                      .isSameDayAs(DateTime.now().add(Duration(days: 1))))
+                  ? 'From Tomorrow'
+                  : 'From ' +
+                      DateFormat('dd MMM yy').format(therapy.schedule.startDate)
+              : DateFormat('dd MMM yy').format(therapy.schedule.startDate) +
+                  ' - ' +
+                  DateFormat('dd MMM yy').format(therapy.schedule.endDate),
+      placeholderText: 'Start - End date',
+    );
+  }
+
+  showStartEndDate(BuildContext context) async {
+    final List<DateTime> picked = await DateRangePicker.showDatePicker(
+        context: context,
+        initialFirstDate: newTherapy.schedule.startDate,
+        initialLastDate:
+            newTherapy.schedule.endDate ?? newTherapy.schedule.startDate,
+        firstDate: DateTime.now().subtract(Duration(days: 1)),
+        lastDate: new DateTime(2026, 12, 31));
+    if (picked != null && picked.length > 0) {
+      if (picked.length > 1 && isSameDayAs(picked[0], picked[1]))
+        picked.removeAt(1);
+      else if (picked.length > 1) {
+        //// print(picked);
+        newTherapy.schedule.startDate = picked[0];
+        newTherapy.schedule.endDate = picked[1];
+        setState(() {});
+      } else if (picked.length == 1) {
+        newTherapy.schedule.startDate = picked[0];
+        newTherapy.schedule.endDate = null;
+        setState(() {});
+      }
+    }
+  }
+
+  bool isSameDayAs(DateTime date, DateTime datey) {
+    if (datey.day != date.day) return false;
+    if (datey.month != date.month) return false;
+    if (datey.year != date.year) return false;
+    return true;
   }
 
   InputTextField _buildMedicationNameField() {
