@@ -225,7 +225,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               ),
             if (therapy != null &&
                 therapy.stock != null &&
-                therapy.stock.remind &&
+                therapy.stock.isReminding &&
                 therapy.stock.isOutOfStock)
               Container(
                 padding: EdgeInsets.only(bottom: 3),
@@ -247,7 +247,7 @@ class _ReminderInfoModalState extends State<ReminderInfoModal>
               ),
             if (therapy != null &&
                 therapy.stock != null &&
-                therapy.stock.remind &&
+                therapy.stock.isReminding &&
                 !therapy.stock.isOutOfStock &&
                 therapy.stock.isLowOnStock)
               Container(

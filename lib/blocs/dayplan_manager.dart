@@ -63,7 +63,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
 
   ///* user reminders is only fetched reminders/data from store
   List<Reminder> _usersReminders = [];
-  get userTherapies => (therapyManager?.usersTherapies) ?? List();
+  List<Therapy> get userTherapies => (therapyManager?.usersTherapies) ?? List();
 
   DateTime get currentDateStamp => _currentDateStamp ?? DateTime.now();
 
@@ -298,7 +298,7 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     await _notifcationService.clearScheduledNotfications();
     List<Reminder> orderedSoonReminders = [];
     DateTime now = DateTime.now();
-    int limitByDays = 10; //! reminder to put to 10
+    int limitByDays = 14; //! reminder to put to 10
     for (int i = 0; i < limitByDays && orderedSoonReminders.length < 20; i++) {
       orderedSoonReminders.addAll(getFinalRemindersList(
               date: now.add(Duration(days: i)))
@@ -317,17 +317,43 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
     print('notificationtest06: running from here');
     int i = 0;
     for (Reminder reminder in orderedSoonReminders) {
+      bool notifications = userTherapies.isNotEmpty
+          ? getTherapyOfReminder(reminder)
+                  ?.schedule
+                  ?.alarmSettings
+                  ?.notifications ??
+              true
+          : true;
+      bool isSilent = userTherapies.isNotEmpty
+          ? getTherapyOfReminder(reminder)?.schedule?.alarmSettings?.silent ??
+              false
+          : false;
+      bool late = userTherapies.isNotEmpty
+          ? getTherapyOfReminder(reminder)
+                  .schedule
+                  ?.alarmSettings
+                  ?.lateReminders ??
+              false
+          : true;
       print('notificationTest06: $i ' +
           reminder.prominentScheduledTime.toString());
-      await scheduleReminderNotifications(reminder, i);
-      print('notificationtest06: done 1');
-      i += 2;
+      if (notifications) {
+        i = await scheduleReminderNotifications(reminder, i, late, isSilent);
+        print('notificationtest06: done 1');
+        i++;
+      }
       print('notificationTest06: $i');
     }
     print('notificationtest06: done 2');
   }
 
-  scheduleReminderNotifications(Reminder reminder, int index) async {
+  Therapy getTherapyOfReminder(Reminder reminder) {
+    return userTherapies
+        .firstWhere((therapy) => therapy.id == reminder.therapyId);
+  }
+
+  Future<int> scheduleReminderNotifications(
+      Reminder reminder, int index, bool lateReminder, bool isSilent) async {
     var _notifcationService = NotificationService();
 
     //print('test031  + $index ${reminder.prominentScheduledTime.toString()}');
@@ -344,15 +370,24 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
         "Take ${reminder.dose} ${unitTypes[reminder.doseTypeIndex].plurarlUnits(reminder.dose)} ${reminder.name.capitalizeBegins()} ${reminder.advice != 0 ? intakeAdvice[reminder.advice].toLowerCase() + ' ' : ''}for ${reminder.prominentScheduledTime.formatTime().toLowerCase().replaceAll(' ', '')}";
 
     await _notifcationService.scheduleNotfication(
+      id: index,
+      scheduledDate: reminder.prominentScheduledTime,
+      body: body1,
+      title: title1,
+      silent: isSilent,
+    );
+    if (lateReminder) {
+      index++;
+
+      await _notifcationService.scheduleNotfication(
         id: index,
-        scheduledDate: reminder.prominentScheduledTime,
-        body: body1,
-        title: title1);
-    await _notifcationService.scheduleNotfication(
-        id: index + 1,
         scheduledDate: reminder.prominentScheduledTime
             .add(reminder.window ?? Duration(minutes: 20)),
         body: body2,
-        title: title2);
+        title: title2,
+        silent: isSilent,
+      );
+    }
+    return index;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
@@ -74,6 +75,8 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
       saveTherapy(therapy);
 
       manager.updateListeners();
+      Provider.of<DayPlanManager>(context, listen: false)
+          .scheduleNotifications();
       Navigator.pop(context);
       setState(() {});
     }

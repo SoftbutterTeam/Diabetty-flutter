@@ -77,7 +77,11 @@ class NotificationService with CommonMixins {
   }
 
   scheduleNotfication(
-      {int id, String title, String body, DateTime scheduledDate}) async {
+      {int id,
+      String title,
+      String body,
+      DateTime scheduledDate,
+      bool silent = false}) async {
     var androidPlatformChannelSpecs = AndroidNotificationDetails(
       'diab_01',
       'diab_01',
@@ -85,13 +89,14 @@ class NotificationService with CommonMixins {
       icon: 'app_icon',
       sound: null,
       largeIcon: null,
+      playSound: !silent,
     ); //* can add the sound and largeIcon DrawableResourceAndroidBitmap('app-icon')
 
     var iOSPlatformChannelSpecifics = IOSNotificationDetails(
       sound: null,
       presentAlert: true,
       presentBadge: true,
-      presentSound: true,
+      presentSound: !silent,
       threadIdentifier: scheduledDate.toString(),
     );
     var platformChannelSpecifics = NotificationDetails(

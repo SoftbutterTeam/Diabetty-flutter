@@ -108,7 +108,7 @@ class _TherapyCardState extends State<TherapyCard>
                           fontSize: 11.0,
                           overflow: TextOverflow.ellipsis),
                     if (widget.therapy.stock != null &&
-                        widget.therapy.stock.remind &&
+                        widget.therapy.stock.isReminding &&
                         widget.therapy.stock.isOutOfStock)
                       text('Out of Stock',
                           textColor: Colors.redAccent[700],
@@ -117,7 +117,7 @@ class _TherapyCardState extends State<TherapyCard>
                           fontSize: 11.0,
                           overflow: TextOverflow.ellipsis)
                     else if (widget.therapy.stock != null &&
-                        widget.therapy.stock.remind &&
+                        widget.therapy.stock.isReminding &&
                         widget.therapy.stock.isLowOnStock)
                       text(
                           'Low on Stock (${widget.therapy.stock.currentLevel.toString()} left)',

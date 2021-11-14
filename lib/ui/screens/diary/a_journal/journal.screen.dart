@@ -599,16 +599,18 @@ class _JournalLineChartState extends State<JournalLineChart> {
 
     final LineChartBarData lineChartBarData1 = LineChartBarData(
       spots: recordsMapped,
-      isCurved: false,
+      isCurved: true,
       //todo
-      curveSmoothness: 0.15,
+      curveSmoothness: 0.15, //* was 0.15
       colors: [
         Colors.deepOrange[600],
       ],
+
       barWidth: 1.5,
       isStrokeCapRound: true,
       dotData: FlDotData(
-        show: false,
+        show: true,
+        getDotPainter: _getDotPainter,
       ),
       belowBarData: BarAreaData(show: false, colors: [
         const Color(0x00aa4cfc),
@@ -618,5 +620,15 @@ class _JournalLineChartState extends State<JournalLineChart> {
     return [
       lineChartBarData1,
     ];
+  }
+
+  FlDotPainter _getDotPainter(
+      FlSpot spot, double xPercentage, LineChartBarData bar, int index,
+      {double size}) {
+    return FlDotCirclePainter(
+      radius: 3.0,
+      color: Colors.deepOrange[600],
+      strokeColor: Colors.deepOrange[600],
+    );
   }
 }

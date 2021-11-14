@@ -83,15 +83,14 @@ class AddTherapyForm {
         stock: Stock(
           currentLevel: stock.currentLevel,
           flagLimit: stock.flagLimit,
-          remind: stock.remind,
         ),
         schedule: (mode == 'planned')
             ? Schedule(
                 window: window,
                 alarmSettings: AlarmSettings(
-                  noReminder: settings.noReminder,
+                  notifications: settings.notifications,
                   silent: settings.silent,
-                  enableCriticalAlerts: settings.enableCriticalAlerts,
+                  lateReminders: settings.lateReminders,
                 ),
                 reminderRules: this.reminderRules,
                 startDate: this.startDate ?? DateTime.now(),
@@ -129,9 +128,7 @@ class AddTherapyForm {
   bool isDateValid() => this.startDate != null;
 
   bool isAlarmSettingsValid() =>
-      settings.noReminder != null &&
-      settings.enableCriticalAlerts != null &&
-      settings.silent != null;
+      settings.notifications != null && settings.silent != null;
 
   bool isWindowValid() => this.window != null;
 

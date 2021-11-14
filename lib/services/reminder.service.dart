@@ -30,6 +30,7 @@ class ReminderService {
       final reminders = (await reminderRepo.getAllReminders(local: local)).data;
       if (reminders == null) {
         //// print('init null');
+        ///
         return List();
       }
       //// print('init here');

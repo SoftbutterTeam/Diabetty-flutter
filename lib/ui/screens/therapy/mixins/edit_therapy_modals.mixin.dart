@@ -10,6 +10,7 @@ import 'package:diabetty/ui/screens/therapy/components/IntakePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal.v2.dart';
 import 'package:diabetty/ui/screens/therapy/components/add_reminder_modal_3.dart';
 import 'package:diabetty/ui/screens/therapy/components/custom_timer_picker.dart';
+import 'package:diabetty/ui/screens/therapy/components/edit_alarm_dialog.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_reminder_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/edit_stock_dialog.dart';
 import 'package:diabetty/extensions/index.dart';
@@ -112,6 +113,25 @@ mixin EditTherapyModalsMixin<T extends StatefulWidget> on State<T> {
         ),
         elevation: 3,
         child: RefillDialog(therapyForm: therapy),
+      ),
+      transitionBuilder: _transitionBuilderStyle1(),
+      transitionDuration: Duration(milliseconds: 250),
+    );
+  }
+
+  void showEditAlarmDialog2(BuildContext context, TherapyManager manager) {
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      barrierColor: Colors.black12, //black12 white
+      pageBuilder: (context, anim1, anim2) => Dialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: 25),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 3,
+        child: EditSoundSettingsDialog(therapy: therapy, manager: manager),
       ),
       transitionBuilder: _transitionBuilderStyle1(),
       transitionDuration: Duration(milliseconds: 250),

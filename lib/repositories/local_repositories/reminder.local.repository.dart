@@ -24,8 +24,6 @@ class ReminderRepository {
   }
 
   Future<void> deleteReminder(Reminder reminder) async {
-    if (reminder.userId == null) return null;
-
     // reminder.
     await _localdb
         .collection('reminders')

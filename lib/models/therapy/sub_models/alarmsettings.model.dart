@@ -1,46 +1,22 @@
 class AlarmSettings {
   bool silent;
-  bool noReminder;
-  bool enableCriticalAlerts;
+  bool notifications;
+  bool lateReminders;
 
   AlarmSettings(
       {this.silent = false,
-      this.enableCriticalAlerts = false,
-      this.noReminder = false});
+      this.notifications = true,
+      this.lateReminders = true});
 
   loadFromJson(Map<String, dynamic> json) {
-    this.silent = json['silent'];
-    this.noReminder = json['noReminder'];
-    this.enableCriticalAlerts = json['enableCriticalAlerts'];
+    this.silent = json['silent'] ?? false;
+    this.notifications = json['notifications'] ?? true;
+    this.lateReminders = json['late'] ?? true;
   }
 
   Map<String, dynamic> toJson() => {
         'silent': this.silent,
-        'noReminder': this.noReminder,
-        'enableCriticalAlerts': this.enableCriticalAlerts,
+        'notifications': this.notifications,
+        'late': this.lateReminders,
       };
-
-  handleReset() {
-    enableCriticalAlerts = null;
-    silent = null;
-    noReminder = null;
-  }
-
-  handleValidation(silentToggle, noReminderToggle, enableCriticalToggle) {
-    if (silentToggle) {
-      silent = true;
-      noReminder = false;
-    }
-
-    if (noReminderToggle) {
-      silent = false;
-      noReminder = true;
-    }
-
-    if (enableCriticalToggle) {
-      enableCriticalAlerts = true;
-    } else {
-      enableCriticalAlerts = false;
-    }
-  }
 }

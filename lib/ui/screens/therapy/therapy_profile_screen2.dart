@@ -326,7 +326,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     return Column(
       children: [
         GestureDetector(
-          onTap: () => showEditAlarmDialog2(context),
+          onTap: () => showEditAlarmDialog2(context, therapyManager),
           child: Container(
             height: size.height * 0.08,
             width: size.width * 0.16,
@@ -553,7 +553,8 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
 
   _getStockMessage() {
     if (widget.therapy.stock == null ||
-        widget.therapy.stock.currentLevel == null) {
+        widget.therapy.stock.currentLevel == null ||
+        !widget.therapy.stock.isReminding) {
       return Text(
         '',
         style: TextStyle(
@@ -620,17 +621,6 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
   //           ) //TODO complete this modal
   //       );
   // }
-
-  Future showEditAlarmDialog2(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) => BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: EditAlarmDialog(
-                  manager: therapyManager, therapyForm: widget.therapy),
-            ) //TODO complete this modal
-        );
-  }
 
   //     Future showEditWindowPopUp2(BuildContext context) {
   //   return showDialog(

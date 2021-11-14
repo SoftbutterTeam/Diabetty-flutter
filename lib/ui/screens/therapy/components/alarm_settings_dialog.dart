@@ -1,9 +1,11 @@
 import 'package:diabetty/blocs/therapy_manager.dart';
+import 'package:diabetty/models/therapy/therapy.model.dart';
+import 'package:diabetty/services/therapy.service.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
-import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 
 class AlarmSettingsDialog extends StatefulWidget {
   final AddTherapyForm therapyForm;
@@ -15,25 +17,24 @@ class AlarmSettingsDialog extends StatefulWidget {
 }
 
 class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
-  bool enableCriticalToggle;
-  bool noReminderToggle;
+  bool notificationsToggle;
   bool silentToggle;
+  bool lateToggle;
 
   @override
   void initState() {
     super.initState();
-    enableCriticalToggle =
-        (widget.therapyForm.settings.enableCriticalAlerts) ? true : false;
-    noReminderToggle = (widget.therapyForm.settings.noReminder) ? true : false;
-    silentToggle = (widget.therapyForm.settings.silent) ? true : false;
+    notificationsToggle = (widget.therapyForm.settings.notifications);
+    silentToggle = (widget.therapyForm.settings.silent);
+    lateToggle = (widget.therapyForm.settings.lateReminders);
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-        height: size.height * 0.36,
+    return IntrinsicHeight(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
         width: size.width * 0.85,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,82 +44,78 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
             _buildButtons(),
           ],
         ),
-      );
-  }
-
-  Expanded _buildButtons() {
-    return Expanded(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CupertinoButton(
-            child: Text(
-              'cancel',
-              style: TextStyle(
-                color: CupertinoColors.destructiveRed,
-              ),
-            ),
-            onPressed: () => Navigator.pop(context),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 5.0,
-            ),
-          ),
-          CupertinoButton(
-            child: Text(
-              'clear',
-              style: TextStyle(
-                color: (noReminderToggle || silentToggle)
-                    ? Colors.indigo
-                    : Colors.black26,
-              ),
-            ),
-            onPressed: _reset,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 5.0,
-            ),
-          ),
-          CupertinoButton(
-            child: Text(
-              'save',
-              style: TextStyle(
-                color: (noReminderToggle || silentToggle)
-                    ? Colors.indigo
-                    : Colors.black26,
-              ),
-            ),
-            onPressed: () {
-              if (noReminderToggle || silentToggle) _handleSubmit();
-            },
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 5.0,
-            ),
-          ),
-        ],
       ),
     );
   }
 
-  void _reset() {
-    if (noReminderToggle || silentToggle || enableCriticalToggle)
-      enableCriticalToggle = false;
-    silentToggle = false;
-    noReminderToggle = false;
-    widget.therapyForm.settings.handleReset();
-    setState(() {});
-    widget.manager.updateListeners();
+  Expanded _buildButtons() {
+    const verticalPadding = 30.0;
+    return Expanded(
+      child: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.symmetric(vertical: verticalPadding / 2),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CupertinoButton(
+              child: Text(
+                'cancel',
+                style: TextStyle(
+                  color: CupertinoColors.destructiveRed,
+                ),
+              ),
+              onPressed: () => Navigator.pop(context),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: verticalPadding / 2,
+              ),
+            ),
+            CupertinoButton(
+              child: Text(
+                '',
+                style: TextStyle(
+                  color: (notificationsToggle || silentToggle)
+                      ? Colors.indigo
+                      : Colors.black26,
+                ),
+              ),
+              onPressed: () {},
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: verticalPadding / 2,
+              ),
+            ),
+            CupertinoButton(
+              child: Text(
+                'save',
+                style: TextStyle(
+                  color: (true) ? Colors.indigo : Colors.black26,
+                ),
+              ),
+              onPressed: () {
+                _handleSubmit();
+              },
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: verticalPadding / 2,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Container _buildAlarmSound(Size size) {
     return Container(
         width: size.width * 0.8,
+        padding: EdgeInsets.only(bottom: 15.0),
         child: Column(
           children: [
             text("Sound", fontSize: 16.0, textColor: Colors.black),
-            _buildNoReminderToggle("No Reminder"),
+            _buildNotificationsToggle("Notifications"),
+            _buildLateToggle('Late Reminders'),
             _buildSilentToggle("Silent"),
           ],
         ));
@@ -127,36 +124,11 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
   Container _buildCriticalAlertField(Size size) {
     return Container(
       padding: EdgeInsets.only(top: 15, bottom: 10),
-      child: _buildCriticalAlertToggle("Enable Critical Alerts"),
+      child: null,
     );
   }
 
-  Padding _buildCriticalAlertToggle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          text(title,
-              fontSize: 15.0,
-              fontFamily: fontBold,
-              textColor:
-                  (enableCriticalToggle) ? Colors.black : Colors.black26),
-          CupertinoSwitch(
-            activeColor: Colors.indigo,
-            value: enableCriticalToggle,
-            onChanged: (v) {
-              setState(() {
-                enableCriticalToggle = v;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildNoReminderToggle(String title) {
+  Padding _buildNotificationsToggle(String title) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10),
       child: Row(
@@ -165,14 +137,13 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
           text(title,
               fontSize: 15.0,
               fontFamily: fontBold,
-              textColor: (noReminderToggle) ? Colors.black : Colors.black26),
+              textColor: (true) ? Colors.black : Colors.black26),
           CupertinoSwitch(
             activeColor: Colors.indigo,
-            value: noReminderToggle,
+            value: notificationsToggle,
             onChanged: (v) {
               setState(() {
-                noReminderToggle = v;
-                silentToggle = !v;
+                notificationsToggle = v;
               });
             },
           ),
@@ -183,21 +154,49 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
 
   Padding _buildSilentToggle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10),
+      padding:
+          const EdgeInsets.only(left: 15.0, right: 15.0, top: 10, bottom: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           text(title,
               fontSize: 15.0,
               fontFamily: fontBold,
-              textColor: (silentToggle) ? Colors.black : Colors.black26),
+              textColor: (notificationsToggle) ? Colors.black : Colors.black26),
           CupertinoSwitch(
             activeColor: Colors.indigo,
-            value: silentToggle,
+            value: notificationsToggle ? silentToggle : false,
             onChanged: (v) {
               setState(() {
-                noReminderToggle = !v;
-                silentToggle = v;
+                if (notificationsToggle) silentToggle = v;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _buildLateToggle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 15.0,
+        right: 15.0,
+        top: 10,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          text(title,
+              fontSize: 15.0,
+              fontFamily: fontBold,
+              textColor: (notificationsToggle) ? Colors.black : Colors.black26),
+          CupertinoSwitch(
+            activeColor: Colors.indigo,
+            value: notificationsToggle ? lateToggle : false,
+            onChanged: (v) {
+              setState(() {
+                if (notificationsToggle) lateToggle = v;
               });
             },
           ),
@@ -207,8 +206,9 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
   }
 
   _handleSubmit() {
-    widget.therapyForm.settings
-        .handleValidation(silentToggle, noReminderToggle, enableCriticalToggle);
+    widget.therapyForm.settings.notifications = notificationsToggle;
+    widget.therapyForm.settings.silent = silentToggle;
+    widget.therapyForm.settings.lateReminders = lateToggle;
     widget.manager.updateListeners();
     Navigator.pop(context);
   }

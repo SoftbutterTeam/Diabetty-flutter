@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/models/therapy/sub_models/reminder_rule.model.dart';
@@ -21,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:diabetty/extensions/datetime_extension.dart';
 import 'package:diabetty/extensions/index.dart';
+import 'package:provider/provider.dart';
 
 import 'components/CustomTextField.dart';
 
@@ -78,6 +80,8 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
                           else if (therapyForm.isPlannedMode())
                             therapyForm.plannedValidation(toThrow: true);
                           await widget.manager.submitAddTherapy(therapyForm);
+                          Provider.of<DayPlanManager>(context, listen: false)
+                              .scheduleNotifications();
                           Navigator.pushNamed(context, therapy);
                         } catch (e) {
                           //// print(e.message);
@@ -299,10 +303,10 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
                       .isSameDayAs(DateTime.now().add(Duration(days: 1))))
                   ? 'From Tomorrow'
                   : 'From ' +
-                      DateFormat('dd/MM/yy').format(therapyForm.startDate)
-              : DateFormat('dd/MM/yy').format(therapyForm.startDate) +
-                  ' to ' +
-                  DateFormat('dd/MM/yy').format(therapyForm.endDate),
+                      DateFormat('dd MMM yy').format(therapyForm.startDate)
+              : DateFormat('dd MMM yy').format(therapyForm.startDate) +
+                  ' - ' +
+                  DateFormat('dd MMM yy').format(therapyForm.endDate),
       placeholderText: 'Start - End Date',
     );
   }
@@ -402,7 +406,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     return CustomTextField(
       stackIcons: null,
       onTap: () => showAlarmSettingsDialog(context, widget.manager),
-      placeholderText: 'Alarm Settings',
+      placeholderText: 'Sound Settings',
     );
   }
 
