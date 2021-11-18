@@ -227,10 +227,12 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                                       '') +
                                   ' ' +
                                   report_measurements[(widget.journal == null ||
-                                          widget.journal.reportUnitsIndex ==
-                                              null)
-                                      ? 0
-                                      : widget.journal.reportUnitsIndex],
+                                              widget.journal.reportUnitsIndex ==
+                                                  null)
+                                          ? 0
+                                          : widget.journal.reportUnitsIndex]
+                                      .plurarlUnits(
+                                          widget.journalEntry?.recordEntry),
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
