@@ -158,7 +158,7 @@ class _RefillDialogState extends State<RefillDialog>
               child: Text(
                 'reset',
                 style: TextStyle(
-                  color: _isFilled ? Colors.orange[800] : Colors.black26,
+                  color: _isFilled ? Colors.indigo : Colors.black26,
                 ),
               ),
               onPressed: () {
@@ -172,7 +172,7 @@ class _RefillDialogState extends State<RefillDialog>
             child: Text(
               'add',
               style: TextStyle(
-                color: _isFilled ? Colors.orange[800] : Colors.black26,
+                color: _isFilled ? Colors.indigo : Colors.black26,
               ),
             ),
             onPressed: () {

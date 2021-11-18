@@ -141,7 +141,7 @@ class _EditSoundSettingsDialogState extends State<EditSoundSettingsDialog> {
               fontFamily: fontBold,
               textColor: (true) ? Colors.black : Colors.black26),
           CupertinoSwitch(
-            activeColor: Colors.indigo,
+            activeColor: Colors.orange[100],
             value: notificationsToggle,
             onChanged: (v) {
               setState(() {
@@ -166,7 +166,7 @@ class _EditSoundSettingsDialogState extends State<EditSoundSettingsDialog> {
               fontFamily: fontBold,
               textColor: (notificationsToggle) ? Colors.black : Colors.black26),
           CupertinoSwitch(
-            activeColor: Colors.indigo,
+            activeColor: Colors.orange[100],
             value: notificationsToggle ? silentToggle : false,
             onChanged: (v) {
               setState(() {
@@ -194,7 +194,7 @@ class _EditSoundSettingsDialogState extends State<EditSoundSettingsDialog> {
               fontFamily: fontBold,
               textColor: (notificationsToggle) ? Colors.black : Colors.black26),
           CupertinoSwitch(
-            activeColor: Colors.indigo,
+            activeColor: Colors.orange[100],
             value: notificationsToggle ? lateToggle : false,
             onChanged: (v) {
               setState(() {

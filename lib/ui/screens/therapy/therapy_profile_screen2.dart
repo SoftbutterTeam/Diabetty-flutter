@@ -125,7 +125,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         Padding(
             padding: EdgeInsets.only(top: 25, bottom: 0),
             child: _buildStockField()),
-        if (therapy.schedule.startDate.isAfter(DateTime.now()) ||
+        if (therapy.schedule?.startDate?.isAfter(DateTime.now()) ?? false ||
             (therapy.schedule != null &&
                 therapy.schedule.startDate != null &&
                 therapy.schedule.endDate != null))

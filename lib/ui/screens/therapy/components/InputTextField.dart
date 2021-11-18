@@ -32,9 +32,11 @@ class InputTextField extends StatefulWidget {
 }
 
 class _InputTextFieldState extends State<InputTextField> {
+  bool autoFocus = false;
   @override
   void initState() {
     super.initState();
+    autoFocus = widget.autoFocus;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.controller.text = widget.initalName;
     });
@@ -46,7 +48,7 @@ class _InputTextFieldState extends State<InputTextField> {
     return Padding(
       padding: EdgeInsets.only(bottom: 40.0),
       child: CupertinoTextField(
-          autofocus: widget.autoFocus,
+          autofocus: false,
           onChanged: widget.onChanged,
           onSubmitted: widget.onSubmitted,
           controller: widget.controller,
@@ -62,7 +64,7 @@ class _InputTextFieldState extends State<InputTextField> {
           // r
           prefix: Container(
             padding: EdgeInsets.only(left: 17),
-            child: this.widget.stackIcons,
+            child: null,
           ),
           placeholder: widget.placeholder,
           maxLines: 1,
