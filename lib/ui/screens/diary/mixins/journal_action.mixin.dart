@@ -110,10 +110,14 @@ mixin JournalActionsMixin<T extends Widget> {
                   child: Text("Change Date"),
                   onPressed: () {
                     Navigator.pop(context);
-                    showDatePicker(context, (DateTime choosenTime) {
-                      journalRecord.date = choosenTime;
-                      diaryBloc.updateListeners();
-                    }, journalRecord.date);
+                    showDatePicker(
+                      context,
+                      (DateTime choosenTime) {
+                        journalRecord.date = choosenTime;
+                        diaryBloc.updateListeners();
+                      },
+                      journalRecord.date,
+                    );
                   },
                 ),
                 if (journalRecord.id != null)
@@ -243,6 +247,7 @@ mixin JournalActionsMixin<T extends Widget> {
             use24hFormat: false,
             mode: CupertinoDatePickerMode.date,
             initialDateTime: date,
+            maximumYear: DateTime.now().year + 1,
             onDateTimeChanged: (dateTimeChange) {
               choosenTime = dateTimeChange;
             },
