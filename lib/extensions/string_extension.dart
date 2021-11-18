@@ -12,12 +12,10 @@ extension StringExtension on String {
         .trimLeft();
   }
 
-  String plurarlUnits(int num) {
-    if (num != 1 &&
-        this.substring(this.length - 3, this.length).contains("(s)"))
+  String plurarlUnits(num) {
+    if (num != 1 && this.contains("(s)"))
       return this.replaceAll(new RegExp(r'[()]'), '');
-    else if (num == 1 &&
-        this.substring(this.length - 3, this.length).contains("(s)"))
+    else if (num == 1 && this.contains("(s)"))
       return this.replaceRange(this.length - 3, this.length, '');
     return this;
   }
