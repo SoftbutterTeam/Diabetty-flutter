@@ -33,11 +33,6 @@ Widget text(var text,
           letterSpacing: latterSpacing));
 }
 
-showToast(BuildContext aContext, String caption) {
-  Scaffold.of(aContext).showSnackBar(
-      SnackBar(content: text(caption, textColor: appWhite, isCentered: true)));
-}
-
 void finish(context) {
   Navigator.pop(context);
 }

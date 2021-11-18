@@ -334,7 +334,11 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
                 shape: BoxShape.circle, color: Colors.orange[100]),
             child: Center(
               child: Icon(
-                CupertinoIcons.volume_up,
+                !(widget.therapy.schedule?.alarmSettings?.notifications ?? true)
+                    ? CupertinoIcons.volume_off
+                    : widget.therapy.schedule?.alarmSettings?.silent ?? false
+                        ? CupertinoIcons.volume_mute
+                        : CupertinoIcons.volume_up,
                 color: Colors.orange[800],
                 size: 35,
               ),
