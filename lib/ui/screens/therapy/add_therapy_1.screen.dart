@@ -2,6 +2,7 @@ import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/constants/therapy_model_constants.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
+import 'package:diabetty/ui/screens/teams/components/sub_page_background.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:diabetty/ui/screens/therapy/components/AppearancePopUp.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
@@ -12,11 +13,14 @@ import 'package:diabetty/ui/screens/therapy/components/StrengthTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/topbar.dart';
 import 'package:diabetty/ui/screens/therapy/forms/add_therapy_form.model.dart';
 import 'package:diabetty/ui/screens/therapy/mixins/add_therapy_modals.mixin.dart';
+import 'package:diabetty/ui/screens/today/components/common_background.dart';
 import 'package:duration/duration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:diabetty/extensions/string_extension.dart';
+
+import 'components/header.dart';
 
 class AddTherapyScreenOne extends StatefulWidget {
   const AddTherapyScreenOne({Key key, this.manager, this.pageController})
@@ -50,31 +54,22 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Stack(children: [
-        _body(context),
-        SafeArea(
-          child: IntrinsicHeight(
-              child: Container(
-                  alignment: Alignment.topCenter,
-                  child: SizedBox(
-                    child: SubPageHeader(
-                      text: 'next',
-                      saveFunction: () {
-                        FocusScope.of(context).unfocus();
-
-                        if (medicationNameController.text.isNotEmpty) {
-                          widget.manager.updateListeners();
-                          widget.pageController.jumpToPage(1);
-                        }
-                      },
-                      iconColor: Colors.white,
-                      backFunction: () => Navigator.pop(context),
-                    ),
-                  ))),
-        ),
-      ]),
+    var size = MediaQuery.of(context).size;
+    return SubPageBackground(
+      child: _body(context),
+      header: SubPageHeader(
+          text: 'next',
+          backFunction: () {
+            Navigator.pop(context);
+            // _back();
+          },
+          saveFunction: () {
+            if (therapyForm.name.isNotEmpty) {
+              widget.manager.updateListeners();
+              FocusScope.of(context).unfocus();
+              widget.pageController.jumpToPage(1);
+            }
+          }),
     );
   }
 
@@ -82,7 +77,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     Size size = MediaQuery.of(context).size;
     return Column(
       children: <Widget>[
-        _buildHeader(context),
+        // _buildHeader(context),
         Expanded(
             child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
@@ -154,7 +149,9 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
         _buildDividerHeader(),
         _buildIntakeAdviceField(),
         //  _buildMinimumRestField(),
-      ].map((e) => animatedOpacity(e, therapyForm.isNameValid()) as Widget));
+      ].map((e) => IgnorePointer(
+          ignoring: !therapyForm.isNameValid(),
+          child: animatedOpacity(e, therapyForm.isNameValid()) as Widget)));
 
     return Column(children: <Widget>[
       SizedBox(
@@ -205,7 +202,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
       onChanged: (val) {
         therapyForm.name = val;
         setState(() {});
-        // or widget.manager.updateListeners();
+        // widget.manager.updateListeners();
       },
     );
   }
