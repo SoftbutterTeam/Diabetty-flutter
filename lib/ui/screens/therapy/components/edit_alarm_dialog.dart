@@ -1,3 +1,4 @@
+import 'package:diabetty/blocs/dayplan_manager.dart';
 import 'package:diabetty/blocs/therapy_manager.dart';
 import 'package:diabetty/models/therapy/therapy.model.dart';
 import 'package:diabetty/services/therapy.service.dart';
@@ -5,6 +6,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditSoundSettingsDialog extends StatefulWidget {
   final Therapy therapy;
@@ -212,6 +214,10 @@ class _EditSoundSettingsDialogState extends State<EditSoundSettingsDialog> {
 
     TherapyService().saveTherapy(widget.therapy);
     widget.manager.updateListeners();
+    var daymanager = Provider.of<DayPlanManager>(context, listen: false);
+    daymanager.scheduleNotifications();
+    daymanager.updateListeners();
+
     Navigator.pop(context);
   }
 }

@@ -76,7 +76,9 @@ class _EditTherapyScreenState extends State<EditTherapyScreen>
 
       manager.updateListeners();
       Provider.of<DayPlanManager>(context, listen: false)
-          .scheduleNotifications();
+        ..scheduleNotifications()
+        ..updateListeners();
+
       Navigator.pop(context);
       setState(() {});
     }

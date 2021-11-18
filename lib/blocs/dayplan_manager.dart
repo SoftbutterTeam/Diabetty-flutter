@@ -328,12 +328,16 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
           ? getTherapyOfReminder(reminder)?.schedule?.alarmSettings?.silent ??
               false
           : false;
+
+      if (isSilent == true) {
+        print('${reminder.name} is silent');
+      }
       bool late = userTherapies.isNotEmpty
           ? getTherapyOfReminder(reminder)
                   .schedule
                   ?.alarmSettings
                   ?.lateReminders ??
-              false
+              true
           : true;
       print('notificationTest06: $i ' +
           reminder.prominentScheduledTime.toString());
