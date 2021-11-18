@@ -92,7 +92,7 @@ class _EditSoundSettingsDialogState extends State<EditSoundSettingsDialog> {
               child: Text(
                 'save',
                 style: TextStyle(
-                  color: (true) ? Colors.indigo : Colors.black26,
+                  color: (true) ? Colors.orange[800] : Colors.black26,
                 ),
               ),
               onPressed: () {

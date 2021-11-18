@@ -235,7 +235,7 @@ class _JournalEntryCardState extends State<JournalEntryCard>
                                           widget.journalEntry?.recordEntry),
                               style: TextStyle(
                                 fontSize: 14,
-                                color: Colors.black54,
+                                color: Colors.grey[700],
                                 fontWeight: FontWeight.w500,
                               ),
                             ),

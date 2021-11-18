@@ -166,13 +166,23 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
         ));
   }
 
+    Widget _buildPageTitle() {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 15,
+      ),
+      child: text('Journal Info'),
+    );
+  }
+
   Widget _buildBody(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
+        _buildPageTitle(),
         Padding(
-          padding: EdgeInsets.only(top: 35.0),
+          padding: EdgeInsets.only(top: 15.0),
           child: _buildJournalNameField(),
         ),
         _buildReportUnitsField(),
@@ -205,14 +215,14 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
     );
   }
 
-  Widget _buildPageTitle() {
-    return Container(
-      padding: EdgeInsets.only(
-        bottom: 20,
-      ),
-      child: text('Journal Info'),
-    );
-  }
+  // Widget _buildPageTitle() {
+  //   return Container(
+  //     padding: EdgeInsets.only(
+  //       bottom: 20,
+  //     ),
+  //     child: text('Journal Info'),
+  //   );
+  // }
 
   Stack _stackedHeartIcons(bool cond) {
     return Stack(
