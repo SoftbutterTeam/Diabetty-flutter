@@ -383,6 +383,8 @@ class _JournalLineChartState extends State<JournalLineChart> {
   double minY;
   double maxY;
   double intervals;
+
+  int daysLimit = 360;
   List<FlSpot> recordsMapped;
   @override
   void initState() {
@@ -393,8 +395,9 @@ class _JournalLineChartState extends State<JournalLineChart> {
   void calculateParameters() {
     records = List.of(widget.journal.journalEntries);
     records.removeWhere((element) => element.isNotesType);
-    records.removeWhere((element) =>
-        element.date.isBefore(DateTime.now().subtract(Duration(days: 360))));
+    records.removeWhere((element) => element.date
+        .isBefore(DateTime.now().subtract(Duration(days: daysLimit))));
+    records.removeWhere((element) => element.date.isAfter(DateTime.now()));
     records.sort((a, b) => b.date.compareTo(a.date));
     first = records.first;
     last = records.last;
@@ -414,6 +417,7 @@ class _JournalLineChartState extends State<JournalLineChart> {
         .toList();
 
     maxX = records.first.date.month + 1.0;
+
     minX = max(
         (last.date.isBefore(first.date) && last.date.month > first.date.month)
             ? (last.date.month.toDouble() - 12)

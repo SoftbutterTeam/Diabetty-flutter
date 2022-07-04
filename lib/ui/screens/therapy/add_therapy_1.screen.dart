@@ -58,7 +58,7 @@ class _AddTherapyScreenOneState extends State<AddTherapyScreenOne>
     return SubPageBackground(
       child: _body(context),
       header: SubPageHeader(
-          text: 'next',
+          text: therapyForm.isNameValid() ? 'next' : '',
           backFunction: () {
             Navigator.pop(context);
             // _back();
