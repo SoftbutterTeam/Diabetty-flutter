@@ -166,7 +166,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
         ));
   }
 
-  Widget _buildPageTitle() {
+    Widget _buildPageTitle() {
     return Container(
       padding: EdgeInsets.only(
         top: 15,

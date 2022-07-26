@@ -125,11 +125,10 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
         Padding(
             padding: EdgeInsets.only(top: 25, bottom: 0),
             child: _buildStockField()),
-        if (therapy.schedule?.startDate?.isAfter(DateTime.now()) ??
-            false ||
-                (therapy.schedule != null &&
-                    therapy.schedule.startDate != null &&
-                    therapy.schedule.endDate != null))
+        if (therapy.schedule?.startDate?.isAfter(DateTime.now()) ?? false ||
+            (therapy.schedule != null &&
+                therapy.schedule.startDate != null &&
+                therapy.schedule.endDate != null))
           Padding(
             padding: EdgeInsets.only(top: 0, bottom: 0),
             child: _buildStartEndDateField(),
@@ -141,7 +140,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             text(
-              therapy.isNeeded ? "" : "scheduled reminders",
+              "scheduled reminders",
               fontSize: 13.0,
               textColor: Colors.black54,
             )
@@ -274,10 +273,10 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (widget.therapy.isPlanned)
-                Flexible(
-                  flex: 1,
-                  child: _buildSilentColumn(size),
-                ),
+              Flexible(
+                flex: 1,
+                child: _buildSilentColumn(size),
+              ),
               Flexible(
                 flex: 1,
                 child: _buildRefillColumn(size),
@@ -328,9 +327,7 @@ class _TherapyProfileScreen2State extends State<TherapyProfileScreen2>
     return Column(
       children: [
         GestureDetector(
-          onTap: () => widget.therapy.isNeeded
-              ? null
-              : showEditAlarmDialog2(context, therapyManager),
+          onTap: () => widget.therapy.isNeeded ? null : showEditAlarmDialog2(context, therapyManager),
           child: Container(
             height: size.height * 0.08,
             width: size.width * 0.16,

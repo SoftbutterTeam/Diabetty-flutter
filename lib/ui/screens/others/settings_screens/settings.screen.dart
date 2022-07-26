@@ -80,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                 child: null,
               ),
               BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0), // was 4 4
+                filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                 child: Container(
                     width: double.maxFinite,
                     height: double.maxFinite,
