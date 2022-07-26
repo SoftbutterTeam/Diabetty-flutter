@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class SubPageHeader extends StatefulWidget {
   final String text;
-  final String subHeadingText;
   final Function saveFunction;
   final Function backFunction;
   final Color iconColor;
@@ -13,7 +12,6 @@ class SubPageHeader extends StatefulWidget {
     this.saveFunction,
     this.backFunction,
     this.iconColor,
-    this.subHeadingText,
   });
 
   @override
@@ -44,8 +42,8 @@ class _SubPageHeaderState extends State<SubPageHeader> {
                 disabledColor: Colors.transparent,
                 padding: EdgeInsets.only(left: 0),
                 child: Align(
-                  child:
-                      Icon(Icons.arrow_back_ios, color: Colors.white, size: 15),
+                  child: Icon(Icons.arrow_back_ios,
+                      color: widget.iconColor ?? Colors.orange[800], size: 15),
                   alignment: Alignment.centerLeft,
                 ),
               ),
@@ -53,8 +51,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
             Expanded(
               child: Container(
                   alignment: Alignment.center,
-                  child: subHeadingText(
-                      widget.subHeadingText ?? '', Colors.white)),
+                  child: subHeadingText("", Colors.white)),
             ),
             Container(
               alignment: Alignment.centerRight,
@@ -70,7 +67,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
                 child: Align(
                   child: Text(widget.text ?? '',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: widget.iconColor ?? Colors.orange[800],
                           fontSize: 17.0,
                           fontWeight: FontWeight.w400)),
                   alignment: Alignment.centerRight,

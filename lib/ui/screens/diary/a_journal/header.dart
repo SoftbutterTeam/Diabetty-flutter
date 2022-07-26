@@ -37,7 +37,6 @@ class JournalHeader extends StatelessWidget with JournalActionsMixin {
                   child: Icon(
                     Icons.arrow_back_ios,
                     size: 18,
-                    color: Colors.orange[800],
                   ),
                   alignment: Alignment.centerLeft,
                 ),
@@ -49,7 +48,7 @@ class JournalHeader extends StatelessWidget with JournalActionsMixin {
                   child: Text(
                     journal?.name?.capitalize(),
                     style: TextStyle(
-                        color: Colors.orange[800],
+                        color: Colors.black87,
                         fontWeight: FontWeight.w400,
                         fontSize: 19.7),
                   )),
@@ -66,7 +65,6 @@ class JournalHeader extends StatelessWidget with JournalActionsMixin {
                   child: Icon(
                     Icons.more_horiz,
                     size: 25,
-                    color: Colors.orange[800],
                   ),
                   alignment: Alignment.centerLeft,
                 ),

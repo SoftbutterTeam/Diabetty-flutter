@@ -8,7 +8,6 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/column_builder.dart';
 import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/constants/fonts.dart';
-import 'package:diabetty/ui/screens/teams/components/sub_page_background.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:diabetty/ui/screens/therapy/components/error_modal.dart';
 import 'package:diabetty/ui/screens/therapy/components/reminder_rule_field.widget.dart';
@@ -46,60 +45,6 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     super.initState();
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   var size = MediaQuery.of(context).size;
-  //   if (widget.manager.therapyForm.reminderRules != null &&
-  //       widget.manager.therapyForm.reminderRules.length != 0) {
-  //     widget.manager.therapyForm.reminderRules
-  //       ..sort((ReminderRule a, ReminderRule b) =>
-  //           a.time.applyTimeOfDay().compareTo(b.time.applyTimeOfDay()));
-  //   }
-  //   List<Widget> reminderRulesList =
-  //       (widget.manager.therapyForm.reminderRules == null ||
-  //               widget.manager.therapyForm.reminderRules.length == 0)
-  //           ? List()
-  //           : widget.manager.therapyForm.reminderRules
-  //               .map((e) => ReminderRuleField(rule: e) as Widget)
-  //               .toList()
-  //         ..add(_buildAddReminderField(context));
-
-  //   return Scaffold(
-  //     body: Stack(children: [
-  //       _body(context, reminderRulesList),
-  //       SafeArea(
-  //         child: IntrinsicHeight(
-  //             child: Container(
-  //                 alignment: Alignment.topCenter,
-  //                 child: SizedBox(
-  //                   child: SubPageHeader(
-  //                     text: 'save',
-  //                     saveFunction: () async {
-  //                       try {
-  //                         if (therapyForm.isNeededMode())
-  //                           therapyForm.neededValidation(toThrow: true);
-  //                         else if (therapyForm.isPlannedMode())
-  //                           therapyForm.plannedValidation(toThrow: true);
-  //                         await widget.manager.submitAddTherapy(therapyForm);
-  //                         Provider.of<DayPlanManager>(context, listen: false)
-  //                             .scheduleNotifications();
-  //                         Navigator.pushNamed(context, therapy);
-  //                       } catch (e) {
-  //                         //// print(e.message);
-  //                         //// print('this shows up');
-  //                         showErrorModal(context);
-  //                         // TODO Display Model with describing the error
-  //                       }
-  //                     },
-  //                     iconColor: Colors.white,
-  //                     backFunction: () => widget.pageController.jumpToPage(0),
-  //                   ),
-  //                 ))),
-  //       ),
-  //     ]),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -118,32 +63,39 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
                 .toList()
           ..add(_buildAddReminderField(context));
 
-    return SubPageBackground(
-      child: _body(context, reminderRulesList),
-      header: SubPageHeader(
-        text: 'save',
-        backFunction: () {
-          widget.pageController.jumpToPage(0);
-          // _back();
-        },
-        saveFunction: () async {
-          try {
-            if (therapyForm.isNeededMode())
-              therapyForm.neededValidation(toThrow: true);
-            else if (therapyForm.isPlannedMode())
-              therapyForm.plannedValidation(toThrow: true);
-            await widget.manager.submitAddTherapy(therapyForm);
-            Provider.of<DayPlanManager>(context, listen: false)
-                .scheduleNotifications();
-            Navigator.pushNamed(context, therapy);
-          } catch (e) {
-            //// print(e.message);
-            //// print('this shows up');
-            showErrorModal(context);
-            // TODO Display Model with describing the error
-          }
-        },
-      ),
+    return Scaffold(
+      body: Stack(children: [
+        _body(context, reminderRulesList),
+        SafeArea(
+          child: IntrinsicHeight(
+              child: Container(
+                  alignment: Alignment.topCenter,
+                  child: SizedBox(
+                    child: SubPageHeader(
+                      text: 'save',
+                      saveFunction: () async {
+                        try {
+                          if (therapyForm.isNeededMode())
+                            therapyForm.neededValidation(toThrow: true);
+                          else if (therapyForm.isPlannedMode())
+                            therapyForm.plannedValidation(toThrow: true);
+                          await widget.manager.submitAddTherapy(therapyForm);
+                          Provider.of<DayPlanManager>(context, listen: false)
+                              .scheduleNotifications();
+                          Navigator.pushNamed(context, therapy);
+                        } catch (e) {
+                          //// print(e.message);
+                          //// print('this shows up');
+                          showErrorModal(context);
+                          // TODO Display Model with describing the error
+                        }
+                      },
+                      iconColor: Colors.white,
+                      backFunction: () => widget.pageController.jumpToPage(0),
+                    ),
+                  ))),
+        ),
+      ]),
     );
   }
 
@@ -151,7 +103,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
     Size size = MediaQuery.of(context).size;
     return Column(
       children: <Widget>[
-        // _buildHeader(context),
+        _buildHeader(context),
         Expanded(
             child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
@@ -207,7 +159,7 @@ class _AddTherapyScreenTwoState extends State<AddTherapyScreenTwo>
       decoration: BoxDecoration(
         gradient: LinearGradient(
             begin: Alignment.topCenter,
-            colors: [Colors.red[900], Colors.yellow[800]]),
+            colors: [Colors.orange[900], Colors.orange[800]]),
       ),
     );
   }

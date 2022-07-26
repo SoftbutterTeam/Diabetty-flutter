@@ -90,7 +90,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
               child: Text(
                 'save',
                 style: TextStyle(
-                  color: (true) ? Colors.orange[800] : Colors.black26,
+                  color: (true) ? Colors.indigo : Colors.black26,
                 ),
               ),
               onPressed: () {
@@ -139,7 +139,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
               fontFamily: fontBold,
               textColor: (true) ? Colors.black : Colors.black26),
           CupertinoSwitch(
-            activeColor: Colors.orange[100],
+            activeColor: Colors.indigo,
             value: notificationsToggle,
             onChanged: (v) {
               setState(() {
@@ -164,7 +164,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
               fontFamily: fontBold,
               textColor: (notificationsToggle) ? Colors.black : Colors.black26),
           CupertinoSwitch(
-            activeColor: Colors.orange[100],
+            activeColor: Colors.indigo,
             value: notificationsToggle ? silentToggle : false,
             onChanged: (v) {
               setState(() {
@@ -192,7 +192,7 @@ class _AlarmSettingsDialogState extends State<AlarmSettingsDialog> {
               fontFamily: fontBold,
               textColor: (notificationsToggle) ? Colors.black : Colors.black26),
           CupertinoSwitch(
-            activeColor: Colors.orange[100],
+            activeColor: Colors.indigo,
             value: notificationsToggle ? lateToggle : false,
             onChanged: (v) {
               setState(() {

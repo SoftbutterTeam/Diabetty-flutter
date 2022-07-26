@@ -203,7 +203,7 @@ class _StockDialogState extends State<StockDialog> {
               child: Text(
                 'clear',
                 style: TextStyle(
-                  color: _isFilled ? Colors.orange[800] : Colors.black26,
+                  color: _isFilled ? Colors.indigo : Colors.black26,
                 ),
               ),
               onPressed: () {
@@ -220,7 +220,7 @@ class _StockDialogState extends State<StockDialog> {
             child: Text(
               'save',
               style: TextStyle(
-                color: _isFilled ? Colors.orange[800] : Colors.black26,
+                color: _isFilled ? Colors.indigo : Colors.black26,
               ),
             ),
             onPressed: () {

@@ -13,21 +13,16 @@ class SubPageBackground extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      color: Colors.red[500],
+      color: Colors.grey[50],
       child: Container(
         width: double.maxFinite,
         height: size.height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              colors: [Colors.orange[900], Colors.orange[600]])),
         child: SafeArea(
-          bottom: false,
           child: Scaffold(
               resizeToAvoidBottomInset: true,
               backgroundColor: Colors.transparent,
               appBar: PreferredSize(
-                  child: header, preferredSize: Size.fromHeight(50)),
+                  child: header, preferredSize: Size.fromHeight(60)),
               body: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[50], //Colors.grey[50], appWhite,
