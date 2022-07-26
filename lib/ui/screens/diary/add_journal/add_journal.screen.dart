@@ -7,6 +7,7 @@ import 'package:diabetty/ui/common_widgets/misc_widgets/misc_widgets.dart';
 import 'package:diabetty/ui/constants/colors.dart';
 import 'package:diabetty/ui/screens/diary/add_journal/add_journal_background.dart';
 import 'package:diabetty/ui/screens/diary/add_journal/header.dart';
+import 'package:diabetty/ui/screens/teams/components/sub_page_background.dart';
 import 'package:diabetty/ui/screens/teams/components/sub_page_header.dart';
 import 'package:diabetty/ui/screens/therapy/components/CustomTextField.dart';
 import 'package:diabetty/ui/screens/therapy/components/InputTextField.dart';
@@ -61,37 +62,60 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
   Widget build(BuildContext context) {
     bool isValid = newJournal.name != '' && newJournal.name != null;
     final diaryManager = Provider.of<DiaryBloc>(context, listen: false);
-    return Scaffold(
-      body: Stack(children: [
-        _body(context),
-        SafeArea(
-          child: IntrinsicHeight(
-              child: Container(
-                  alignment: Alignment.topCenter,
-                  child: SizedBox(
-                    child: SubPageHeader(
-                      text: isValid ? 'save' : '',
-                      saveFunction: () {
-                        if (isValid) {
-                          diaryManager
-                              .submitNewJournal(diaryManager.newJournal);
-                          Navigator.of(context).pop(context);
-                        }
-                      },
-                      iconColor: Colors.white,
-                      backFunction: () => Navigator.pop(context),
-                    ),
-                  ))),
-        ),
-      ]),
+    var size = MediaQuery.of(context).size;
+    return SubPageBackground(
+      child: _body(context),
+      header: SubPageHeader(
+        subHeadingText: "Add Journal",
+        text: isValid ? 'save' : '',
+        backFunction: () {
+          Navigator.pop(context);
+          // _back();
+        },
+        saveFunction: () {
+          if (isValid) {
+            diaryManager.submitNewJournal(diaryManager.newJournal);
+            Navigator.of(context).pop(context);
+          }
+        },
+      ),
     );
   }
+
+  // Widget build(BuildContext context) {
+  //   bool isValid = newJournal.name != '' && newJournal.name != null;
+  //   final diaryManager = Provider.of<DiaryBloc>(context, listen: false);
+  //   return Scaffold(
+  //     body: Stack(children: [
+  //       _body(context),
+  //       SafeArea(
+  //         child: IntrinsicHeight(
+  //             child: Container(
+  //                 alignment: Alignment.topCenter,
+  //                 child: SizedBox(
+  //                   child: SubPageHeader(
+  //                     text: isValid ? 'save' : '',
+  //                     saveFunction: () {
+  //                       if (isValid) {
+  //                         diaryManager
+  //                             .submitNewJournal(diaryManager.newJournal);
+  //                         Navigator.of(context).pop(context);
+  //                       }
+  //                     },
+  //                     iconColor: Colors.white,
+  //                     backFunction: () => Navigator.pop(context),
+  //                   ),
+  //                 ))),
+  //       ),
+  //     ]),
+  //   );
+  // }
 
   Widget _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: <Widget>[
-        _buildHeader(context),
+        // _buildHeader(context),
         Expanded(
             child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
@@ -142,13 +166,23 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
         ));
   }
 
+    Widget _buildPageTitle() {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 15,
+      ),
+      child: text('Journal Info'),
+    );
+  }
+
   Widget _buildBody(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
+        _buildPageTitle(),
         Padding(
-          padding: EdgeInsets.only(top: 35.0),
+          padding: EdgeInsets.only(top: 15.0),
           child: _buildJournalNameField(),
         ),
         _buildReportUnitsField(),
@@ -181,14 +215,14 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
     );
   }
 
-  Widget _buildPageTitle() {
-    return Container(
-      padding: EdgeInsets.only(
-        bottom: 20,
-      ),
-      child: text('Journal Info'),
-    );
-  }
+  // Widget _buildPageTitle() {
+  //   return Container(
+  //     padding: EdgeInsets.only(
+  //       bottom: 20,
+  //     ),
+  //     child: text('Journal Info'),
+  //   );
+  // }
 
   Stack _stackedHeartIcons(bool cond) {
     return Stack(

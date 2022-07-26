@@ -71,7 +71,7 @@ class AddTherapyForm {
   Therapy toTherapy() {
     return Therapy(
         mode: this.mode,
-        name: this.name,
+        name: this.name.trim(),
         medicationInfo: MedicationInfo(
             appearanceIndex: this.apperanceIndex,
             intakeAdviceIndex: intakeAdviceIndex,

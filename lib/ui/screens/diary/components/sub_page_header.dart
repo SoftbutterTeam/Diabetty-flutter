@@ -45,7 +45,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
                 padding: EdgeInsets.only(left: 0),
                 child: Align(
                   child:
-                      Icon(Icons.arrow_back_ios, color: Colors.white, size: 15),
+                      Icon(Icons.arrow_back_ios, color: Colors.orange[800], size: 15),
                   alignment: Alignment.centerLeft,
                 ),
               ),
@@ -70,7 +70,7 @@ class _SubPageHeaderState extends State<SubPageHeader> {
                 child: Align(
                   child: Text(widget.text ?? '',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.orange[800],
                           fontSize: 17.0,
                           fontWeight: FontWeight.w400)),
                   alignment: Alignment.centerRight,
