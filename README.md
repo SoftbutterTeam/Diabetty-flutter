@@ -1,8 +1,12 @@
 # diabetty
 
-A
+A full-stack mobile app in 2 variations: a server-hosted (with user-user connectivity) and locally hosted. 
 
-Stack and technologies: Flutter, Firebase
+A medication scheduler, health jounral and reminder mobile application. Client-inspired to build a complete yet simple medication app, while exploring creative illustrations - e.g. sundial representation of medication and diary journals.
+
+
+
+Stack and technologies: **Flutter**, **Firebase**, Dart
 
 ## Getting Started
 
