@@ -7,10 +7,10 @@ A medication scheduler, health jounral and reminder mobile application. Client-i
 Stack and technologies: **Flutter**, **Firebase**, Dart
 
 ### Features
-base: authentication and storage managment for both cloud and local hosting and more...
-Day Scheduler: With the Day to day medication reminders take, reschedule, modify and more...
-Therapy Plan: Create and Manage 2 variations of medications/therapy plans. (2 variations: Planned or On demand)
-Therapy Plan: Create and Manage 2 variations of medications/therapy plans. (2 variations: Planned or On demand)
+- base: authentication and storage managment for both cloud and local hosting and more...
+- Day Scheduler: With the Day to day medication reminders take, reschedule, modify and more...
+- Therapy Plan: Create and Manage 2 variations of medications/therapy plans. (2 variations: Planned or On demand)
+- Therapy Plan: Create and Manage 2 variations of medications/therapy plans. (2 variations: Planned or On demand)
 
 ### Enjoyable moments
   
