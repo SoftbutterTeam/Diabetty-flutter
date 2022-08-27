@@ -1,6 +1,8 @@
 # diabetty
 
-A new Flutter project.   
+A
+
+Stack and technologies: Flutter, Firebase
 
 ## Getting Started
 
