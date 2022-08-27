@@ -1,4 +1,4 @@
-# diabetty
+# Diabetty - medication scheduler app
 
 A full-stack mobile app in 2 variations: a server-hosted (with user-user connectivity) and locally hosted. 
 
