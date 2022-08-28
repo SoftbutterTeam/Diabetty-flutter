@@ -107,11 +107,11 @@ class DayPlanManager extends Manager with ReminderManagerMixin {
 
   Future<void> init(TherapyManager therapyMang) async {
     therapyManager = therapyMang;
-    currentDateStamp = DateTime.now();
+    _currentDateStamp = DateTime.now();
 
     _usersReminders = await getRemindersWithDateStamp() ?? [];
     await removeOuteDatedReminders();
-    print('running init');
+
     if (therapyManager != null) {
       print('scheduled notifications');
       await scheduleNotifications();
