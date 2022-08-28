@@ -21,8 +21,8 @@ Stack and technologies: **Flutter**, **Firebase**, Dart
   - [Doc Sample](https://drive.google.com/drive/folders/1xlYyBHY9w8M5S360de1E8k9Hh4bwBPvW?usp=sharing)
   - and more... in our teams, jira, notepads/sketchpads.
 
-### Visuals
-
+### Screenshot demo
+![Highlight-screenshots](https://user-images.githubusercontent.com/58271203/187073197-fb078956-83f1-46a9-a955-01b6bed7f09f.png)
 
 ## Getting Started
 
