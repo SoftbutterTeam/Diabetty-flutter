@@ -15,7 +15,8 @@ Stack and technologies: **Flutter**, **Firebase**, Dart
 
 ### Enjoyable moments
   Complex methods: mememory optimisation, buffer generating data e.g. - medication reminders generated from rules, - accurate processing of local, cloud and generated data.  
-  mastering subtle animation mechanics (escpially in the sun dial arc - inside joke)
+  Mastering animation mechanics (escpially in the sun dial arc - inside joke)
+  Great programming practices in architecture, oop-extend,implement and even mxins.
   
 ### Planning Documentation Sample
   - [Doc Sample](https://drive.google.com/drive/folders/1xlYyBHY9w8M5S360de1E8k9Hh4bwBPvW?usp=sharing)
