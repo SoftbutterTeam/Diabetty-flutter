@@ -21,9 +21,8 @@ Stack and technologies: **Flutter**, **Firebase**, Dart
       - represents the day plan of medication in a single representation. Allows you to grasp a scope of 12 hours.
       - navigates to the medication and gives status of each
       - 3 styles: full, half, hidden
-      - [demo video](https://drive.google.com/file/d/1LCuzzQWazyKCT2S3WB2ypm5pxVjBX2bq/view?usp=sharing)
+      - [sun-dail demo video](https://drive.google.com/file/d/1LCuzzQWazyKCT2S3WB2ypm5pxVjBX2bq/view?usp=sharing) (this does not represent the final product)
 - Great programming practices in architecture, oop-extend,implement and even mxins.
-  
   
 ### Planning Documentation Sample
   - [Doc Sample](https://drive.google.com/drive/folders/1xlYyBHY9w8M5S360de1E8k9Hh4bwBPvW?usp=sharing)
