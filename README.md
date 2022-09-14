@@ -38,10 +38,9 @@ Open Emulator and 'Flutter run'
 
 ## Sundail Screenshots
 
-| ![Screenshot_1663143562](https://user-images.githubusercontent.com/58271203/190148088-a33d0e32-3c06-41c9-a912-38016db930bf.png) | 
-![Screenshot_1663143583](https://user-images.githubusercontent.com/58271203/190148243-8a8ee1e6-8fc2-4ce2-ba2c-89c485483c54.png) | ![Screenshot_1663143465](https://user-images.githubusercontent.com/58271203/190148279-7ade6b54-f15b-4830-820b-9b8d9f064572.png) |
-| --------------------------------------- | --------------------------------------- | --------------------------------------- |
-|  |  |  |
+![Screenshot_1663143562](https://user-images.githubusercontent.com/58271203/190148088-a33d0e32-3c06-41c9-a912-38016db930bf.png){:height="40px"} ![Screenshot_1663143583](https://user-images.githubusercontent.com/58271203/190148243-8a8ee1e6-8fc2-4ce2-ba2c-89c485483c54.png){:height="40px"} ![Screenshot_1663143465](https://user-images.githubusercontent.com/58271203/190148279-7ade6b54-f15b-4830-820b-9b8d9f064572.png){:height="40px"}
+
+
 
 
 
