@@ -14,9 +14,15 @@ Stack and technologies: **Flutter**, **Firebase**, Dart
 - Team: Add other users to be able to view your plan to help you stay on track.
 
 ### Enjoyable moments
-  Complex methods: mememory optimisation, buffer generating data e.g. - medication reminders generated from rules, - accurate processing of local, cloud and generated data.  
-  Mastering animation mechanics (escpially in the sun dial arc - inside joke)
-  Great programming practices in architecture, oop-extend,implement and even mxins.
+- Complex methods: mememory optimisation, buffer generating data e.g. - medication reminders generated from rules, - accurate processing of local, cloud and generated data.  
+  Mastering animation mechanics and math-based generation (escpially in the sun dial arc - inside joke)
+- mathimatically caluculated positioning and animation generation.
+    - **sundail features**
+      - represents the day plan of medication in a single representation. Allows you to grasp a scope of 12 hours.
+      - navigates to the medication and gives status of each
+      - 3 styles: full, half, hidden
+      - [sun-dail demo video](https://drive.google.com/file/d/1LCuzzQWazyKCT2S3WB2ypm5pxVjBX2bq/view?usp=sharing) (this does not represent the final product)
+- Great programming practices in architecture, oop-extend,implement and even mxins.
   
 ### Planning Documentation Sample
   - [Doc Sample](https://drive.google.com/drive/folders/1xlYyBHY9w8M5S360de1E8k9Hh4bwBPvW?usp=sharing)
@@ -28,3 +34,13 @@ Stack and technologies: **Flutter**, **Firebase**, Dart
 ## Getting Started
 
 Open Emulator and 'Flutter run'
+
+## Sundail Screenshots
+<img src="https://user-images.githubusercontent.com/58271203/190148088-a33d0e32-3c06-41c9-a912-38016db930bf.png" width="300"> <img src="https://user-images.githubusercontent.com/58271203/190148243-8a8ee1e6-8fc2-4ce2-ba2c-89c485483c54.png" width="300"> <img src="https://user-images.githubusercontent.com/58271203/190148279-7ade6b54-f15b-4830-820b-9b8d9f064572.png" width="300">
+
+
+
+
+        
+
+
