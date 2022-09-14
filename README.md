@@ -37,9 +37,9 @@ Stack and technologies: **Flutter**, **Firebase**, Dart
 Open Emulator and 'Flutter run'
 
 ## Sundail Screenshots
-<img src="https://user-images.githubusercontent.com/58271203/190148088-a33d0e32-3c06-41c9-a912-38016db930bf.png" width="200">
-<img src="https://user-images.githubusercontent.com/58271203/190148243-8a8ee1e6-8fc2-4ce2-ba2c-89c485483c54.png" width="200">
-<img src="https://user-images.githubusercontent.com/58271203/190148279-7ade6b54-f15b-4830-820b-9b8d9f064572.png" width="200">
+<img src="https://user-images.githubusercontent.com/58271203/190148088-a33d0e32-3c06-41c9-a912-38016db930bf.png" width="300">
+<img src="https://user-images.githubusercontent.com/58271203/190148243-8a8ee1e6-8fc2-4ce2-ba2c-89c485483c54.png" width="300">
+<img src="https://user-images.githubusercontent.com/58271203/190148279-7ade6b54-f15b-4830-820b-9b8d9f064572.png" width="300">
 
 
 
