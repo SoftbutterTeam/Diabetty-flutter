@@ -14,15 +14,15 @@ Stack and technologies: **Flutter**, **Firebase**, Dart
 - Team: Add other users to be able to view your plan to help you stay on track.
 
 ### Enjoyable moments
-  Complex methods: mememory optimisation, buffer generating data e.g. - medication reminders generated from rules, - accurate processing of local, cloud and generated data.  
+- Complex methods: mememory optimisation, buffer generating data e.g. - medication reminders generated from rules, - accurate processing of local, cloud and generated data.  
   Mastering animation mechanics and math-based generation (escpially in the sun dial arc - inside joke)
-    - mathimatically caluculated positioning and animation generation.
+- mathimatically caluculated positioning and animation generation.
     - **sundail features**
       - represents the day plan of medication in a single representation. Allows you to grasp a scope of 12 hours.
       - navigates to the medication and gives status of each
       - 3 styles: full, half, hidden
       - [demo video](https://drive.google.com/file/d/1LCuzzQWazyKCT2S3WB2ypm5pxVjBX2bq/view?usp=sharing)
-  Great programming practices in architecture, oop-extend,implement and even mxins.
+- Great programming practices in architecture, oop-extend,implement and even mxins.
   
   
 ### Planning Documentation Sample
