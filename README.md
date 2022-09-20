@@ -29,7 +29,7 @@ Stack and technologies: **Flutter**, **Firebase**, Dart
   - and more... in our teams, jira, notepads/sketchpads.
 
 ### Demo Screenshots and Video
--[demo-video](https://drive.google.com/file/d/10JDmOGaeJ2CINXN2-uCUzAUFvWMVbciR/view?usp=sharing)
+- [demo-video](https://drive.google.com/file/d/10JDmOGaeJ2CINXN2-uCUzAUFvWMVbciR/view?usp=sharing)
 ![Highlight-screenshots](https://user-images.githubusercontent.com/58271203/187073197-fb078956-83f1-46a9-a955-01b6bed7f09f.png)
 
 ## Getting Started
